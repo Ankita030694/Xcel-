@@ -272,7 +272,7 @@ const HeroCarousel = () => {
 
 const AboutUs = () => {
   return (
-    <section className="bg-[#f3f5f8] w-full pt-12 pb-12 md:pt-14 md:pb-16 relative overflow-hidden">
+    <section className="bg-[#f3f5f8] w-full pt-12 pb-6 md:pt-14 md:pb-8 relative overflow-hidden">
       {/* Decorative background glowing orbs for slickness */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-gradient-to-b from-[#0a2766]/5 to-transparent blur-3xl" />
@@ -319,34 +319,34 @@ const AboutUs = () => {
             </div>
 
             {/* Feature Bullets */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6 lg:gap-4 mt-2 lg:mt-0">
               
               {/* Bullet 1 */}
               <div 
-                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-start p-3 sm:p-4 md:p-5 rounded-3xl hover:bg-white/60 hover:shadow-xl hover:shadow-[#32589c]/5 transition-all duration-300 border border-transparent hover:border-white cursor-pointer active:scale-[0.98]"
+                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-start p-4 sm:p-5 lg:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 lg:bg-transparent lg:shadow-none lg:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100"
                 onTouchStart={() => {}}
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-white to-[#e8edf5] shadow-sm flex items-center justify-center shrink-0 transform transition duration-500 ease-out group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md">
-                  <svg className="w-[50%] h-[50%] text-[#32589c] transition-colors duration-300 group-hover:text-[#0a2766]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-white to-[#e8edf5] flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 lg:shadow-sm lg:scale-100 lg:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md">
+                  <svg className="w-[50%] h-[50%] transition-colors duration-300 text-[#0a2766] lg:text-[#32589c] group-hover:text-[#0a2766]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V9l-6-4-6 4v12M3 21h18M9 21v-6h6v6M14 9V5a2 2 0 00-2-2H8a2 2 0 00-2 2v4M10 5v4" />
                   </svg>
                 </div>
-                <p className="text-gray-600 font-medium text-xs lg:text-sm leading-relaxed mt-0 transition-colors duration-300 group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 lg:text-gray-600 group-hover:text-gray-900">
                   Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
                 </p>
               </div>
 
               {/* Bullet 2 */}
               <div 
-                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-start p-3 sm:p-4 md:p-5 rounded-3xl hover:bg-white/60 hover:shadow-xl hover:shadow-[#32589c]/5 transition-all duration-300 border border-transparent hover:border-white cursor-pointer active:scale-[0.98]"
+                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-start p-4 sm:p-5 lg:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 lg:bg-transparent lg:shadow-none lg:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100"
                 onTouchStart={() => {}}
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-white to-[#e8edf5] shadow-sm flex items-center justify-center shrink-0 transform transition duration-500 ease-out group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md">
-                  <svg className="w-[50%] h-[50%] text-[#32589c] transition-colors duration-300 group-hover:text-[#0a2766]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-white to-[#e8edf5] flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 lg:shadow-sm lg:scale-100 lg:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md">
+                  <svg className="w-[50%] h-[50%] transition-colors duration-300 text-[#0a2766] lg:text-[#32589c] group-hover:text-[#0a2766]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5L21 3v6l-4.5 4.5m-3-3L10.5 15l-6-6h6l4.5 4.5m0 0L21 21v-6l-4.5-4.5" />
                   </svg>
                 </div>
-                <p className="text-gray-600 font-medium text-xs lg:text-sm leading-relaxed mt-0 transition-colors duration-300 group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 lg:text-gray-600 group-hover:text-gray-900">
                   Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
                 </p>
               </div>
@@ -421,19 +421,18 @@ const whyChooseUsData = [
 
 const WhyChooseUs = () => {
   return (
-    <section className="bg-[#f3f5f8] w-full pt-16 lg:pt-24 pb-8 lg:pb-12 relative border-t border-gray-100 flex items-center overflow-hidden">
+    <section className="bg-[#f3f5f8] w-full pt-8 lg:pt-12 pb-8 lg:pb-12 relative border-t border-gray-100 flex items-center overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 items-center xl:items-stretch">
           
           {/* Left Title Area */}
-          <div className="flex flex-col justify-center w-full xl:w-[25%] shrink-0 text-center xl:text-left pr-0 xl:pr-6 border-b xl:border-b-0 xl:border-r border-gray-200 pb-8 xl:pb-0">
+          <div className="flex flex-col justify-center w-full xl:w-[25%] shrink-0 text-center xl:text-left pr-0 xl:pr-6 border-b xl:border-b-0 xl:border-r border-gray-300 pb-8 xl:pb-0">
             <div className="flex items-center justify-center xl:justify-start gap-2 mb-4">
               <span className="text-[#32589c] font-bold text-xl md:text-2xl tracking-widest animate-pulse">{"//"}</span>
               <span className="text-gray-500 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">Our USP's</span>
             </div>
-            <h2 className="font-extrabold text-3xl md:text-4xl lg:text-5xl leading-[1.15] text-[#0a2766] tracking-tight">
-              Decades of<br className="hidden xl:block" /> Expertise.<br className="hidden xl:block" />
-              <span className="text-[#0a2766]"> Built on Trust.</span>
+            <h2 className="font-extrabold mt-[2px] text-xl md:text-2xl lg:text-3xl leading-[1.15] text-[#0a2766] tracking-tight">
+              Decades of Expertise. <span className="text-[#0a2766]">Built on Trust.</span>
             </h2>
             <div className="w-16 h-1 bg-[#4777c9] mt-6 mx-auto xl:mx-0"></div>
           </div>
@@ -455,11 +454,11 @@ const WhyChooseUs = () => {
               const backLineColor = isOdd ? "bg-white/50" : "bg-[#517ec7]";
 
               return (
-                <div key={index} className="group shrink-0 snap-start w-[140px] sm:w-[170px] lg:w-[190px] xl:w-[185px] 2xl:w-[200px] h-[220px] lg:h-[250px] [perspective:1000px] cursor-pointer" onTouchStart={() => {}}>
-                  <div className="relative w-full h-full transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] shadow-sm hover:shadow-xl rounded-sm">
+                <div key={index} className="group shrink-0 snap-start w-[140px] sm:w-[170px] lg:w-[190px] xl:w-[185px] 2xl:w-[200px] h-[220px] lg:h-[250px] cursor-pointer" onTouchStart={() => {}}>
+                  <div className="relative w-full h-full shadow-sm hover:shadow-xl rounded-sm transition-shadow duration-500">
                     
                     {/* Front Face */}
-                    <div className={`absolute inset-0 w-full h-full [backface-visibility:hidden] flex flex-col items-center justify-center text-center p-3 rounded-sm ${frontClasses}`}>
+                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 rounded-sm transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0 ${frontClasses}`}>
                       <div className={`mb-5 ${frontIconColor}`}>
                         {item.icon}
                       </div>
@@ -470,7 +469,7 @@ const WhyChooseUs = () => {
                     </div>
 
                     {/* Back Face */}
-                    <div className={`absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm ${backClasses}`}>
+                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 ${backClasses}`}>
                       <div className={`mb-3 scale-75 lg:scale-90 opacity-90 ${backIconColor}`}>
                         {item.icon}
                       </div>
@@ -607,12 +606,12 @@ const ProjectsGallery = () => {
 
 const CTABanner = () => {
   return (
-    <section className="w-full bg-[#32589c] relative shadow-[0px_4px_29.8px_0px_#385d9f] py-4 lg:py-5 mt-4">
+    <section className="w-full bg-[#32589c] relative shadow-[0_0_40px_10px_#b1c6e9] py-4 lg:py-5 mt-4 z-10">
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-4 lg:gap-6">
           {/* Left Content */}
-          <div className="flex flex-col gap-1 text-center lg:text-left text-white max-w-4xl lg:pl-6">
-            <h2 className="font-bold text-[20px] sm:text-[24px] lg:text-[28px] xl:text-[32px] leading-[1.2] tracking-tight">
+          <div className="flex flex-col gap-1 text-center lg:text-left text-white w-full lg:pl-6">
+            <h2 className="font-bold text-[20px] sm:text-[24px] lg:text-[26px] xl:text-[30px] leading-[1.2] tracking-tight lg:whitespace-nowrap">
               Performance Without Compromise. Support Without Limits.
             </h2>
             <p className="font-normal text-[14px] sm:text-[15px] lg:text-[16px] xl:text-[18px] leading-snug text-white/90">
@@ -771,8 +770,8 @@ const PartsToPower = () => {
             {/* Feature Grid / Mobile Slider */}
             <div className="flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none gap-4 lg:gap-5 sm:grid-cols-2 mb-8 pb-4 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
               {features.map((feature, idx) => (
-                <div key={idx} className="w-[85vw] sm:w-auto shrink-0 snap-center sm:snap-align-none bg-white border border-gray-100 p-5 lg:p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_-4px_rgba(0,0,0,0.1)] transition-shadow duration-300 flex flex-col">
-                  <div className="w-11 h-11 bg-[#0a2766] rounded-full flex items-center justify-center text-white mb-4">
+                <div key={idx} className="group w-[85vw] sm:w-auto shrink-0 snap-center sm:snap-align-none bg-white border border-gray-100 p-5 lg:p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_30px_-4px_rgba(0,0,0,0.12)] hover:border-[#32589c]/20 hover:-translate-y-1.5 transition-all duration-300 flex flex-col cursor-pointer">
+                  <div className="w-11 h-11 bg-[#0a2766] rounded-full flex items-center justify-center text-white mb-4 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#32589c] group-hover:shadow-md">
                     {feature.icon}
                   </div>
                   <h3 className="font-bold text-[#0a2766] text-[16px] mb-1.5">
@@ -792,8 +791,7 @@ const PartsToPower = () => {
               </div>
               <div>
                 <p className="text-gray-600 text-[13px] sm:text-[14px] leading-snug">
-                  Great performance doesn't begin at the finish line.<br className="hidden sm:block" />
-                  <span className="text-[#32589c] font-semibold">It starts with every component inside.</span>
+                  Great performance doesn't begin at the finish line. <span className="text-[#32589c] font-semibold">It starts with every component inside.</span>
                 </p>
               </div>
             </div>
