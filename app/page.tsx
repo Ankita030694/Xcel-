@@ -549,7 +549,7 @@ const ProjectsGallery = () => {
   const [activePane, setActivePane] = useState("industrial");
 
   return (
-    <section className="bg-[#f3f5f8] w-full pt-6 lg:pt-10 pb-12 lg:pb-20 overflow-hidden">
+    <section className="bg-[#f3f5f8] w-full pt-6 lg:pt-10 pb-6 lg:pb-8 overflow-hidden">
       {/* Section Header */}
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
         <div className="flex items-center justify-center gap-2">
