@@ -25,9 +25,9 @@ const Counter = ({ end, duration = 2000, suffix = "" }: { end: number, duration?
             }
           };
           animationFrame = window.requestAnimationFrame(step);
-        } else {
-          setCount(0);
-          if (animationFrame) cancelAnimationFrame(animationFrame);
+          
+          // Disconnect observer so it only counts once
+          observer.disconnect();
         }
       },
       { threshold: 0.1 }
@@ -200,13 +200,15 @@ const StatsBanner = () => {
 const HeroCarousel = () => {
   const images = ['/hero.png', '/hero-2.png', '/hero-3.png'];
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
+    if (isHovered) return;
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 5000);
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [images.length, isHovered]);
 
   return (
     <>
@@ -220,7 +222,11 @@ const HeroCarousel = () => {
       </main>
 
       {/* Desktop/Tablet Hero Carousel */}
-      <main className="w-full relative group bg-gray-100 hidden md:block">
+      <main 
+        className="w-full relative group bg-gray-100 hidden md:block"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         <div className="w-full overflow-hidden relative">
         <div 
           className="flex transition-transform duration-1000 ease-in-out"
@@ -283,10 +289,13 @@ const AboutUs = () => {
         <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-stretch">
           
           {/* Left Column - Image */}
-          <div className="w-full md:w-1/2 shrink-0 relative group flex flex-col">
+          <div 
+            className="w-full md:w-1/2 shrink-0 relative group flex flex-col cursor-pointer"
+            onTouchStart={() => {}}
+          >
             {/* Fancy Glow Behind Image */}
             <div className="absolute -inset-1 bg-gradient-to-r from-[#32589c] to-[#3b5b95] rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200" />
-            <div className="relative aspect-[5/4] md:aspect-auto md:flex-1 w-full rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-400/50 transform transition duration-700 ease-out hover:-translate-y-2">
+            <div className="relative aspect-[5/4] md:aspect-auto md:flex-1 w-full rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-400/50 transform transition duration-700 ease-out group-hover:-translate-y-2">
               <img 
                 src="/laser-cutting.png" 
                 alt="Precision Laser Cutting Manufacturing" 
@@ -420,13 +429,31 @@ const whyChooseUsData = [
 ];
 
 const WhyChooseUs = () => {
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Autoplay the slider scrolling on mobile/tablet screens
+    const interval = setInterval(() => {
+      if (sliderRef.current && window.innerWidth < 1280) { // xl breakpoint
+        const maxScroll = sliderRef.current.scrollWidth - sliderRef.current.clientWidth;
+        if (sliderRef.current.scrollLeft >= maxScroll - 10) {
+          sliderRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          // Approximate width of one card + gap to scroll by
+          sliderRef.current.scrollBy({ left: 160, behavior: 'smooth' });
+        }
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="bg-[#f3f5f8] w-full pt-8 lg:pt-12 pb-8 lg:pb-12 relative border-t border-gray-100 flex items-center overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 items-center xl:items-stretch">
           
           {/* Left Title Area */}
-          <div className="flex flex-col justify-center w-full xl:w-[25%] shrink-0 text-center xl:text-left pr-0 xl:pr-6 border-b xl:border-b-0 xl:border-r border-gray-300 pb-8 xl:pb-0">
+          <div className="flex flex-col justify-center w-full xl:w-[25%] shrink-0 text-center xl:text-left pr-0 xl:pr-6 sm:border-b xl:border-b-0 xl:border-r border-gray-300 pb-8 xl:pb-0">
             <div className="flex items-center justify-center xl:justify-start gap-2 mb-4">
               <span className="text-[#32589c] font-bold text-xl md:text-2xl tracking-widest animate-pulse">{"//"}</span>
               <span className="text-gray-500 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">Our USP's</span>
@@ -434,11 +461,14 @@ const WhyChooseUs = () => {
             <h2 className="font-extrabold mt-[2px] text-xl md:text-2xl lg:text-3xl leading-[1.15] text-[#0a2766] tracking-tight">
               Decades of Expertise. <span className="text-[#0a2766]">Built on Trust.</span>
             </h2>
-            <div className="w-16 h-1 bg-[#4777c9] mt-6 mx-auto xl:mx-0"></div>
+            <div className="hidden sm:block w-16 h-1 bg-[#4777c9] mt-6 mx-auto xl:mx-0"></div>
           </div>
 
           {/* Right Cards Area */}
-          <div className="w-full xl:w-[75%] flex flex-nowrap sm:flex-wrap justify-start xl:justify-start gap-4 lg:gap-5 overflow-x-auto sm:overflow-x-visible snap-x snap-mandatory sm:snap-none pb-4 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div 
+            ref={sliderRef}
+            className="w-full xl:w-[75%] flex flex-nowrap sm:flex-wrap justify-start xl:justify-start gap-4 lg:gap-5 overflow-x-auto sm:overflow-x-visible snap-x snap-mandatory sm:snap-none pb-4 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          >
             {whyChooseUsData.map((item, index) => {
               const isOdd = index % 2 === 0;
               const frontClasses = isOdd 
@@ -454,11 +484,15 @@ const WhyChooseUs = () => {
               const backLineColor = isOdd ? "bg-white/50" : "bg-[#517ec7]";
 
               return (
-                <div key={index} className="group shrink-0 snap-start w-[140px] sm:w-[170px] lg:w-[190px] xl:w-[185px] 2xl:w-[200px] h-[220px] lg:h-[250px] cursor-pointer" onTouchStart={() => {}}>
-                  <div className="relative w-full h-full shadow-sm hover:shadow-xl rounded-sm transition-shadow duration-500">
+                <div 
+                  key={index} 
+                  className="group shrink-0 snap-start w-[140px] sm:w-[170px] lg:w-[190px] xl:w-[185px] 2xl:w-[200px] h-[220px] lg:h-[250px] cursor-pointer [perspective:1000px]" 
+                  onTouchStart={() => {}}
+                >
+                  <div className={`relative w-full h-full shadow-sm hover:shadow-xl rounded-sm transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]`}>
                     
                     {/* Front Face */}
-                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 rounded-sm transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0 ${frontClasses}`}>
+                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 rounded-sm [backface-visibility:hidden] ${frontClasses}`}>
                       <div className={`mb-5 ${frontIconColor}`}>
                         {item.icon}
                       </div>
@@ -469,7 +503,7 @@ const WhyChooseUs = () => {
                     </div>
 
                     {/* Back Face */}
-                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 ${backClasses}`}>
+                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] ${backClasses}`}>
                       <div className={`mb-3 scale-75 lg:scale-90 opacity-90 ${backIconColor}`}>
                         {item.icon}
                       </div>
@@ -582,7 +616,7 @@ const ProjectsGallery = () => {
       {/* Mobile Slider Layout (Visible only on screens < lg) */}
       <div className="lg:hidden flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 sm:px-6 pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {projectsData.map((project) => (
-          <div key={project.id} className="relative h-[320px] sm:h-[400px] w-[85vw] sm:w-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-sm group">
+          <div key={project.id} className="relative h-[320px] sm:h-[400px] w-[85vw] sm:w-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-sm group cursor-pointer" onTouchStart={() => {}}>
             <img 
               src={project.img} 
               alt={project.title} 
@@ -767,17 +801,17 @@ const PartsToPower = () => {
               Performance begins long before a machine reaches your facility. It begins with premium components, precision engineering and rigorous testing that power every XCEL system.
             </p>
 
-            {/* Feature Grid / Mobile Slider */}
-            <div className="flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none gap-4 lg:gap-5 sm:grid-cols-2 mb-8 pb-4 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {/* Feature Grid */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5 mb-8">
               {features.map((feature, idx) => (
-                <div key={idx} className="group w-[85vw] sm:w-auto shrink-0 snap-center sm:snap-align-none bg-white border border-gray-100 p-5 lg:p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_30px_-4px_rgba(0,0,0,0.12)] hover:border-[#32589c]/20 hover:-translate-y-1.5 transition-all duration-300 flex flex-col cursor-pointer">
-                  <div className="w-11 h-11 bg-[#0a2766] rounded-full flex items-center justify-center text-white mb-4 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#32589c] group-hover:shadow-md">
+                <div key={idx} className="group bg-white border border-gray-100 p-3 sm:p-4 lg:p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_30px_-4px_rgba(0,0,0,0.12)] hover:border-[#32589c]/20 hover:-translate-y-1.5 transition-all duration-300 flex flex-col cursor-pointer" onTouchStart={() => {}}>
+                  <div className="w-9 h-9 sm:w-11 sm:h-11 bg-[#0a2766] rounded-full flex items-center justify-center text-white mb-3 sm:mb-4 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#32589c] group-hover:shadow-md">
                     {feature.icon}
                   </div>
-                  <h3 className="font-bold text-[#0a2766] text-[16px] mb-1.5">
+                  <h3 className="font-bold text-[#0a2766] text-[13px] sm:text-[16px] mb-1 sm:mb-1.5 leading-snug">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600 text-[13px] leading-relaxed">
+                  <p className="text-gray-600 text-[11px] sm:text-[13px] leading-relaxed">
                     {feature.desc}
                   </p>
                 </div>
