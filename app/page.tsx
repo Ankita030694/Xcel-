@@ -706,15 +706,15 @@ const PartsToPower = () => {
   ];
 
   return (
-    <section className="bg-[#f3f5f8] w-full py-8 lg:py-10 relative border-t border-gray-100 flex items-center overflow-hidden">
+    <section className="bg-[#f3f5f8] w-full py-10 lg:py-16 relative border-t border-gray-100 flex items-center overflow-hidden">
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex flex-col xl:flex-row gap-6 lg:gap-8 items-stretch">
+        <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 items-stretch">
           
           {/* Left Area - Image Comparison Slider */}
           <div className="w-full xl:w-1/2 shrink-0">
             <div 
               ref={containerRef}
-              className="relative w-full aspect-[4/3] lg:aspect-[5/4] xl:aspect-[4/3] rounded-[20px] overflow-hidden select-none cursor-ew-resize group shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+              className="relative w-full aspect-square rounded-[20px] overflow-hidden select-none cursor-ew-resize group shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
               onMouseDown={(e) => {
                 setIsDragging(true);
                 handleMove(e.clientX);
@@ -754,19 +754,19 @@ const PartsToPower = () => {
           </div>
 
           {/* Right Area - Content & Grid */}
-          <div className="flex flex-col w-full xl:w-1/2 lg:pt-0 h-full justify-center">
-            <h2 className="font-extrabold text-[26px] sm:text-[28px] lg:text-[32px] leading-[1.1] text-[#0a2766] tracking-tight mb-2">
+          <div className="flex flex-col w-full xl:w-1/2 lg:pt-2 h-full">
+            <h2 className="font-extrabold text-[28px] sm:text-[32px] lg:text-[36px] xl:text-[40px] leading-[1.1] text-[#0a2766] tracking-tight mb-2.5">
               From Parts to <span className="text-[#32589c]">Power</span>
             </h2>
-            <div className="w-10 h-[3px] bg-[#32589c] mb-3"></div>
-            <p className="text-gray-600 text-[14px] lg:text-[15px] leading-relaxed max-w-2xl mb-6">
+            <div className="w-12 h-[4px] bg-[#32589c] mb-3"></div>
+            <p className="text-gray-600 text-[15px] lg:text-[16px] leading-relaxed max-w-2xl mb-8">
               Performance begins long before a machine reaches your facility. It begins with premium components, precision engineering and rigorous testing that power every XCEL system.
             </p>
 
             {/* Feature Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-5 mb-8">
               {features.map((feature, idx) => (
-                <div key={idx} className="group bg-white border border-gray-100 p-4 rounded-xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_30px_-4px_rgba(0,0,0,0.12)] hover:border-[#32589c]/20 hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer" onTouchStart={() => {}}>
+                <div key={idx} className="group bg-white border border-gray-100 p-4 lg:p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_30px_-4px_rgba(0,0,0,0.12)] hover:border-[#32589c]/20 hover:-translate-y-1.5 transition-all duration-300 flex flex-col cursor-pointer" onTouchStart={() => {}}>
                   <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
                     <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-[#3b5b95] rounded-full flex items-center justify-center text-white transition-all duration-300 group-hover:scale-110 group-hover:bg-[#1d438a] group-hover:shadow-md">
                       {feature.icon}
