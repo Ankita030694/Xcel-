@@ -1,34 +1,39 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Download } from 'lucide-react';
 
+const TOP_BAR_PHRASES = [
+  "Complete Laundry Solutions For Every Industry.",
+  "Pan-India Installation and Service Network.",
+  "Trusted Manufacturer Of Laundry Equipment.",
+  "Proudly Made in India Laundry Machines Since 1994."
+];
+
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [phraseIndex, setPhraseIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhraseIndex((prev) => (prev + 1) % TOP_BAR_PHRASES.length);
+    }, 3500);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <header className="w-full relative z-40">
-      {/* Top Bar */}
-      <div className="bg-[#3b5b95] text-white py-2 text-[13px] font-medium tracking-wide overflow-hidden whitespace-nowrap relative flex">
-        <div className="animate-marquee flex whitespace-nowrap w-max hover:[animation-play-state:paused]">
-          <div className="flex gap-12 sm:gap-24 px-6 sm:px-12 min-w-full shrink-0 items-center justify-around">
-            <span>Complete Laundry Solutions For Every Industry.</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
-            <span>Pan-India Installation and Service Network.</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
-            <span>Trusted Manufacturer Of Laundry Equipment.</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
-            <span>Proudly Made in India Laundry Machines Since 1994.</span>
-          </div>
-          <div className="flex gap-12 sm:gap-24 px-6 sm:px-12 min-w-full shrink-0 items-center justify-around" aria-hidden="true">
-            <span>Complete Laundry Solutions For Every Industry.</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
-            <span>Pan-India Installation and Service Network.</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
-            <span>Trusted Manufacturer Of Laundry Equipment.</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
-            <span>Proudly Made in India Laundry Machines Since 1994.</span>
-          </div>
+      {/* Top Bar Ticker */}
+      <div className="bg-[#3b5b95] text-white py-2 text-[13px] font-medium tracking-wide overflow-hidden flex justify-center items-center h-[34px]">
+        <div 
+          className="flex flex-col items-center transition-transform duration-700 ease-in-out w-full"
+          style={{ transform: `translateY(-${(phraseIndex * 100) / TOP_BAR_PHRASES.length}%)` }}
+        >
+          {TOP_BAR_PHRASES.map((phrase, idx) => (
+            <div key={idx} className="h-[34px] flex items-center justify-center shrink-0 w-full text-center px-4">
+              {phrase}
+            </div>
+          ))}
         </div>
       </div>
       
