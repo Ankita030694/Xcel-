@@ -112,7 +112,7 @@ const StatsBanner = () => {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseLeave}
           onMouseMove={handleMouseMove}
-          className="flex overflow-x-auto snap-x snap-mandatory gap-2 md:grid md:grid-cols-4 items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] cursor-grab active:cursor-grabbing py-3 -my-3"
+          className="flex overflow-x-auto snap-x snap-mandatory gap-2 md:justify-between items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] cursor-grab active:cursor-grabbing py-3 -my-3"
         >
           
           {/* Stat 1: Machines Installed */}
