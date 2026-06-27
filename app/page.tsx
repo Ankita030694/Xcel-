@@ -679,28 +679,28 @@ const PartsToPower = () => {
       title: "Premium Components",
       desc: "From bearings and valves to heating elements and stainless-steel 304 baskets, every component plays a critical role that modern laundries depend on.",
       icon: (
-        <img src="/Icon home/1 644.svg" alt="Premium Components" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+        <img src="/Icon home/1 644.svg" alt="Premium Components" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
       )
     },
     {
       title: "Engineered as One System",
       desc: "With every carefully sourced component, the finished product becomes more than just a machine, it becomes a dependable partner.",
       icon: (
-        <img src="/Icon home/2 1037.svg" alt="Engineered as One System" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+        <img src="/Icon home/2 1037.svg" alt="Engineered as One System" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
       )
     },
     {
       title: "Precision Manufacturing",
       desc: "Through advanced manufacturing, we transform high-quality components into industrial laundry equipment built for continuous operation.",
       icon: (
-        <img src="/Icon home/3 107581839.svg" alt="Precision Manufacturing" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+        <img src="/Icon home/3 107581839.svg" alt="Precision Manufacturing" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
       )
     },
     {
       title: "Rigorous Testing",
       desc: "Every machine undergoes rigorous testing to ensure dependable performance in demanding commercial and industrial laundries.",
       icon: (
-        <img src="/Icon home/4 71.svg" alt="Rigorous Testing" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+        <img src="/Icon home/4 71.svg" alt="Rigorous Testing" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
       )
     }
   ];
@@ -768,7 +768,7 @@ const PartsToPower = () => {
               {features.map((feature, idx) => (
                 <div key={idx} className="group bg-white border border-gray-100 p-4 lg:p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_30px_-4px_rgba(0,0,0,0.12)] hover:border-[#32589c]/20 hover:-translate-y-1.5 transition-all duration-300 flex flex-col cursor-pointer" onTouchStart={() => {}}>
                   <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-[#3b5b95] rounded-full flex items-center justify-center text-white transition-all duration-300 group-hover:scale-110 group-hover:bg-[#1d438a] group-hover:shadow-md">
+                    <div className="shrink-0 transition-transform duration-300 group-hover:scale-110">
                       {feature.icon}
                     </div>
                     <h3 className="font-bold text-[#0a2766] text-[15px] sm:text-[17px] leading-snug">
