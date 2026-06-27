@@ -333,34 +333,22 @@ const whyChooseUsData = [
     num: "01",
     title: "Transparent Pricing",
     desc: "Clear, upfront pricing with no hidden charges for complete customer confidence",
-    icon: (
-      <svg className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-        <text x="7.5" y="15.5" fontSize="8" fontWeight="bold" fill="currentColor">₹</text>
-      </svg>
-    )
+    beforeIcon: "/Icons/before 1.svg",
+    afterIcon: "/Icons/After 1.svg",
   },
   {
     num: "02",
     title: "Warranty & Protection",
     desc: "Dedicated warranty coverage backed by comprehensive technical support",
-    icon: (
-      <svg className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-      </svg>
-    )
+    beforeIcon: "/Icons/Before 2.svg",
+    afterIcon: "/Icons/After 2.svg",
   },
   {
     num: "03",
     title: "Reliable Performance",
     desc: "Laundry Machines that are designed for heavy-duty cycles with consistent performance",
-    icon: (
-      <svg className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <rect x="5" y="3" width="14" height="18" rx="2" strokeWidth="1.5" />
-        <circle cx="12" cy="13" r="4" strokeWidth="1.5" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M8 6h2m4 0h2" />
-      </svg>
-    )
+    beforeIcon: "/Icons/before 3.svg",
+    afterIcon: "/Icons/after 3.svg",
   },
   {
     num: "04",
@@ -379,12 +367,8 @@ const whyChooseUsData = [
     num: "05",
     title: "After Sales Service",
     desc: "Quick Pan-India support from installation to preventive maintenance",
-    icon: (
-      <svg className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-    )
+    beforeIcon: "/Icons/BEFORE 5.svg",
+    afterIcon: "/Icons/AFTER 5.svg",
   }
 ];
 
@@ -454,7 +438,7 @@ const WhyChooseUs = () => {
                     {/* Front Face */}
                     <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 rounded-sm [backface-visibility:hidden] ${frontClasses}`}>
                       <div className={`mb-5 ${frontIconColor}`}>
-                        {item.icon}
+                        {item.beforeIcon ? <img src={item.beforeIcon} alt="" className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px] object-contain mx-auto" /> : item.icon}
                       </div>
                       <h3 className="font-bold text-[13px] lg:text-[15px] leading-snug px-0.5 lg:px-2">
                         {item.title}
@@ -465,7 +449,7 @@ const WhyChooseUs = () => {
                     {/* Back Face */}
                     <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] ${backClasses}`}>
                       <div className={`mb-3 scale-75 lg:scale-90 opacity-90 ${backIconColor}`}>
-                        {item.icon}
+                        {item.afterIcon ? <img src={item.afterIcon} alt="" className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px] object-contain mx-auto" /> : item.icon}
                       </div>
                       <div className={`w-6 h-0.5 mb-4 opacity-60 ${backLineColor}`}></div>
                       <p className="text-[11px] lg:text-[13px] font-medium leading-relaxed px-0.5">
