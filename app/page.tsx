@@ -427,8 +427,8 @@ const WhyChooseUs = () => {
               
               // The spinning border color should match the target side's border color
               const spinningLight = isOdd 
-                ? "bg-[conic-gradient(from_0deg,transparent_0_180deg,white_360deg)]"
-                : "bg-[conic-gradient(from_0deg,transparent_0_180deg,#3b5b95_360deg)]";
+                ? "bg-[conic-gradient(from_0deg,transparent_0_180deg,#3b5b95_360deg)]"
+                : "bg-[conic-gradient(from_0deg,transparent_0_180deg,white_360deg)]";
 
               return (
                 <div 
