@@ -422,6 +422,7 @@ const WhyChooseUs = () => {
               const backLineColor = isOdd ? "bg-white/50" : "bg-[#517ec7]";
               
               const wrapperBorderColor = isOdd ? "bg-[#3b5b95]" : "bg-white";
+              const solidBaseBg = isOdd ? "bg-white" : "bg-[#3b5b95]";
               const spinningLight = isOdd 
                 ? "bg-[conic-gradient(from_0deg,transparent_0_270deg,#60a5fa_360deg)]"
                 : "bg-[conic-gradient(from_0deg,transparent_0_270deg,#3b82f6_360deg)]";
@@ -436,6 +437,9 @@ const WhyChooseUs = () => {
                     
                     {/* Spinning Light Border (visible on hover) */}
                     <div className={`absolute inset-[-100%] animate-[spin_1s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${spinningLight}`}></div>
+                    
+                    {/* Solid Base to prevent light bleed during cross-fade */}
+                    <div className={`absolute inset-[2px] rounded-sm ${solidBaseBg}`}></div>
                     
                     {/* Front Face */}
                     <div className={`absolute inset-[2px] flex flex-col items-center justify-center text-center p-3 rounded-sm transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0 ${frontClasses}`}>
