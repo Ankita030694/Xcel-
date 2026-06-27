@@ -387,7 +387,7 @@ const WhyChooseUs = () => {
           sliderRef.current.scrollBy({ left: 160, behavior: 'smooth' });
         }
       }
-    }, 3000);
+    }, 6000); // Slowed down from 3000 to 6000
     return () => clearInterval(interval);
   }, []);
 
@@ -411,7 +411,7 @@ const WhyChooseUs = () => {
           {/* Right Cards Area */}
           <div 
             ref={sliderRef}
-            className="w-full xl:w-[75%] flex flex-nowrap justify-start gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            className="w-full xl:w-[75%] flex flex-nowrap justify-start gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] hover:[animation-play-state:paused]"
           >
             {whyChooseUsData.map((item, index) => {
               const isOdd = index % 2 === 0;
@@ -433,7 +433,7 @@ const WhyChooseUs = () => {
                   className="group shrink-0 snap-start w-[140px] sm:w-[170px] lg:w-[190px] xl:w-[185px] 2xl:w-[200px] h-[220px] lg:h-[250px] cursor-pointer [perspective:1000px]" 
                   onTouchStart={() => {}}
                 >
-                  <div className={`relative w-full h-full shadow-sm hover:shadow-xl rounded-sm transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]`}>
+                  <div className={`relative w-full h-full shadow-sm hover:shadow-xl rounded-sm transition-transform duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]`}>
                     
                     {/* Front Face */}
                     <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 rounded-sm [backface-visibility:hidden] ${frontClasses}`}>
