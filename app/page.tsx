@@ -4,153 +4,50 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Star, ShieldCheck, Zap, Maximize, Play, Pause, Factory, Handshake } from 'lucide-react';
 import { Header } from './components/Header';
 
-const Counter = ({ end, duration = 20000, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
-  const [count, setCount] = useState(0);
-  const countRef = useRef<HTMLSpanElement>(null);
 
-  useEffect(() => {
-    let animationFrame: number;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          let startTimestamp: number | null = null;
-          const step = (timestamp: number) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            
-            // Easing function for smooth deceleration
-            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-            setCount(Math.floor(easeOutQuart * end));
-            
-            if (progress < 1) {
-              animationFrame = window.requestAnimationFrame(step);
-            }
-          };
-          animationFrame = window.requestAnimationFrame(step);
-          
-          // Disconnect observer so it only counts once
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (countRef.current) {
-      observer.observe(countRef.current);
-    }
-    return () => {
-      observer.disconnect();
-      if (animationFrame) cancelAnimationFrame(animationFrame);
-    };
-  }, [end, duration]);
-
-  return <span ref={countRef}>{count.toLocaleString()}{suffix}</span>;
-};
 
 const StatsBanner = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  // Handle active dot update
-  const handleScroll = () => {
-    if (scrollRef.current) {
-      const scrollLeft = scrollRef.current.scrollLeft;
-      const itemWidth = scrollRef.current.clientWidth / 2;
-      const newIndex = Math.round(scrollLeft / itemWidth);
-      setActiveIndex(Math.min(2, Math.max(0, newIndex)));
-    }
-  };
-
-  // Draggable logic for mouse users (mobile is natively draggable)
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeftPos, setScrollLeftPos] = useState(0);
-
-  // Auto slide
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (scrollRef.current) {
-        if (scrollRef.current.scrollWidth > scrollRef.current.clientWidth) {
-          const itemWidth = scrollRef.current.clientWidth / 2;
-          const maxScroll = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
-          
-          if (scrollRef.current.scrollLeft >= maxScroll - 10) {
-            scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-          } else {
-            scrollRef.current.scrollBy({ left: itemWidth, behavior: 'smooth' });
-          }
-        }
-      }
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [isDragging]);
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    setIsDragging(true);
-    setStartX(e.pageX - (scrollRef.current?.offsetLeft || 0));
-    setScrollLeftPos(scrollRef.current?.scrollLeft || 0);
-  };
-
-  const handleMouseUp = () => setIsDragging(false);
-  const handleMouseLeave = () => setIsDragging(false);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - (scrollRef.current.offsetLeft || 0);
-    const walk = (x - startX) * 2;
-    scrollRef.current.scrollLeft = scrollLeftPos - walk;
-  };
-
   return (
-    <div className="bg-[#32589c] w-full pt-[10px] pb-[16px] lg:pt-[14px] lg:pb-[24px] border-t border-b border-[#2a4a83] relative">
+    <div className="bg-[#32589c] w-full py-5 lg:py-8 relative">
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div 
-          ref={scrollRef}
-          onScroll={handleScroll}
-          onMouseDown={handleMouseDown}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseLeave}
-          onMouseMove={handleMouseMove}
-          className="flex overflow-x-auto snap-x snap-mandatory gap-2 md:justify-center md:gap-10 lg:gap-20 items-center w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] cursor-grab active:cursor-grabbing py-3 -my-3"
-        >
+        <div className="flex flex-wrap md:flex-nowrap justify-center gap-8 md:gap-10 lg:gap-16 xl:gap-20 items-center w-full">
           
           {/* Stat 1: Machines Installed */}
-          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-3 lg:gap-4 text-left cursor-pointer px-2 py-1">
-            <h3 className="font-semibold text-[24px] md:text-[28px] lg:text-[36px] leading-none tracking-tight text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-105">
-              <Counter end={30000} suffix="+" />
+          <div className="flex flex-row items-center justify-center gap-3 lg:gap-4 text-left">
+            <h3 className="font-semibold text-[32px] md:text-[36px] lg:text-[42px] leading-none tracking-tight text-white">
+              30,000+
             </h3>
-            <p className="font-normal text-[10px] lg:text-[12px] leading-snug text-white/90 max-w-[120px] lg:max-w-[140px]">
+            <p className="font-normal text-[11px] lg:text-[13px] leading-snug text-white/90">
               Machines Installed<br />Across India
             </p>
           </div>
 
           {/* Stat 2: Happy Clients */}
-          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-3 lg:gap-4 text-left cursor-pointer px-2 py-1">
-            <h3 className="font-semibold text-[24px] md:text-[28px] lg:text-[36px] leading-none tracking-tight text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-105">
-              <Counter end={8000} suffix="+" />
+          <div className="flex flex-row items-center justify-center gap-3 lg:gap-4 text-left">
+            <h3 className="font-semibold text-[32px] md:text-[36px] lg:text-[42px] leading-none tracking-tight text-white">
+              8,000+
             </h3>
-            <p className="font-normal text-[10px] lg:text-[12px] leading-snug text-white/90 max-w-[120px] lg:max-w-[140px]">
+            <p className="font-normal text-[11px] lg:text-[13px] leading-snug text-white/90">
               Happy Clients<br />and Counting
             </p>
           </div>
 
           {/* Stat 3: Years of Expertise */}
-          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-3 lg:gap-4 text-left cursor-pointer px-2 py-1">
-            <h3 className="font-semibold text-[24px] md:text-[28px] lg:text-[36px] leading-none tracking-tight text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-105">
-              <Counter end={32} suffix="+" />
+          <div className="flex flex-row items-center justify-center gap-3 lg:gap-4 text-left">
+            <h3 className="font-semibold text-[32px] md:text-[36px] lg:text-[42px] leading-none tracking-tight text-white">
+              32+
             </h3>
-            <p className="font-normal text-[10px] lg:text-[12px] leading-snug text-white/90 max-w-[120px] lg:max-w-[140px]">
+            <p className="font-normal text-[11px] lg:text-[13px] leading-snug text-white/90">
               Years of<br />Expertise
             </p>
           </div>
 
           {/* Stat 4: Manufacturing Facility */}
-          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-3 lg:gap-4 text-left cursor-pointer px-2 py-1">
-            <h3 className="font-semibold text-[24px] md:text-[28px] lg:text-[36px] leading-none tracking-tight text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-105">
-              <Counter end={20000} suffix="+" />
+          <div className="flex flex-row items-center justify-center gap-3 lg:gap-4 text-left">
+            <h3 className="font-semibold text-[32px] md:text-[36px] lg:text-[42px] leading-none tracking-tight text-white">
+              20,000+
             </h3>
-            <p className="font-normal text-[10px] lg:text-[12px] leading-snug text-white/90 max-w-[120px] lg:max-w-[140px]">
+            <p className="font-normal text-[11px] lg:text-[13px] leading-snug text-white/90">
               Sq. Ft.<br />Manufacturing Facility
             </p>
           </div>
