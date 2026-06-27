@@ -425,6 +425,13 @@ const WhyChooseUs = () => {
               const backBorder = isOdd ? "bg-white" : "bg-[#3b5b95]";
               
               const solidBaseBg = isOdd ? "bg-white" : "bg-[#3b5b95]";
+              
+              // The spinning border sits ON TOP of the solid border.
+              // If the back side border is white, we need a blue light.
+              // If the back side border is blue, we need a white light.
+              const spinningLight = isOdd 
+                ? "bg-[conic-gradient(from_0deg,transparent_0_180deg,#3b82f6_270deg,transparent_360deg)]"
+                : "bg-[conic-gradient(from_0deg,transparent_0_180deg,white_270deg,transparent_360deg)]";
 
               return (
                 <div 
@@ -437,8 +444,11 @@ const WhyChooseUs = () => {
                     {/* Front Border Layer (Static, disappears on hover) */}
                     <div className={`absolute inset-0 ${frontBorder} transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0`}></div>
                     
-                    {/* Back Border Layer (Static, appears on hover) */}
+                    {/* Back Border Layer (Static, appears on hover to provide contrast for the light) */}
                     <div className={`absolute inset-0 ${backBorder} transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100`}></div>
+                    
+                    {/* Spinning Light Border (Rotates on top of the solid border) */}
+                    <div className={`absolute inset-[-150%] animate-[spin_1.5s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[3px] ${spinningLight}`}></div>
                     
                     {/* Solid Base to prevent light bleed during cross-fade */}
                     <div className={`absolute inset-[2px] rounded-sm ${solidBaseBg}`}></div>
