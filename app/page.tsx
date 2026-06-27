@@ -442,7 +442,7 @@ const WhyChooseUs = () => {
 
                     {/* Back Face */}
                     <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 ${backClasses}`}>
-                      <div className={`mb-3 scale-75 lg:scale-90 opacity-90 ${backIconColor}`}>
+                      <div className={`mb-3 opacity-90 ${backIconColor}`}>
                         {item.afterIcon ? <img src={item.afterIcon} alt="" className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px] object-contain mx-auto" /> : item.icon}
                       </div>
                       <div className={`w-6 h-0.5 mb-4 opacity-60 ${backLineColor}`}></div>
