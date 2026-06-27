@@ -51,7 +51,7 @@ const StatsBanner = () => {
       end: 30000,
       suffix: "+",
       title: "Machines Installed",
-      subtitle: "Across India",
+      subtitle: "",
       icon: <MapPin className="w-8 h-8 text-blue-300" />,
       bgIcon: <MapPin className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
     },
@@ -59,23 +59,23 @@ const StatsBanner = () => {
       end: 8000,
       suffix: "+",
       title: "Happy Clients",
-      subtitle: "and Counting",
+      subtitle: "",
       icon: <Users className="w-8 h-8 text-blue-300" />,
       bgIcon: <Users className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
     },
     {
       end: 32,
       suffix: "+",
-      title: "Years of",
-      subtitle: "Expertise",
+      title: "Years of Expertise",
+      subtitle: "",
       icon: <Award className="w-8 h-8 text-blue-300" />,
       bgIcon: <Award className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
     },
     {
       end: 20000,
       suffix: "+",
-      title: "Sq. Ft. Manufacturing",
-      subtitle: "Facility",
+      title: "Sq. Ft. Facility",
+      subtitle: "",
       icon: <Factory className="w-8 h-8 text-blue-300" />,
       bgIcon: <Factory className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
     }
@@ -109,9 +109,11 @@ const StatsBanner = () => {
                   <p className="font-semibold text-blue-100 text-[11px] md:text-xs lg:text-sm leading-tight">
                     {stat.title}
                   </p>
-                  <p className="text-blue-300/80 text-[9px] md:text-[10px] lg:text-xs mt-0.5">
-                    {stat.subtitle}
-                  </p>
+                  {stat.subtitle && (
+                    <p className="text-blue-300/80 text-[9px] md:text-[10px] lg:text-xs mt-0.5">
+                      {stat.subtitle}
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
