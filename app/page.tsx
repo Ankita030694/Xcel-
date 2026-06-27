@@ -92,14 +92,14 @@ const StatsBanner = () => {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 lg:gap-12 w-full">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 w-full max-w-6xl mx-auto">
           {stats.map((stat, idx) => (
             <div 
               key={idx} 
-              className="flex flex-col text-left transition-transform duration-500 hover:-translate-y-1"
+              className="flex justify-center transition-transform duration-500 hover:-translate-y-1"
             >
               
-              <div className="relative z-10 flex flex-col items-start text-left">
+              <div className="relative z-10 flex flex-col items-start text-left w-max">
                 
                 <h3 className="font-extrabold text-2xl md:text-3xl lg:text-4xl text-white tracking-tight mb-1 drop-shadow-sm">
                   <Counter end={stat.end} suffix={stat.suffix} />
