@@ -695,8 +695,8 @@ const PartsToPower = () => {
 
           {/* Right Area - Content & Grid */}
           <div className="flex flex-col w-full xl:w-1/2 lg:pt-2 h-full">
-            <h2 className="font-extrabold text-[28px] sm:text-[32px] lg:text-[36px] xl:text-[40px] leading-[1.1] text-[#0a2766] tracking-tight mb-2.5">
-              From Parts to <span className="text-[#32589c]">Power</span>
+            <h2 className="text-3xl md:text-4xl lg:text-[40px] font-extrabold text-[#111111] leading-[1.15] tracking-tight">
+              Every Part. One <span className="text-[#32589c]">Purpose.</span>
             </h2>
             <div className="w-12 h-[4px] bg-[#32589c] mb-3"></div>
             <p className="text-gray-600 text-[15px] lg:text-[16px] leading-relaxed max-w-2xl mb-8">
