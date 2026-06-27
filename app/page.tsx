@@ -448,7 +448,7 @@ const WhyChooseUs = () => {
                     <div className={`absolute inset-0 ${backBorder} transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100`}></div>
                     
                     {/* Spinning Light Border (Rotates on top of the solid border) */}
-                    <div className={`absolute inset-[-150%] animate-[spin_3s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[2px] ${spinningLight}`}></div>
+                    <div className={`absolute inset-[-150%] animate-[spin_1s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[2px] ${spinningLight}`}></div>
                     
                     {/* Solid Base to prevent light bleed during cross-fade */}
                     <div className={`absolute inset-[2px] rounded-sm ${solidBaseBg}`}></div>
