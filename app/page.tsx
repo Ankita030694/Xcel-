@@ -516,7 +516,7 @@ const ProjectsGallery = () => {
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
         <div className="flex items-center justify-center gap-2">
           <span className="text-[#32589c] font-bold text-lg lg:text-xl tracking-widest animate-pulse">{"//"}</span>
-          <span className="text-gray-500 font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">Our Expertise</span>
+          <span className="text-gray-500 font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">ENGINEERING EXCELLENCE</span>
         </div>
         <h2 className="font-extrabold text-[26px] sm:text-[30px] lg:text-[36px] xl:text-[40px] leading-[1.15] text-[#0a2766] max-w-4xl tracking-tight">
           Building Excellence <br className="hidden sm:block lg:hidden" /> Across Every Sector
