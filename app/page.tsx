@@ -82,7 +82,7 @@ const StatsBanner = () => {
   ];
 
   return (
-    <div className="relative w-full py-16 lg:py-24 overflow-hidden">
+    <div className="relative w-full py-10 lg:py-16 overflow-hidden">
       {/* Deep dark blue background with radial gradient for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#051336] via-[#0a2766] to-[#123680]"></div>
       
@@ -96,7 +96,7 @@ const StatsBanner = () => {
           {stats.map((stat, idx) => (
             <div 
               key={idx} 
-              className="group relative bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-2xl shadow-black/20"
+              className="group relative bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-2xl p-5 md:p-6 transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-2xl shadow-black/20"
             >
               {/* Top glowing accent line */}
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
