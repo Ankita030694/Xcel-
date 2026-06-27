@@ -79,9 +79,9 @@ export const Header = () => {
                 className="text-[#3b5b95] hover:text-[#2f497a] focus:outline-none w-10 h-10 transition-colors flex flex-col items-center justify-center relative"
                 aria-label="Toggle menu"
               >
-                <div className={`absolute w-7 h-[2.5px] bg-current transition-all duration-300 ease-in-out rounded-full ${isMobileMenuOpen ? 'rotate-45' : '-translate-y-[7px]'}`}></div>
+                <div className={`absolute w-7 h-[2.5px] bg-current transition-all duration-300 ease-in-out rounded-full ${isMobileMenuOpen ? 'rotate-45' : '-translate-y-[10px]'}`}></div>
                 <span className={`absolute text-[11px] font-bold tracking-widest leading-none transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}`}>MENU</span>
-                <div className={`absolute w-7 h-[2.5px] bg-current transition-all duration-300 ease-in-out rounded-full ${isMobileMenuOpen ? '-rotate-45' : 'translate-y-[7px]'}`}></div>
+                <div className={`absolute w-7 h-[2.5px] bg-current transition-all duration-300 ease-in-out rounded-full ${isMobileMenuOpen ? '-rotate-45' : 'translate-y-[10px]'}`}></div>
               </button>
             </div>
           </div>
