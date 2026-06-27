@@ -151,7 +151,7 @@ const StatsBanner = () => {
               <Counter end={25} suffix="+" />
             </h3>
             <p className="font-medium text-[10px] lg:text-[12px] leading-snug uppercase tracking-widest text-white/90 max-w-[120px] lg:max-w-[140px]">
-              States Covered
+              States<br />Covered
             </p>
           </div>
 
