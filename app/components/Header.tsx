@@ -9,8 +9,27 @@ export const Header = () => {
   return (
     <header className="w-full relative z-40">
       {/* Top Bar */}
-      <div className="bg-[#3b5b95] text-white text-center py-2 text-[13px] font-medium tracking-wide">
-        Pan-India Installation and Service Network.
+      <div className="bg-[#3b5b95] text-white py-2 text-[13px] font-medium tracking-wide overflow-hidden whitespace-nowrap relative flex">
+        <div className="animate-marquee flex whitespace-nowrap w-max hover:[animation-play-state:paused]">
+          <div className="flex gap-12 sm:gap-24 px-6 sm:px-12 min-w-full shrink-0 items-center justify-around">
+            <span>Complete Laundry Solutions For Every Industry.</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
+            <span>Pan-India Installation and Service Network.</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
+            <span>Trusted Manufacturer Of Laundry Equipment.</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
+            <span>Proudly Made in India Laundry Machines Since 1994.</span>
+          </div>
+          <div className="flex gap-12 sm:gap-24 px-6 sm:px-12 min-w-full shrink-0 items-center justify-around" aria-hidden="true">
+            <span>Complete Laundry Solutions For Every Industry.</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
+            <span>Pan-India Installation and Service Network.</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
+            <span>Trusted Manufacturer Of Laundry Equipment.</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-white/50"></span>
+            <span>Proudly Made in India Laundry Machines Since 1994.</span>
+          </div>
+        </div>
       </div>
       
       {/* Main Navbar */}
