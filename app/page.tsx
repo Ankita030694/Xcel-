@@ -82,7 +82,7 @@ const StatsBanner = () => {
   ];
 
   return (
-    <div className="relative w-full py-8 lg:py-12 overflow-hidden">
+    <div className="relative w-full py-6 lg:py-8 overflow-hidden">
       {/* Deep dark blue background with radial gradient for depth */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#051336] via-[#0a2766] to-[#123680]"></div>
       
@@ -96,22 +96,22 @@ const StatsBanner = () => {
           {stats.map((stat, idx) => (
             <div 
               key={idx} 
-              className="group relative bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-2xl py-3 px-4 md:py-4 md:px-5 transition-all duration-500 hover:-translate-y-1 overflow-hidden shadow-2xl shadow-black/20"
+              className="group relative bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-2xl py-2 px-3 md:py-3 md:px-4 transition-all duration-500 hover:-translate-y-1 overflow-hidden shadow-2xl shadow-black/20"
             >
               {/* Top glowing accent line */}
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-              <div className="relative z-10 flex flex-col h-full">
+              <div className="relative z-10 flex flex-col h-full items-center text-center">
                 
-                <h3 className="font-extrabold text-3xl lg:text-4xl text-white tracking-tight mb-1 drop-shadow-md">
+                <h3 className="font-extrabold text-2xl lg:text-3xl text-white tracking-tight mb-1 drop-shadow-md">
                   <Counter end={stat.end} suffix={stat.suffix} />
                 </h3>
                 
                 <div className="mt-auto pt-1">
-                  <p className="font-semibold text-blue-100 text-sm md:text-base leading-tight">
+                  <p className="font-semibold text-blue-100 text-xs md:text-sm leading-tight">
                     {stat.title}
                   </p>
-                  <p className="text-blue-300/70 text-xs mt-0.5">
+                  <p className="text-blue-300/70 text-[10px] lg:text-xs mt-0.5">
                     {stat.subtitle}
                   </p>
                 </div>
