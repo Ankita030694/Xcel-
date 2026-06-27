@@ -354,14 +354,8 @@ const whyChooseUsData = [
     num: "04",
     title: "Wide Range",
     desc: "Extensive range of washing, drying, ironing & dry-cleaning equipment under one roof",
-    icon: (
-      <svg className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <rect x="3" y="8" width="8" height="10" rx="1" strokeWidth="1.5" />
-        <circle cx="7" cy="13" r="2" strokeWidth="1.5" />
-        <rect x="13" y="6" width="8" height="14" rx="1" strokeWidth="1.5" />
-        <circle cx="17" cy="14" r="3" strokeWidth="1.5" />
-      </svg>
-    )
+    beforeIcon: "/Icons/before 4.svg",
+    afterIcon: "/Icons/after 4.svg",
   },
   {
     num: "05",
