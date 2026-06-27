@@ -421,7 +421,9 @@ const WhyChooseUs = () => {
               const frontLineColor = isOdd ? "bg-[#517ec7]" : "bg-white/50";
               const backLineColor = isOdd ? "bg-white/50" : "bg-[#517ec7]";
               
-              const wrapperBorderColor = isOdd ? "bg-[#3b5b95]" : "bg-white";
+              const frontBorder = isOdd ? "bg-[#3b5b95]" : "bg-white";
+              const backBorder = isOdd ? "bg-white" : "bg-[#3b5b95]";
+              
               const solidBaseBg = isOdd ? "bg-white" : "bg-[#3b5b95]";
               const spinningLight = isOdd 
                 ? "bg-[conic-gradient(from_0deg,transparent_0_270deg,#60a5fa_360deg)]"
@@ -433,8 +435,14 @@ const WhyChooseUs = () => {
                   className="group shrink-0 snap-start w-[140px] sm:w-[170px] lg:w-[190px] xl:w-[185px] 2xl:w-[200px] h-[220px] lg:h-[250px] cursor-pointer" 
                   onTouchStart={() => {}}
                 >
-                  <div className={`relative w-full h-full shadow-sm hover:shadow-xl rounded-sm overflow-hidden ${wrapperBorderColor}`}>
+                  <div className="relative w-full h-full shadow-sm hover:shadow-xl rounded-sm overflow-hidden">
                     
+                    {/* Front Border Layer */}
+                    <div className={`absolute inset-0 ${frontBorder} transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0`}></div>
+                    
+                    {/* Back Border Layer */}
+                    <div className={`absolute inset-0 ${backBorder} transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100`}></div>
+
                     {/* Spinning Light Border (visible on hover) */}
                     <div className={`absolute inset-[-100%] animate-[spin_1s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${spinningLight}`}></div>
                     
