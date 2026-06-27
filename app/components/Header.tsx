@@ -65,7 +65,7 @@ export const Header = () => {
             </nav>
             
             {/* Download Button - Desktop */}
-            <div className="hidden md:flex items-center">
+            <div className="hidden lg:flex items-center">
               <button className="bg-gradient-to-b from-white to-gray-50 text-[#0a2766] font-bold text-[14px] lg:text-[15px] tracking-wider px-5 py-2.5 lg:px-6 lg:py-2.5 rounded-[12px] border border-gray-100 shadow-[0_5px_0_#cbd5e1,0_10px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_0_#94a3b8,0_15px_25px_rgba(0,0,0,0.2)] hover:-translate-y-1 active:shadow-[0_0px_0_#cbd5e1,0_0px_0_rgba(0,0,0,0.2)] active:translate-y-[5px] transition-all duration-200 flex items-center justify-center">
                 Download Brochure
                 <Download className="w-4 h-4 ml-2" strokeWidth={2.5} />
@@ -116,7 +116,7 @@ export const Header = () => {
             CONTACT US
           </a>
           
-          <div className="pt-6 mt-4 border-t border-gray-100 flex md:hidden">
+          <div className="pt-6 mt-4 border-t border-gray-100 flex lg:hidden">
             <button className="bg-gradient-to-b from-white to-gray-50 text-[#0a2766] font-bold text-[14px] tracking-wider px-5 py-3 rounded-[12px] border border-gray-100 shadow-[0_5px_0_#cbd5e1,0_10px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_6px_0_#94a3b8,0_15px_25px_rgba(0,0,0,0.2)] hover:-translate-y-1 active:shadow-[0_0px_0_#cbd5e1,0_0px_0_rgba(0,0,0,0.2)] active:translate-y-[5px] transition-all duration-200 flex items-center justify-center w-full">
               Download Brochure
               <Download className="w-4 h-4 ml-2" strokeWidth={2.5} />
