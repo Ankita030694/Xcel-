@@ -44,7 +44,7 @@ const Counter = ({ end, duration = 2000, suffix = "" }: { end: number, duration?
     };
   }, [end, duration]);
 
-  return <span ref={countRef}>{count}{suffix}</span>;
+  return <span ref={countRef}>{count.toLocaleString()}{suffix}</span>;
 };
 
 const StatsBanner = () => {
