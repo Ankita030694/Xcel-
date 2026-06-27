@@ -340,8 +340,8 @@ const whyChooseUsData = [
     num: "02",
     title: "Warranty & Protection",
     desc: "Dedicated warranty coverage backed by comprehensive technical support",
-    beforeIcon: "/Icons/Before 2.svg",
-    afterIcon: "/Icons/After 2.svg",
+    beforeIcon: "/Icons/Group_125.png",
+    afterIcon: "/Icons/Group_125.png",
   },
   {
     num: "03",
@@ -354,8 +354,8 @@ const whyChooseUsData = [
     num: "04",
     title: "Wide Range",
     desc: "Extensive range of washing, drying, ironing & dry-cleaning equipment under one roof",
-    beforeIcon: "/Icons/before 4.svg",
-    afterIcon: "/Icons/after 4.svg",
+    beforeIcon: "/Icons/Before 4.png",
+    afterIcon: "/Icons/Before 4.png",
   },
   {
     num: "05",
