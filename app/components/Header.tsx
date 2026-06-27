@@ -76,12 +76,12 @@ export const Header = () => {
             <div className="lg:hidden flex items-center">
               <button 
                 onClick={() => setIsMobileMenuOpen(true)}
-                className="text-gray-600 hover:text-gray-800 focus:outline-none px-2 py-1 transition-colors flex flex-col items-center justify-center gap-[3px]"
+                className="text-[#3b5b95] hover:text-[#2f497a] focus:outline-none px-1.5 py-0.5 transition-colors flex flex-col items-center justify-center gap-[2px]"
                 aria-label="Open menu"
               >
-                <div className="w-9 h-[3px] bg-current"></div>
-                <span className="text-[14px] font-semibold tracking-widest leading-none py-[1px]">MENU</span>
-                <div className="w-9 h-[3px] bg-current"></div>
+                <div className="w-7 h-[2px] bg-current"></div>
+                <span className="text-[11px] font-bold tracking-widest leading-none py-[1px]">MENU</span>
+                <div className="w-7 h-[2px] bg-current"></div>
               </button>
             </div>
           </div>
