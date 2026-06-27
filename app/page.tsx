@@ -283,35 +283,35 @@ const AboutUs = () => {
 const whyChooseUsData = [
   {
     num: "01",
-    title: "Transparent Pricing.",
+    title: "Transparent Pricing",
     desc: "Clear, upfront pricing with no hidden charges for complete customer confidence.",
     beforeIcon: "/Icons/before 1.svg",
     afterIcon: "/Icons/After 1.svg",
   },
   {
     num: "02",
-    title: "Warranty & Protection.",
+    title: "Warranty & Protection",
     desc: "Dedicated warranty coverage backed by comprehensive technical support.",
     beforeIcon: "/Icons/Group_125.png",
     afterIcon: "/Icons/Group_125.png",
   },
   {
     num: "03",
-    title: "Reliable Performance.",
+    title: "Reliable Performance",
     desc: "Laundry Machines that are designed for heavy-duty cycles with consistent performance.",
     beforeIcon: "/Icons/before 3.svg",
     afterIcon: "/Icons/after 3.svg",
   },
   {
     num: "04",
-    title: "Wide Range.",
+    title: "Wide Range",
     desc: "Extensive range of washing, drying, ironing & dry-cleaning equipment under one roof.",
     beforeIcon: "/Icons/Before 4.png",
     afterIcon: "/Icons/Before 4.png",
   },
   {
     num: "05",
-    title: "After Sales Service.",
+    title: "After Sales Service",
     desc: "Quick Pan-India support from installation to preventive maintenance.",
     beforeIcon: "/Icons/BEFORE 5.svg",
     afterIcon: "/Icons/AFTER 5.svg",
@@ -397,7 +397,6 @@ const WhyChooseUs = () => {
                       <h3 className="font-bold text-[13px] lg:text-[15px] leading-snug px-0.5 lg:px-2">
                         {item.title}
                       </h3>
-                      <div className={`w-6 h-0.5 mt-5 ${frontLineColor}`}></div>
                     </div>
 
                     {/* Back Face */}
@@ -409,7 +408,6 @@ const WhyChooseUs = () => {
                           className={`${item.title === "Wide Range" ? "w-[56px] h-[56px] lg:w-[70px] lg:h-[70px]" : "w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]"} object-contain mx-auto`} 
                         />
                       </div>
-                      <div className={`w-6 h-0.5 mb-4 ${backLineColor}`}></div>
                       <p className="text-[11px] lg:text-[13px] font-medium leading-relaxed px-0.5">
                         {item.desc}
                       </p>
