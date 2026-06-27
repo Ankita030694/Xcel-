@@ -406,8 +406,8 @@ const WhyChooseUs = () => {
               
               const frontIconColor = isOdd ? "text-[#1d438a]" : "text-white";
               const backIconColor = isOdd ? "text-white" : "text-[#1d438a]";
-              const frontLineColor = isOdd ? "bg-[#0a2766]" : "bg-white/50";
-              const backLineColor = isOdd ? "bg-white/50" : "bg-[#0a2766]";
+              const frontLineColor = isOdd ? "bg-[#0a2766]" : "bg-white";
+              const backLineColor = isOdd ? "bg-white" : "bg-[#0a2766]";
               
               const frontBorder = isOdd ? "bg-[#3b5b95]" : "bg-white";
               const backBorder = isOdd ? "bg-white" : "bg-[#3b5b95]";
@@ -461,7 +461,7 @@ const WhyChooseUs = () => {
                           />
                         ) : item.icon}
                       </div>
-                      <div className={`w-6 h-0.5 mb-4 opacity-60 ${backLineColor}`}></div>
+                      <div className={`w-6 h-0.5 mb-4 ${backLineColor}`}></div>
                       <p className="text-[11px] lg:text-[13px] font-medium leading-relaxed px-0.5">
                         {item.desc}
                       </p>
