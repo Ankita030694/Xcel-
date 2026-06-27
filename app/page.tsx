@@ -430,13 +430,13 @@ const WhyChooseUs = () => {
               return (
                 <div 
                   key={index} 
-                  className="group shrink-0 snap-start w-[140px] sm:w-[170px] lg:w-[190px] xl:w-[185px] 2xl:w-[200px] h-[220px] lg:h-[250px] cursor-pointer [perspective:1000px]" 
+                  className="group shrink-0 snap-start w-[140px] sm:w-[170px] lg:w-[190px] xl:w-[185px] 2xl:w-[200px] h-[220px] lg:h-[250px] cursor-pointer" 
                   onTouchStart={() => {}}
                 >
-                  <div className={`relative w-full h-full shadow-sm hover:shadow-xl rounded-sm transition-transform duration-1000 ease-[cubic-bezier(0.23,1,0.32,1)] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]`}>
+                  <div className={`relative w-full h-full shadow-sm hover:shadow-xl rounded-sm`}>
                     
                     {/* Front Face */}
-                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 rounded-sm [backface-visibility:hidden] ${frontClasses}`}>
+                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 rounded-sm transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0 ${frontClasses}`}>
                       <div className={`mb-5 ${frontIconColor}`}>
                         {item.beforeIcon ? <img src={item.beforeIcon} alt="" className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px] object-contain mx-auto" /> : item.icon}
                       </div>
@@ -447,7 +447,7 @@ const WhyChooseUs = () => {
                     </div>
 
                     {/* Back Face */}
-                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm [transform:rotateY(180deg)] [backface-visibility:hidden] ${backClasses}`}>
+                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 ${backClasses}`}>
                       <div className={`mb-3 scale-75 lg:scale-90 opacity-90 ${backIconColor}`}>
                         {item.afterIcon ? <img src={item.afterIcon} alt="" className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px] object-contain mx-auto" /> : item.icon}
                       </div>
