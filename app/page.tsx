@@ -91,16 +91,6 @@ const StatsBanner = () => {
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Header Text */}
-        <div className="text-center mb-12 lg:mb-16">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-            Our Impact in <span className="text-blue-400">Numbers</span>
-          </h2>
-          <p className="mt-4 text-blue-200 text-sm md:text-base max-w-2xl mx-auto">
-            Delivering excellence and building trust through reliable commercial laundry solutions across the nation.
-          </p>
-        </div>
-
         {/* Stats Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
           {stats.map((stat, idx) => (
