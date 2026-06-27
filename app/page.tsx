@@ -422,12 +422,13 @@ const WhyChooseUs = () => {
               const backLineColor = isOdd ? "bg-white/50" : "bg-[#517ec7]";
               
               const frontBorder = isOdd ? "bg-[#3b5b95]" : "bg-white";
-              const backBorder = isOdd ? "bg-white" : "bg-[#3b5b95]";
               
               const solidBaseBg = isOdd ? "bg-white" : "bg-[#3b5b95]";
+              
+              // The spinning border color should match the target side's border color
               const spinningLight = isOdd 
-                ? "bg-[conic-gradient(from_0deg,transparent_0_270deg,#60a5fa_360deg)]"
-                : "bg-[conic-gradient(from_0deg,transparent_0_270deg,#3b82f6_360deg)]";
+                ? "bg-[conic-gradient(from_0deg,transparent_0_180deg,white_360deg)]"
+                : "bg-[conic-gradient(from_0deg,transparent_0_180deg,#3b5b95_360deg)]";
 
               return (
                 <div 
@@ -437,14 +438,11 @@ const WhyChooseUs = () => {
                 >
                   <div className="relative w-full h-full shadow-sm hover:shadow-xl rounded-sm overflow-hidden">
                     
-                    {/* Front Border Layer */}
+                    {/* Front Border Layer (Static, disappears on hover) */}
                     <div className={`absolute inset-0 ${frontBorder} transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0`}></div>
                     
-                    {/* Back Border Layer */}
-                    <div className={`absolute inset-0 ${backBorder} transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100`}></div>
-
-                    {/* Spinning Light Border (visible on hover) */}
-                    <div className={`absolute inset-[-100%] animate-[spin_1s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${spinningLight}`}></div>
+                    {/* Spinning Light Border (Becomes the ONLY border on hover) */}
+                    <div className={`absolute inset-[-100%] animate-[spin_1.5s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${spinningLight}`}></div>
                     
                     {/* Solid Base to prevent light bleed during cross-fade */}
                     <div className={`absolute inset-[2px] rounded-sm ${solidBaseBg}`}></div>
