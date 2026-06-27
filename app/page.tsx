@@ -328,7 +328,7 @@ const WhyChooseUs = () => {
   return (
     <section className="bg-[#f3f5f8] w-full pt-8 lg:pt-12 pb-8 lg:pb-12 relative border-t border-gray-100 flex items-center overflow-hidden">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 xl:gap-6 items-center xl:items-stretch">
+        <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 xl:gap-12 items-center xl:items-stretch">
           
           {/* Left Title Area */}
           <div className="flex flex-col justify-center w-full xl:w-auto shrink-0 text-center xl:text-left pr-0 xl:pr-8 sm:border-b xl:border-b-0 xl:border-r border-gray-300 pb-8 xl:pb-0">
