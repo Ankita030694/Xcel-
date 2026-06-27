@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Star, ShieldCheck, Zap, Maximize, Play, Pause, Factory, Handshake } from 'lucide-react';
 import { Header } from './components/Header';
+import { BeforeAfterSlider } from './components/BeforeAfterSlider';
 
 const Counter = ({ end, duration = 2000, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
   const [count, setCount] = useState(0);
@@ -990,6 +991,9 @@ export default function Home() {
 
       {/* About Us Section */}
       <AboutUs />
+
+      {/* Before / After Manufacturing Slider */}
+      <BeforeAfterSlider />
 
       {/* Why Choose XCEL Section */}
       <WhyChooseUs />
