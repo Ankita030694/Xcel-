@@ -85,15 +85,15 @@ const StatsBanner = () => {
     <div className="relative w-full py-4 lg:py-6 bg-[#32589c]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 w-full max-w-5xl mx-auto">
+        {/* Stats Container */}
+        <div className="flex flex-col lg:flex-row flex-wrap justify-between items-center gap-8 lg:gap-4 w-full max-w-6xl mx-auto px-4 lg:px-0">
           {stats.map((stat, idx) => (
             <div 
               key={idx} 
-              className="flex justify-center transition-transform duration-500 hover:-translate-y-1"
+              className="transition-transform duration-500 hover:-translate-y-1"
             >
               
-              <div className="relative z-10 flex flex-row items-center gap-3 md:gap-4 text-left w-max">
+              <div className="relative z-10 flex flex-row items-center gap-3 md:gap-4 text-left">
                 
                 <h3 className="font-extrabold text-xl md:text-2xl lg:text-3xl text-white tracking-tight drop-shadow-sm">
                   <Counter end={stat.end} suffix={stat.suffix} />
