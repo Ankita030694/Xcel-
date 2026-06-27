@@ -98,16 +98,10 @@ const StatsBanner = () => {
               key={idx} 
               className="group relative bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-2xl shadow-black/20"
             >
-              {/* Background watermark icon */}
-              {stat.bgIcon}
-              
               {/* Top glowing accent line */}
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
               <div className="relative z-10 flex flex-col h-full">
-                <div className="mb-6 p-3 bg-blue-500/10 rounded-2xl w-fit border border-blue-400/20 group-hover:bg-blue-500/20 transition-colors duration-500">
-                  {stat.icon}
-                </div>
                 
                 <h3 className="font-extrabold text-4xl lg:text-5xl text-white tracking-tight mb-2 drop-shadow-md">
                   <Counter end={stat.end} suffix={stat.suffix} />
