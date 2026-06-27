@@ -410,16 +410,21 @@ const WhyChooseUs = () => {
             {whyChooseUsData.map((item, index) => {
               const isOdd = index % 2 === 0;
               const frontClasses = isOdd 
-                ? "bg-white border-2 border-[#3b5b95] text-[#0a2766]" 
-                : "bg-[#3b5b95] border-2 border-white text-white";
+                ? "bg-white text-[#0a2766]" 
+                : "bg-[#3b5b95] text-white";
               const backClasses = isOdd 
-                ? "bg-[#3b5b95] border-2 border-white text-white" 
-                : "bg-white border-2 border-[#3b5b95] text-[#0a2766]";
+                ? "bg-[#3b5b95] text-white" 
+                : "bg-white text-[#0a2766]";
               
               const frontIconColor = isOdd ? "text-[#1d438a]" : "text-white";
               const backIconColor = isOdd ? "text-white" : "text-[#1d438a]";
               const frontLineColor = isOdd ? "bg-[#517ec7]" : "bg-white/50";
               const backLineColor = isOdd ? "bg-white/50" : "bg-[#517ec7]";
+              
+              const wrapperBorderColor = isOdd ? "bg-[#3b5b95]" : "bg-white";
+              const spinningLight = isOdd 
+                ? "bg-[conic-gradient(from_0deg,transparent_0_270deg,#60a5fa_360deg)]"
+                : "bg-[conic-gradient(from_0deg,transparent_0_270deg,#3b82f6_360deg)]";
 
               return (
                 <div 
@@ -427,10 +432,13 @@ const WhyChooseUs = () => {
                   className="group shrink-0 snap-start w-[140px] sm:w-[170px] lg:w-[190px] xl:w-[185px] 2xl:w-[200px] h-[220px] lg:h-[250px] cursor-pointer" 
                   onTouchStart={() => {}}
                 >
-                  <div className={`relative w-full h-full shadow-sm hover:shadow-xl rounded-sm`}>
+                  <div className={`relative w-full h-full shadow-sm hover:shadow-xl rounded-sm overflow-hidden ${wrapperBorderColor}`}>
+                    
+                    {/* Spinning Light Border (visible on hover) */}
+                    <div className={`absolute inset-[-100%] animate-[spin_1s_linear_infinite] opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${spinningLight}`}></div>
                     
                     {/* Front Face */}
-                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 rounded-sm transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0 ${frontClasses}`}>
+                    <div className={`absolute inset-[2px] flex flex-col items-center justify-center text-center p-3 rounded-sm transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0 ${frontClasses}`}>
                       <div className={`mb-5 ${frontIconColor}`}>
                         {item.beforeIcon ? <img src={item.beforeIcon} alt="" className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px] object-contain mx-auto" /> : item.icon}
                       </div>
@@ -441,7 +449,7 @@ const WhyChooseUs = () => {
                     </div>
 
                     {/* Back Face */}
-                    <div className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 ${backClasses}`}>
+                    <div className={`absolute inset-[2px] flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 ${backClasses}`}>
                       <div className={`mb-3 opacity-90 ${backIconColor}`}>
                         {item.afterIcon ? <img src={item.afterIcon} alt="" className="w-[42px] h-[42px] lg:w-[50px] lg:h-[50px] object-contain mx-auto" /> : item.icon}
                       </div>
