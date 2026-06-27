@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Star, ShieldCheck, Zap, Maximize, Play, Pause } from 'lucide-react';
+import { Star, ShieldCheck, Zap, Maximize, Play, Pause, Factory, Handshake } from 'lucide-react';
 import { Header } from './components/Header';
 
 const Counter = ({ end, duration = 2000, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
@@ -300,9 +300,7 @@ const AboutUs = () => {
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-white to-[#e8edf5] flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 lg:shadow-sm lg:scale-100 lg:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md">
-                  <svg className="w-[50%] h-[50%] transition-colors duration-300 text-[#0a2766] lg:text-[#32589c] group-hover:text-[#0a2766]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 21V9l-6-4-6 4v12M3 21h18M9 21v-6h6v6M14 9V5a2 2 0 00-2-2H8a2 2 0 00-2 2v4M10 5v4" />
-                  </svg>
+                  <Factory className="w-[50%] h-[50%] transition-colors duration-300 text-[#0a2766] lg:text-[#32589c] group-hover:text-[#0a2766]" strokeWidth={1.5} />
                 </div>
                 <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 lg:text-gray-600 group-hover:text-gray-900">
                   Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
@@ -315,9 +313,7 @@ const AboutUs = () => {
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-xl sm:rounded-2xl bg-gradient-to-br from-white to-[#e8edf5] flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 lg:shadow-sm lg:scale-100 lg:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md">
-                  <svg className="w-[50%] h-[50%] transition-colors duration-300 text-[#0a2766] lg:text-[#32589c] group-hover:text-[#0a2766]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5L21 3v6l-4.5 4.5m-3-3L10.5 15l-6-6h6l4.5 4.5m0 0L21 21v-6l-4.5-4.5" />
-                  </svg>
+                  <Handshake className="w-[50%] h-[50%] transition-colors duration-300 text-[#0a2766] lg:text-[#32589c] group-hover:text-[#0a2766]" strokeWidth={1.5} />
                 </div>
                 <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 lg:text-gray-600 group-hover:text-gray-900">
                   Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
