@@ -379,13 +379,13 @@ const WhyChooseUs = () => {
         <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 xl:gap-6 items-center xl:items-stretch">
           
           {/* Left Title Area */}
-          <div className="flex flex-col justify-center w-full xl:w-[25%] shrink-0 text-center xl:text-left pr-0 xl:pr-6 sm:border-b xl:border-b-0 xl:border-r border-gray-300 pb-8 xl:pb-0">
+          <div className="flex flex-col justify-center w-full xl:w-auto shrink-0 text-center xl:text-left pr-0 xl:pr-8 sm:border-b xl:border-b-0 xl:border-r border-gray-300 pb-8 xl:pb-0">
             <div className="flex items-center justify-center xl:justify-start gap-2 mb-4">
               <span className="text-[#32589c] font-bold text-xl md:text-2xl tracking-widest animate-pulse">{"//"}</span>
               <span className="text-gray-500 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">Our USP's</span>
             </div>
-            <h2 className="font-extrabold mt-[2px] text-xl md:text-2xl lg:text-3xl leading-[1.15] text-[#0a2766] tracking-tight">
-              Decades of Expertise. <span className="text-[#0a2766]">Built on Trust.</span>
+            <h2 className="font-extrabold mt-[2px] text-xl md:text-2xl lg:text-3xl leading-[1.15] text-[#0a2766] tracking-tight whitespace-nowrap">
+              Decades of Expertise.<br/><span className="text-[#0a2766]">Built on Trust.</span>
             </h2>
             <div className="hidden sm:block w-16 h-1 bg-[#4777c9] mt-6 mx-auto xl:mx-0"></div>
           </div>
@@ -393,7 +393,7 @@ const WhyChooseUs = () => {
           {/* Right Cards Area */}
           <div 
             ref={sliderRef}
-            className="w-full xl:w-[75%] flex flex-nowrap justify-start gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            className="w-full xl:flex-1 flex flex-nowrap justify-start gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           >
             {whyChooseUsData.map((item, index) => {
               const isOdd = index % 2 === 0;
