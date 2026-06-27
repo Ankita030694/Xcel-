@@ -121,7 +121,7 @@ const StatsBanner = () => {
               <Counter end={30000} suffix="+" />
             </h3>
             <p className="font-medium text-[10px] lg:text-[12px] leading-snug uppercase tracking-widest text-white/90 max-w-[120px] lg:max-w-[140px]">
-              Machines Installed Across India
+              Machines Installed<br />Across India
             </p>
           </div>
 
@@ -131,27 +131,27 @@ const StatsBanner = () => {
               <Counter end={8000} suffix="+" />
             </h3>
             <p className="font-medium text-[10px] lg:text-[12px] leading-snug uppercase tracking-widest text-white/90 max-w-[120px] lg:max-w-[140px]">
-              Happy Clients & Counting
+              Happy Clients<br />and Counting
             </p>
           </div>
 
-          {/* Stat 3: Years of Excellence */}
+          {/* Stat 3: Years of Expertise */}
           <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-3 lg:gap-4 text-left cursor-pointer px-2 py-1">
             <h3 className="font-light text-[24px] md:text-[28px] lg:text-[36px] leading-none tracking-tight text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-105">
               <Counter end={32} suffix="+" />
             </h3>
             <p className="font-medium text-[10px] lg:text-[12px] leading-snug uppercase tracking-widest text-white/90 max-w-[120px] lg:max-w-[140px]">
-              Years of Manufacturing Excellence
+              Years of<br />Expertise
             </p>
           </div>
 
-          {/* Stat 4: States Covered */}
+          {/* Stat 4: Manufacturing Facility */}
           <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-3 lg:gap-4 text-left cursor-pointer px-2 py-1">
             <h3 className="font-light text-[24px] md:text-[28px] lg:text-[36px] leading-none tracking-tight text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-105">
-              <Counter end={25} suffix="+" />
+              <Counter end={20000} suffix="+" />
             </h3>
             <p className="font-medium text-[10px] lg:text-[12px] leading-snug uppercase tracking-widest text-white/90 max-w-[120px] lg:max-w-[140px]">
-              States<br />Covered
+              Sq. Ft.<br />Manufacturing Facility
             </p>
           </div>
 
