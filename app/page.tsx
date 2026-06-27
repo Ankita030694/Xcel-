@@ -405,7 +405,7 @@ const WhyChooseUs = () => {
           {/* Right Cards Area */}
           <div 
             ref={sliderRef}
-            className="w-full xl:w-[75%] flex flex-nowrap justify-start gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] hover:[animation-play-state:paused]"
+            className="w-full xl:w-[75%] flex flex-nowrap justify-start gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           >
             {whyChooseUsData.map((item, index) => {
               const isOdd = index % 2 === 0;
