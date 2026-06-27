@@ -677,30 +677,30 @@ const PartsToPower = () => {
   const features = [
     {
       title: "Premium Components",
-      desc: "Industrial-grade bearings, valves, heating elements and stainless-steel baskets built for durability.",
+      desc: "From bearings and valves to heating elements and stainless-steel 304 baskets, every component plays a critical role that modern laundries depend on.",
       icon: (
         <img src="/Icon home/Vector 1.svg" alt="Premium Components" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     },
     {
-      title: "Precision Engineering",
-      desc: "Every component is designed to work in perfect harmony for maximum efficiency.",
+      title: "Engineered as One System",
+      desc: "With every carefully sourced component, the finished product becomes more than just a machine, it becomes a dependable partner.",
       icon: (
-        <img src="/Icon home/Vector 2.svg" alt="Precision Engineering" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+        <img src="/Icon home/Vector 2.svg" alt="Engineered as One System" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+      )
+    },
+    {
+      title: "Precision Manufacturing",
+      desc: "Through advanced manufacturing, we transform high-quality components into industrial laundry equipment built for continuous operation.",
+      icon: (
+        <img src="/Icon home/Vector 3.svg" alt="Precision Manufacturing" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     },
     {
       title: "Rigorous Testing",
-      desc: "Advanced manufacturing and quality testing ensure consistent and reliable performance.",
+      desc: "Every machine undergoes rigorous testing to ensure dependable performance in demanding commercial and industrial laundries.",
       icon: (
-        <img src="/Icon home/Vector 3.svg" alt="Rigorous Testing" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
-      )
-    },
-    {
-      title: "Built for Performance",
-      desc: "Machines engineered to reduce downtime and deliver continuous productivity for your business.",
-      icon: (
-        <img src="/Icon home/Vector 4.svg" alt="Built for Performance" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+        <img src="/Icon home/Vector 4.svg" alt="Rigorous Testing" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     }
   ];
@@ -764,16 +764,18 @@ const PartsToPower = () => {
             </p>
 
             {/* Feature Grid */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:gap-5 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-5 mb-8">
               {features.map((feature, idx) => (
-                <div key={idx} className="group bg-white border border-gray-100 p-3 sm:p-4 lg:p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_30px_-4px_rgba(0,0,0,0.12)] hover:border-[#32589c]/20 hover:-translate-y-1.5 transition-all duration-300 flex flex-col cursor-pointer" onTouchStart={() => {}}>
-                  <div className="w-9 h-9 sm:w-11 sm:h-11 bg-[#0a2766] rounded-full flex items-center justify-center text-white mb-3 sm:mb-4 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#32589c] group-hover:shadow-md">
-                    {feature.icon}
+                <div key={idx} className="group bg-white border border-gray-100 p-4 lg:p-6 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_12px_30px_-4px_rgba(0,0,0,0.12)] hover:border-[#32589c]/20 hover:-translate-y-1.5 transition-all duration-300 flex flex-col cursor-pointer" onTouchStart={() => {}}>
+                  <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-[#3b5b95] rounded-full flex items-center justify-center text-white transition-all duration-300 group-hover:scale-110 group-hover:bg-[#1d438a] group-hover:shadow-md">
+                      {feature.icon}
+                    </div>
+                    <h3 className="font-bold text-[#0a2766] text-[15px] sm:text-[17px] leading-snug">
+                      {feature.title}
+                    </h3>
                   </div>
-                  <h3 className="font-bold text-[#0a2766] text-[13px] sm:text-[16px] mb-1 sm:mb-1.5 leading-snug">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 text-[11px] sm:text-[13px] leading-relaxed">
+                  <p className="text-gray-600 text-[13px] sm:text-[14px] leading-relaxed">
                     {feature.desc}
                   </p>
                 </div>
@@ -781,13 +783,16 @@ const PartsToPower = () => {
             </div>
 
             {/* Bottom Alert Banner */}
-            <div className="bg-white rounded-xl p-4 sm:p-5 flex items-start sm:items-center gap-4 border border-gray-100 mt-auto shadow-sm">
-              <div className="w-10 h-10 shrink-0 bg-[#0a2766] rounded-full flex items-center justify-center text-white">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <div className="bg-[#e9eff7] rounded-xl p-4 sm:p-5 flex items-center gap-4 mt-auto">
+              <div className="w-11 h-11 shrink-0 bg-[#3b5b95] rounded-full flex items-center justify-center text-white">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </div>
-              <div>
-                <p className="text-gray-600 text-[13px] sm:text-[14px] leading-snug">
-                  Great performance doesn't begin at the finish line. <span className="text-[#32589c] font-semibold">It starts with every component inside.</span>
+              <div className="flex flex-col">
+                <p className="text-[#0a2766] text-[14px] sm:text-[15px] leading-snug">
+                  Great performance doesn't begin at the finish line.
+                </p>
+                <p className="text-[#3b5b95] text-[15px] sm:text-[16px] font-bold leading-snug">
+                  It starts with every component inside.
                 </p>
               </div>
             </div>
