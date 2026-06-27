@@ -24,17 +24,18 @@ export const Header = () => {
   return (
     <header className="w-full relative z-40">
       {/* Top Bar Ticker */}
-      <div className="bg-[#3b5b95] text-white py-2 text-[13px] font-medium tracking-wide overflow-hidden flex justify-center items-center h-[34px]">
-        <div 
-          className="flex flex-col items-center transition-transform duration-700 ease-in-out w-full"
-          style={{ transform: `translateY(-${(phraseIndex * 100) / TOP_BAR_PHRASES.length}%)` }}
-        >
-          {TOP_BAR_PHRASES.map((phrase, idx) => (
-            <div key={idx} className="h-[34px] flex items-center justify-center shrink-0 w-full text-center px-4">
-              {phrase}
-            </div>
-          ))}
-        </div>
+      <div className="bg-[#3b5b95] text-white py-2 text-[13px] font-medium tracking-wide overflow-hidden relative flex h-[34px] w-full">
+        {TOP_BAR_PHRASES.map((phrase, idx) => (
+          <div 
+            key={idx} 
+            className="absolute inset-0 flex items-center justify-center text-center px-4 transition-transform duration-700 ease-in-out w-full"
+            style={{ 
+              transform: `translateX(${(idx - phraseIndex) * 100}%)` 
+            }}
+          >
+            {phrase}
+          </div>
+        ))}
       </div>
       
       {/* Main Navbar */}
