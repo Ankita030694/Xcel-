@@ -296,7 +296,7 @@ const AboutUs = () => {
               
               {/* Bullet 1 */}
               <div 
-                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-start p-4 sm:p-5 lg:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 lg:bg-transparent lg:shadow-none lg:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100"
+                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 lg:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 lg:bg-transparent lg:shadow-none lg:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100"
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 lg:shadow-sm lg:scale-100 lg:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
@@ -309,7 +309,7 @@ const AboutUs = () => {
 
               {/* Bullet 2 */}
               <div 
-                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-start p-4 sm:p-5 lg:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 lg:bg-transparent lg:shadow-none lg:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100"
+                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 lg:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 lg:bg-transparent lg:shadow-none lg:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100"
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 lg:shadow-sm lg:scale-100 lg:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
