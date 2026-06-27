@@ -430,7 +430,7 @@ const WhyChooseUs = () => {
                   <div className={`relative w-full h-full shadow-sm hover:shadow-xl rounded-sm overflow-hidden bg-gray-200`}>
                     
                     {/* Spinning Light Border */}
-                    <div className="absolute inset-[-100%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_300deg,#3b82f6_360deg)]"></div>
+                    <div className="absolute inset-[-100%] animate-[spin_0.8s_linear_infinite] bg-[conic-gradient(from_0deg,transparent_0_300deg,#3b82f6_360deg)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     
                     {/* Front Face */}
                     <div className={`absolute inset-[2px] flex flex-col items-center justify-center text-center p-3 rounded-sm transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0 ${frontClasses}`}>
