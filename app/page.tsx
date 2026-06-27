@@ -92,26 +92,24 @@ const StatsBanner = () => {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Stats Grid */}
-        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10 lg:gap-12 w-full">
           {stats.map((stat, idx) => (
             <div 
               key={idx} 
-              className="group relative bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-xl py-1.5 px-4 md:py-2 md:px-6 transition-all duration-500 hover:-translate-y-1 overflow-hidden shadow-md shadow-black/10 w-[calc(50%-6px)] sm:w-auto min-w-[130px]"
+              className="flex flex-col text-left transition-transform duration-500 hover:-translate-y-1"
             >
-              {/* Top glowing accent line */}
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-              <div className="relative z-10 flex flex-col h-full items-center text-center">
+              
+              <div className="relative z-10 flex flex-col items-start text-left">
                 
-                <h3 className="font-extrabold text-xl lg:text-2xl text-white tracking-tight mb-0.5 drop-shadow-sm">
+                <h3 className="font-extrabold text-3xl md:text-4xl lg:text-5xl text-white tracking-tight mb-2 drop-shadow-sm">
                   <Counter end={stat.end} suffix={stat.suffix} />
                 </h3>
                 
-                <div className="mt-auto">
-                  <p className="font-medium text-blue-100 text-[11px] md:text-xs leading-tight">
+                <div>
+                  <p className="font-semibold text-blue-100 text-xs md:text-sm lg:text-base leading-tight">
                     {stat.title}
                   </p>
-                  <p className="text-blue-300/70 text-[9px] lg:text-[10px]">
+                  <p className="text-blue-300/80 text-[10px] md:text-xs lg:text-sm mt-0.5 md:mt-1">
                     {stat.subtitle}
                   </p>
                 </div>
