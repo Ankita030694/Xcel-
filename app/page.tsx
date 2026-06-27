@@ -92,11 +92,11 @@ const StatsBanner = () => {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6">
           {stats.map((stat, idx) => (
             <div 
               key={idx} 
-              className="group relative bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-xl py-1.5 px-3 md:py-2 md:px-4 transition-all duration-500 hover:-translate-y-1 overflow-hidden shadow-lg shadow-black/20"
+              className="group relative bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-xl py-1.5 px-4 md:py-2 md:px-6 transition-all duration-500 hover:-translate-y-1 overflow-hidden shadow-md shadow-black/10 w-[calc(50%-6px)] sm:w-auto min-w-[130px]"
             >
               {/* Top glowing accent line */}
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
