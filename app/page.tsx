@@ -3,55 +3,137 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Star, ShieldCheck, Zap, Maximize, Play, Pause, Factory, Handshake } from 'lucide-react';
 import { Header } from './components/Header';
+import { Users, Award, MapPin } from 'lucide-react';
 
+const Counter = ({ end, duration = 2500, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
+  const [count, setCount] = useState(0);
+  const countRef = useRef<HTMLSpanElement>(null);
 
+  useEffect(() => {
+    let animationFrame: number;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          let startTimestamp: number | null = null;
+          const step = (timestamp: number) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            
+            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+            setCount(Math.floor(easeOutQuart * end));
+            
+            if (progress < 1) {
+              animationFrame = window.requestAnimationFrame(step);
+            }
+          };
+          animationFrame = window.requestAnimationFrame(step);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (countRef.current) {
+      observer.observe(countRef.current);
+    }
+    return () => {
+      observer.disconnect();
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+    };
+  }, [end, duration]);
+
+  return <span ref={countRef}>{count.toLocaleString()}{suffix}</span>;
+};
 
 const StatsBanner = () => {
+  const stats = [
+    {
+      end: 30000,
+      suffix: "+",
+      title: "Machines Installed",
+      subtitle: "Across India",
+      icon: <MapPin className="w-8 h-8 text-blue-300" />,
+      bgIcon: <MapPin className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
+    },
+    {
+      end: 8000,
+      suffix: "+",
+      title: "Happy Clients",
+      subtitle: "and Counting",
+      icon: <Users className="w-8 h-8 text-blue-300" />,
+      bgIcon: <Users className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
+    },
+    {
+      end: 32,
+      suffix: "+",
+      title: "Years of",
+      subtitle: "Expertise",
+      icon: <Award className="w-8 h-8 text-blue-300" />,
+      bgIcon: <Award className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
+    },
+    {
+      end: 20000,
+      suffix: "+",
+      title: "Sq. Ft. Manufacturing",
+      subtitle: "Facility",
+      icon: <Factory className="w-8 h-8 text-blue-300" />,
+      bgIcon: <Factory className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
+    }
+  ];
+
   return (
-    <div className="bg-[#32589c] w-full py-5 lg:py-8 relative">
-      <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10">
-        <div className="flex flex-wrap md:flex-nowrap justify-center gap-8 md:gap-10 lg:gap-16 xl:gap-20 items-center w-full">
-          
-          {/* Stat 1: Machines Installed */}
-          <div className="flex flex-row items-center justify-center gap-3 lg:gap-4 text-left">
-            <h3 className="font-semibold text-[32px] md:text-[36px] lg:text-[42px] leading-none tracking-tight text-white">
-              30,000+
-            </h3>
-            <p className="font-normal text-[11px] lg:text-[13px] leading-snug text-white/90">
-              Machines Installed<br />Across India
-            </p>
-          </div>
+    <div className="relative w-full py-16 lg:py-24 overflow-hidden">
+      {/* Deep dark blue background with radial gradient for depth */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#051336] via-[#0a2766] to-[#123680]"></div>
+      
+      {/* Subtle grid pattern overlay */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
 
-          {/* Stat 2: Happy Clients */}
-          <div className="flex flex-row items-center justify-center gap-3 lg:gap-4 text-left">
-            <h3 className="font-semibold text-[32px] md:text-[36px] lg:text-[42px] leading-none tracking-tight text-white">
-              8,000+
-            </h3>
-            <p className="font-normal text-[11px] lg:text-[13px] leading-snug text-white/90">
-              Happy Clients<br />and Counting
-            </p>
-          </div>
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        
+        {/* Header Text */}
+        <div className="text-center mb-12 lg:mb-16">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+            Our Impact in <span className="text-blue-400">Numbers</span>
+          </h2>
+          <p className="mt-4 text-blue-200 text-sm md:text-base max-w-2xl mx-auto">
+            Delivering excellence and building trust through reliable commercial laundry solutions across the nation.
+          </p>
+        </div>
 
-          {/* Stat 3: Years of Expertise */}
-          <div className="flex flex-row items-center justify-center gap-3 lg:gap-4 text-left">
-            <h3 className="font-semibold text-[32px] md:text-[36px] lg:text-[42px] leading-none tracking-tight text-white">
-              32+
-            </h3>
-            <p className="font-normal text-[11px] lg:text-[13px] leading-snug text-white/90">
-              Years of<br />Expertise
-            </p>
-          </div>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+          {stats.map((stat, idx) => (
+            <div 
+              key={idx} 
+              className="group relative bg-white/5 hover:bg-white/10 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-3xl p-8 transition-all duration-500 hover:-translate-y-2 overflow-hidden shadow-2xl shadow-black/20"
+            >
+              {/* Background watermark icon */}
+              {stat.bgIcon}
+              
+              {/* Top glowing accent line */}
+              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
-          {/* Stat 4: Manufacturing Facility */}
-          <div className="flex flex-row items-center justify-center gap-3 lg:gap-4 text-left">
-            <h3 className="font-semibold text-[32px] md:text-[36px] lg:text-[42px] leading-none tracking-tight text-white">
-              20,000+
-            </h3>
-            <p className="font-normal text-[11px] lg:text-[13px] leading-snug text-white/90">
-              Sq. Ft.<br />Manufacturing Facility
-            </p>
-          </div>
-
+              <div className="relative z-10 flex flex-col h-full">
+                <div className="mb-6 p-3 bg-blue-500/10 rounded-2xl w-fit border border-blue-400/20 group-hover:bg-blue-500/20 transition-colors duration-500">
+                  {stat.icon}
+                </div>
+                
+                <h3 className="font-extrabold text-4xl lg:text-5xl text-white tracking-tight mb-2 drop-shadow-md">
+                  <Counter end={stat.end} suffix={stat.suffix} />
+                </h3>
+                
+                <div className="mt-auto pt-2">
+                  <p className="font-semibold text-blue-100 text-base md:text-lg leading-tight">
+                    {stat.title}
+                  </p>
+                  <p className="text-blue-300/70 text-sm mt-1">
+                    {stat.subtitle}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
