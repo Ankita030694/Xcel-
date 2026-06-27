@@ -436,13 +436,11 @@ const WhyChooseUs = () => {
                     {/* Front Face */}
                     <div className={`absolute inset-[2px] flex flex-col items-center justify-center text-center p-3 rounded-sm transition-opacity duration-700 ease-in-out opacity-100 group-hover:opacity-0 ${frontClasses}`}>
                       <div className={`mb-5 ${frontIconColor}`}>
-                        {item.beforeIcon ? (
-                          <img 
-                            src={item.beforeIcon} 
-                            alt="" 
-                            className={`${item.title === "Wide Range" ? "w-[56px] h-[56px] lg:w-[70px] lg:h-[70px]" : "w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]"} object-contain mx-auto`} 
-                          />
-                        ) : item.icon}
+                        <img 
+                          src={item.beforeIcon} 
+                          alt="" 
+                          className={`${item.title === "Wide Range" ? "w-[56px] h-[56px] lg:w-[70px] lg:h-[70px]" : "w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]"} object-contain mx-auto`} 
+                        />
                       </div>
                       <h3 className="font-bold text-[13px] lg:text-[15px] leading-snug px-0.5 lg:px-2">
                         {item.title}
@@ -453,13 +451,11 @@ const WhyChooseUs = () => {
                     {/* Back Face */}
                     <div className={`absolute inset-[2px] flex flex-col items-center justify-center text-center p-3 sm:p-4 rounded-sm transition-opacity duration-700 ease-in-out opacity-0 group-hover:opacity-100 ${backClasses}`}>
                       <div className={`mb-3 opacity-90 ${backIconColor}`}>
-                        {item.afterIcon ? (
-                          <img 
-                            src={item.afterIcon} 
-                            alt="" 
-                            className={`${item.title === "Wide Range" ? "w-[56px] h-[56px] lg:w-[70px] lg:h-[70px]" : "w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]"} object-contain mx-auto`} 
-                          />
-                        ) : item.icon}
+                        <img 
+                          src={item.afterIcon} 
+                          alt="" 
+                          className={`${item.title === "Wide Range" ? "w-[56px] h-[56px] lg:w-[70px] lg:h-[70px]" : "w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]"} object-contain mx-auto`} 
+                        />
                       </div>
                       <div className={`w-6 h-0.5 mb-4 ${backLineColor}`}></div>
                       <p className="text-[11px] lg:text-[13px] font-medium leading-relaxed px-0.5">
