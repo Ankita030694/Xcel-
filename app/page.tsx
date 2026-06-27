@@ -679,28 +679,28 @@ const PartsToPower = () => {
       title: "Premium Components",
       desc: "Industrial-grade bearings, valves, heating elements and stainless-steel baskets built for durability.",
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        <img src="/Icon home/Vector 1.svg" alt="Premium Components" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     },
     {
       title: "Precision Engineering",
       desc: "Every component is designed to work in perfect harmony for maximum efficiency.",
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="m16 10-2.3 9.2c-.3 1.2-2 1.2-2.3 0L9.1 10"/><path d="M12 2v8"/></svg>
+        <img src="/Icon home/Vector 2.svg" alt="Precision Engineering" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     },
     {
       title: "Rigorous Testing",
       desc: "Advanced manufacturing and quality testing ensure consistent and reliable performance.",
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+        <img src="/Icon home/Vector 3.svg" alt="Rigorous Testing" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     },
     {
       title: "Built for Performance",
       desc: "Machines engineered to reduce downtime and deliver continuous productivity for your business.",
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+        <img src="/Icon home/Vector 4.svg" alt="Built for Performance" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     }
   ];
