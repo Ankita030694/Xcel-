@@ -696,9 +696,9 @@ const PartsToPower = () => {
           {/* Right Area - Content & Grid */}
           <div className="flex flex-col w-full xl:w-1/2 lg:pt-2 h-full">
             <h2 className="text-3xl md:text-4xl lg:text-[40px] font-extrabold text-[#111111] leading-[1.15] tracking-tight">
-              Every Part. One <span className="text-[#32589c]">Purpose.</span>
+              Every Part. <span className="text-[#32589c]">One Purpose.</span>
             </h2>
-            <div className="w-12 h-[4px] bg-[#32589c] mb-3"></div>
+            <div className="w-12 h-[4px] bg-[#32589c] mt-4 mb-3"></div>
             <p className="text-gray-600 text-[15px] lg:text-[16px] leading-relaxed max-w-2xl mb-8">
               Performance begins long before a machine reaches your facility. It begins with premium components, precision engineering and rigorous testing that power every XCEL system.
             </p>
