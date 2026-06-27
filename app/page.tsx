@@ -406,8 +406,8 @@ const WhyChooseUs = () => {
               
               const frontIconColor = isOdd ? "text-[#1d438a]" : "text-white";
               const backIconColor = isOdd ? "text-white" : "text-[#1d438a]";
-              const frontLineColor = isOdd ? "bg-[#517ec7]" : "bg-white/50";
-              const backLineColor = isOdd ? "bg-white/50" : "bg-[#517ec7]";
+              const frontLineColor = isOdd ? "bg-[#0a2766]" : "bg-white/50";
+              const backLineColor = isOdd ? "bg-white/50" : "bg-[#0a2766]";
               
               const frontBorder = isOdd ? "bg-[#3b5b95]" : "bg-white";
               const backBorder = isOdd ? "bg-white" : "bg-[#3b5b95]";
