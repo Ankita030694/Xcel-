@@ -61,6 +61,11 @@ const StatsBanner = () => {
     }
   };
 
+  // Draggable logic for mouse users (mobile is natively draggable)
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftPos, setScrollLeftPos] = useState(0);
+
   // Auto slide
   useEffect(() => {
     const interval = setInterval(() => {
@@ -79,11 +84,6 @@ const StatsBanner = () => {
     }, 8000);
     return () => clearInterval(interval);
   }, [isDragging]);
-
-  // Draggable logic for mouse users (mobile is natively draggable)
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeftPos, setScrollLeftPos] = useState(0);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
