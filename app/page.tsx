@@ -117,14 +117,7 @@ const StatsBanner = () => {
           
           {/* Stat 1: Machines Installed */}
           <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-2.5 md:gap-3 text-left cursor-pointer">
-            <div className="bg-white rounded-full w-[32px] h-[32px] md:w-[38px] md:h-[38px] lg:w-[44px] lg:h-[44px] flex items-center justify-center shrink-0 shadow-sm overflow-hidden p-1.5 md:p-2 transition-all duration-300 ease-out group-hover:scale-110 group-hover:shadow-lg">
-               {/* Setting/Gear Icon */}
-               <svg className="w-full h-full text-[#0a2766] transition-colors duration-300 group-hover:text-[#32589c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
-                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-               </svg>
-            </div>
-            <div className="flex flex-col text-white h-[36px] md:h-[42px] lg:h-[54px] justify-start pt-0.5">
+            <div className="flex flex-col text-white h-[36px] md:h-[42px] lg:h-[54px] justify-center">
               <p className="font-semibold text-[16px] lg:text-[24px] leading-none tracking-wide mb-1 lg:mb-1.5">
                 <Counter end={30000} suffix="+" />
               </p>
@@ -136,14 +129,7 @@ const StatsBanner = () => {
 
           {/* Stat 2: Happy Clients */}
           <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-2.5 md:gap-3 text-left cursor-pointer">
-            <div className="bg-white rounded-full w-[32px] h-[32px] md:w-[38px] md:h-[38px] lg:w-[44px] lg:h-[44px] flex items-center justify-center shrink-0 shadow-sm overflow-hidden p-1.5 md:p-2 transition-all duration-300 ease-out group-hover:scale-110 group-hover:shadow-lg">
-               {/* Users/Group Icon */}
-               <svg className="w-full h-full text-[#0a2766] transition-colors duration-300 group-hover:text-[#32589c]" fill="currentColor" viewBox="0 0 24 24">
-                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                 <path d="M18 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-12 0c1.66 0 3-1.34 3-3S7.66 5 6 5 3 6.34 3 8s1.34 3 3 3zm12 2c-.3 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5zm-12 0c-2.33 0-7 1.17-7 3.5V19h6v-2.5c0-1.48.81-2.61 1.97-3.45C5.62 13.02 5.3 13 5 13z"/>
-               </svg>
-            </div>
-            <div className="flex flex-col text-white h-[36px] md:h-[42px] lg:h-[54px] justify-start pt-0.5">
+            <div className="flex flex-col text-white h-[36px] md:h-[42px] lg:h-[54px] justify-center">
               <p className="font-semibold text-[16px] lg:text-[24px] leading-none tracking-wide mb-1 lg:mb-1.5">
                 <Counter end={8000} suffix="+" />
               </p>
@@ -155,15 +141,7 @@ const StatsBanner = () => {
 
           {/* Stat 3: Years of Excellence */}
           <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-2.5 md:gap-3 text-left cursor-pointer">
-            <div className="bg-white rounded-full w-[32px] h-[32px] md:w-[38px] md:h-[38px] lg:w-[44px] lg:h-[44px] flex items-center justify-center shrink-0 shadow-sm overflow-hidden p-1.5 md:p-2 transition-all duration-300 ease-out group-hover:scale-110 group-hover:shadow-lg">
-               {/* Badge/Award Icon */}
-               <svg className="w-[90%] h-[90%] text-[#0a2766] transition-colors duration-300 group-hover:text-[#32589c]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinejoin="round">
-                 <path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.11" />
-                 <circle cx="12" cy="9" r="6" />
-                 <path d="M12 6.5l.8 1.8h1.7l-1.3 1.2.5 1.8-1.7-1.1-1.7 1.1.5-1.8-1.3-1.2h1.7z" fill="currentColor" stroke="none" />
-               </svg>
-            </div>
-            <div className="flex flex-col text-white h-[36px] md:h-[42px] lg:h-[54px] justify-start pt-0.5">
+            <div className="flex flex-col text-white h-[36px] md:h-[42px] lg:h-[54px] justify-center">
               <p className="font-semibold text-[16px] lg:text-[24px] leading-none tracking-wide mb-1 lg:mb-1.5">
                 <Counter end={32} suffix="+" />
               </p>
@@ -175,15 +153,7 @@ const StatsBanner = () => {
 
           {/* Stat 4: States Covered */}
           <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-2.5 md:gap-3 text-left cursor-pointer">
-            <div className="bg-white rounded-full w-[32px] h-[32px] md:w-[38px] md:h-[38px] lg:w-[44px] lg:h-[44px] flex items-center justify-center shrink-0 shadow-sm overflow-hidden p-1.5 md:p-2 transition-all duration-300 ease-out group-hover:scale-110 group-hover:shadow-lg">
-               {/* Location Icon */}
-               <svg className="w-[85%] h-[85%] text-[#0a2766] transition-colors duration-300 group-hover:text-[#32589c]" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round">
-                 <path d="M12 13a3 3 0 100-6 3 3 0 000 6z" />
-                 <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                 <ellipse cx="12" cy="22" rx="5" ry="1.5" />
-               </svg>
-            </div>
-            <div className="flex flex-col text-white h-[36px] md:h-[42px] lg:h-[54px] justify-start pt-0.5">
+            <div className="flex flex-col text-white h-[36px] md:h-[42px] lg:h-[54px] justify-center">
               <p className="font-semibold text-[16px] lg:text-[24px] leading-none tracking-wide mb-1 lg:mb-1.5">
                 <Counter end={25} suffix="+" />
               </p>
