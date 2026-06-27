@@ -86,7 +86,7 @@ const StatsBanner = () => {
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Stats Grid */}
-        <div className="flex flex-wrap justify-center gap-6 md:gap-10 lg:gap-16 w-full max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 w-full max-w-5xl mx-auto">
           {stats.map((stat, idx) => (
             <div 
               key={idx} 
