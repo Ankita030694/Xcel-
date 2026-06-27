@@ -116,45 +116,41 @@ const StatsBanner = () => {
         >
           
           {/* Stat 1: Machines Installed */}
-          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-col items-center justify-center text-center cursor-pointer px-2 py-2">
-            <h3 className="font-extrabold text-[28px] md:text-[34px] lg:text-[46px] leading-none tracking-tight mb-2 md:mb-3 text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-110">
+          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-3 lg:gap-4 text-left cursor-pointer px-2 py-1">
+            <h3 className="font-light text-[32px] md:text-[38px] lg:text-[48px] leading-none tracking-tight text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-105">
               <Counter end={30000} suffix="+" />
             </h3>
-            <div className="h-[2px] md:h-[3px] w-[30px] bg-[#e31e24] mb-2 md:mb-3 rounded-full transition-all duration-500 group-hover:w-[60px] shadow-sm"></div>
-            <p className="font-medium text-[9px] md:text-[10px] lg:text-[11px] leading-relaxed uppercase tracking-[0.15em] lg:tracking-[0.2em] text-white/90 max-w-[140px] md:max-w-[160px]">
+            <p className="font-medium text-[10px] lg:text-[12px] leading-snug uppercase tracking-widest text-white/90 max-w-[120px] lg:max-w-[140px]">
               Machines Installed Across India
             </p>
           </div>
 
           {/* Stat 2: Happy Clients */}
-          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-col items-center justify-center text-center cursor-pointer px-2 py-2">
-            <h3 className="font-extrabold text-[28px] md:text-[34px] lg:text-[46px] leading-none tracking-tight mb-2 md:mb-3 text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-110">
+          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-3 lg:gap-4 text-left cursor-pointer px-2 py-1">
+            <h3 className="font-light text-[32px] md:text-[38px] lg:text-[48px] leading-none tracking-tight text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-105">
               <Counter end={8000} suffix="+" />
             </h3>
-            <div className="h-[2px] md:h-[3px] w-[30px] bg-[#e31e24] mb-2 md:mb-3 rounded-full transition-all duration-500 group-hover:w-[60px] shadow-sm"></div>
-            <p className="font-medium text-[9px] md:text-[10px] lg:text-[11px] leading-relaxed uppercase tracking-[0.15em] lg:tracking-[0.2em] text-white/90 max-w-[140px] md:max-w-[160px]">
+            <p className="font-medium text-[10px] lg:text-[12px] leading-snug uppercase tracking-widest text-white/90 max-w-[120px] lg:max-w-[140px]">
               Happy Clients & Counting
             </p>
           </div>
 
           {/* Stat 3: Years of Excellence */}
-          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-col items-center justify-center text-center cursor-pointer px-2 py-2">
-            <h3 className="font-extrabold text-[28px] md:text-[34px] lg:text-[46px] leading-none tracking-tight mb-2 md:mb-3 text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-110">
+          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-3 lg:gap-4 text-left cursor-pointer px-2 py-1">
+            <h3 className="font-light text-[32px] md:text-[38px] lg:text-[48px] leading-none tracking-tight text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-105">
               <Counter end={32} suffix="+" />
             </h3>
-            <div className="h-[2px] md:h-[3px] w-[30px] bg-[#e31e24] mb-2 md:mb-3 rounded-full transition-all duration-500 group-hover:w-[60px] shadow-sm"></div>
-            <p className="font-medium text-[9px] md:text-[10px] lg:text-[11px] leading-relaxed uppercase tracking-[0.15em] lg:tracking-[0.2em] text-white/90 max-w-[140px] md:max-w-[160px]">
+            <p className="font-medium text-[10px] lg:text-[12px] leading-snug uppercase tracking-widest text-white/90 max-w-[120px] lg:max-w-[140px]">
               Years of Manufacturing Excellence
             </p>
           </div>
 
           {/* Stat 4: States Covered */}
-          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-col items-center justify-center text-center cursor-pointer px-2 py-2">
-            <h3 className="font-extrabold text-[28px] md:text-[34px] lg:text-[46px] leading-none tracking-tight mb-2 md:mb-3 text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-110">
+          <div className="group flex-shrink-0 w-[calc(50%-4px)] md:w-auto snap-start flex flex-row items-center justify-center gap-3 lg:gap-4 text-left cursor-pointer px-2 py-1">
+            <h3 className="font-light text-[32px] md:text-[38px] lg:text-[48px] leading-none tracking-tight text-white drop-shadow-sm transition-transform duration-500 group-hover:scale-105">
               <Counter end={25} suffix="+" />
             </h3>
-            <div className="h-[2px] md:h-[3px] w-[30px] bg-[#e31e24] mb-2 md:mb-3 rounded-full transition-all duration-500 group-hover:w-[60px] shadow-sm"></div>
-            <p className="font-medium text-[9px] md:text-[10px] lg:text-[11px] leading-relaxed uppercase tracking-[0.15em] lg:tracking-[0.2em] text-white/90 max-w-[140px] md:max-w-[160px]">
+            <p className="font-medium text-[10px] lg:text-[12px] leading-snug uppercase tracking-widest text-white/90 max-w-[120px] lg:max-w-[140px]">
               States Covered
             </p>
           </div>
