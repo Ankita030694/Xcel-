@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Star, ShieldCheck, Zap, Maximize, Play, Pause, Factory, Handshake } from 'lucide-react';
 import { Header } from './components/Header';
 
-const Counter = ({ end, duration = 8000, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
+const Counter = ({ end, duration = 2000, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
   const [count, setCount] = useState(0);
   const countRef = useRef<HTMLSpanElement>(null);
 
@@ -76,9 +76,9 @@ const StatsBanner = () => {
           }
         }
       }
-    }, 2500);
+    }, 8000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isDragging]);
 
   // Draggable logic for mouse users (mobile is natively draggable)
   const [isDragging, setIsDragging] = useState(false);
