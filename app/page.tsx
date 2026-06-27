@@ -100,7 +100,7 @@ const StatsBanner = () => {
                 </h3>
                 
                 <div className="flex items-center">
-                  <p className="font-semibold text-blue-100 text-[11px] md:text-xs lg:text-sm leading-tight">
+                  <p className="font-semibold text-blue-100 text-[11px] md:text-xs lg:text-sm leading-tight whitespace-nowrap">
                     {stat.title}
                   </p>
                 </div>
