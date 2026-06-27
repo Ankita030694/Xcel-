@@ -275,7 +275,7 @@ const AboutUs = () => {
             {/* Header Area */}
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[#32589c] font-bold text-xl md:text-2xl tracking-widest animate-pulse">{"//"}</span>
-              <span className="text-gray-500 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">About Us</span>
+              <span className="text-gray-500 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">About XCEL</span>
             </div>
 
             <h2 className="font-extrabold text-xl md:text-2xl lg:text-3xl leading-[1.15] mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-500">
