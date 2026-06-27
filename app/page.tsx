@@ -519,7 +519,7 @@ const ProjectsGallery = () => {
           <span className="text-gray-500 font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">ENGINEERING EXCELLENCE</span>
         </div>
         <h2 className="font-extrabold text-[26px] sm:text-[30px] lg:text-[36px] xl:text-[40px] leading-[1.15] text-[#0a2766] max-w-4xl tracking-tight">
-          Building Excellence <br className="hidden sm:block lg:hidden" /> Across Every Sector
+          Complete Laundry Solutions <br className="hidden sm:block lg:hidden" /> Under One Roof
         </h2>
       </div>
 
