@@ -397,6 +397,7 @@ const WhyChooseUs = () => {
                       <h3 className="font-bold text-[13px] lg:text-[15px] leading-snug px-0.5 lg:px-2">
                         {item.title}
                       </h3>
+                      <div className={`w-6 h-0.5 mt-5 ${frontLineColor}`}></div>
                     </div>
 
                     {/* Back Face */}
@@ -408,6 +409,7 @@ const WhyChooseUs = () => {
                           className={`${item.title === "Wide Range" ? "w-[56px] h-[56px] lg:w-[70px] lg:h-[70px]" : "w-[42px] h-[42px] lg:w-[50px] lg:h-[50px]"} object-contain mx-auto`} 
                         />
                       </div>
+                      <div className={`w-6 h-0.5 mb-4 ${backLineColor}`}></div>
                       <p className="text-[11px] lg:text-[13px] font-medium leading-relaxed px-0.5">
                         {item.desc}
                       </p>
