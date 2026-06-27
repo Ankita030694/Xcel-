@@ -73,50 +73,28 @@ export const Header = () => {
             </div>
 
             {/* Mobile Hamburger Button */}
-            <div className="lg:hidden flex items-center">
+            <div className="lg:hidden flex items-center relative z-[60]">
               <button 
-                onClick={() => setIsMobileMenuOpen(true)}
-                className="text-[#3b5b95] hover:text-[#2f497a] focus:outline-none px-1.5 py-0.5 transition-colors flex flex-col items-center justify-center gap-[2px]"
-                aria-label="Open menu"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                className="text-[#3b5b95] hover:text-[#2f497a] focus:outline-none w-10 h-10 transition-colors flex flex-col items-center justify-center relative"
+                aria-label="Toggle menu"
               >
-                <div className="w-7 h-[2px] bg-current"></div>
-                <span className="text-[11px] font-bold tracking-widest leading-none py-[1px]">MENU</span>
-                <div className="w-7 h-[2px] bg-current"></div>
+                <div className={`absolute w-7 h-[2.5px] bg-current transition-all duration-300 ease-in-out rounded-full ${isMobileMenuOpen ? 'rotate-45' : '-translate-y-[7px]'}`}></div>
+                <span className={`absolute text-[11px] font-bold tracking-widest leading-none transition-all duration-300 ease-in-out ${isMobileMenuOpen ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}`}>MENU</span>
+                <div className={`absolute w-7 h-[2.5px] bg-current transition-all duration-300 ease-in-out rounded-full ${isMobileMenuOpen ? '-rotate-45' : 'translate-y-[7px]'}`}></div>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu Dropdown */}
       <div 
-        className={`fixed inset-0 bg-black/50 z-50 lg:hidden transition-opacity duration-300 ${
-          isMobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
-        onClick={() => setIsMobileMenuOpen(false)}
-        aria-hidden="true"
-      />
-
-      {/* Mobile Menu Slide-in Panel */}
-      <div 
-        className={`fixed top-0 right-0 h-full w-[280px] bg-white z-50 transform transition-transform duration-300 ease-in-out shadow-2xl lg:hidden flex flex-col ${
-          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`absolute top-full left-0 w-full bg-white z-30 transition-all duration-300 ease-in-out overflow-hidden border-b border-gray-100 shadow-xl lg:hidden ${
+          isMobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 border-transparent shadow-none'
         }`}
       >
-        <div className="p-6 flex items-center justify-between border-b border-gray-100">
-          <span className="text-[#3b5b95] font-bold text-lg tracking-wider">MENU</span>
-          <button 
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="text-gray-400 hover:text-[#e31e24] focus:outline-none p-1 transition-colors"
-            aria-label="Close menu"
-          >
-            <svg className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-        
-        <nav className="flex flex-col py-6 px-6 space-y-6 overflow-y-auto">
+        <nav className="flex flex-col py-6 px-6 space-y-6">
           <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
             HOME
           </Link>
