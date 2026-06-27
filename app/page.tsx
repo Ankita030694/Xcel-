@@ -679,28 +679,28 @@ const PartsToPower = () => {
       title: "Premium Components",
       desc: "From bearings and valves to heating elements and stainless-steel 304 baskets, every component plays a critical role that modern laundries depend on.",
       icon: (
-        <img src="/Icon%20home/Premium%20Components.png" alt="Premium Components" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+        <img src="/Icon home/premium-components.png" alt="Premium Components" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     },
     {
       title: "Engineered as One System",
       desc: "With every carefully sourced component, the finished product becomes more than just a machine, it becomes a dependable partner.",
       icon: (
-        <img src="/Icon%20home/Engineered%20as%20One%20System.png" alt="Engineered as One System" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+        <img src="/Icon home/engineered-as-one-system.png" alt="Engineered as One System" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     },
     {
       title: "Precision Manufacturing",
       desc: "Through advanced manufacturing, we transform high-quality components into industrial laundry equipment built for continuous operation.",
       icon: (
-        <img src="/Icon%20home/Precision%20Manufacturing.png" alt="Precision Manufacturing" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+        <img src="/Icon home/precision-manufacturing.png" alt="Precision Manufacturing" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     },
     {
       title: "Rigorous Testing",
       desc: "Every machine undergoes rigorous testing to ensure dependable performance in demanding commercial and industrial laundries.",
       icon: (
-        <img src="/Icon%20home/Rigorous%20Testing.png" alt="Rigorous Testing" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
+        <img src="/Icon home/rigorous-testing.png" alt="Rigorous Testing" className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] object-contain" />
       )
     }
   ];
