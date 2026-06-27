@@ -99,21 +99,16 @@ const StatsBanner = () => {
               className="flex justify-center transition-transform duration-500 hover:-translate-y-1"
             >
               
-              <div className="relative z-10 flex flex-col items-start text-left w-max">
+              <div className="relative z-10 flex flex-row items-center gap-3 md:gap-4 text-left w-max">
                 
-                <h3 className="font-extrabold text-2xl md:text-3xl lg:text-4xl text-white tracking-tight mb-1 drop-shadow-sm">
+                <h3 className="font-extrabold text-2xl md:text-3xl lg:text-4xl text-white tracking-tight drop-shadow-sm">
                   <Counter end={stat.end} suffix={stat.suffix} />
                 </h3>
                 
-                <div>
+                <div className="flex items-center">
                   <p className="font-semibold text-blue-100 text-[11px] md:text-xs lg:text-sm leading-tight">
                     {stat.title}
                   </p>
-                  {stat.subtitle && (
-                    <p className="text-blue-300/80 text-[9px] md:text-[10px] lg:text-xs mt-0.5">
-                      {stat.subtitle}
-                    </p>
-                  )}
                 </div>
               </div>
             </div>
