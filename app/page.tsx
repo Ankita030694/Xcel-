@@ -724,17 +724,17 @@ const PartsToPower = () => {
                 handleMove(e.touches[0].clientX);
               }}
             >
-              {/* Under Image (Parts) */}
+              {/* Under Image (Interior/Parts) */}
               <img 
-                src="https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?q=80&w=1200&auto=format&fit=crop" 
-                alt="Machine Parts"
+                src="/After.jpeg" 
+                alt="Machine After"
                 className="absolute inset-0 w-full h-full object-cover pointer-events-none"
               />
               
               {/* Over Image (Exterior) */}
               <img 
-                src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=1200&auto=format&fit=crop" 
-                alt="Machine Exterior"
+                src="/Blefore.jpeg" 
+                alt="Machine Before"
                 className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
               />
