@@ -82,13 +82,7 @@ const StatsBanner = () => {
   ];
 
   return (
-    <div className="relative w-full py-4 lg:py-6 overflow-hidden">
-      {/* Deep dark blue background with radial gradient for depth */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#051336] via-[#0a2766] to-[#123680]"></div>
-      
-      {/* Subtle grid pattern overlay */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-
+    <div className="relative w-full py-4 lg:py-6 bg-[#32589c]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Stats Grid */}
