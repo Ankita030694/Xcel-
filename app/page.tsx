@@ -259,7 +259,7 @@ const AboutUs = () => {
           >
             {/* Fancy Glow Behind Image */}
             <div className="absolute -inset-1 bg-gradient-to-r from-[#32589c] to-[#3b5b95] rounded-[2rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200" />
-            <div className="relative aspect-[5/4] md:aspect-auto md:flex-1 w-full rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-400/50 transform transition duration-700 ease-out group-hover:-translate-y-2">
+            <div className="relative aspect-square md:aspect-auto md:flex-1 w-full rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-400/50 transform transition duration-700 ease-out group-hover:-translate-y-2">
               <img 
                 src="/About-Home.jpeg" 
                 alt="Precision Laser Cutting Manufacturing" 
