@@ -95,7 +95,7 @@ const StatsBanner = () => {
               
               <div className="relative z-10 flex flex-row items-center gap-3 md:gap-4 text-left w-max">
                 
-                <h3 className="font-extrabold text-2xl md:text-3xl lg:text-4xl text-white tracking-tight drop-shadow-sm">
+                <h3 className="font-extrabold text-xl md:text-2xl lg:text-3xl text-white tracking-tight drop-shadow-sm">
                   <Counter end={stat.end} suffix={stat.suffix} />
                 </h3>
                 
