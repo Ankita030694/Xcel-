@@ -27,11 +27,11 @@ export default function AboutPage() {
       <section className="relative py-16 lg:py-24 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
         
         {/* Sketch Background Image */}
-        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[90%] md:w-[60%] lg:w-[45%] h-[120%] opacity-[0.08] pointer-events-none z-0">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] md:w-[50%] lg:w-[35%] h-[80%] opacity-[0.08] pointer-events-none z-0">
           <img 
             src="/about-wash.png" 
             alt="Machine Sketch Background" 
-            className="w-full h-full object-contain object-left"
+            className="w-full h-full object-contain object-center"
           />
         </div>
 
