@@ -25,19 +25,18 @@ export default function AboutPage() {
 
       {/* Our Story Section - New Layout */}
       <section className="relative py-16 lg:py-24 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
-        
-        {/* Sketch Background Image */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] md:w-[50%] lg:w-[35%] h-[80%] opacity-[0.08] pointer-events-none z-0">
-          <img 
-            src="/about-wash.png" 
-            alt="Machine Sketch Background" 
-            className="w-full h-full object-contain object-center"
-          />
-        </div>
-
-        <div className="max-w-[1200px] mx-auto relative z-10">
+        <div className="max-w-[1200px] mx-auto relative">
           
-          <div className="flex flex-col md:flex-row gap-8 lg:gap-16 mb-16 lg:mb-24">
+          {/* Sketch Background Image */}
+          <div className="absolute left-[15%] md:left-[25%] lg:left-[32%] top-[15%] lg:top-[12%] w-[80%] md:w-[55%] lg:w-[45%] h-[90%] opacity-[0.08] pointer-events-none z-0">
+            <img 
+              src="/about-wash.png" 
+              alt="Machine Sketch Background" 
+              className="w-full h-full object-contain object-center"
+            />
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-8 lg:gap-16 mb-16 lg:mb-24 relative z-10">
             {/* Left Title */}
             <div className="w-full md:w-1/4 shrink-0">
               <div className="flex items-center gap-2">
@@ -63,7 +62,7 @@ export default function AboutPage() {
           </div>
 
           {/* Stats Row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 relative z-10">
             <div className="flex flex-col">
               <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">30,000+</h3>
               <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Machines Installed Across<br className="hidden lg:block"/> India</p>
