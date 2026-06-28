@@ -24,8 +24,18 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story Section - New Layout */}
-      <section className="py-16 lg:py-24 px-4 sm:px-6 lg:px-10 bg-white">
-        <div className="max-w-[1200px] mx-auto">
+      <section className="relative py-16 lg:py-24 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
+        
+        {/* Sketch Background Image */}
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[90%] md:w-[60%] lg:w-[45%] h-[120%] opacity-[0.08] pointer-events-none z-0">
+          <img 
+            src="/about-wash.png" 
+            alt="Machine Sketch Background" 
+            className="w-full h-full object-contain object-left"
+          />
+        </div>
+
+        <div className="max-w-[1200px] mx-auto relative z-10">
           
           <div className="flex flex-col md:flex-row gap-8 lg:gap-16 mb-16 lg:mb-24">
             {/* Left Title */}
