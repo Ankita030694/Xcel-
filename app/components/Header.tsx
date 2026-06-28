@@ -81,9 +81,9 @@ export const Header = () => {
                   <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                 </svg>
               </div>
-              <a href="#" className="text-[#3b5b95] font-semibold text-[14px] hover:border-b-[1.5px] hover:border-[#3b5b95] pb-1 border-b-[1.5px] border-transparent transition-all">
+              <Link href="/insights" className="text-[#3b5b95] font-semibold text-[14px] hover:border-b-[1.5px] hover:border-[#3b5b95] pb-1 border-b-[1.5px] border-transparent transition-all">
                 INDUSTRY INSIGHTS
-              </a>
+              </Link>
               <a href="#" className="text-[#3b5b95] font-semibold text-[14px] hover:border-b-[1.5px] hover:border-[#3b5b95] pb-1 border-b-[1.5px] border-transparent transition-all">
                 CONTACT US
               </a>
@@ -134,9 +134,9 @@ export const Header = () => {
               </svg>
             </div>
           </div>
-          <a href="#" className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
+          <Link href="/insights" onClick={() => setIsMobileMenuOpen(false)} className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
             INDUSTRY INSIGHTS
-          </a>
+          </Link>
           <a href="#" className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
             CONTACT US
           </a>

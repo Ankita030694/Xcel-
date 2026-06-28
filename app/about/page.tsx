@@ -2,11 +2,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
 import { MissionVisionSection } from '../components/MissionVisionSection';
 
 export default function AboutPage() {
-  const [activeLegacy, setActiveLegacy] = useState<'founder' | 'son'>('founder');
-
   return (
     <main className="min-h-screen bg-white">
       <Header />
@@ -28,7 +27,7 @@ export default function AboutPage() {
         <div className="max-w-[1200px] mx-auto relative">
           
           {/* Sketch Background Image */}
-          <div className="absolute left-[15%] md:left-[25%] lg:left-[32%] top-[15%] lg:top-[12%] w-[80%] md:w-[55%] lg:w-[45%] h-[90%] opacity-[0.08] pointer-events-none z-0">
+          <div className="absolute left-0 md:left-[5%] lg:left-[8%] top-0 lg:top-[-5%] w-[80%] md:w-[60%] lg:w-[45%] h-[95%] opacity-[0.08] pointer-events-none z-0">
             <img 
               src="/about-wash.png" 
               alt="Machine Sketch Background" 
@@ -63,19 +62,19 @@ export default function AboutPage() {
 
           {/* Stats Row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 relative z-10">
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center text-center">
               <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">30,000+</h3>
               <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Machines Installed Across<br className="hidden lg:block"/> India</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center text-center">
               <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">8,000+</h3>
               <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Happy Clients & Counting</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center text-center">
               <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">32+</h3>
               <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Years of Manufacturing<br className="hidden lg:block"/> Excellence</p>
             </div>
-            <div className="flex flex-col">
+            <div className="flex flex-col items-center text-center">
               <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">25+</h3>
               <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">States Covered</p>
             </div>
@@ -84,48 +83,28 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Legacy Section - Interactive Tabbed Layout */}
-      <section className="py-20 lg:py-24 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 overflow-hidden">
+      {/* Legacy Section - Stacked Layout */}
+      <section className="py-20 lg:py-24 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-[30vh]">
         <div className="max-w-[1200px] mx-auto">
           
-          {/* Section Header & Toggle */}
-          <div className="text-center mb-16">
+          {/* Section Header */}
+          <div className="text-center mb-16 sticky top-0 z-20 bg-[#f8f9fa] py-6">
              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#0a2766] tracking-tight mb-8">
                 Two Generations. <br className="sm:hidden" />
                 <span className="text-[#32589c] font-serif italic font-light">One Vision.</span>
              </h2>
-             
-             {/* Elegant Toggle Switch */}
-             <div className="inline-flex bg-white p-1.5 rounded-full relative shadow-sm border border-gray-100 mx-auto">
-               <div 
-                 className={`absolute inset-y-1.5 w-[calc(50%-6px)] bg-[#0a2766] rounded-full shadow-md transition-all duration-500 ease-in-out z-0 ${activeLegacy === 'founder' ? 'left-1.5' : 'left-[calc(50%+4px)]'}`}
-               ></div>
-               
-               <button 
-                 onClick={() => setActiveLegacy('founder')}
-                 className={`relative z-10 px-8 py-3 rounded-full text-xs font-bold tracking-[0.15em] uppercase transition-colors duration-500 ${activeLegacy === 'founder' ? 'text-white' : 'text-gray-500 hover:text-[#0a2766]'}`}
-               >
-                 Deepak Chawla
-               </button>
-               <button 
-                 onClick={() => setActiveLegacy('son')}
-                 className={`relative z-10 px-8 py-3 rounded-full text-xs font-bold tracking-[0.15em] uppercase transition-colors duration-500 ${activeLegacy === 'son' ? 'text-white' : 'text-gray-500 hover:text-[#0a2766]'}`}
-               >
-                 Mehul Chawla
-               </button>
-             </div>
           </div>
 
           {/* Content Area */}
-          <div className="relative min-h-[500px] lg:min-h-[400px]">
+          <div className="flex flex-col gap-[40vh] lg:gap-[50vh] relative">
              
              {/* Generation 1: Father */}
-             <div className={`absolute inset-0 transition-all duration-700 ease-in-out ${activeLegacy === 'founder' ? 'opacity-100 translate-y-0 pointer-events-auto relative' : 'opacity-0 translate-y-8 pointer-events-none absolute'}`}>
-                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 lg:p-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50">
+             <div className="sticky top-40 lg:top-48 z-0">
+                <div className="group flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 lg:p-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 ease-out">
                    
                    {/* Image */}
-                   <div className="w-full lg:w-[45%]">
-                      <div className="aspect-[4/3] lg:aspect-square bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner">
+                   <div className="w-full lg:w-[45%] overflow-hidden rounded-2xl">
+                      <div className="aspect-[4/3] lg:aspect-square bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
                          {/* <img src="/father-portrait.jpg" alt="Deepak Chawla" className="absolute inset-0 w-full h-full object-cover" /> */}
                          <div className="absolute inset-0 flex flex-col items-center justify-center text-[#3b5b95]/40 pointer-events-none">
                            <svg className="w-16 h-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -159,12 +138,12 @@ export default function AboutPage() {
              </div>
 
              {/* Generation 2: Son */}
-             <div className={`absolute inset-0 transition-all duration-700 ease-in-out ${activeLegacy === 'son' ? 'opacity-100 translate-y-0 pointer-events-auto relative' : 'opacity-0 -translate-y-8 pointer-events-none absolute'}`}>
-                <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 lg:p-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-50">
+             <div className="sticky top-40 lg:top-48 z-10">
+                <div className="group flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 lg:p-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 ease-out">
                    
                    {/* Image */}
-                   <div className="w-full lg:w-[45%]">
-                      <div className="aspect-[4/3] lg:aspect-square bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner">
+                   <div className="w-full lg:w-[45%] overflow-hidden rounded-2xl">
+                      <div className="aspect-[4/3] lg:aspect-square bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
                          {/* <img src="/son-portrait.jpg" alt="Mehul Chawla" className="absolute inset-0 w-full h-full object-cover" /> */}
                          <div className="absolute inset-0 flex flex-col items-center justify-center text-[#3b5b95]/40 pointer-events-none">
                            <svg className="w-16 h-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -203,6 +182,9 @@ export default function AboutPage() {
 
       <DraggableTimeline />
       <MissionVisionSection />
+
+      {/* Footer Section */}
+      <Footer />
     </main>
   );
 }
@@ -278,7 +260,7 @@ function DraggableTimeline() {
   };
 
   return (
-    <section className="py-24 bg-white border-t border-gray-100 overflow-hidden relative">
+    <section className="pt-24 pb-12 bg-white border-t border-gray-100 overflow-hidden relative">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center mb-16 lg:mb-20">
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#32589c] tracking-tight mb-4 transition-transform duration-500 hover:scale-105">
@@ -294,7 +276,7 @@ function DraggableTimeline() {
         </div>
 
         <div 
-          className="w-full overflow-x-auto hide-scrollbar cursor-grab active:cursor-grabbing select-none"
+          className="w-full overflow-x-auto custom-scrollbar cursor-grab active:cursor-grabbing select-none pb-6"
           ref={scrollRef}
           onMouseDown={handleMouseDown}
           onMouseLeave={handleMouseLeave}
@@ -327,7 +309,7 @@ function DraggableTimeline() {
                        </div>
                        {/* Bottom text */}
                        <div className="h-[150px] w-full pt-[120px] pl-[20px]">
-                          <p className="text-[13.5px] leading-[1.7] text-gray-500 font-medium group-hover:text-gray-800 opacity-80 group-hover:opacity-100 group-hover:translate-y-2 transition-all duration-300 w-[260px]">
+                          <p className="text-[13.5px] leading-[1.7] text-black font-medium group-hover:translate-y-2 group-hover:scale-105 origin-top-left transition-all duration-300 w-[260px]">
                             {event.text}
                           </p>
                        </div>
@@ -336,7 +318,7 @@ function DraggableTimeline() {
                     <>
                        {/* Top text */}
                        <div className="h-[150px] w-full relative flex items-start flex-col justify-end pb-[120px] pl-[20px]">
-                          <p className="text-[13.5px] leading-[1.7] text-gray-500 font-medium group-hover:text-gray-800 opacity-80 group-hover:opacity-100 group-hover:-translate-y-2 transition-all duration-300 w-[260px]">
+                          <p className="text-[13.5px] leading-[1.7] text-black font-medium group-hover:-translate-y-2 group-hover:scale-105 origin-bottom-left transition-all duration-300 w-[260px]">
                             {event.text}
                           </p>
                        </div>
@@ -357,5 +339,5 @@ function DraggableTimeline() {
           </div>
         </div>
     </section>
-  )
+  );
 }
