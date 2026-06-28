@@ -23,51 +23,52 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Our Story Section - Stylish Multi-Column */}
-      <section className="py-12 lg:py-20 px-4 sm:px-6 lg:px-10 bg-white">
+      {/* Our Story Section - New Layout */}
+      <section className="py-16 lg:py-24 px-4 sm:px-6 lg:px-10 bg-white">
         <div className="max-w-[1200px] mx-auto">
           
-          {/* Title */}
-          <div className="flex flex-col items-center mb-10 lg:mb-14">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <span className="text-[#32589c] font-bold text-xl md:text-2xl tracking-widest animate-pulse">{"//"}</span>
-              <span className="text-gray-500 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">Our Story</span>
+          <div className="flex flex-col md:flex-row gap-8 lg:gap-16 mb-16 lg:mb-24">
+            {/* Left Title */}
+            <div className="w-full md:w-1/4 shrink-0">
+              <div className="flex items-center gap-2">
+                <span className="text-[#32589c] font-bold text-xl tracking-widest animate-pulse">{"//"}</span>
+                <span className="text-gray-600 font-medium text-lg">Our Story</span>
+              </div>
             </div>
-            <h2 className="font-extrabold mt-[2px] text-2xl md:text-3xl lg:text-4xl leading-[1.15] text-[#0a2766] tracking-tight text-center">
-              A legacy of precision.
-            </h2>
-            <div className="w-16 h-1 bg-[#4777c9] mt-6 mx-auto"></div>
+
+            {/* Right Content */}
+            <div className="w-full md:w-3/4 flex flex-col gap-6 lg:gap-8">
+              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-semibold text-black leading-[1.2] tracking-tight">
+                Engineering India's Laundry Future with World-Class Manufacturing
+              </h2>
+              <div className="text-gray-600 font-normal text-base md:text-[17px] leading-[1.7] space-y-6">
+                <p>
+                  Our journey began with a simple conviction that Indian businesses deserve world-class laundry equipment, designed and manufactured right here at home. Built under the Make in India initiative, XCEL operates from a 20,000 sq. ft. manufacturing facility where every machine is engineered to meet international quality and performance standards.
+                </p>
+                <p>
+                  Rather than simply assembling components, we design, fabricate, and manufacture complete commercial laundry solutions from the ground up. Today, our systems power hotels, NABH-accredited hospitals, garment manufacturers, commercial laundries, and retail laundry businesses across India—delivering reliable performance tailored to the unique demands of every industry.
+                </p>
+              </div>
+            </div>
           </div>
 
-          {/* Stylish 2-Column Layout */}
-          <div className="flex flex-col md:flex-row gap-8 md:gap-0 relative group cursor-default">
-            
-            {/* Background Quote Icon for Style - Animated */}
-            <div className="absolute top-0 left-0 -ml-4 -mt-10 text-[160px] leading-none font-serif text-[#f4f6f9] pointer-events-none select-none z-0 transform transition-all duration-700 ease-out group-hover:-translate-y-3 group-hover:scale-105 group-hover:text-[#e8ecf3]">
-              "
+          {/* Stats Row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+            <div className="flex flex-col">
+              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">30,000+</h3>
+              <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Machines Installed Across<br className="hidden lg:block"/> India</p>
             </div>
-
-            {/* Column 1 */}
-            <div className="w-full md:w-1/2 md:pr-10 lg:pr-16 space-y-6 relative z-10 text-[15px] sm:text-[16px] leading-[1.8] font-medium text-gray-600 transition-colors duration-500 hover:text-gray-900 group/col">
-              <p className="text-[#0a2766] font-semibold text-lg sm:text-xl leading-[1.6] transform transition-transform duration-500 group-hover/col:translate-x-2">
-                Our journey began with a single conviction that Indian businesses deserve world-class laundry equipment, engineered and manufactured right here at home. 
-              </p>
-              <p className="transform transition-transform duration-500 delay-75 group-hover/col:translate-x-1">
-                That conviction laid the foundation stone of XCEL. Built under the <strong className="text-[#0a2766] font-bold group-hover/col:text-[#32589c] transition-colors duration-300">Make in India</strong> initiative at our 20,000 sq ft manufacturing unit, every machine that leaves our facility carries the precision of domestic engineering, tested to meet international quality and performance benchmarks.
-              </p>
+            <div className="flex flex-col">
+              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">8,000+</h3>
+              <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Happy Clients & Counting</p>
             </div>
-            
-            {/* Vertical Divider - Animated */}
-            <div className="hidden md:block w-px bg-gradient-to-b from-transparent via-gray-300 group-hover:via-[#32589c] to-transparent relative z-10 transition-colors duration-700"></div>
-
-            {/* Column 2 */}
-            <div className="w-full md:w-1/2 md:pl-10 lg:pl-16 space-y-6 relative z-10 text-[15px] sm:text-[16px] leading-[1.8] font-medium text-gray-600 transition-colors duration-500 hover:text-gray-900 group/col2">
-              <p className="transform transition-transform duration-500 group-hover/col2:translate-x-2">
-                We do not simply assemble components, we design, fabricate and produce complete laundry solutions from the ground up.
-              </p>
-              <p className="transform transition-transform duration-500 delay-75 group-hover/col2:translate-x-1">
-                From large hotel chains and NABH-accredited hospitals to garment manufacturing units, high-volume commercial laundries and retail laundries, our machines power the clean operations that keep India's most critical industries running every single day. Our machines are industry-configured, technically optimised systems, designed with the specific operational realities of each sector firmly in mind.
-              </p>
+            <div className="flex flex-col">
+              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">32+</h3>
+              <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Years of Manufacturing<br className="hidden lg:block"/> Excellence</p>
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">25+</h3>
+              <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">States Covered</p>
             </div>
           </div>
           
