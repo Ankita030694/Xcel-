@@ -20,24 +20,6 @@ export default function AboutPage() {
             alt="XCEL Headquarters" 
             className="w-full h-full object-cover object-center"
           />
-          {/* Gradient Overlay for Text Readability */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a2766]/80 via-[#0a2766]/50 to-[#0a2766]/90" />
-        </div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto mt-12">
-          <span className="text-[#b1c6e9] font-bold tracking-[0.25em] uppercase text-sm sm:text-base mb-4 sm:mb-6 animate-fade-in-up">
-            Our Story
-          </span>
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white leading-[1.1] tracking-tight mb-6 sm:mb-8 shadow-sm">
-            Building the Future of <br className="hidden sm:block" /> 
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-[#b1c6e9]">
-              Industrial Manufacturing
-            </span>
-          </h1>
-          <p className="text-white/80 text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl font-light">
-            With decades of precision engineering and a commitment to uncompromising quality, XCEL has grown into an industry leader trusted by professionals worldwide.
-          </p>
         </div>
       </section>
 
