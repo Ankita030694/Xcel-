@@ -23,7 +23,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story Section - New Layout */}
-      <section className="relative py-16 lg:py-24 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
+      <section id="our-story" className="relative py-16 lg:py-24 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
         <div className="max-w-[1200px] mx-auto relative">
           
 
@@ -97,7 +97,7 @@ export default function AboutPage() {
           </div>
 
           {/* Content Area */}
-          <div className="flex flex-col gap-[40vh] lg:gap-[50vh] relative">
+          <div id="leadership" className="flex flex-col gap-[40vh] lg:gap-[50vh] relative">
              
              {/* Generation 1: Father */}
              <div className="sticky top-40 lg:top-48 z-0">
@@ -182,7 +182,9 @@ export default function AboutPage() {
       </section>
 
       <DraggableTimeline />
-      <MissionVisionSection />
+      <div id="vision">
+        <MissionVisionSection />
+      </div>
 
       {/* Footer Section */}
       <Footer />
