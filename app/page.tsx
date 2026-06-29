@@ -205,17 +205,17 @@ const AboutUs = () => {
       </div>
 
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
-        <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-stretch">
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-stretch md:items-start lg:items-stretch">
           
           {/* Left Column - Image */}
           <div 
             tabIndex={0}
-            className="w-full md:w-1/2 shrink-0 relative group flex flex-col cursor-pointer outline-none"
+            className="w-full md:w-5/12 lg:w-1/2 shrink-0 relative group flex flex-col cursor-pointer outline-none"
             onTouchStart={() => {}}
           >
             {/* Fancy Glow Behind Image */}
             <div className="absolute -inset-1 bg-gradient-to-r from-[#32589c] to-[#3b5b95] rounded-[2rem] blur opacity-20 group-hover:opacity-40 group-focus:opacity-40 transition duration-1000 group-hover:duration-200" />
-            <div className="relative aspect-square md:aspect-auto md:flex-1 w-full rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-400/50 transform transition duration-700 ease-out group-hover:-translate-y-2 group-focus:-translate-y-2">
+            <div className="relative aspect-square md:aspect-square lg:aspect-auto lg:flex-1 lg:h-full w-full rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-400/50 transform transition duration-700 ease-out group-hover:-translate-y-2 group-focus:-translate-y-2">
               <img 
                 src="/About-home.png" 
                 alt="Precision Laser Cutting Manufacturing" 
@@ -226,7 +226,7 @@ const AboutUs = () => {
           </div>
 
           {/* Right Column - Content */}
-          <div className="w-full md:w-1/2 flex flex-col pt-2 md:pt-4">
+          <div className="w-full md:w-7/12 lg:w-1/2 flex flex-col pt-2 md:pt-4">
             
             {/* Header Area */}
             <div className="flex items-center gap-2 mb-4">
@@ -256,13 +256,13 @@ const AboutUs = () => {
               {/* Bullet 1 */}
               <div 
                 tabIndex={0}
-                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 lg:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 lg:bg-transparent lg:shadow-none lg:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none border-l-4 border-l-transparent focus:border-l-8 focus:border-l-[#32589c] lg:hover:border-l-8 lg:hover:border-l-[#32589c]"
+                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none border-l-4 border-l-transparent focus:border-l-8 focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
                 onTouchStart={() => {}}
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 lg:shadow-sm lg:scale-100 lg:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
                   <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.png" alt="Manufacturing" className="w-full h-full object-contain" />
                 </div>
-                <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 lg:text-gray-600 group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
                   Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
                 </p>
               </div>
@@ -270,13 +270,13 @@ const AboutUs = () => {
               {/* Bullet 2 */}
               <div 
                 tabIndex={0}
-                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 lg:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 lg:bg-transparent lg:shadow-none lg:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none border-l-4 border-l-transparent focus:border-l-8 focus:border-l-[#32589c] lg:hover:border-l-8 lg:hover:border-l-[#32589c]"
+                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none border-l-4 border-l-transparent focus:border-l-8 focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
                 onTouchStart={() => {}}
               >
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 lg:shadow-sm lg:scale-100 lg:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
                   <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.png" alt="Partnership" className="w-full h-full object-contain" />
                 </div>
-                <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 lg:text-gray-600 group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
                   Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
                 </p>
               </div>
@@ -773,18 +773,18 @@ const PartsToPower = () => {
             </p>
 
             {/* Feature Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 lg:gap-5 mb-8">
+            <div className="grid grid-cols-2 gap-2 sm:gap-4 lg:gap-5 mb-8">
               {features.map((feature, idx) => (
-                <div key={idx} tabIndex={0} className="group bg-white border border-gray-100 p-4 lg:p-6 rounded-2xl shadow-[0_15px_40px_-10px_rgba(10,39,102,0.15)] hover:shadow-[0_25px_50px_-12px_rgba(10,39,102,0.25)] hover:border-[#32589c]/20 hover:-translate-y-2 transition-all duration-300 flex flex-col cursor-pointer outline-none border-l-4 border-l-transparent focus:border-l-8 focus:border-l-[#32589c] lg:hover:border-l-8 lg:hover:border-l-[#32589c]" onTouchStart={() => {}}>
-                  <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-                    <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 bg-[#3b5b95] rounded-full flex items-center justify-center text-white transition-all duration-300 group-hover:scale-110 group-hover:bg-[#1d438a] group-hover:shadow-md">
+                <div key={idx} tabIndex={0} className="group bg-white border border-gray-100 p-3 sm:p-4 lg:p-6 rounded-2xl shadow-[0_15px_40px_-10px_rgba(10,39,102,0.15)] hover:shadow-[0_25px_50px_-12px_rgba(10,39,102,0.25)] hover:border-[#32589c]/20 hover:-translate-y-2 transition-all duration-300 flex flex-col cursor-pointer outline-none" onTouchStart={() => {}}>
+                  <div className="flex flex-row items-center gap-2 sm:gap-3 xl:gap-4 mb-2 sm:mb-3 xl:mb-4">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 xl:w-12 xl:h-12 shrink-0 bg-[#3b5b95] rounded-full flex items-center justify-center text-white transition-all duration-300 group-hover:scale-110 group-hover:bg-[#1d438a] group-hover:shadow-md">
                       {feature.icon}
                     </div>
-                    <h3 className="font-bold text-[#0a2766] text-[15px] sm:text-[17px] leading-snug">
+                    <h3 className="font-bold text-[#0a2766] text-[12px] sm:text-[14px] xl:text-[17px] leading-snug">
                       {feature.title}
                     </h3>
                   </div>
-                  <p className="text-gray-600 text-[13px] sm:text-[14px] leading-relaxed">
+                  <p className="text-gray-600 text-[11px] sm:text-[12px] xl:text-[14px] leading-relaxed">
                     {feature.desc}
                   </p>
                 </div>
@@ -792,7 +792,7 @@ const PartsToPower = () => {
             </div>
 
             {/* Bottom Alert Banner */}
-            <div tabIndex={0} className="bg-[#e9eff7] rounded-xl p-4 sm:p-5 flex items-center gap-4 mt-auto outline-none border-l-4 border-l-transparent focus:border-l-8 focus:border-l-[#32589c] lg:hover:border-l-8 lg:hover:border-l-[#32589c] transition-all duration-300 cursor-pointer">
+            <div tabIndex={0} className="bg-[#e9eff7] rounded-xl p-4 sm:p-5 flex items-center gap-4 mt-auto outline-none shadow-[0_15px_40px_-10px_rgba(10,39,102,0.15)] hover:shadow-[0_25px_50px_-12px_rgba(10,39,102,0.25)] hover:-translate-y-2 transition-all duration-300 cursor-pointer">
               <div className="w-11 h-11 shrink-0 bg-[#3b5b95] rounded-full flex items-center justify-center text-white">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
               </div>
