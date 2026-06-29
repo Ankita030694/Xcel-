@@ -44,27 +44,7 @@ export const Header = () => {
           <div className="flex justify-between items-center h-[90px]">
             {/* Logo */}
             <Link href="/" className="flex-shrink-0 flex items-center cursor-pointer">
-              <svg width="160" height="54" viewBox="0 0 160 54" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="156" height="50" rx="6" fill="transparent" stroke="#e31e24" strokeWidth="1.5" />
-                <line x1="8" y1="11" x2="152" y2="11" stroke="#e31e24" strokeWidth="0.8" />
-                <line x1="8" y1="19" x2="152" y2="19" stroke="#e31e24" strokeWidth="0.8" />
-                <line x1="8" y1="27" x2="152" y2="27" stroke="#e31e24" strokeWidth="0.8" />
-                <line x1="8" y1="35" x2="152" y2="35" stroke="#e31e24" strokeWidth="0.8" />
-                <line x1="8" y1="43" x2="152" y2="43" stroke="#e31e24" strokeWidth="0.8" />
-                
-                <g transform="translate(80, 40)" fontFamily="Arial, Helvetica, sans-serif" fontWeight="900" letterSpacing="1" textAnchor="middle">
-                  <text stroke="#f8f9fa" strokeWidth="10" strokeLinejoin="round" fill="#f8f9fa">
-                    <tspan fontSize="38">X</tspan>
-                    <tspan fontSize="24" dy="-6">C</tspan>
-                    <tspan fontSize="38" dy="6">EL</tspan>
-                  </text>
-                  <text fill="#e31e24">
-                    <tspan fontSize="38">X</tspan>
-                    <tspan fontSize="24" dy="-6">C</tspan>
-                    <tspan fontSize="38" dy="6">EL</tspan>
-                  </text>
-                </g>
-              </svg>
+              <img src="/Main Logo.svg" alt="XCEL Logo" className="h-[38px] md:h-[46px] w-auto object-contain" />
             </Link>
             
             {/* Navigation Links - Desktop */}
@@ -104,9 +84,9 @@ export const Header = () => {
                 className="text-[#3b5b95] hover:text-[#2f497a] focus:outline-none w-10 h-10 transition-colors flex flex-col items-center justify-center relative"
                 aria-label="Toggle menu"
               >
-                <div className={`absolute w-7 h-[2.5px] bg-current transition-all duration-700 ease-in-out rounded-full ${isMobileMenuOpen ? 'rotate-45' : '-translate-y-[10px]'}`}></div>
+                <div className={`absolute w-[34px] h-[2.5px] bg-current transition-all duration-700 ease-in-out rounded-full ${isMobileMenuOpen ? 'rotate-45' : '-translate-y-[10px]'}`}></div>
                 <span className={`absolute text-[11px] font-bold tracking-widest leading-none transition-all duration-700 ease-in-out ${isMobileMenuOpen ? 'opacity-0 scale-50' : 'opacity-100 scale-100'}`}>MENU</span>
-                <div className={`absolute w-7 h-[2.5px] bg-current transition-all duration-700 ease-in-out rounded-full ${isMobileMenuOpen ? '-rotate-45' : 'translate-y-[10px]'}`}></div>
+                <div className={`absolute w-[34px] h-[2.5px] bg-current transition-all duration-700 ease-in-out rounded-full ${isMobileMenuOpen ? '-rotate-45' : 'translate-y-[10px]'}`}></div>
               </button>
             </div>
           </div>
@@ -119,15 +99,15 @@ export const Header = () => {
           isMobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 border-transparent shadow-none'
         }`}
       >
-        <nav className="flex flex-col py-6 px-6 space-y-6">
+        <nav className="flex flex-col items-center py-6 px-6 space-y-6 text-center">
           <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
             HOME
           </Link>
           <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
             ABOUT US
           </Link>
-          <div className="flex flex-col">
-            <div className="flex items-center cursor-pointer">
+          <div className="flex flex-col items-center">
+            <div className="flex items-center justify-center cursor-pointer">
               <span className="text-[#3b5b95] font-semibold text-[15px]">PRODUCTS</span>
               <svg className="w-4 h-4 ml-1 text-[#3b5b95]" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />

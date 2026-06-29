@@ -26,14 +26,7 @@ export default function AboutPage() {
       <section className="relative py-16 lg:py-24 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
         <div className="max-w-[1200px] mx-auto relative">
           
-          {/* Sketch Background Image */}
-          <div className="absolute left-0 md:left-[5%] lg:left-[8%] top-0 lg:top-[-5%] w-[80%] md:w-[60%] lg:w-[45%] h-[95%] opacity-[0.08] pointer-events-none z-0">
-            <img 
-              src="/about-wash.png" 
-              alt="Machine Sketch Background" 
-              className="w-full h-full object-contain object-center"
-            />
-          </div>
+
 
           <div className="flex flex-col md:flex-row gap-8 lg:gap-16 mb-16 lg:mb-24 relative z-10">
             {/* Left Title */}
@@ -45,7 +38,15 @@ export default function AboutPage() {
             </div>
 
             {/* Right Content */}
-            <div className="w-full md:w-3/4 flex flex-col gap-6 lg:gap-8">
+            <div className="w-full md:w-3/4 flex flex-col gap-6 lg:gap-8 relative">
+              {/* Sketch Background Image - Anchored to the text column */}
+              <div className="absolute left-[-25%] lg:left-[-25%] top-[-10%] lg:top-[-15%] w-[80%] lg:w-[50%] h-[120%] opacity-[0.08] pointer-events-none z-[-1]">
+                <img 
+                  src="/about-wash.png" 
+                  alt="Machine Sketch Background" 
+                  className="w-full h-full object-contain object-left-top"
+                />
+              </div>
               <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-semibold text-black leading-[1.2] tracking-tight">
                 Engineering India's Laundry Future with World-Class Manufacturing
               </h2>
