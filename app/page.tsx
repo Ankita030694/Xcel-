@@ -47,6 +47,9 @@ const Counter = ({ end, duration = 2500, suffix = "" }: { end: number, duration?
 };
 
 const StatsBanner = () => {
+  const scrollRef = React.useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  
   const stats = [
     {
       end: 30000,
@@ -82,28 +85,73 @@ const StatsBanner = () => {
     }
   ];
 
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % stats.length;
+        if (scrollRef.current) {
+          // If the container fits all items (desktop), don't auto-scroll
+          if (scrollRef.current.clientWidth >= scrollRef.current.scrollWidth) return prevIndex;
+          
+          const firstChild = scrollRef.current.children[0] as HTMLElement;
+          const scrollAmount = firstChild ? firstChild.offsetWidth : 0;
+          if (nextIndex === 0) {
+            scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+          } else {
+            scrollRef.current.scrollTo({ left: nextIndex * scrollAmount, behavior: 'smooth' });
+          }
+        }
+        return nextIndex;
+      });
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [stats.length]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const firstChild = target.children[0] as HTMLElement;
+    if (!firstChild) return;
+    const itemWidth = firstChild.offsetWidth;
+    const index = Math.round(target.scrollLeft / itemWidth);
+    if (index !== currentIndex) {
+      setCurrentIndex(index);
+    }
+  };
+
+  const handleDotClick = (idx: number) => {
+    setCurrentIndex(idx);
+    if (scrollRef.current) {
+      const firstChild = scrollRef.current.children[0] as HTMLElement;
+      const scrollAmount = firstChild ? firstChild.offsetWidth + 16 : 0;
+      scrollRef.current.scrollTo({ left: idx * scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+
   return (
     <div className="relative w-full py-4 lg:py-6 bg-[#32589c] group">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Stats Container */}
         <div 
-          className="flex flex-row flex-nowrap lg:flex-wrap justify-start lg:justify-between items-center gap-4 w-full max-w-6xl mx-auto px-6 lg:px-0 overflow-x-auto lg:overflow-visible snap-x snap-mandatory lg:snap-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] py-1 scroll-smooth"
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex flex-row flex-nowrap items-center w-full max-w-6xl mx-auto overflow-x-auto md:overflow-x-visible snap-x snap-mandatory md:snap-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] py-1 scroll-smooth"
         >
           {stats.map((stat, idx) => (
             <div 
               key={idx} 
-              className="w-[calc(50%-8px)] lg:w-auto shrink-0 snap-start flex justify-center lg:justify-start transition-transform duration-500 hover:-translate-y-1"
+              className="w-1/2 md:w-auto md:flex-1 shrink-0 snap-start flex justify-center transition-transform duration-500 hover:-translate-y-1"
             >
               
-              <div className="relative z-10 flex flex-row items-center gap-2 sm:gap-3 lg:gap-4 text-left w-full justify-center lg:justify-start">
+              <div className="relative z-10 flex flex-row items-center gap-1 sm:gap-2 lg:gap-4 text-left w-full justify-center lg:justify-center">
                 
                 <h3 className="font-extrabold text-[18px] sm:text-xl md:text-2xl lg:text-3xl text-white tracking-tight drop-shadow-sm whitespace-nowrap">
                   <Counter end={stat.end} suffix={stat.suffix} />
                 </h3>
                 
                 <div className="flex items-center">
-                  <p className="font-semibold text-blue-100 text-[10px] sm:text-[11px] md:text-xs lg:text-sm leading-[1.15] sm:leading-tight">
+                  <p className="font-semibold text-blue-100 text-[10px] sm:text-[11px] md:text-xs lg:text-sm leading-[1.15] sm:leading-tight whitespace-nowrap">
                     {stat.title}
                   </p>
                 </div>
@@ -118,26 +166,68 @@ const StatsBanner = () => {
 
 const HeroCarousel = () => {
   const images = ['/hero.png', '/hero-2.png', '/hero-3.png'];
+  const mobileImages = ['/Mobile- Hero.png', '/Mobile- Hero 2 (1080 x 1250 px).png', '/Mobile - Hero 3 (1080 x 1250 px).png'];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const mobileScrollRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isHovered) return;
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setCurrentIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % images.length;
+        if (mobileScrollRef.current) {
+          const clientWidth = mobileScrollRef.current.clientWidth;
+          mobileScrollRef.current.scrollTo({ left: nextIndex * clientWidth, behavior: 'smooth' });
+        }
+        return nextIndex;
+      });
     }, 5000);
     return () => clearInterval(interval);
   }, [images.length, isHovered]);
 
+  const handleDotClick = (idx: number) => {
+    setCurrentIndex(idx);
+    if (mobileScrollRef.current) {
+      const clientWidth = mobileScrollRef.current.clientWidth;
+      mobileScrollRef.current.scrollTo({ left: idx * clientWidth, behavior: 'smooth' });
+    }
+  };
+
+  const handleMobileScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const index = Math.round(target.scrollLeft / target.clientWidth);
+    if (index !== currentIndex) {
+      setCurrentIndex(index);
+    }
+  };
+
   return (
     <>
-      {/* Mobile-Only Static Hero */}
-      <main className="w-full relative block md:hidden">
-        <img 
-          src="/Mobile-%20Hero.png" 
-          alt="Mobile Hero Banner" 
-          className="w-full h-auto object-cover" 
-        />
+      {/* Mobile-Only Hero Carousel */}
+      <main 
+        className="w-full relative block md:hidden overflow-hidden"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div 
+          ref={mobileScrollRef}
+          onScroll={handleMobileScroll}
+          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+        >
+          {mobileImages.map((img, idx) => (
+            <div key={idx} className="w-full h-full shrink-0 snap-center">
+              <img 
+                src={img} 
+                alt={`Mobile Hero Banner ${idx + 1}`} 
+                className="w-full h-auto object-cover" 
+              />
+            </div>
+          ))}
+        </div>
+
+
+
       </main>
 
       {/* Desktop/Tablet Hero Carousel */}
@@ -168,7 +258,7 @@ const HeroCarousel = () => {
         {images.map((_, idx) => (
           <button
             key={idx}
-            onClick={() => setCurrentIndex(idx)}
+            onClick={() => handleDotClick(idx)}
             className={`w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full transition-all duration-300 shadow-sm ${
               currentIndex === idx ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'
             }`}
@@ -256,7 +346,7 @@ const AboutUs = () => {
               {/* Bullet 1 */}
               <div 
                 tabIndex={0}
-                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none border-l-4 border-l-transparent focus:border-l-8 focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
+                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none md:border-l-4 md:border-l-transparent md:focus:border-l-8 md:focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
@@ -270,7 +360,7 @@ const AboutUs = () => {
               {/* Bullet 2 */}
               <div 
                 tabIndex={0}
-                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none border-l-4 border-l-transparent focus:border-l-8 focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
+                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none md:border-l-4 md:border-l-transparent md:focus:border-l-8 md:focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
@@ -301,7 +391,7 @@ const whyChooseUsData = [
     num: "02",
     title: "Warranty & Protection",
     desc: "Dedicated warranty coverage backed by comprehensive technical support.",
-    beforeIcon: "/Icons/Group_125.png",
+    beforeIcon: "/Icons/Before 2.svg",
     afterIcon: "/Icons/A2.svg",
   },
   {
@@ -309,14 +399,14 @@ const whyChooseUsData = [
     title: "Reliable Performance",
     desc: "Laundry Machines that are designed for heavy-duty cycles with consistent performance.",
     beforeIcon: "/Icons/before 3.svg",
-    afterIcon: "/Icons/a3.svg",
+    afterIcon: "/Icons/A3.svg",
   },
   {
     num: "04",
     title: "Wide Range",
     desc: "Extensive range of washing, drying, ironing & dry-cleaning equipment under one roof.",
     beforeIcon: "/Icons/Before 4.png",
-    afterIcon: "/Icons/Before 4.png",
+    afterIcon: "/Icons/After 4 .svg",
   },
   {
     num: "05",
@@ -545,7 +635,7 @@ const ProductsHoverGallery = () => {
               <img 
                 src={getImagePath(pane as 1|2|3)} 
                 alt={`Product ${pane}`} 
-                className="absolute inset-0 w-full h-full object-contain transition-transform duration-[1.5s] ease-out bg-white" 
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-out" 
               />
             </div>
           );
@@ -565,14 +655,14 @@ const ProductsHoverGallery = () => {
             }
           }}
         >
-          <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
-             <img src="/HOME SCROLLER/1(hover).svg" alt="Product 1" className="w-full h-full object-contain" />
+          <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-transparent flex items-center justify-center">
+             <img src="/HOME SCROLLER/1(hover).svg" alt="Product 1" className="w-full h-full object-cover" />
           </div>
-          <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
-             <img src="/HOME SCROLLER/2(Hover).svg" alt="Product 2" className="w-full h-full object-contain" />
+          <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-transparent flex items-center justify-center">
+             <img src="/HOME SCROLLER/2(Hover).svg" alt="Product 2" className="w-full h-full object-cover" />
           </div>
-          <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
-             <img src="/HOME SCROLLER/3rd(HOVER).svg" alt="Product 3" className="w-full h-full object-contain" />
+          <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-transparent flex items-center justify-center">
+             <img src="/HOME SCROLLER/3rd(HOVER).svg" alt="Product 3" className="w-full h-full object-cover" />
           </div>
         </div>
         
