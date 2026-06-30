@@ -904,10 +904,10 @@ const PartsToPower = () => {
         <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 items-stretch">
           
           {/* Left Area - Image Comparison Slider */}
-          <div className="w-full xl:w-1/2 shrink-0">
+          <div className="w-full xl:w-1/2 shrink-0 flex flex-col">
             <div 
               ref={containerRef}
-              className="relative w-full aspect-square rounded-[20px] overflow-hidden select-none cursor-ew-resize group shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+              className="relative w-full h-[400px] md:h-[500px] xl:h-auto xl:flex-1 rounded-[20px] overflow-hidden select-none cursor-ew-resize group shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
               onMouseDown={(e) => {
                 setIsDragging(true);
                 handleMove(e.clientX);
@@ -947,7 +947,7 @@ const PartsToPower = () => {
           </div>
 
           {/* Right Area - Content & Grid */}
-          <div className="flex flex-col w-full xl:w-1/2 lg:pt-2 h-full">
+          <div className="flex flex-col w-full xl:w-1/2 lg:pt-2">
             <h2 className="text-3xl md:text-4xl lg:text-[40px] font-extrabold text-[#111111] leading-[1.15] tracking-tight">
               Every Part. <span className="text-[#32589c]">One Purpose.</span>
             </h2>
