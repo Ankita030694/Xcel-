@@ -1057,6 +1057,30 @@ const ProductCategories = () => {
     }
   }, []);
 
+  // Auto-play functionality
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (scrollRef.current) {
+        const target = scrollRef.current;
+        const firstChild = target.children[0] as HTMLElement;
+        if (!firstChild) return;
+
+        const itemWidth = firstChild.offsetWidth;
+        const maxScroll = target.scrollWidth - target.clientWidth;
+        let nextScroll = target.scrollLeft + itemWidth;
+        
+        // If we reached the end, loop back to the start
+        if (target.scrollLeft >= maxScroll - 10) {
+          nextScroll = 0;
+        }
+
+        target.scrollTo({ left: nextScroll, behavior: 'smooth' });
+      }
+    }, 3500); // Auto-scroll every 3.5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="w-full bg-white py-8 lg:py-12 border-b border-gray-100 relative z-20">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
