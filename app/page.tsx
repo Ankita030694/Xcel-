@@ -926,7 +926,7 @@ const PartsToPower = () => {
               
               {/* Over Image (Exterior) */}
               <img 
-                src="/Before.jpg" 
+                src="/Before.svg" 
                 alt="Machine Before"
                 className="absolute inset-0 w-full h-full object-cover pointer-events-none"
                 style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
