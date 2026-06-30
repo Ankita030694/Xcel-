@@ -495,6 +495,100 @@ const WhyChooseUs = () => {
     </section>
   );
 };
+
+const ProductsHoverGallery = () => {
+  const [activePane, setActivePane] = useState<1 | 2 | 3>(1);
+
+  const getImagePath = (paneNumber: 1 | 2 | 3) => {
+    if (activePane === 1) {
+      if (paneNumber === 1) return "/HOME SCROLLER/1(hover).svg";
+      if (paneNumber === 2) return "/HOME SCROLLER/2(noH).svg";
+      if (paneNumber === 3) return "/HOME SCROLLER/3rd(noh) 1st hover.svg";
+    }
+    if (activePane === 2) {
+      if (paneNumber === 1) return "/HOME SCROLLER/1(noh).svg";
+      if (paneNumber === 2) return "/HOME SCROLLER/2(Hover).svg";
+      if (paneNumber === 3) return "/HOME SCROLLER/3rd(noh) 2nd hover.svg";
+    }
+    if (activePane === 3) {
+      if (paneNumber === 1) return "/HOME SCROLLER/1(noh) 3rd hover.svg";
+      if (paneNumber === 2) return "/HOME SCROLLER/2(noH) 3rd hover.svg";
+      if (paneNumber === 3) return "/HOME SCROLLER/3rd(HOVER).svg";
+    }
+    return "";
+  };
+
+  return (
+    <section className="bg-white w-full pt-10 lg:pt-16 pb-6 lg:pb-8 overflow-hidden">
+      <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
+        <div className="flex items-center justify-center gap-2">
+          <span className="text-[#32589c] font-bold text-lg lg:text-xl tracking-widest animate-pulse">{"//"}</span>
+          <span className="text-gray-500 font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">ENGINEERING EXCELLENCE</span>
+        </div>
+        <h2 className="font-extrabold text-[26px] sm:text-[30px] lg:text-[36px] xl:text-[40px] leading-[1.15] text-[#0a2766] max-w-4xl tracking-tight">
+          Complete Laundry Solutions <br className="hidden sm:block lg:hidden" /> Under One Roof
+        </h2>
+      </div>
+
+      {/* Desktop Horizontal Accordion Layout */}
+      <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 h-[400px] xl:h-[500px] lg:flex gap-[20px] xl:gap-[33px] hidden">
+        {[1, 2, 3].map((pane) => {
+          const isActive = activePane === pane;
+          return (
+            <div
+              key={pane}
+              onMouseEnter={() => setActivePane(pane as 1|2|3)}
+              className={`relative h-full overflow-hidden cursor-pointer transition-[flex] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                isActive ? 'flex-[2] lg:flex-[2.2]' : 'flex-[1]'
+              }`}
+            >
+              <img 
+                src={getImagePath(pane as 1|2|3)} 
+                alt={`Product ${pane}`} 
+                className="absolute inset-0 w-full h-full object-contain transition-transform duration-[1.5s] ease-out bg-white" 
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Mobile Slider Layout (Visible only on screens < lg) */}
+      <div className="lg:hidden w-full flex flex-col items-center">
+        <div 
+          className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 sm:px-6 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          onScroll={(e) => {
+            const target = e.target as HTMLDivElement;
+            const scrollProgress = target.scrollLeft / (target.scrollWidth - target.clientWidth);
+            const progressBar = document.getElementById('mobile-product-scroll-progress');
+            if (progressBar) {
+              progressBar.style.width = `${Math.min(100, Math.max(0, scrollProgress * 100))}%`;
+            }
+          }}
+        >
+          <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
+             <img src="/HOME SCROLLER/1(hover).svg" alt="Product 1" className="w-full h-full object-contain" />
+          </div>
+          <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
+             <img src="/HOME SCROLLER/2(Hover).svg" alt="Product 2" className="w-full h-full object-contain" />
+          </div>
+          <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
+             <img src="/HOME SCROLLER/3rd(HOVER).svg" alt="Product 3" className="w-full h-full object-contain" />
+          </div>
+        </div>
+        
+        {/* Progress Bar */}
+        <div className="w-[150px] h-[3px] bg-gray-200 rounded-full mt-6 overflow-hidden">
+          <div 
+            id="mobile-product-scroll-progress"
+            className="h-full bg-[#32589c] transition-all duration-150"
+            style={{ width: '0%' }}
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const projectsData = [
   {
     id: "industrial",
@@ -832,8 +926,8 @@ export default function Home() {
       {/* Why Choose XCEL Section */}
       <WhyChooseUs />
 
-      {/* Projects Gallery Section */}
-      <ProjectsGallery />
+      {/* Products Hover Gallery Section */}
+      <ProductsHoverGallery />
 
       {/* CTA Banner Section */}
       <CTABanner />

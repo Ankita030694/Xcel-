@@ -4,22 +4,20 @@ import Link from 'next/link';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { MissionVisionSection } from '../components/MissionVisionSection';
+import { AnimatedCounter } from '../components/AnimatedCounter';
 
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-white">
       <Header />
 
-      {/* About Us Hero Section */}
-      <section className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[80vh] flex items-center justify-center overflow-hidden">
-        {/* Hero Background Image */}
-        <div className="absolute inset-0 w-full h-full">
-          <img 
-            src="/About-hero.png" 
-            alt="XCEL Headquarters" 
-            className="w-full h-full object-cover object-center"
-          />
-        </div>
+      {/* About Us Hero Section (Image Banner) */}
+      <section className="relative w-full h-auto flex flex-col items-center justify-center bg-white overflow-hidden pt-0 pb-[20px]">
+        <img 
+          src="/ABOUT US BANNER 2.svg" 
+          alt="About Us Banner" 
+          className="w-full h-auto object-cover"
+        />
       </section>
 
       {/* Our Story Section - New Layout */}
@@ -64,19 +62,27 @@ export default function AboutPage() {
           {/* Stats Row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 relative z-10">
             <div className="flex flex-col items-center text-center">
-              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">30,000+</h3>
+              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">
+                <AnimatedCounter end={30000} suffix="+" />
+              </h3>
               <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Machines Installed Across<br className="hidden lg:block"/> India</p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">8,000+</h3>
+              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">
+                <AnimatedCounter end={8000} suffix="+" />
+              </h3>
               <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Happy Clients & Counting</p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">32+</h3>
+              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">
+                <AnimatedCounter end={32} suffix="+" />
+              </h3>
               <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Years of Manufacturing<br className="hidden lg:block"/> Excellence</p>
             </div>
             <div className="flex flex-col items-center text-center">
-              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">25+</h3>
+              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">
+                <AnimatedCounter end={25} suffix="+" />
+              </h3>
               <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">States Covered</p>
             </div>
           </div>
@@ -85,32 +91,28 @@ export default function AboutPage() {
       </section>
 
       {/* Legacy Section - Stacked Layout */}
-      <section className="py-20 lg:py-24 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-[30vh]">
+      <section className="py-20 lg:py-24 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-20 lg:pb-32">
         <div className="max-w-[1200px] mx-auto">
           
           {/* Section Header */}
-          <div className="text-center mb-16 sticky top-0 z-20 bg-[#f8f9fa] py-6">
-             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#0a2766] tracking-tight mb-8">
+          <div className="text-center mb-16 relative z-20 bg-[#f8f9fa] py-6 lg:py-8">
+             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#0a2766] tracking-tight mb-4 lg:mb-8">
                 Two Generations. <br className="sm:hidden" />
                 <span className="text-[#32589c] font-serif italic font-light">One Vision.</span>
              </h2>
           </div>
 
           {/* Content Area */}
-          <div id="leadership" className="flex flex-col gap-[40vh] lg:gap-[50vh] relative">
+          <div id="leadership" className="flex flex-col gap-12 sm:gap-16 lg:gap-24 relative">
              
              {/* Generation 1: Father */}
-             <div className="sticky top-40 lg:top-48 z-0">
+             <div className="relative z-0">
                 <div className="group flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 lg:p-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 ease-out">
                    
                    {/* Image */}
                    <div className="w-full lg:w-[45%] overflow-hidden rounded-2xl">
-                      <div className="aspect-[4/3] lg:aspect-square bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
-                         {/* <img src="/father-portrait.jpg" alt="Deepak Chawla" className="absolute inset-0 w-full h-full object-cover" /> */}
-                         <div className="absolute inset-0 flex flex-col items-center justify-center text-[#3b5b95]/40 pointer-events-none">
-                           <svg className="w-16 h-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                           <span className="font-semibold text-sm">Image Placeholder (Deepak Chawla)</span>
-                         </div>
+                      <div className="bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
+                         <img src="/Deepak.svg" alt="Deepak Chawla" className="w-full h-auto block" />
                       </div>
                    </div>
                    
@@ -139,17 +141,13 @@ export default function AboutPage() {
              </div>
 
              {/* Generation 2: Son */}
-             <div className="sticky top-40 lg:top-48 z-10">
+             <div className="relative z-10">
                 <div className="group flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 lg:p-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 ease-out">
                    
                    {/* Image */}
                    <div className="w-full lg:w-[45%] overflow-hidden rounded-2xl">
-                      <div className="aspect-[4/3] lg:aspect-square bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
-                         {/* <img src="/son-portrait.jpg" alt="Mehul Chawla" className="absolute inset-0 w-full h-full object-cover" /> */}
-                         <div className="absolute inset-0 flex flex-col items-center justify-center text-[#3b5b95]/40 pointer-events-none">
-                           <svg className="w-16 h-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                           <span className="font-semibold text-sm">Image Placeholder (Mehul Chawla)</span>
-                         </div>
+                      <div className="bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
+                         <img src="/Mehul.svg" alt="Mehul Chawla" className="w-full h-auto block" />
                       </div>
                    </div>
                    
