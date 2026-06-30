@@ -95,8 +95,8 @@ export default function AboutPage() {
         <div className="max-w-[1200px] mx-auto">
           
           {/* Section Header */}
-          <div className="text-center mb-10 relative z-20 bg-[#f8f9fa] py-2 lg:py-4">
-             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#0a2766] tracking-tight mb-2 lg:mb-4">
+          <div className="text-center mb-4 lg:mb-6 relative z-20 bg-[#f8f9fa] py-2 lg:py-4">
+             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0a2766] tracking-tight mb-2 lg:mb-4">
                 Two Generations. <br className="sm:hidden" />
                 <span className="text-[#32589c] font-serif italic font-light">One Vision.</span>
              </h2>
@@ -107,7 +107,7 @@ export default function AboutPage() {
              
              {/* Generation 1: Father */}
              <div className="relative z-0">
-                <div className="group flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 lg:p-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 ease-out">
+                <div className="group flex flex-col lg:flex-row items-center gap-8 lg:gap-12 bg-white p-6 lg:py-8 lg:px-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 ease-out">
                    
                    {/* Image */}
                    <div className="w-full lg:w-[45%] overflow-hidden rounded-2xl">
@@ -122,14 +122,13 @@ export default function AboutPage() {
                          <span className="italic">Founders Note</span>
                          <span className="w-12 h-px bg-[#32589c] opacity-50"></span>
                       </h3>
-                      <p className="text-[10px] font-sans font-bold tracking-[0.2em] text-gray-400 uppercase mb-8">Generation 01</p>
                       
                       <div className="space-y-5 text-[15px] leading-[1.8] text-gray-600 font-light">
                          <p>When we started this journey, our goal was simple: to build machines that Indian businesses could genuinely rely on. Not imported equipment with long lead times, but homegrown industrial washing machines built with precision and a deep understanding of what our customers truly need.</p>
                          <p className="pl-4 border-l-2 border-[#32589c]">Our commitment remains unchanged: to manufacture machines that work harder, last longer, and deliver more value. <strong className="text-[#0a2766] font-medium">Because when your operation runs without interruption, we know we have done our job right.</strong></p>
                       </div>
                       
-                      <div className="mt-10 pt-6 border-t border-gray-100 flex items-center justify-between">
+                      <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
                          <div>
                             <p className="text-2xl font-serif text-[#32589c] italic leading-none mb-1.5">Deepak Chawla</p>
                             <p className="text-[10.5px] font-bold tracking-widest text-[#0a2766] uppercase">Managing Director</p>
@@ -142,7 +141,7 @@ export default function AboutPage() {
 
              {/* Generation 2: Son */}
              <div className="relative z-10">
-                <div className="group flex flex-col lg:flex-row items-center gap-12 lg:gap-16 bg-white p-8 lg:p-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 ease-out">
+                <div className="group flex flex-col lg:flex-row items-center gap-8 lg:gap-12 bg-white p-6 lg:py-8 lg:px-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 ease-out">
                    
                    {/* Image */}
                    <div className="w-full lg:w-[45%] overflow-hidden rounded-2xl">
@@ -157,14 +156,13 @@ export default function AboutPage() {
                          <span className="italic">Rooted in Legacy</span>
                          <span className="w-12 h-px bg-[#32589c] opacity-50"></span>
                       </h3>
-                      <p className="text-[10px] font-sans font-bold tracking-[0.2em] text-gray-400 uppercase mb-8">Generation 02</p>
                       
                       <div className="space-y-5 text-[15px] leading-[1.8] text-gray-600 font-light">
                          <p>My father built this company from the ground up, with limited resources but an unlimited commitment to the people who chose us. He taught me early on that <span className="italic font-medium text-[#0a2766]">“the machine is just the beginning; the relationship is the real product.”</span></p>
                          <p>As a second-generation entrant, my decision was simple: to honour everything that got us here and build everything that will take us forward. <strong className="text-[#0a2766] font-medium">This is a business built on trust, and we intend to keep earning it.</strong></p>
                       </div>
                       
-                      <div className="mt-10 pt-6 border-t border-gray-100 flex items-center justify-between">
+                      <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
                          <div>
                             <p className="text-2xl font-serif text-[#32589c] italic leading-none mb-1.5">Mehul Chawla</p>
                             <p className="text-[10.5px] font-bold tracking-widest text-[#0a2766] uppercase">Executive Director</p>
