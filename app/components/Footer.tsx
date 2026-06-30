@@ -151,29 +151,11 @@ export const Footer = () => {
 
             {/* Section 4: Certifications & Badges */}
             <div className="w-full bg-[#002d73] py-6 px-6 flex justify-center items-center gap-8 sm:gap-16 flex-wrap">
-               {/* Placeholders for logos matching the image */}
-               <div className="w-16 h-16 bg-white/5 rounded-full flex flex-col items-center justify-center text-white border border-white/20">
-                 <span className="font-extrabold text-[14px]">ISO</span>
-                 <span className="text-[6px] font-bold text-center leading-tight mt-1">9001-2008<br/>CERTIFIED</span>
-               </div>
-               <div className="w-16 h-16 bg-white/5 rounded-full flex flex-col items-center justify-center text-white border border-white/20">
-                 <span className="font-extrabold text-[14px]">PCMS</span>
-               </div>
-               <div className="w-16 h-16 bg-white/5 rounded-md flex flex-col items-center justify-center text-white border border-white/20">
-                 <span className="text-[7px] mb-1">Registered</span>
-                 <span className="font-bold text-[12px]">Care</span>
-               </div>
-               <div className="w-16 h-16 bg-white/5 rounded-full flex flex-col items-center justify-center text-white border border-white/20">
-                 <span className="font-extrabold text-[24px]">CE</span>
-                 <span className="text-[5px] tracking-widest mt-1">CERTIFIED</span>
-               </div>
-               <div className="w-16 h-16 bg-white/5 rounded-full flex flex-col items-center justify-center text-white border border-white/20">
-                 <span className="font-extrabold text-[14px]">GMP</span>
-               </div>
-               <div className="w-16 h-16 bg-white/5 rounded-md flex flex-col items-center justify-center text-white border border-white/20">
-                 <div className="w-5 h-5 border-2 border-white rounded-t-full mb-1"></div>
-                 <span className="text-[5px] text-center leading-tight">NORWEGIAN<br/>ACCREDITATION</span>
-               </div>
+              <img src="/Logo/ISO_9001_2008_Certification_at_%E2%82%B9_5000_certificate_in_New_Delhi_ID_22229167830_indiamart%201.svg" alt="ISO Certification" className="h-12 sm:h-16 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
+              <img src="/Logo/How_to_get_a_CE_Certification_-_tradesnest%201.svg" alt="CE Certification" className="h-12 sm:h-16 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
+              <img src="/Logo/Make_in_India_Logo_PNG_Vector_(EPS)_Free_Download_seeklogo%201.svg" alt="Make in India" className="h-12 sm:h-16 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
+              <img src="/Logo/What_is_NSIC_Online_Finance_Facilitation_Centres_(FFCs)_luxefinalyzer%201.svg" alt="NSIC" className="h-12 sm:h-16 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
+              <img src="/Logo/Our_Certifications_acquafrasassi%201.svg" alt="Certifications" className="h-12 sm:h-16 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
             </div>
 
           </div>

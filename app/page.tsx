@@ -309,9 +309,9 @@ const AboutUs = () => {
               <img 
                 src="/About-home.png" 
                 alt="Precision Laser Cutting Manufacturing" 
-                className="absolute inset-0 w-full h-full object-cover transform transition duration-700 ease-out group-hover:scale-110 group-focus:scale-110"
+                className="absolute inset-0 w-full h-full object-cover transform transition duration-700 ease-out"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a2766]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a2766]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-700 pointer-events-none" />
             </div>
           </div>
 
@@ -384,36 +384,36 @@ const whyChooseUsData = [
     num: "01",
     title: "Transparent Pricing",
     desc: "Clear, upfront pricing with no hidden charges for complete customer confidence.",
-    beforeIcon: "/Icons/before 1.svg",
-    afterIcon: "/Icons/After 1.svg",
+    beforeIcon: "/New Icons/1.png",
+    afterIcon: "/New Icons/2.png",
   },
   {
     num: "02",
     title: "Warranty & Protection",
     desc: "Dedicated warranty coverage backed by comprehensive technical support.",
-    beforeIcon: "/Icons/Before 2.svg",
-    afterIcon: "/Icons/A2.svg",
+    beforeIcon: "/New Icons/3.png",
+    afterIcon: "/New Icons/4.png",
   },
   {
     num: "03",
     title: "Reliable Performance",
     desc: "Laundry Machines that are designed for heavy-duty cycles with consistent performance.",
-    beforeIcon: "/Icons/before 3.svg",
-    afterIcon: "/Icons/A3.svg",
+    beforeIcon: "/New Icons/5.png",
+    afterIcon: "/New Icons/6.png",
   },
   {
     num: "04",
     title: "Wide Range",
     desc: "Extensive range of washing, drying, ironing & dry-cleaning equipment under one roof.",
-    beforeIcon: "/Icons/Before 4.png",
-    afterIcon: "/Icons/After 4 .svg",
+    beforeIcon: "/New Icons/7.png",
+    afterIcon: "/New Icons/8.png",
   },
   {
     num: "05",
     title: "After Sales Service",
     desc: "Quick Pan-India support from installation to preventive maintenance.",
-    beforeIcon: "/Icons/BEFORE 5.svg",
-    afterIcon: "/Icons/A5.svg",
+    beforeIcon: "/New Icons/9.png",
+    afterIcon: "/New Icons/10.png",
   }
 ];
 
@@ -997,7 +997,131 @@ const PartsToPower = () => {
   );
 };
 
+const ProductCategories = () => {
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [scrollProgress, setScrollProgress] = React.useState(0);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
 
+  const categories = [
+    { title: "WASHING", img: "/Product%20categories%20photos%20(1)/Washing.svg" },
+    { title: "DRYING", img: "/Product%20categories%20photos%20(1)/Drying.svg" },
+    { title: "APPAREL PROCESSING", img: "/Product%20categories%20photos%20(1)/Apparel%20Washing.svg" },
+    { title: "DRY-CLEANING", img: "/Product%20categories%20photos%20(1)/Dry-Cleaning.svg" },
+    { title: "FLAT-WORK", img: "/Product%20categories%20photos%20(1)/Flat-Work.svg" },
+    { title: "STEAM-FINISHING", img: "/Product%20categories%20photos%20(1)/Steam-Finishing.svg" },
+    { title: "WATER HEATER", img: "/Product%20categories%20photos%20(1)/Water%20Heater.svg" },
+    { title: "FABRIC CHECKING", img: "/Product%20categories%20photos%20(1)/Fabric%20Checking.svg" },
+    { title: "OTHER EQUIPMENT", img: "/Product%20categories%20photos%20(1)/Other%20Equipment.svg" },
+    { title: "COMPLETE RANGE", img: "/Product%20categories%20photos%20(1)/Complete%20Range.svg" }
+  ];
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const firstChild = target.children[0] as HTMLElement;
+    if (!firstChild) return;
+    
+    // Update current index
+    const itemWidth = firstChild.offsetWidth;
+    const index = Math.round(target.scrollLeft / itemWidth);
+    if (index !== currentIndex) {
+      setCurrentIndex(index);
+    }
+
+    // Update true scroll progress (0 to 100)
+    const maxScroll = target.scrollWidth - target.clientWidth;
+    if (maxScroll > 0) {
+      setScrollProgress((target.scrollLeft / maxScroll) * 100);
+    } else {
+      setScrollProgress(0);
+    }
+  };
+
+  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!scrollRef.current) return;
+    const bounds = e.currentTarget.getBoundingClientRect();
+    const clickX = e.clientX - bounds.left;
+    const percentage = clickX / bounds.width;
+    const target = scrollRef.current;
+    const maxScroll = target.scrollWidth - target.clientWidth;
+    target.scrollTo({ left: maxScroll * percentage, behavior: 'smooth' });
+  };
+
+  // Add initial scroll check to set progress in case of resizes
+  React.useEffect(() => {
+    if (scrollRef.current) {
+      const target = scrollRef.current;
+      const maxScroll = target.scrollWidth - target.clientWidth;
+      if (maxScroll > 0) {
+        setScrollProgress((target.scrollLeft / maxScroll) * 100);
+      }
+    }
+  }, []);
+
+  return (
+    <section className="w-full bg-white py-8 lg:py-12 border-b border-gray-100 relative z-20">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div 
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex flex-row flex-nowrap items-center w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-6 pt-4 scroll-smooth"
+        >
+          {categories.map((cat, idx) => (
+            <div 
+              key={idx}
+              className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 shrink-0 snap-center px-2 sm:px-3"
+            >
+              <div className="bg-gradient-to-b from-white to-[#eef2f9] border border-gray-200 rounded-[1rem] sm:rounded-[1.5rem] p-3 sm:p-5 flex flex-col aspect-square h-auto transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group cursor-pointer">
+                {/* Title */}
+                <h3 className="text-[#0a2766] font-extrabold text-[12px] min-[400px]:text-[13px] sm:text-[15px] lg:text-[16px] xl:text-[18px] tracking-tighter leading-snug mb-1 sm:mb-3 text-left shrink-0 whitespace-nowrap overflow-visible pt-1">
+                  {cat.title}
+                </h3>
+
+                {/* Short accent line */}
+                <div className="w-6 sm:w-10 h-[2px] bg-[#0a2766] rounded-full mb-2 sm:mb-4 shrink-0"></div>
+                
+                {/* Image */}
+                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-0 overflow-hidden">
+                  <img 
+                    src={cat.img} 
+                    alt={cat.title} 
+                    className="max-h-[90%] sm:max-h-full w-auto object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply" 
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23f3f4f6" width="100" height="100"/><text fill="%239ca3af" x="50%" y="50%" text-anchor="middle" dy=".3em">Missing Image</text></svg>';
+                    }}
+                  />
+                </div>
+                
+                {/* View Details Link */}
+                <div className="flex items-center gap-1 sm:gap-2 mt-auto shrink-0 pt-1 sm:pt-2">
+                  <span className="text-[#0a2766] font-bold text-[10px] min-[400px]:text-xs sm:text-sm lg:text-base">View Details</span>
+                  <svg className="w-6 h-3 sm:w-10 sm:h-4 text-[#0a2766] transition-transform duration-300 group-hover:translate-x-2" viewBox="0 0 32 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M0 12H30M22 4L30 12L22 20" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Progress Bar */}
+        <div className="w-full max-w-xs sm:max-w-md mx-auto mt-6 px-4">
+          <div 
+            className="w-full h-1.5 sm:h-2 bg-gray-200 rounded-full relative overflow-hidden cursor-pointer"
+            onClick={handleProgressClick}
+          >
+            <div 
+              className="absolute top-0 left-0 h-full bg-[#0a2766] rounded-full transition-all duration-300 ease-out"
+              style={{ 
+                width: '30%',
+                left: `${scrollProgress * 0.7}%` 
+              }}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 export default function Home() {
   return (
@@ -1009,6 +1133,9 @@ export default function Home() {
 
       {/* Stats Banner */}
       <StatsBanner />
+
+      {/* Product Categories Layout */}
+      <ProductCategories />
 
       {/* About Us Section */}
       <AboutUs />
