@@ -14,7 +14,7 @@ export default function AboutPage() {
       {/* About Us Hero Section (Image Banner) */}
       <section className="relative w-full h-auto flex flex-col items-center justify-center bg-white overflow-hidden pt-0 pb-[20px]">
         <img 
-          src="/ABOUT US BANNER 2.svg" 
+          src="/ABOUT%20US%20BANNER%203%20(1).svg" 
           alt="About Us Banner" 
           className="w-full h-auto object-cover"
         />
@@ -91,12 +91,12 @@ export default function AboutPage() {
       </section>
 
       {/* Legacy Section - Stacked Layout */}
-      <section className="py-20 lg:py-24 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-20 lg:pb-32">
+      <section className="pt-10 lg:pt-16 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-20 lg:pb-32">
         <div className="max-w-[1200px] mx-auto">
           
           {/* Section Header */}
-          <div className="text-center mb-16 relative z-20 bg-[#f8f9fa] py-6 lg:py-8">
-             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#0a2766] tracking-tight mb-4 lg:mb-8">
+          <div className="text-center mb-10 relative z-20 bg-[#f8f9fa] py-2 lg:py-4">
+             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-[#0a2766] tracking-tight mb-2 lg:mb-4">
                 Two Generations. <br className="sm:hidden" />
                 <span className="text-[#32589c] font-serif italic font-light">One Vision.</span>
              </h2>
