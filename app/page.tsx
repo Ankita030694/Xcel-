@@ -1003,16 +1003,16 @@ const ProductCategories = () => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const categories = [
-    { title: "WASHING", img: "/Product%20categories%20photos%20(1)/Washing.svg" },
-    { title: "DRYING", img: "/Product%20categories%20photos%20(1)/Drying.svg" },
-    { title: "APPAREL PROCESSING", img: "/Product%20categories%20photos%20(1)/Apparel%20Washing.svg" },
-    { title: "DRY-CLEANING", img: "/Product%20categories%20photos%20(1)/Dry-Cleaning.svg" },
-    { title: "FLAT-WORK", img: "/Product%20categories%20photos%20(1)/Flat-Work.svg" },
-    { title: "STEAM-FINISHING", img: "/Product%20categories%20photos%20(1)/Steam-Finishing.svg" },
-    { title: "WATER HEATER", img: "/Product%20categories%20photos%20(1)/Water%20Heater.svg" },
-    { title: "FABRIC CHECKING", img: "/Product%20categories%20photos%20(1)/Fabric%20Checking.svg" },
-    { title: "OTHER EQUIPMENT", img: "/Product%20categories%20photos%20(1)/Other%20Equipment.svg" },
-    { title: "COMPLETE RANGE", img: "/Product%20categories%20photos%20(1)/Complete%20Range.svg" }
+    { title: "WASHING", img: "/Product%20categories%20photos%20(1)/Washing.svg?v=2" },
+    { title: "DRYING", img: "/Product%20categories%20photos%20(1)/Drying.svg?v=2" },
+    { title: "APPAREL PROCESSING", img: "/Product%20categories%20photos%20(1)/Apparel%20Washing.svg?v=2" },
+    { title: "DRY-CLEANING", img: "/Product%20categories%20photos%20(1)/Dry-Cleaning.svg?v=2" },
+    { title: "FLAT-WORK", img: "/Product%20categories%20photos%20(1)/Flat-Work.svg?v=2" },
+    { title: "STEAM-FINISHING", img: "/Product%20categories%20photos%20(1)/Steam-Finishing.svg?v=2" },
+    { title: "WATER HEATER", img: "/Product%20categories%20photos%20(1)/Water%20Heater.svg?v=2" },
+    { title: "FABRIC CHECKING", img: "/Product%20categories%20photos%20(1)/Fabric%20Checking.svg?v=2" },
+    { title: "OTHER EQUIPMENT", img: "/Product%20categories%20photos%20(1)/Other%20Equipment.svg?v=2" },
+    { title: "COMPLETE RANGE", img: "/Product%20categories%20photos%20(1)/Complete%20Range.svg?v=2" }
   ];
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
