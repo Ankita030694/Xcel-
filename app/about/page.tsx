@@ -26,29 +26,30 @@ export default function AboutPage() {
           
 
 
-          <div className="flex flex-col md:flex-row gap-8 lg:gap-16 mb-16 lg:mb-24 relative z-10">
-            {/* Left Title */}
-            <div className="w-full md:w-1/4 shrink-0">
-              <div className="flex items-center gap-2">
-                <span className="text-[#32589c] font-bold text-xl tracking-widest animate-pulse">{"//"}</span>
-                <span className="text-gray-600 font-medium text-lg">Our Story</span>
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 mb-20 lg:mb-32 relative z-10 pt-10">
+            {/* Left Column (Title & Image) */}
+            <div className="w-full lg:w-[35%] shrink-0 relative flex flex-col">
+              <div className="flex items-center gap-2 mb-10 lg:mb-0 relative z-20">
+                <span className="text-[#32589c] font-bold text-xl tracking-widest">{"//"}</span>
+                <span className="text-[#64748b] font-medium text-lg">Our Story</span>
+              </div>
+              
+              {/* Machine Image */}
+              <div className="hidden lg:block absolute top-[-40px] left-[100px] w-[500px] h-[500px] opacity-10 pointer-events-none z-0">
+                <img 
+                  src="/about-wash.png" 
+                  alt="Machine Sketch Background" 
+                  className="w-full h-full object-contain"
+                />
               </div>
             </div>
 
             {/* Right Content */}
-            <div className="w-full md:w-3/4 flex flex-col gap-6 lg:gap-8 relative">
-              {/* Sketch Background Image - Anchored to the text column */}
-              <div className="absolute left-[-25%] lg:left-[-25%] top-[-10%] lg:top-[-15%] w-[80%] lg:w-[50%] h-[120%] opacity-[0.08] pointer-events-none z-[-1]">
-                <img 
-                  src="/about-wash.png" 
-                  alt="Machine Sketch Background" 
-                  className="w-full h-full object-contain object-left-top"
-                />
-              </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-semibold text-black leading-[1.2] tracking-tight">
+            <div className="w-full lg:w-[65%] flex flex-col gap-10 relative z-10">
+              <h2 className="text-4xl sm:text-5xl lg:text-[70px] font-bold text-black leading-[1.1] tracking-tight">
                 Engineering India's Laundry Future with World-Class Manufacturing
               </h2>
-              <div className="text-gray-600 font-normal text-base md:text-[17px] leading-[1.7] space-y-6">
+              <div className="text-[rgba(0,0,0,0.65)] font-normal text-lg lg:text-[24px] leading-[1.6] space-y-8">
                 <p>
                   Our journey began with a simple conviction that Indian businesses deserve world-class laundry equipment, designed and manufactured right here at home. Built under the Make in India initiative, XCEL operates from a 20,000 sq. ft. manufacturing facility where every machine is engineered to meet international quality and performance standards.
                 </p>
@@ -60,30 +61,30 @@ export default function AboutPage() {
           </div>
 
           {/* Stats Row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 relative z-10">
-            <div className="flex flex-col items-center text-center">
-              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-12 lg:gap-8 relative z-10 px-0 lg:px-4">
+            <div className="flex flex-col items-center text-center w-full md:w-1/4">
+              <h3 className="text-5xl lg:text-[55px] font-semibold text-[#002454] mb-4 leading-none">
                 <AnimatedCounter end={30000} suffix="+" />
               </h3>
-              <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Machines Installed Across<br className="hidden lg:block"/> India</p>
+              <p className="text-[#32589c] text-lg lg:text-[20px] font-normal leading-[1.4]">Machines Installed Across<br className="hidden lg:block"/> India</p>
             </div>
-            <div className="flex flex-col items-center text-center">
-              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">
+            <div className="flex flex-col items-center text-center w-full md:w-1/4">
+              <h3 className="text-5xl lg:text-[55px] font-semibold text-[#002454] mb-4 leading-none">
                 <AnimatedCounter end={8000} suffix="+" />
               </h3>
-              <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Happy Clients & Counting</p>
+              <p className="text-[#32589c] text-lg lg:text-[20px] font-normal leading-[1.4]">Happy Clients & Counting</p>
             </div>
-            <div className="flex flex-col items-center text-center">
-              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">
+            <div className="flex flex-col items-center text-center w-full md:w-1/4">
+              <h3 className="text-5xl lg:text-[55px] font-semibold text-[#002454] mb-4 leading-none">
                 <AnimatedCounter end={32} suffix="+" />
               </h3>
-              <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">Years of Manufacturing<br className="hidden lg:block"/> Excellence</p>
+              <p className="text-[#32589c] text-lg lg:text-[20px] font-normal leading-[1.4]">Years of Manufacturing<br className="hidden lg:block"/> Excellence</p>
             </div>
-            <div className="flex flex-col items-center text-center">
-              <h3 className="text-4xl lg:text-[44px] font-bold text-[#0a2766] mb-3">
+            <div className="flex flex-col items-center text-center w-full md:w-1/4">
+              <h3 className="text-5xl lg:text-[55px] font-semibold text-[#002454] mb-4 leading-none">
                 <AnimatedCounter end={25} suffix="+" />
               </h3>
-              <p className="text-[#3b5b95] text-sm lg:text-[15px] font-medium leading-snug">States Covered</p>
+              <p className="text-[#32589c] text-lg lg:text-[20px] font-normal leading-[1.4]">States Covered</p>
             </div>
           </div>
           
