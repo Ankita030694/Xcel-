@@ -162,7 +162,7 @@ const ProductPage = () => {
               Xcel's heavy-duty front loading apparel washing machine features advanced PCB programming for enzyme, acid, bleach & stone wash. Built for garment export, apparel processing and denim units PAN India!
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 mt-auto">
+            <div className="flex flex-col sm:flex-row gap-4 mt-2">
               <button className="flex-1 bg-[#0a2766] text-white py-3.5 sm:py-4 px-6 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-[#071b4a] hover:-translate-y-1 hover:shadow-lg transition-all">
                 <Send size={18} />
                 Request a Quote
