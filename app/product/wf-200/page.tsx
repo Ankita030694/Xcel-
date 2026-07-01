@@ -3,11 +3,11 @@
 import React, { useState } from 'react';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
-import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Mail, ArrowRight } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Mail, ArrowRight, Settings, ShieldCheck, Factory, HelpCircle } from 'lucide-react';
 
 const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(0);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState<string | null>('features');
 
   const images = [
     '/Before.svg',
@@ -20,6 +20,7 @@ const ProductPage = () => {
     {
       id: 'features',
       title: 'Key Features',
+      icon: Settings,
       subtext: 'Explore the features engineered to maximize productivity',
       content: (
         <div className="flex flex-col gap-6">
@@ -53,6 +54,7 @@ const ProductPage = () => {
     {
       id: 'why-us',
       title: 'Why Choose Us',
+      icon: ShieldCheck,
       subtext: 'Discover the advantages that set XCEL apart',
       content: (
         <div className="p-4 text-gray-600 text-sm">
@@ -63,6 +65,7 @@ const ProductPage = () => {
     {
       id: 'industries',
       title: 'Industries Served',
+      icon: Factory,
       subtext: 'Tailored laundry solutions for every industry we serve',
       content: (
         <div className="flex flex-col gap-4">
@@ -80,6 +83,7 @@ const ProductPage = () => {
     {
       id: 'faqs',
       title: 'FAQs',
+      icon: HelpCircle,
       subtext: 'Find quick answers to common product questions',
       content: (
         <div className="p-4 text-gray-600 text-sm">
@@ -174,26 +178,8 @@ const ProductPage = () => {
         {/* Detailed Information Section */}
         <div className="mb-12 lg:mb-20">
           
-          {/* Desktop/Tablet Grid View (When none is active) */}
-          <div className="hidden lg:grid grid-cols-4 gap-6">
-            {!activeSection && sections.map((section) => (
-              <div 
-                key={section.id}
-                onClick={() => setActiveSection(section.id)}
-                className="bg-white rounded-2xl p-6 lg:p-8 flex flex-col cursor-pointer border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all group"
-              >
-                <h3 className="text-[#0a2766] font-bold text-xl mb-3">{section.title}</h3>
-                <p className="text-gray-500 text-sm leading-relaxed mb-6 flex-1">{section.subtext}</p>
-                <div className="flex items-center text-[#32589c] font-semibold text-sm gap-2 mt-auto">
-                  View Details
-                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Expanded / Accordion View (Always on mobile, or active on Desktop) */}
-          <div className={`flex flex-col gap-3 sm:gap-4 ${!activeSection ? 'lg:hidden' : 'lg:flex'}`}>
+          {/* Accordion View (Always visible on all screen sizes) */}
+          <div className="flex flex-col gap-3 sm:gap-4">
             {sections.map((section) => (
               <div 
                 key={section.id} 
