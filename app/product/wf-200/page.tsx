@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
-import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Mail, ArrowRight, Settings, ShieldCheck, Factory, HelpCircle } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Mail, ArrowRight, Settings, ShieldCheck, Factory, HelpCircle, Home } from 'lucide-react';
 
 const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(0);
@@ -103,18 +103,18 @@ const ProductPage = () => {
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
         
         {/* Breadcrumbs */}
-        <div className="flex flex-row items-center gap-2 text-[12px] sm:text-[13px] text-gray-500 mb-6 lg:mb-10 font-medium overflow-x-auto whitespace-nowrap pb-2">
-          <a href="/" className="hover:text-[#0a2766] transition-colors flex items-center gap-1">
-             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <div className="flex flex-row items-center gap-3 text-[13px] text-gray-500 mb-6 lg:mb-10 overflow-x-auto whitespace-nowrap pb-2">
+          <a href="/" className="text-gray-500 hover:text-[#0a2766] transition-colors flex items-center">
+             <Home size={14} strokeWidth={1.5} />
           </a>
-          <ChevronRight size={14} />
+          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
           <a href="/" className="hover:text-[#0a2766] transition-colors">Home</a>
-          <ChevronRight size={14} />
+          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
           <span className="hover:text-[#0a2766] transition-colors cursor-pointer">Products</span>
-          <ChevronRight size={14} />
+          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
           <span className="hover:text-[#0a2766] transition-colors cursor-pointer">Apparel Processing Machines</span>
-          <ChevronRight size={14} />
-          <span className="text-gray-800 font-semibold">Washing Machine WF-200</span>
+          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
+          <span className="text-[#0a2766] font-semibold">Washing Machine WF-200</span>
         </div>
 
         {/* Top Section */}
