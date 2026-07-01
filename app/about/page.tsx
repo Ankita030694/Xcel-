@@ -26,51 +26,51 @@ export default function AboutPage() {
           
 
 
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 mb-16 lg:mb-24 relative z-10 pt-10 px-4 lg:px-8 max-w-[1200px] mx-auto">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-12 lg:mb-16 relative z-10 pt-4 px-4 lg:px-8 max-w-[1100px] mx-auto">
             {/* Left Column: Title & Vertical Stats */}
-            <div className="w-full lg:w-[30%] shrink-0 flex flex-col gap-8">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-[#002454] font-bold text-xl tracking-widest">{"//"}</span>
-                <span className="text-[#64748b] font-medium text-lg">Our Story</span>
+            <div className="w-full lg:w-[30%] shrink-0 flex flex-col gap-6">
+              <div className="flex items-center gap-2 mb-0">
+                <span className="text-[#002454] font-bold text-lg tracking-widest">{"//"}</span>
+                <span className="text-[#64748b] font-medium text-base">Our Story</span>
               </div>
               
-              <div className="flex flex-col gap-8">
+              <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-start text-left gap-1">
-                  <h3 className="text-4xl font-semibold text-[#002454] leading-tight">
+                  <h3 className="text-3xl font-bold text-[#002454] leading-none">
                     <AnimatedCounter end={30000} suffix="+" />
                   </h3>
-                  <p className="text-[#32589c] text-sm font-normal">Machines Installed Across<br/> India</p>
+                  <p className="text-[#32589c] text-[13px] font-medium">Machines Installed Across<br/> India</p>
                 </div>
                 
                 <div className="flex flex-col items-start text-left gap-1">
-                  <h3 className="text-4xl font-semibold text-[#002454] leading-tight">
+                  <h3 className="text-3xl font-bold text-[#002454] leading-none">
                     <AnimatedCounter end={8000} suffix="+" />
                   </h3>
-                  <p className="text-[#32589c] text-sm font-normal">Happy Clients & Counting</p>
+                  <p className="text-[#32589c] text-[13px] font-medium">Happy Clients & Counting</p>
                 </div>
                 
                 <div className="flex flex-col items-start text-left gap-1">
-                  <h3 className="text-4xl font-semibold text-[#002454] leading-tight">
+                  <h3 className="text-3xl font-bold text-[#002454] leading-none">
                     <AnimatedCounter end={32} suffix="+" />
                   </h3>
-                  <p className="text-[#32589c] text-sm font-normal">Years of Manufacturing<br/> Excellence</p>
+                  <p className="text-[#32589c] text-[13px] font-medium">Years of Manufacturing<br/> Excellence</p>
                 </div>
                 
                 <div className="flex flex-col items-start text-left gap-1">
-                  <h3 className="text-4xl font-semibold text-[#002454] leading-tight">
+                  <h3 className="text-3xl font-bold text-[#002454] leading-none">
                     <AnimatedCounter end={25} suffix="+" />
                   </h3>
-                  <p className="text-[#32589c] text-sm font-normal">States Covered</p>
+                  <p className="text-[#32589c] text-[13px] font-medium">States Covered</p>
                 </div>
               </div>
             </div>
 
             {/* Right Content: Title & Text */}
-            <div className="w-full lg:w-[70%] flex flex-col gap-6 relative z-10">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-semibold text-black leading-tight tracking-tight">
+            <div className="w-full lg:w-[70%] flex flex-col gap-5 relative z-10">
+              <h2 className="text-2xl sm:text-3xl lg:text-[40px] font-semibold text-black leading-[1.2] tracking-tight">
                 Engineering India's Laundry Future with World-Class Manufacturing
               </h2>
-              <div className="text-gray-600 font-normal text-base lg:text-lg leading-relaxed space-y-6">
+              <div className="text-gray-600 font-normal text-sm lg:text-base leading-relaxed space-y-5">
                 <p>
                   Our journey began with a simple conviction that Indian businesses deserve world-class laundry equipment, designed and manufactured right here at home. Built under the Make in India initiative, XCEL operates from a 20,000 sq. ft. manufacturing facility where every machine is engineered to meet international quality and performance standards.
                 </p>
