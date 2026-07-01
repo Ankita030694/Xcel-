@@ -147,7 +147,7 @@ const ProductPage = () => {
           </div>
 
           {/* Right: Product Info */}
-          <div className="w-full lg:w-[45%] flex flex-col justify-center">
+          <div className="w-full lg:w-[45%] flex flex-col justify-start">
             <div className="inline-block bg-[#eef2f9] text-[#32589c] text-[11px] sm:text-[12px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wider w-fit mb-4">
               Apparel Processing Machines
             </div>
