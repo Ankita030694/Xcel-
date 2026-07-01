@@ -28,39 +28,39 @@ export default function AboutPage() {
 
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-12 lg:mb-16 relative z-10 pt-4 px-4 lg:px-8 max-w-[1100px] mx-auto">
             {/* Left Column: Title & Vertical Stats */}
-            <div className="w-full lg:w-[30%] shrink-0 flex flex-col gap-6">
+            <div className="w-full lg:w-[30%] shrink-0 flex flex-col gap-8">
               <div className="flex items-center gap-2 mb-0">
                 <span className="text-[#002454] font-bold text-lg tracking-widest">{"//"}</span>
                 <span className="text-[#64748b] font-medium text-base">Our Story</span>
               </div>
               
-              <div className="flex flex-col gap-6">
-                <div className="flex flex-col items-start text-left gap-1">
-                  <h3 className="text-3xl font-bold text-[#002454] leading-none">
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col items-start text-left gap-2">
+                  <h3 className="text-5xl font-bold text-[#002454] leading-none tracking-tight">
                     <AnimatedCounter end={30000} suffix="+" />
                   </h3>
-                  <p className="text-[#32589c] text-[13px] font-medium">Machines Installed Across<br/> India</p>
+                  <p className="text-[#32589c] text-base lg:text-[17px] font-medium leading-[1.3]">Machines Installed Across<br/> India</p>
                 </div>
                 
-                <div className="flex flex-col items-start text-left gap-1">
-                  <h3 className="text-3xl font-bold text-[#002454] leading-none">
+                <div className="flex flex-col items-start text-left gap-2">
+                  <h3 className="text-5xl font-bold text-[#002454] leading-none tracking-tight">
                     <AnimatedCounter end={8000} suffix="+" />
                   </h3>
-                  <p className="text-[#32589c] text-[13px] font-medium">Happy Clients & Counting</p>
+                  <p className="text-[#32589c] text-base lg:text-[17px] font-medium leading-[1.3]">Happy Clients & Counting</p>
                 </div>
                 
-                <div className="flex flex-col items-start text-left gap-1">
-                  <h3 className="text-3xl font-bold text-[#002454] leading-none">
+                <div className="flex flex-col items-start text-left gap-2">
+                  <h3 className="text-5xl font-bold text-[#002454] leading-none tracking-tight">
                     <AnimatedCounter end={32} suffix="+" />
                   </h3>
-                  <p className="text-[#32589c] text-[13px] font-medium">Years of Manufacturing<br/> Excellence</p>
+                  <p className="text-[#32589c] text-base lg:text-[17px] font-medium leading-[1.3]">Years of Manufacturing<br/> Excellence</p>
                 </div>
                 
-                <div className="flex flex-col items-start text-left gap-1">
-                  <h3 className="text-3xl font-bold text-[#002454] leading-none">
+                <div className="flex flex-col items-start text-left gap-2">
+                  <h3 className="text-5xl font-bold text-[#002454] leading-none tracking-tight">
                     <AnimatedCounter end={25} suffix="+" />
                   </h3>
-                  <p className="text-[#32589c] text-[13px] font-medium">States Covered</p>
+                  <p className="text-[#32589c] text-base lg:text-[17px] font-medium leading-[1.3]">States Covered</p>
                 </div>
               </div>
             </div>
