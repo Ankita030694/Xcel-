@@ -100,7 +100,7 @@ const ProductPage = () => {
     <div className="min-h-screen bg-[#f8f9fa] font-sans flex flex-col">
       <Header />
 
-      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10 mt-16 lg:mt-24">
+      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
         
         {/* Breadcrumbs */}
         <div className="flex flex-row items-center gap-2 text-[12px] sm:text-[13px] text-gray-500 mb-6 lg:mb-10 font-medium overflow-x-auto whitespace-nowrap pb-2">
