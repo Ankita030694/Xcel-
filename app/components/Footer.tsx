@@ -13,7 +13,7 @@ export const Footer = () => {
           <div className="w-full lg:w-[35%] bg-[#d3dce8] p-6 lg:p-8 flex flex-col text-[#0a2766]">
             <h3 className="text-[24px] lg:text-[28px] font-bold mb-1">Get in Touch with us</h3>
             <p className="text-[#0a2766]/80 text-[14px] mb-5 leading-snug">
-              A Xcel Professional will contact you at the earliest.
+              An Xcel Professional will contact you at the earliest.
             </p>
             
             {/* Flush Inputs */}

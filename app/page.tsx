@@ -295,9 +295,10 @@ const AboutUs = () => {
       </div>
 
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
-        <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-stretch md:items-start lg:items-stretch">
-          
-          {/* Left Column - Image */}
+        <div className="flex flex-col gap-6 md:gap-8 lg:gap-16">
+          <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-stretch md:items-start lg:items-stretch">
+            
+            {/* Left Column - Image */}
           <div 
             tabIndex={0}
             className="w-full md:w-5/12 lg:w-1/2 shrink-0 relative group flex flex-col cursor-pointer outline-none"
@@ -341,7 +342,7 @@ const AboutUs = () => {
             </div>
 
             {/* Feature Bullets */}
-            <div className="flex flex-col gap-6 lg:gap-4 mt-2 lg:mt-0">
+            <div className="flex md:hidden lg:flex flex-col gap-6 lg:gap-4 mt-2 lg:mt-0">
               
               {/* Bullet 1 */}
               <div 
@@ -373,6 +374,41 @@ const AboutUs = () => {
 
             </div>
           </div>
+        </div>
+
+        {/* Feature Bullets (Tablet Only - Full Width) */}
+        <div className="hidden md:flex lg:hidden flex-col gap-6 w-full mt-2">
+          
+          {/* Bullet 1 */}
+          <div 
+            tabIndex={0}
+            className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none md:border-l-4 md:border-l-transparent md:focus:border-l-8 md:focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
+            onTouchStart={() => {}}
+          >
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
+              <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.png" alt="Manufacturing" className="w-full h-full object-contain" />
+            </div>
+            <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
+              Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
+            </p>
+          </div>
+
+          {/* Bullet 2 */}
+          <div 
+            tabIndex={0}
+            className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none md:border-l-4 md:border-l-transparent md:focus:border-l-8 md:focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
+            onTouchStart={() => {}}
+          >
+            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
+              <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.png" alt="Partnership" className="w-full h-full object-contain" />
+            </div>
+            <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
+              Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
+            </p>
+          </div>
+
+        </div>
+        
         </div>
       </div>
     </section>
@@ -589,18 +625,18 @@ const WhyChooseUs = () => {
 const ProductsHoverGallery = () => {
   const [activePane, setActivePane] = useState<1 | 2 | 3>(1);
 
-  const getImagePath = (paneNumber: 1 | 2 | 3) => {
-    if (activePane === 1) {
+  const getImagePath = (paneNumber: 1 | 2 | 3, targetActivePane: 1 | 2 | 3) => {
+    if (targetActivePane === 1) {
       if (paneNumber === 1) return "/HOME SCROLLER/1(hover).svg";
       if (paneNumber === 2) return "/HOME SCROLLER/2(noH).svg";
       if (paneNumber === 3) return "/HOME SCROLLER/3rd(noh) 1st hover.svg";
     }
-    if (activePane === 2) {
+    if (targetActivePane === 2) {
       if (paneNumber === 1) return "/HOME SCROLLER/1(noh).svg";
       if (paneNumber === 2) return "/HOME SCROLLER/2(Hover).svg";
       if (paneNumber === 3) return "/HOME SCROLLER/3rd(noh) 2nd hover.svg";
     }
-    if (activePane === 3) {
+    if (targetActivePane === 3) {
       if (paneNumber === 1) return "/HOME SCROLLER/1(noh) 3rd hover.svg";
       if (paneNumber === 2) return "/HOME SCROLLER/2(noH) 3rd hover.svg";
       if (paneNumber === 3) return "/HOME SCROLLER/3rd(HOVER).svg";
@@ -630,13 +666,20 @@ const ProductsHoverGallery = () => {
               onMouseEnter={() => setActivePane(pane as 1|2|3)}
               className={`relative h-full overflow-hidden cursor-pointer transition-[flex] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                 isActive ? 'flex-[2] lg:flex-[2.2]' : 'flex-[1]'
-              }`}
+              } will-change-[flex]`}
             >
-              <img 
-                src={getImagePath(pane as 1|2|3)} 
-                alt={`Product ${pane}`} 
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-out" 
-              />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[550px] pointer-events-none will-change-transform">
+                {[1, 2, 3].map((state) => (
+                  <img 
+                    key={state}
+                    src={getImagePath(pane as 1|2|3, state as 1|2|3)} 
+                    alt={`Product ${pane}`} 
+                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                      activePane === state ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                    }`} 
+                  />
+                ))}
+              </div>
             </div>
           );
         })}
@@ -656,13 +699,13 @@ const ProductsHoverGallery = () => {
           }}
         >
           <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-transparent flex items-center justify-center">
-             <img src="/HOME SCROLLER/1(hover).svg" alt="Product 1" className="w-full h-full object-cover" />
+             <img src="/Mobile 1.svg" alt="Product 1" className="w-full h-full object-contain" />
           </div>
           <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-transparent flex items-center justify-center">
-             <img src="/HOME SCROLLER/2(Hover).svg" alt="Product 2" className="w-full h-full object-cover" />
+             <img src="/Mobile 2.svg" alt="Product 2" className="w-full h-full object-contain" />
           </div>
           <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-transparent flex items-center justify-center">
-             <img src="/HOME SCROLLER/3rd(HOVER).svg" alt="Product 3" className="w-full h-full object-cover" />
+             <img src="/Mobile 3.svg" alt="Product 3" className="w-full h-full object-contain" />
           </div>
         </div>
         
@@ -726,20 +769,22 @@ const ProjectsGallery = () => {
               onMouseEnter={() => setActivePane(project.id)}
               className={`relative h-full overflow-hidden cursor-pointer transition-[flex] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                 isActive ? 'flex-[2] lg:flex-[1.8]' : 'flex-[1]'
-              }`}
+              } will-change-[flex]`}
             >
-              {/* Background Image */}
-              <img 
-                src={project.img} 
-                alt={project.title} 
-                className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-out ${
-                  isActive ? 'scale-105' : 'scale-100'
-                }`} 
-              />
+              {/* Hardware Accelerated Background Image Wrapper */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[550px] pointer-events-none will-change-transform">
+                <img 
+                  src={project.img} 
+                  alt={project.title} 
+                  className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                    isActive ? 'scale-105' : 'scale-100'
+                  }`} 
+                />
+              </div>
               
               {/* Dark Overlay (darker when inactive) */}
               <div 
-                className={`absolute inset-0 bg-black transition-opacity duration-700 ${
+                className={`absolute inset-0 bg-black transition-opacity duration-700 pointer-events-none ${
                   isActive ? 'opacity-35' : 'opacity-50'
                 }`} 
               />
@@ -907,7 +952,7 @@ const PartsToPower = () => {
           <div className="w-full xl:w-1/2 shrink-0 flex flex-col">
             <div 
               ref={containerRef}
-              className="relative w-full h-[400px] md:h-[500px] xl:h-auto xl:flex-1 rounded-[20px] overflow-hidden select-none cursor-ew-resize group shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+              className="relative w-full h-[400px] md:h-auto md:aspect-square xl:aspect-auto xl:h-auto xl:flex-1 rounded-[20px] overflow-hidden select-none cursor-ew-resize group shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
               onMouseDown={(e) => {
                 setIsDragging(true);
                 handleMove(e.clientX);
@@ -1108,7 +1153,7 @@ const ProductCategories = () => {
                   <img 
                     src={cat.img} 
                     alt={cat.title} 
-                    className="max-h-[90%] sm:max-h-full w-auto object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply" 
+                    className="max-h-[90%] sm:max-h-full w-auto object-contain transition-transform duration-500 group-hover:scale-110" 
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23f3f4f6" width="100" height="100"/><text fill="%239ca3af" x="50%" y="50%" text-anchor="middle" dy=".3em">Missing Image</text></svg>';
                     }}
