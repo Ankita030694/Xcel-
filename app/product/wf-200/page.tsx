@@ -8,6 +8,7 @@ import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Send, Download, Head
 const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [activeSection, setActiveSection] = useState<string | null>('features');
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
 
   const images = [
     '/we-30-photo.jpg.svg',
@@ -20,6 +21,7 @@ const ProductPage = () => {
       title: 'Key Features',
       icon: Settings,
       subtext: 'Explore the features engineered to maximize productivity',
+      shortDesc: 'Explore powerful features and technical specifications',
       content: (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
           <div className="border-l-[3px] border-[#32589c] pl-4">
@@ -70,6 +72,7 @@ const ProductPage = () => {
       title: 'Why Choose Us',
       icon: ShieldCheck,
       subtext: 'Discover the advantages that set XCEL apart',
+      shortDesc: 'Built with quality, engineered for performance',
       content: (
         <div className="p-2 text-gray-600 text-sm">
           Built with quality, engineered for performance. We prioritize durability and continuous innovation.
@@ -81,6 +84,7 @@ const ProductPage = () => {
       title: 'Industries Served',
       icon: Factory,
       subtext: 'Tailored laundry solutions for every industry we serve',
+      shortDesc: 'Solutions trusted across diverse industries',
       content: (
         <div className="p-2 text-gray-600 text-sm">
           Content for Industries Served will go here.
@@ -92,6 +96,7 @@ const ProductPage = () => {
       title: 'FAQs',
       icon: HelpCircle,
       subtext: 'Find quick answers to common product questions',
+      shortDesc: 'Get answers to common questions',
       content: (
         <div className="p-4 text-gray-600 text-sm">
           Frequently asked questions will be listed here.
@@ -182,8 +187,36 @@ const ProductPage = () => {
           </div>
         </div>
 
-        {/* Features Tabs Section */}
-        <div className="mb-12 lg:mb-20 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col">
+        {/* Features Accordion Section (Mobile) */}
+        <div className="flex lg:hidden flex-col mb-12 bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden divide-y divide-gray-100">
+          {sections.map(section => (
+            <div key={section.id} className="flex flex-col bg-white">
+              <button 
+                onClick={() => setMobileExpanded(mobileExpanded === section.id ? null : section.id)} 
+                className="flex flex-row items-center justify-between p-4 sm:p-5 text-left w-full hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex flex-row items-center gap-4">
+                  <div className="w-[2px] h-[40px] bg-[#0a2766] shrink-0"></div>
+                  <div className="flex flex-col gap-0.5 pr-2">
+                    <span className="text-[#0a2766] font-semibold text-[15px] sm:text-[16px]">{section.title}</span>
+                    <span className="text-gray-500 text-[13px] leading-snug">{section.shortDesc}</span>
+                  </div>
+                </div>
+                <ChevronDown size={22} strokeWidth={1.5} className={`text-[#0a2766] shrink-0 ml-2 transition-transform duration-300 ${mobileExpanded === section.id ? 'rotate-180' : ''}`} />
+              </button>
+              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileExpanded === section.id ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                <div className="p-4 sm:p-5 pt-0 mt-0">
+                  <div className="pt-4 border-t border-gray-100">
+                    {section.content}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Features Tabs Section (Desktop) */}
+        <div className="hidden lg:flex mb-12 lg:mb-20 bg-white rounded-2xl shadow-sm border border-gray-100 flex-col">
             {/* Tabs Header */}
             <div className="flex flex-row w-full mb-0 relative z-20 [&>button:first-child]:rounded-tl-2xl [&>button:last-child]:rounded-tr-2xl">
               {sections.map((section, index) => {
