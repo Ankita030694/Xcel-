@@ -321,15 +321,15 @@ const AboutUs = () => {
             
             {/* Header Area */}
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-[#32589c] font-bold text-xl md:text-2xl tracking-widest animate-pulse">{"//"}</span>
-              <span className="text-gray-500 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">About XCEL</span>
+              <span className="text-[#32589c] font-bold text-xl md:text-base lg:text-2xl tracking-widest animate-pulse">{"//"}</span>
+              <span className="text-gray-500 font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase">About XCEL</span>
             </div>
 
-            <h2 className="font-extrabold text-xl md:text-2xl lg:text-3xl leading-[1.15] mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-500">
+            <h2 className="font-extrabold text-xl md:text-base lg:text-3xl leading-[1.15] mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-500">
               Building India's Future in <span className="text-[#32589c]">Commercial Laundry</span> Manufacturing
             </h2>
 
-            <div className="text-gray-600 font-normal text-sm leading-relaxed space-y-3 mb-6">
+            <div className="text-gray-600 font-normal text-sm md:text-[13px] lg:text-sm leading-relaxed space-y-3 mb-6">
               <p 
                 tabIndex={0}
                 className="border-l-4 border-[#32589c] pl-5 py-1 opacity-90 transition-all duration-300 hover:border-l-8 focus:border-l-8 outline-none cursor-pointer"
@@ -353,7 +353,7 @@ const AboutUs = () => {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
                   <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.png" alt="Manufacturing" className="w-full h-full object-contain" />
                 </div>
-                <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
                   Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
                 </p>
               </div>
@@ -367,7 +367,7 @@ const AboutUs = () => {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
                   <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.png" alt="Partnership" className="w-full h-full object-contain" />
                 </div>
-                <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
                   Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
                 </p>
               </div>
@@ -388,7 +388,7 @@ const AboutUs = () => {
             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
               <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.png" alt="Manufacturing" className="w-full h-full object-contain" />
             </div>
-            <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
+            <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
               Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
             </p>
           </div>
@@ -402,7 +402,7 @@ const AboutUs = () => {
             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
               <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.png" alt="Partnership" className="w-full h-full object-contain" />
             </div>
-            <p className="font-medium text-[13px] sm:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
+            <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
               Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
             </p>
           </div>
