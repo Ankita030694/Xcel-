@@ -1,6 +1,83 @@
-import React from 'react';
+"use client";
+import React, { useState } from 'react';
+import { db } from '../../lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 export const Footer = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    contact: '',
+    email: '',
+    state: '',
+    message: '',
+    interest: '',
+    acceptedPolicy: false
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const indianStatesAndUTs = [
+    "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", 
+    "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa", 
+    "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", 
+    "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", 
+    "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", 
+    "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+  ];
+
+  const handleNameChange = (e) => {
+    const value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+    setFormData({ ...formData, name: value });
+  };
+
+  const handleContactChange = (e) => {
+    const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setFormData({ ...formData, contact: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.contact || !formData.email || !formData.state) {
+      alert("Please fill all required fields");
+      return;
+    }
+    if (formData.contact.length !== 10) {
+      alert("Please enter exactly 10 digits for the phone number");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+    if (!formData.acceptedPolicy) {
+      alert("Please accept the privacy policy");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await addDoc(collection(db, "contactForms"), {
+        ...formData,
+        submittedAt: serverTimestamp(),
+      });
+      alert("Form submitted successfully!");
+      setFormData({
+        name: '',
+        contact: '',
+        email: '',
+        state: '',
+        message: '',
+        interest: '',
+        acceptedPolicy: false
+      });
+    } catch (error) {
+      console.error("Error submitting form: ", error);
+      alert("Failed to submit form. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <footer className="w-full bg-[#f3f5f8] pt-8 lg:pt-10 pb-0 px-4 sm:px-8 lg:px-12 flex justify-center font-sans">
       {/* Outer Wrapper for the white grid lines */}
@@ -18,11 +95,16 @@ export const Footer = () => {
             
             {/* Flush Inputs */}
             <div className="flex flex-col bg-white border-none w-full mb-4">
-              <input type="text" placeholder="Name*" className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" />
-              <input type="text" placeholder="Contact No.*" className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" />
-              <input type="email" placeholder="Email Address*" className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" />
-              <input type="text" placeholder="Location*" className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" />
-              <textarea rows={2} placeholder="Message" className="w-full bg-transparent px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors resize-none text-[13px]"></textarea>
+              <input type="text" placeholder="Name*" value={formData.name} onChange={handleNameChange} className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" />
+              <input type="text" placeholder="Contact No.*" value={formData.contact} onChange={handleContactChange} className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" />
+              <input type="email" placeholder="Email Address*" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" />
+              <select value={formData.state} onChange={(e) => setFormData({ ...formData, state: e.target.value })} className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]">
+                <option value="" disabled>Select State/UT*</option>
+                {indianStatesAndUTs.map((state) => (
+                  <option key={state} value={state}>{state}</option>
+                ))}
+              </select>
+              <textarea rows={2} placeholder="Message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full bg-transparent px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors resize-none text-[13px]"></textarea>
             </div>
             
             {/* Checkboxes */}
@@ -30,24 +112,24 @@ export const Footer = () => {
               <p className="text-[#0a2766] mb-2 text-[13px]">Area of Interest</p>
               <div className="flex flex-wrap gap-5 mb-4">
                 <label className="flex items-center gap-1.5 cursor-pointer">
-                  <input type="radio" name="interest" className="w-3.5 h-3.5 accent-[#002d73] cursor-pointer" />
+                  <input type="radio" name="interest" value="Sales" checked={formData.interest === 'Sales'} onChange={(e) => setFormData({ ...formData, interest: e.target.value })} className="w-3.5 h-3.5 accent-[#002d73] cursor-pointer" />
                   <span className="text-[#0a2766] text-[13px] font-medium">Sales</span>
                 </label>
                 <label className="flex items-center gap-1.5 cursor-pointer">
-                  <input type="radio" name="interest" className="w-3.5 h-3.5 accent-[#002d73] cursor-pointer" />
+                  <input type="radio" name="interest" value="Services" checked={formData.interest === 'Services'} onChange={(e) => setFormData({ ...formData, interest: e.target.value })} className="w-3.5 h-3.5 accent-[#002d73] cursor-pointer" />
                   <span className="text-[#0a2766] text-[13px] font-medium">Services</span>
                 </label>
 
               </div>
               
               <label className="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" className="w-3.5 h-3.5 mt-0.5 accent-[#002d73] cursor-pointer shrink-0" />
+                <input type="checkbox" checked={formData.acceptedPolicy} onChange={(e) => setFormData({ ...formData, acceptedPolicy: e.target.checked })} className="w-3.5 h-3.5 mt-0.5 accent-[#002d73] cursor-pointer shrink-0" />
                 <span className="text-[#0a2766] text-[13px] leading-tight">By checking this box I accept the <strong>Privacy Policy</strong></span>
               </label>
             </div>
 
-            <button type="button" className="w-1/2 mx-auto bg-[#002d73] hover:bg-[#001f54] text-white font-medium text-[14px] py-2.5 transition-colors">
-              SUBMIT
+            <button type="button" onClick={handleSubmit} disabled={isSubmitting} className="w-1/2 mx-auto bg-[#002d73] hover:bg-[#001f54] text-white font-medium text-[14px] py-2.5 transition-colors disabled:opacity-50">
+              {isSubmitting ? "SUBMITTING..." : "SUBMIT"}
             </button>
           </div>
 
