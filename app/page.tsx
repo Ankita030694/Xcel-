@@ -253,19 +253,7 @@ const HeroCarousel = () => {
         </div>
       </div>
       
-      {/* Navigation Dots */}
-      <div className="absolute bottom-4 lg:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 lg:gap-3 z-10">
-        {images.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleDotClick(idx)}
-            className={`w-2.5 h-2.5 lg:w-3 lg:h-3 rounded-full transition-all duration-300 shadow-sm ${
-              currentIndex === idx ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'
-            }`}
-            aria-label={`Go to slide ${idx + 1}`}
-          />
-        ))}
-      </div>
+
 
       {/* Navigation Arrows (visible on hover) */}
       <button 
@@ -308,7 +296,7 @@ const AboutUs = () => {
             <div className="absolute -inset-1 bg-gradient-to-r from-[#32589c] to-[#3b5b95] rounded-[2rem] blur opacity-20 group-hover:opacity-40 group-focus:opacity-40 transition duration-1000 group-hover:duration-200" />
             <div className="relative aspect-square md:aspect-square lg:aspect-auto lg:flex-1 lg:h-full w-full rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-400/50 transform transition duration-700 ease-out group-hover:-translate-y-2 group-focus:-translate-y-2">
               <img 
-                src="/About-home.png" 
+                src="/converted_1080x1080%201.svg" 
                 alt="Precision Laser Cutting Manufacturing" 
                 className="absolute inset-0 w-full h-full object-cover transform transition duration-700 ease-out"
               />
@@ -589,10 +577,10 @@ const WhyChooseUs = () => {
                           className={`${item.title === "Wide Range" ? "max-h-[56px] lg:max-h-[70px]" : "max-h-[42px] lg:max-h-[50px]"} w-auto object-contain mx-auto`} 
                         />
                       </div>
-                      <h3 className="font-bold text-[13px] lg:text-[15px] leading-snug px-0.5 lg:px-2 h-[36px] lg:h-[44px] flex items-start justify-center">
+                      <h3 className="font-bold text-[13px] lg:text-[15px] leading-snug px-0.5 lg:px-2 h-[36px] lg:h-[44px] flex items-start justify-center shrink-0">
                         {item.title}
                       </h3>
-                      <div className={`w-6 h-0.5 mt-2 ${frontLineColor}`}></div>
+                      <div className={`w-6 h-0.5 mt-2 shrink-0 ${frontLineColor}`}></div>
                     </div>
 
                     {/* Back Face */}
@@ -604,7 +592,7 @@ const WhyChooseUs = () => {
                           className={`${item.title === "Wide Range" ? "max-h-[46px] lg:max-h-[56px]" : "max-h-[38px] lg:max-h-[46px]"} w-auto object-contain mx-auto`} 
                         />
                       </div>
-                      <div className={`w-6 h-0.5 mb-4 ${backLineColor}`}></div>
+                      <div className={`w-6 h-0.5 mb-4 shrink-0 ${backLineColor}`}></div>
                       <p className="text-[11px] lg:text-[13px] font-medium leading-relaxed px-0.5">
                         {item.desc}
                       </p>
@@ -627,19 +615,19 @@ const ProductsHoverGallery = () => {
 
   const getImagePath = (paneNumber: 1 | 2 | 3, targetActivePane: 1 | 2 | 3) => {
     if (targetActivePane === 1) {
-      if (paneNumber === 1) return "/HOME SCROLLER/1(hover).svg";
-      if (paneNumber === 2) return "/HOME SCROLLER/2(noH).svg";
-      if (paneNumber === 3) return "/HOME SCROLLER/3rd(noh) 1st hover.svg";
+      if (paneNumber === 1) return "/hover final/1(hover).jpg";
+      if (paneNumber === 2) return "/hover final/2(noH).jpg";
+      if (paneNumber === 3) return "/hover final/3rd(noh) 1st hover.jpg";
     }
     if (targetActivePane === 2) {
-      if (paneNumber === 1) return "/HOME SCROLLER/1(noh).svg";
-      if (paneNumber === 2) return "/HOME SCROLLER/2(Hover).svg";
-      if (paneNumber === 3) return "/HOME SCROLLER/3rd(noh) 2nd hover.svg";
+      if (paneNumber === 1) return "/hover final/1(noh).jpg";
+      if (paneNumber === 2) return "/hover final/2(Hover).jpg";
+      if (paneNumber === 3) return "/hover final/3rd(noh) 2nd hover.jpg";
     }
     if (targetActivePane === 3) {
-      if (paneNumber === 1) return "/HOME SCROLLER/1(noh) 3rd hover.svg";
-      if (paneNumber === 2) return "/HOME SCROLLER/2(noH) 3rd hover.svg";
-      if (paneNumber === 3) return "/HOME SCROLLER/3rd(HOVER).svg";
+      if (paneNumber === 1) return "/hover final/1(noh) 3rd hover.jpg";
+      if (paneNumber === 2) return "/hover final/2(noH) 3rd hover.jpg";
+      if (paneNumber === 3) return "/hover final/3rd(HOVER).jpg";
     }
     return "";
   };
@@ -998,7 +986,7 @@ const PartsToPower = () => {
             </h2>
             <div className="w-12 h-[4px] bg-[#32589c] mt-4 mb-3"></div>
             <p className="text-gray-600 text-[15px] lg:text-[16px] leading-relaxed max-w-2xl mb-8">
-              Performance begins long before a machine reaches your facility. It begins with premium components, precision engineering and rigorous testing that power every XCEL system.
+              Performance begins long before a machine reaches your facility. It begins with premium components, precision engineering and rigorous testing that power every XCEL machine.
             </p>
 
             {/* Feature Grid */}
@@ -1048,16 +1036,16 @@ const ProductCategories = () => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const categories = [
-    { title: "WASHING", img: "/Product%20categories%20photos%20(1)/Washing.svg?v=2" },
-    { title: "DRYING", img: "/Product%20categories%20photos%20(1)/Drying.svg?v=2" },
-    { title: "APPAREL PROCESSING", img: "/Product%20categories%20photos%20(1)/Apparel%20Washing.svg?v=2" },
-    { title: "DRY-CLEANING", img: "/Product%20categories%20photos%20(1)/Dry-Cleaning.svg?v=2" },
-    { title: "FLAT-WORK", img: "/Product%20categories%20photos%20(1)/Flat-Work.svg?v=2" },
-    { title: "STEAM-FINISHING", img: "/Product%20categories%20photos%20(1)/Steam-Finishing.svg?v=2" },
-    { title: "WATER HEATER", img: "/Product%20categories%20photos%20(1)/Water%20Heater.svg?v=2" },
-    { title: "FABRIC CHECKING", img: "/Product%20categories%20photos%20(1)/Fabric%20Checking.svg?v=2" },
-    { title: "OTHER EQUIPMENT", img: "/Product%20categories%20photos%20(1)/Other%20Equipment.svg?v=2" },
-    { title: "COMPLETE RANGE", img: "/Product%20categories%20photos%20(1)/Complete%20Range.svg?v=2" }
+    { title: "WASHING", img: "/prod.final/Washing 1.png" },
+    { title: "DRYING", img: "/prod.final/Drying 1.png" },
+    { title: "APPAREL PROCESSING", img: "/prod.final/Apparel Washing 1.png" },
+    { title: "DRY-CLEANING", img: "/prod.final/Dry-Cleaning 1.png" },
+    { title: "FLAT-WORK", img: "/prod.final/Flat-Work 1.png" },
+    { title: "STEAM-FINISHING", img: "/prod.final/Steam-Finishing 1.png" },
+    { title: "WATER HEATER", img: "/prod.final/Water Heater 1.png" },
+    { title: "FABRIC CHECKING", img: "/prod.final/Fabric Checking 1.png" },
+    { title: "OTHER EQUIPMENT", img: "/prod.final/Other Equipment 1.png" },
+    { title: "COMPLETE RANGE", img: "/prod.final/Complete Range 1.png" }
   ];
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {

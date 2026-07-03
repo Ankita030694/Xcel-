@@ -24,45 +24,45 @@ const ProductPage = () => {
       shortDesc: 'Explore powerful features and technical specifications',
       content: (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
-          <div className="border-l-[3px] border-[#32589c] pl-4">
-            <h4 className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] mb-1">High-Capacity Production Range</h4>
-            <p className="text-gray-600 text-[14px] leading-relaxed">Available in 100 kg and 200kg capacities for high-volume processing environments where output, consistency, and operational efficiency are critical.</p>
+          <div className="border-l-2 border-[#32589c] pl-6">
+            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">High-Capacity Production Range</h4>
+            <p className="text-gray-600 text-[13px] leading-relaxed">Available in 100 kg and 200kg capacities for high-volume processing environments where output, consistency, and operational efficiency are critical.</p>
           </div>
-          <div className="border-l-[3px] border-[#32589c] pl-4">
-            <h4 className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] mb-1">Auto Forward & Reverse Basket Rotation</h4>
-            <p className="text-gray-600 text-[14px] leading-relaxed">Fully programmable reversing action ensures uniform garment movement, improved chemical penetration and tangle-free processing across every batch.</p>
+          <div className="border-l-2 border-[#32589c] pl-6">
+            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Auto Forward & Reverse Basket Rotation</h4>
+            <p className="text-gray-600 text-[13px] leading-relaxed">Fully programmable reversing action ensures uniform garment movement, improved chemical penetration and tangle-free processing across every batch.</p>
           </div>
-          <div className="border-l-[3px] border-[#32589c] pl-4">
-            <h4 className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] mb-1">Advanced Multi-Stage Programming</h4>
-            <p className="text-gray-600 text-[14px] leading-relaxed">Fully programmable wash cycles with multiple independent process stages, allowing precise control over temperature, water levels, basket speed, chemical dosing and cycle duration.</p>
+          <div className="border-l-2 border-[#32589c] pl-6">
+            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Advanced Multi-Stage Programming</h4>
+            <p className="text-gray-600 text-[13px] leading-relaxed">Fully programmable wash cycles with multiple independent process stages, allowing precise control over temperature, water levels, basket speed, chemical dosing and cycle duration.</p>
           </div>
-          <div className="border-l-[3px] border-[#32589c] pl-4">
-            <h4 className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] mb-1">SS 304 Chemical-Resistant Inner Drum & Door</h4>
-            <p className="text-gray-600 text-[14px] leading-relaxed">Constructed from premium-grade 304 stainless steel to withstand continuous exposure to enzymes, bleach, acids, dyes and textile processing chemicals.</p>
+          <div className="border-l-2 border-[#32589c] pl-6">
+            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">SS 304 Chemical-Resistant Inner Drum & Door</h4>
+            <p className="text-gray-600 text-[13px] leading-relaxed">Constructed from premium-grade 304 stainless steel to withstand continuous exposure to enzymes, bleach, acids, dyes and textile processing chemicals.</p>
           </div>
-          <div className="border-l-[3px] border-[#32589c] pl-4">
-            <h4 className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] mb-1">Imported VFD (Variable Frequency Drive)</h4>
-            <p className="text-gray-600 text-[14px] leading-relaxed">Enables accurate drum speed control from gentle fabric handling to aggressive denim processing, delivering superior wash quality and process consistency.</p>
+          <div className="border-l-2 border-[#32589c] pl-6">
+            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Imported VFD (Variable Frequency Drive)</h4>
+            <p className="text-gray-600 text-[13px] leading-relaxed">Enables accurate drum speed control from gentle fabric handling to aggressive denim processing, delivering superior wash quality and process consistency.</p>
           </div>
-          <div className="border-l-[3px] border-[#32589c] pl-4">
-            <h4 className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] mb-1">Industrial-Grade CNC Fabricated Frame</h4>
-            <p className="text-gray-600 text-[14px] leading-relaxed">Precision CNC-cut welded frame construction delivers exceptional structural strength, vibration resistance and long operational life.</p>
+          <div className="border-l-2 border-[#32589c] pl-6">
+            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Industrial-Grade CNC Fabricated Frame</h4>
+            <p className="text-gray-600 text-[13px] leading-relaxed">Precision CNC-cut welded frame construction delivers exceptional structural strength, vibration resistance and long operational life.</p>
           </div>
-          <div className="border-l-[3px] border-[#32589c] pl-4">
-            <h4 className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] mb-1">High-Temperature Processing</h4>
-            <p className="text-gray-600 text-[14px] leading-relaxed">Steam-heated operation with digital temperature control for enzyme washing, bleaching, dyeing, garment treatment and specialized textile processing applications.</p>
+          <div className="border-l-2 border-[#32589c] pl-6">
+            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">High-Temperature Processing</h4>
+            <p className="text-gray-600 text-[13px] leading-relaxed">Steam-heated operation with digital temperature control for enzyme washing, bleaching, dyeing, garment treatment and specialized textile processing applications.</p>
           </div>
-          <div className="border-l-[3px] border-[#32589c] pl-4">
-            <h4 className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] mb-1">Automatic Water Inlet & Drain System</h4>
-            <p className="text-gray-600 text-[14px] leading-relaxed">PLC-controlled water filling and draining enables uninterrupted production with minimal operator intervention.</p>
+          <div className="border-l-2 border-[#32589c] pl-6">
+            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Automatic Water Inlet & Drain System</h4>
+            <p className="text-gray-600 text-[13px] leading-relaxed">PLC-controlled water filling and draining enables uninterrupted production with minimal operator intervention.</p>
           </div>
-          <div className="border-l-[3px] border-[#32589c] pl-4">
-            <h4 className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] mb-1">Programmable Water Level Management</h4>
-            <p className="text-gray-600 text-[14px] leading-relaxed">Low, medium and high water level options programmable per wash step for optimized liquor ratio and chemical efficiency.</p>
+          <div className="border-l-2 border-[#32589c] pl-6">
+            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Programmable Water Level Management</h4>
+            <p className="text-gray-600 text-[13px] leading-relaxed">Low, medium and high water level options programmable per wash step for optimized liquor ratio and chemical efficiency.</p>
           </div>
-          <div className="border-l-[3px] border-[#32589c] pl-4">
-            <h4 className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] mb-1">Operator Safety Protection</h4>
-            <p className="text-gray-600 text-[14px] leading-relaxed">The machine automatically stops basket rotation if the door is opened during operation, enhancing workplace safety and reducing operational risks.</p>
+          <div className="border-l-2 border-[#32589c] pl-6">
+            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Operator Safety Protection</h4>
+            <p className="text-gray-600 text-[13px] leading-relaxed">The machine automatically stops basket rotation if the door is opened during operation, enhancing workplace safety and reducing operational risks.</p>
           </div>
         </div>
       )

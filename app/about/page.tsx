@@ -12,58 +12,80 @@ export default function AboutPage() {
       <Header />
 
       {/* About Us Hero Section (Image Banner) */}
-      <section className="relative w-full h-auto flex flex-col items-center justify-center bg-white overflow-hidden pt-0 pb-[20px]">
+      <section className="relative w-full h-auto flex flex-col items-center justify-center bg-white overflow-hidden pt-0 pb-0">
         <img 
-          src="/ABOUT%20US%20BANNER%203%20(1).svg" 
+          src="/ABOUT%20US%20BANNER%202%201.svg" 
           alt="About Us Banner" 
           className="w-full h-auto object-cover"
         />
       </section>
 
       {/* Our Story Section - New Layout */}
-      <section id="our-story" className="relative py-16 lg:py-24 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
+      <section id="our-story" className="relative py-6 lg:py-10 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
         <div className="max-w-[1200px] mx-auto relative">
-          
-
-
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-[74px] mb-16 lg:mb-24 relative z-10 pt-10 px-4 lg:px-8 max-w-[1450px] mx-auto items-end">
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-[100px] mb-2 relative z-10 pt-2 px-4 lg:px-8 items-start">
             {/* Left Column: Vertical Stats */}
-            <div className="w-full lg:w-[308px] shrink-0 flex flex-col gap-[65px]">
-              <div className="flex flex-col items-start text-left gap-[10px]">
-                <h3 className="text-[55px] font-semibold text-[#002454] leading-[55px]">
-                  <AnimatedCounter end={30000} suffix="+" />
-                </h3>
-                <p className="text-[#32589c] text-[25px] font-normal leading-[25px]">Machines Installed Across India</p>
+            <div className="w-full lg:w-[250px] shrink-0 flex flex-col gap-4 lg:gap-[35px] order-2 lg:order-1">
+              {/* Tagline (Desktop) */}
+              <div className="hidden lg:flex items-center gap-2 mb-2">
+                <span className="text-[#32589c] font-bold text-base sm:text-lg animate-pulse">{"//"}</span>
+                <span className="text-[#32589c] font-bold text-sm sm:text-base tracking-wide">Our Story</span>
               </div>
-              
-              <div className="flex flex-col items-start text-left gap-[10px]">
-                <h3 className="text-[55px] font-semibold text-[#002454] leading-[55px]">
-                  <AnimatedCounter end={8000} suffix="+" />
-                </h3>
-                <p className="text-[#32589c] text-[25px] font-normal leading-[25px]">Happy Clients & Counting</p>
-              </div>
-              
-              <div className="flex flex-col items-start text-left gap-[10px]">
-                <h3 className="text-[55px] font-semibold text-[#002454] leading-[55px]">
-                  <AnimatedCounter end={32} suffix="+" />
-                </h3>
-                <p className="text-[#32589c] text-[25px] font-normal leading-[25px]">Years of Manufacturing Excellence</p>
-              </div>
-              
-              <div className="flex flex-col items-start text-left gap-[10px]">
-                <h3 className="text-[55px] font-semibold text-[#002454] leading-[55px]">
-                  <AnimatedCounter end={25} suffix="+" />
-                </h3>
-                <p className="text-[#32589c] text-[25px] font-normal leading-[25px]">States Covered</p>
+
+              <div className="grid grid-cols-2 gap-6 lg:grid-cols-1 lg:gap-[35px]">
+                <div className="flex flex-col items-start text-left gap-1">
+                  <h3 className="text-[36px] sm:text-[42px] font-bold text-[#0a2766] leading-none">
+                    <AnimatedCounter end={30000} suffix="+" />
+                  </h3>
+                  <div className="w-12 h-[2px] bg-[#32589c] opacity-30 my-1"></div>
+                  <p className="text-[#32589c] text-[13px] sm:text-[14px] font-semibold leading-tight max-w-[180px]">
+                    Machines Installed Across India
+                  </p>
+                </div>
+                
+                <div className="flex flex-col items-start text-left gap-1">
+                  <h3 className="text-[36px] sm:text-[42px] font-bold text-[#0a2766] leading-none">
+                    <AnimatedCounter end={8000} suffix="+" />
+                  </h3>
+                  <div className="w-12 h-[2px] bg-[#32589c] opacity-30 my-1"></div>
+                  <p className="text-[#32589c] text-[13px] sm:text-[14px] font-semibold leading-tight max-w-[180px]">
+                    Happy Clients & Counting
+                  </p>
+                </div>
+                
+                <div className="flex flex-col items-start text-left gap-1">
+                  <h3 className="text-[36px] sm:text-[42px] font-bold text-[#0a2766] leading-none">
+                    <AnimatedCounter end={32} suffix="+" />
+                  </h3>
+                  <div className="w-12 h-[2px] bg-[#32589c] opacity-30 my-1"></div>
+                  <p className="text-[#32589c] text-[13px] sm:text-[14px] font-semibold leading-tight max-w-[180px]">
+                    Years of Manufacturing Excellence
+                  </p>
+                </div>
+                
+                <div className="flex flex-col items-start text-left gap-1">
+                  <h3 className="text-[36px] sm:text-[42px] font-bold text-[#0a2766] leading-none">
+                    <AnimatedCounter end={25} suffix="+" />
+                  </h3>
+                  <div className="w-12 h-[2px] bg-[#32589c] opacity-30 my-1"></div>
+                  <p className="text-[#32589c] text-[13px] sm:text-[14px] font-semibold leading-tight max-w-[180px]">
+                    States Covered
+                  </p>
+                </div>
               </div>
             </div>
 
             {/* Right Content: Title & Text */}
-            <div className="w-full lg:flex-1 flex flex-col gap-[30px] relative z-10">
-              <h2 className="text-4xl sm:text-5xl lg:text-[70px] font-medium text-black leading-tight lg:leading-[80px] tracking-tight">
+            <div className="w-full lg:flex-1 flex flex-col gap-6 lg:gap-8 relative z-10 pt-8 lg:pt-16 order-1 lg:order-2">
+              {/* Tagline (Mobile) */}
+              <div className="flex lg:hidden items-center gap-2 -mb-2">
+                <span className="text-[#32589c] font-bold text-base sm:text-lg animate-pulse">{"//"}</span>
+                <span className="text-[#32589c] font-bold text-sm sm:text-base tracking-wide">Our Story</span>
+              </div>
+              <h2 className="text-[28px] sm:text-[32px] lg:text-[38px] xl:text-[42px] font-bold text-[#0a2766] leading-[1.15] tracking-tight">
                 Engineering India's Laundry Future with World-Class Manufacturing
               </h2>
-              <div className="text-[rgba(0,0,0,0.65)] font-normal text-lg lg:text-[30px] leading-[1.6] lg:leading-[35px] space-y-6 lg:space-y-[35px]">
+              <div className="mt-2 md:mt-4 lg:mt-8 text-gray-600 font-normal text-sm sm:text-base lg:text-[17px] leading-[1.65] space-y-6 max-w-[850px]">
                 <p>
                   Our journey began with a simple conviction that Indian businesses deserve world-class laundry equipment, designed and manufactured right here at home. Built under the Make in India initiative, XCEL operates from a 20,000 sq. ft. manufacturing facility where every machine is engineered to meet international quality and performance standards.
                 </p>
@@ -73,7 +95,6 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-          
         </div>
       </section>
 
@@ -111,9 +132,9 @@ export default function AboutPage() {
                       </h3>
                       
                       <div className="space-y-5 text-[15px] leading-[1.8] text-gray-600 font-light">
-                         <p>When we started this journey, our goal was simple: to build machines that Indian businesses could genuinely rely on. Not imported equipment with long lead times, but homegrown industrial washing machines built with precision and a deep understanding of what our customers truly need.</p>
-                         <p className="pl-4 border-l-2 border-[#32589c]">Our commitment remains unchanged: to manufacture machines that work harder, last longer, and deliver more value. <strong className="text-[#0a2766] font-medium">Because when your operation runs without interruption, we know we have done our job right.</strong></p>
-                      </div>
+                          <p>When we started this journey, our vision was simple—to build industrial washing machines that Indian businesses could trust. Seeing our machines perform reliably in hotels, hospitals, and manufacturing facilities across the country is a reflection of the confidence our customers place in us every day.</p>
+                          <p className="pl-4 border-l-2 border-[#32589c]">As technology evolves, we remain committed to innovation, quality, and long-term value. Our focus continues to be on delivering durable, efficient, and dependable solutions that help our customers operate with confidence and grow sustainably.</p>
+                       </div>
                       
                       <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
                          <div>
@@ -145,9 +166,9 @@ export default function AboutPage() {
                       </h3>
                       
                       <div className="space-y-5 text-[15px] leading-[1.8] text-gray-600 font-light">
-                         <p>My father built this company from the ground up, with limited resources but an unlimited commitment to the people who chose us. He taught me early on that <span className="italic font-medium text-[#0a2766]">“the machine is just the beginning; the relationship is the real product.”</span></p>
-                         <p>As a second-generation entrant, my decision was simple: to honour everything that got us here and build everything that will take us forward. <strong className="text-[#0a2766] font-medium">This is a business built on trust, and we intend to keep earning it.</strong></p>
-                      </div>
+                          <p>My father built this company with a simple belief — that success comes from earning trust, not just selling machines. Growing up, I watched him build lasting relationships with customers and learned that our real product has always been reliability, service, and commitment.</p>
+                          <p className="pl-4 border-l-2 border-[#32589c]">As the second generation leading this journey forward, my focus is on preserving those values while embracing the future. With advancements in automation, energy efficiency, and smart technologies, we continue to innovate so our clients can operate with confidence. This company was built on trust, and my commitment is to keep strengthening that trust for generations to come.</p>
+                       </div>
                       
                       <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
                          <div>
@@ -246,7 +267,7 @@ function DraggableTimeline() {
   };
 
   return (
-    <section className="pt-24 pb-12 bg-white border-t border-gray-100 overflow-hidden relative">
+    <section className="pt-10 lg:pt-12 pb-12 bg-white border-t border-gray-100 overflow-hidden relative">
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 relative z-10">
           <div className="text-center mb-16 lg:mb-20">
             <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-bold text-[#32589c] tracking-tight mb-4 transition-transform duration-500 hover:scale-105">
