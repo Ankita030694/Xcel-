@@ -24,17 +24,17 @@ export const Footer = () => {
     "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
   ];
 
-  const handleNameChange = (e) => {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
     setFormData({ ...formData, name: value });
   };
 
-  const handleContactChange = (e) => {
+  const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 10);
     setFormData({ ...formData, contact: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     if (!formData.name || !formData.contact || !formData.email || !formData.state) {
       alert("Please fill all required fields");
