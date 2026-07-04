@@ -615,19 +615,19 @@ const ProductsHoverGallery = () => {
 
   const getImagePath = (paneNumber: 1 | 2 | 3, targetActivePane: 1 | 2 | 3) => {
     if (targetActivePane === 1) {
-      if (paneNumber === 1) return "/hover final/1(hover).jpg";
-      if (paneNumber === 2) return "/hover final/2(noH).jpg";
-      if (paneNumber === 3) return "/hover final/3rd(noh) 1st hover.jpg";
+      if (paneNumber === 1) return "/Hov/1st hover.svg";
+      if (paneNumber === 2) return "/Hov/2nd non 1st hov.svg";
+      if (paneNumber === 3) return "/Hov/3rd(noh) 1st hover.svg";
     }
     if (targetActivePane === 2) {
-      if (paneNumber === 1) return "/hover final/1(noh).jpg";
-      if (paneNumber === 2) return "/hover final/2(Hover).jpg";
-      if (paneNumber === 3) return "/hover final/3rd(noh) 2nd hover.jpg";
+      if (paneNumber === 1) return "/Hov/1(noh).svg";
+      if (paneNumber === 2) return "/Hov/2nd hover.svg";
+      if (paneNumber === 3) return "/Hov/3rd(noh) 2nd hover.svg";
     }
     if (targetActivePane === 3) {
-      if (paneNumber === 1) return "/hover final/1(noh) 3rd hover.jpg";
-      if (paneNumber === 2) return "/hover final/2(noH) 3rd hover.jpg";
-      if (paneNumber === 3) return "/hover final/3rd(HOVER).jpg";
+      if (paneNumber === 1) return "/Hov/1(noh) 3rd hover.svg";
+      if (paneNumber === 2) return "/Hov/2noh 3rd hov.svg";
+      if (paneNumber === 3) return "/Hov/3rd(HOVER).svg";
     }
     return "";
   };
@@ -652,22 +652,20 @@ const ProductsHoverGallery = () => {
             <div
               key={pane}
               onMouseEnter={() => setActivePane(pane as 1|2|3)}
-              className={`relative h-full overflow-hidden cursor-pointer transition-[flex] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+              className={`relative h-full overflow-hidden cursor-pointer transition-[flex] duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                 isActive ? 'flex-[2] lg:flex-[2.2]' : 'flex-[1]'
-              } will-change-[flex]`}
+              } will-change-[flex] rounded-xl bg-[#f8f9fa] transform-gpu backface-hidden`}
             >
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[550px] pointer-events-none will-change-transform">
-                {[1, 2, 3].map((state) => (
-                  <img 
-                    key={state}
-                    src={getImagePath(pane as 1|2|3, state as 1|2|3)} 
-                    alt={`Product ${pane}`} 
-                    className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
-                      activePane === state ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                    }`} 
-                  />
-                ))}
-              </div>
+              {[1, 2, 3].map((state) => (
+                <img 
+                  key={state}
+                  src={getImagePath(pane as 1|2|3, state as 1|2|3)} 
+                  alt={`Product ${pane}`} 
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                    activePane === state ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                  } object-center transform-gpu backface-hidden will-change-[opacity]`} 
+                />
+              ))}
             </div>
           );
         })}
@@ -687,13 +685,13 @@ const ProductsHoverGallery = () => {
           }}
         >
           <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-transparent flex items-center justify-center">
-             <img src="/Mobile 1.svg" alt="Product 1" className="w-full h-full object-contain" />
+             <img src="/Hov/1st hover.svg" alt="Product 1" className="w-full h-full object-contain" />
           </div>
           <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-transparent flex items-center justify-center">
-             <img src="/Mobile 2.svg" alt="Product 2" className="w-full h-full object-contain" />
+             <img src="/Hov/2nd hover.svg" alt="Product 2" className="w-full h-full object-contain" />
           </div>
           <div className="relative w-[85vw] max-w-[400px] h-[350px] sm:h-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-transparent flex items-center justify-center">
-             <img src="/Mobile 3.svg" alt="Product 3" className="w-full h-full object-contain" />
+             <img src="/Hov/3rd(HOVER).svg" alt="Product 3" className="w-full h-full object-contain" />
           </div>
         </div>
         

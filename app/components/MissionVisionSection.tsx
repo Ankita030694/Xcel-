@@ -2,7 +2,7 @@ import React from 'react';
 
 export function MissionVisionSection() {
   return (
-    <section className="pt-4 pb-16 lg:pt-8 lg:pb-24 bg-white relative">
+    <section className="pt-4 pb-6 lg:pt-8 lg:pb-10 bg-white relative">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
