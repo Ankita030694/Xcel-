@@ -147,7 +147,7 @@ const StatsBanner = () => {
               <div className="relative z-10 flex flex-row items-center gap-1 sm:gap-2 lg:gap-4 text-left w-full justify-center lg:justify-center">
                 
                 <h3 className="font-extrabold text-[18px] sm:text-xl md:text-2xl lg:text-3xl text-white tracking-tight drop-shadow-sm whitespace-nowrap">
-                  <Counter end={stat.end} suffix={stat.suffix} />
+                  <span>{stat.end.toLocaleString()}{stat.suffix}</span>
                 </h3>
                 
                 <div className="flex items-center">

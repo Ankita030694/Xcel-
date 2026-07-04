@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { MissionVisionSection } from '../components/MissionVisionSection';
-import { AnimatedCounter } from '../components/AnimatedCounter';
+
 
 export default function AboutPage() {
   return (
@@ -35,7 +35,7 @@ export default function AboutPage() {
               <div className="grid grid-cols-2 gap-6 lg:grid-cols-1 lg:gap-[35px]">
                 <div className="flex flex-col items-start text-left gap-1">
                   <h3 className="text-[36px] sm:text-[42px] font-bold text-[#0a2766] leading-none">
-                    <AnimatedCounter end={30000} suffix="+" />
+                    30,000+
                   </h3>
                   <div className="w-12 h-[2px] bg-[#32589c] opacity-30 my-1"></div>
                   <p className="text-[#32589c] text-[13px] sm:text-[14px] font-semibold leading-tight max-w-[180px]">
@@ -45,7 +45,7 @@ export default function AboutPage() {
                 
                 <div className="flex flex-col items-start text-left gap-1">
                   <h3 className="text-[36px] sm:text-[42px] font-bold text-[#0a2766] leading-none">
-                    <AnimatedCounter end={8000} suffix="+" />
+                    8,000+
                   </h3>
                   <div className="w-12 h-[2px] bg-[#32589c] opacity-30 my-1"></div>
                   <p className="text-[#32589c] text-[13px] sm:text-[14px] font-semibold leading-tight max-w-[180px]">
@@ -55,7 +55,7 @@ export default function AboutPage() {
                 
                 <div className="flex flex-col items-start text-left gap-1">
                   <h3 className="text-[36px] sm:text-[42px] font-bold text-[#0a2766] leading-none">
-                    <AnimatedCounter end={32} suffix="+" />
+                    32+
                   </h3>
                   <div className="w-12 h-[2px] bg-[#32589c] opacity-30 my-1"></div>
                   <p className="text-[#32589c] text-[13px] sm:text-[14px] font-semibold leading-tight max-w-[180px]">
@@ -65,7 +65,7 @@ export default function AboutPage() {
                 
                 <div className="flex flex-col items-start text-left gap-1">
                   <h3 className="text-[36px] sm:text-[42px] font-bold text-[#0a2766] leading-none">
-                    <AnimatedCounter end={25} suffix="+" />
+                    25+
                   </h3>
                   <div className="w-12 h-[2px] bg-[#32589c] opacity-30 my-1"></div>
                   <p className="text-[#32589c] text-[13px] sm:text-[14px] font-semibold leading-tight max-w-[180px]">

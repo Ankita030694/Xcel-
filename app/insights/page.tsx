@@ -1,34 +1,37 @@
-import React from 'react';
+"use client";
+import React, from 'react';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
-import { ArrowRight } from 'lucide-react';
 
-const imgPlaceholder = "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop";
-const imgPlaceholderSmall = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop";
+const placeholderFeatured = "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=2070&auto=format&fit=crop";
+const placeholderSquare = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop";
 
 export default function InsightsPage() {
   return (
     <div className="min-h-screen bg-white font-sans flex flex-col">
       <Header />
       
-      <main className="flex-grow w-full max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+      <main className="flex-grow w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-20 py-12 md:py-16 xl:py-24 pt-[100px] lg:pt-[120px]">
         
         {/* Page Header */}
-        <div className="flex flex-col items-center text-center mb-16">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="text-[#3b5b95] font-bold text-xl tracking-widest">//</span>
-            <span className="text-gray-500 font-bold text-sm tracking-[0.15em]">Insights & Updates</span>
+        <div className="flex flex-col mb-16 lg:mb-24">
+          <div className="mb-8">
+            <span className="text-[#3b5b95] font-semibold text-lg lg:text-xl tracking-wide">// Insights & Updates</span>
+            <h1 className="text-4xl md:text-5xl lg:text-[64px] font-extrabold text-[#0a2766] tracking-tight leading-[1.1] mt-4">
+              Latest Insights from XCEL
+            </h1>
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-[52px] font-extrabold text-black tracking-tight leading-[1.1] mb-10 max-w-2xl">
-            Latest Insights from XCEL
-          </h1>
           
-          {/* Filters */}
-          <div className="flex flex-wrap justify-center gap-4 lg:gap-6">
+          {/* Filters / Tabs */}
+          <div className="flex flex-wrap gap-6 lg:gap-10 border-t border-gray-200 pt-6">
             {['Industry News', 'Case Studies', 'Laundry Tips', 'Product Updates'].map((filter, index) => (
               <button 
                 key={index}
-                className="px-6 py-2 rounded-full border border-[#1e448a] text-[#1e448a] font-medium text-[13px] hover:bg-[#1e448a] hover:text-white transition-colors"
+                className={`text-[16px] lg:text-[18px] font-semibold pb-2 border-b-2 transition-all ${
+                  index === 0 
+                    ? "text-[#0a2766] border-[#0a2766]" 
+                    : "text-gray-500 border-transparent hover:text-[#0a2766] hover:border-gray-300"
+                }`}
               >
                 {filter}
               </button>
@@ -36,61 +39,77 @@ export default function InsightsPage() {
           </div>
         </div>
 
-        {/* Animated Grid from Figma */}
-        <div className="w-full mt-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[auto]">
-            
-            {/* Item 1 - Featured (Spans 2 columns) */}
-            <div className="col-span-1 md:col-span-2 bg-white rounded-[15px] p-8 relative group min-h-[450px] lg:min-h-[550px] shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer flex flex-col md:flex-row border border-gray-100">
-              <div className="w-full md:w-1/2 flex flex-col h-full relative z-10 pr-4">
-                <p className="font-semibold text-[20px] tracking-[2px] mb-4 text-black uppercase">DESIGN</p>
-                <h2 className="text-3xl md:text-4xl lg:text-[35px] font-medium leading-[40px] text-black mb-4 pr-12">
-                  The Importance of Mobile-First Design in 2005
-                </h2>
-                <p className="text-[rgba(0,0,0,0.65)] text-[20px] lg:text-[28px]">Feb 26, 2001</p>
-              </div>
-              <div className="w-full md:w-1/2 mt-8 md:mt-0 relative h-[300px] md:h-auto overflow-hidden rounded-[10px] transition-all duration-500 ease-out group-hover:scale-[1.03] group-hover:shadow-2xl">
-                <img src={imgPlaceholder} alt="Feature" className="absolute inset-0 w-full h-full object-cover rounded-[10px]" />
-              </div>
-            </div>
-
-            {/* Item 2 - Tall Standard (Spans 1 column) */}
-            <div className="col-span-1 bg-white rounded-[15px] p-8 relative group min-h-[450px] lg:min-h-[550px] shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer flex flex-col border border-gray-100">
-              <p className="font-semibold text-[16px] lg:text-[20px] tracking-[2px] mb-4 text-black uppercase">DESIGN</p>
-              <h2 className="text-2xl md:text-3xl lg:text-[35px] font-medium leading-[1.2] lg:leading-[40px] text-black pr-4 mb-4 relative z-10">
-                The Importance of Mobile-First Design in 2005
-              </h2>
-              <p className="text-[rgba(0,0,0,0.65)] text-[20px] lg:text-[28px] relative z-10">Feb 26, 2001</p>
-              
-              <div className="mt-auto pt-8 flex items-end justify-between relative min-h-[130px] lg:min-h-[160px]">
-                <div className="w-[140px] h-[90px] md:w-[160px] md:h-[100px] lg:w-[220px] lg:h-[130px] absolute -bottom-[15px] -right-[15px] rounded-[10px] overflow-hidden shadow-lg border-2 border-white z-0 transition-all duration-500 ease-out group-hover:scale-[1.15] group-hover:-translate-y-3 group-hover:-translate-x-3 group-hover:shadow-2xl">
-                  <img src={imgPlaceholderSmall} alt="Thumbnail" className="w-full h-full object-cover" />
-                </div>
-              </div>
-            </div>
-
-            {/* Items 3, 4, 5 - Standard Normal (Spans 1 column each) */}
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="col-span-1 bg-white rounded-[15px] p-8 relative group min-h-[350px] lg:min-h-[377px] shadow-sm hover:shadow-xl transition-all duration-500 cursor-pointer flex flex-col border border-gray-100">
-                <p className="font-semibold text-[16px] lg:text-[20px] tracking-[2px] mb-4 text-black uppercase relative z-10">DESIGN</p>
-                <h2 className="text-xl md:text-2xl lg:text-[35px] font-medium leading-[1.2] lg:leading-[40px] text-black pr-4 mb-4 relative z-10">
-                  The Importance of Mobile-First Design in 2005
-                </h2>
-                <p className="text-[rgba(0,0,0,0.65)] text-[18px] lg:text-[28px] relative z-10">Feb 26, 2001</p>
-                
-                <div className="mt-auto pt-8 flex items-end justify-between relative min-h-[110px] lg:min-h-[140px]">
-                  <div className="w-[130px] h-[80px] md:w-[150px] md:h-[90px] lg:w-[220px] lg:h-[130px] absolute -bottom-[15px] -right-[15px] rounded-[10px] overflow-hidden shadow-lg border-2 border-white z-0 transition-all duration-500 ease-out group-hover:scale-[1.15] group-hover:-translate-y-3 group-hover:-translate-x-3 group-hover:shadow-2xl">
-                    <img src={imgPlaceholderSmall} alt="Thumbnail" className="w-full h-full object-cover" />
-                  </div>
-                </div>
-              </div>
-            ))}
+        {/* Featured Article Section */}
+        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 mb-24 lg:mb-32">
+          {/* Image */}
+          <div className="w-full lg:w-1/2 rounded-2xl overflow-hidden shadow-md group cursor-pointer relative aspect-square lg:aspect-auto lg:h-[600px]">
+            <img 
+              src={placeholderFeatured} 
+              alt="Featured Article" 
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+            />
           </div>
 
-          <div className="flex justify-center mt-16 mb-8">
-            <button className="bg-[#1e448a] text-white font-semibold text-[20px] px-10 py-4 rounded-[82px] shadow-md hover:bg-[#15346b] hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-              Load More
+          {/* Content */}
+          <div className="w-full lg:w-1/2 flex flex-col justify-center">
+            <p className="font-bold text-[14px] lg:text-[16px] tracking-[2px] mb-6 text-[#3b5b95] uppercase">
+              FEATURED ARTICLE
+            </p>
+            <h2 className="text-3xl md:text-4xl lg:text-[44px] font-bold leading-[1.2] text-[#0a2766] mb-6 hover:text-[#3b5b95] transition-colors cursor-pointer">
+              Choosing the Right Industrial Washing Machine for Your Business
+            </h2>
+            <p className="text-gray-600 text-[18px] lg:text-[22px] leading-relaxed mb-10 max-w-2xl">
+              From hotels and hospitals to garment units and laundromats, selecting the right laundry equipment can improve productivity, reduce operating costs, and ensure consistent performance for years to come.
+            </p>
+            
+            <button className="flex items-center gap-2 text-[#0a2766] font-bold text-[18px] hover:text-[#3b5b95] transition-colors self-start mb-12 group">
+              Read More
+              <span className="transform group-hover:translate-x-1 transition-transform">→</span>
             </button>
+
+            <div className="w-full h-[1px] bg-gray-200 mb-8"></div>
+            
+            <div className="flex flex-col gap-1">
+              <span className="text-[#0a2766] font-bold text-[18px]">By XCEL Engineering Team</span>
+              <span className="text-gray-500 text-[16px]">Apr 12, 2026 • 5 min read</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Other Articles Section */}
+        <div>
+          <h2 className="text-3xl lg:text-[40px] font-extrabold text-[#0a2766] mb-12">Other Articles</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+            
+            {/* We will map over 6 items as requested */}
+            {[1, 2, 3, 4, 5, 6].map((item) => (
+              <div key={item} className="flex flex-col group cursor-pointer">
+                <div className="w-full aspect-[16/9] lg:h-[280px] rounded-2xl overflow-hidden mb-6 relative shadow-sm">
+                  <img 
+                    src={placeholderSquare} 
+                    alt="Article thumbnail" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+                  />
+                </div>
+                
+                <p className="font-bold text-[12px] tracking-[1.5px] mb-4 text-[#3b5b95] uppercase">
+                  STORIES
+                </p>
+                <h3 className="text-[22px] lg:text-[26px] font-bold leading-[1.3] text-[#0a2766] mb-4 group-hover:text-[#3b5b95] transition-colors">
+                  The Future of Digital Experiences in a Fast-Moving World
+                </h3>
+                <p className="text-gray-600 text-[16px] leading-relaxed mb-6">
+                  Discover how modern businesses are leveraging technology, design, and data-driven strategies to build seamless user experiences that drive engagement and long-term growth across platforms.
+                </p>
+                
+                <button className="flex items-center gap-2 text-[#0a2766] font-bold text-[16px] group-hover:text-[#3b5b95] transition-colors mt-auto w-fit">
+                  Read More
+                  <span className="transform group-hover:translate-x-1 transition-transform">→</span>
+                </button>
+              </div>
+            ))}
+
           </div>
         </div>
 
