@@ -99,7 +99,7 @@ export default function AboutPage() {
       </section>
 
       {/* Legacy Section - Stacked Layout */}
-      <section id="leadership" className="pt-10 lg:pt-16 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-20 lg:pb-32">
+      <section id="leadership" className="pt-10 lg:pt-16 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-10 lg:pb-16">
         <div className="max-w-[1200px] mx-auto">
           
           {/* Section Header */}
@@ -111,7 +111,7 @@ export default function AboutPage() {
           </div>
 
           {/* Content Area */}
-          <div className="flex flex-col gap-12 sm:gap-16 lg:gap-24 relative">
+          <div className="flex flex-col gap-12 sm:gap-16 lg:gap-16 relative">
              
              {/* Generation 1: Father */}
              <div className="relative z-0">
@@ -120,7 +120,7 @@ export default function AboutPage() {
                    {/* Image */}
                    <div className="w-full lg:w-[45%] overflow-hidden rounded-2xl">
                       <div className="bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
-                         <img src="/Deepak.svg" alt="Deepak Chawla" className="w-full h-auto block" />
+                         <img src="/Deepak New .svg" alt="Deepak Chawla" className="w-full h-auto block" />
                       </div>
                    </div>
                    
@@ -154,7 +154,7 @@ export default function AboutPage() {
                    {/* Image */}
                    <div className="w-full lg:w-[45%] overflow-hidden rounded-2xl">
                       <div className="bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
-                         <img src="/Mehul.svg" alt="Mehul Chawla" className="w-full h-auto block" />
+                         <img src="/Mehul New.svg" alt="Mehul Chawla" className="w-full h-auto block" />
                       </div>
                    </div>
                    
