@@ -165,8 +165,8 @@ const StatsBanner = () => {
 };
 
 const HeroCarousel = () => {
-  const images = ['/hero.png', '/hero-2.png', '/hero-3.png'];
-  const mobileImages = ['/Mobile- Hero.png', '/Mobile- Hero 2 (1080 x 1250 px).png', '/Mobile - Hero 3 (1080 x 1250 px).png'];
+  const images = ['/Hero /Desktop- Hero 1 (1).svg', '/Hero /Desktop- Hero 2 (1).svg', '/Hero /Desktop- Hero 3 (1).svg'];
+  const mobileImages = ['/Hero /Mobile- Hero 1 (1).svg', '/Hero /Mobile- Hero 2 (1).svg', '/Hero /Mobile - Hero 3 (1).svg'];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const mobileScrollRef = React.useRef<HTMLDivElement>(null);
@@ -320,7 +320,7 @@ const AboutUs = () => {
             <div className="text-gray-600 font-normal text-sm md:text-[13px] lg:text-sm leading-relaxed space-y-3 mb-6">
               <p 
                 tabIndex={0}
-                className="border-l-4 border-[#32589c] pl-5 py-1 opacity-90 transition-all duration-300 hover:border-l-8 focus:border-l-8 outline-none cursor-pointer"
+                className="border-l-4 md:border-l-0 lg:border-l-4 border-[#32589c] pl-5 md:pl-0 lg:pl-5 py-1 opacity-90 transition-all duration-300 hover:border-l-8 md:hover:border-l-0 lg:hover:border-l-8 focus:border-l-8 md:focus:border-l-0 lg:focus:border-l-8 outline-none cursor-pointer"
               >
                 Some businesses are built on opportunity. Ours was built on the belief that India can create world-class commercial laundry equipment without relying on imports. From our early days only, we focused on precision engineering, uncompromising quality and deep industry understanding.
               </p>

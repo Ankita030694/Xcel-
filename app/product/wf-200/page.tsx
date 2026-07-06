@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
-import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Mail, ArrowRight, Settings, ShieldCheck, Factory, HelpCircle, Home } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Mail, ArrowRight, ArrowLeft, Settings, ShieldCheck, Factory, HelpCircle, Home } from 'lucide-react';
 
 const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(0);
@@ -109,7 +109,7 @@ const ProductPage = () => {
   const prevImage = () => setActiveImage((prev) => (prev - 1 + images.length) % images.length);
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] font-sans flex flex-col">
+    <div className="min-h-screen bg-white font-sans flex flex-col">
       <Header />
 
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
@@ -130,36 +130,41 @@ const ProductPage = () => {
         </div>
 
         {/* Top Section */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 mb-10 lg:mb-12">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 mb-10 lg:mb-12">
           
           {/* Left: Image Gallery */}
-          <div className="w-full lg:w-[50%] flex flex-col bg-[#f8f9fc] border border-gray-100 shadow-sm rounded-3xl p-6 sm:p-8">
-            <div className="relative w-full h-[300px] sm:h-[350px] lg:h-[380px] flex items-center justify-center mb-6 lg:mb-8">
+          <div className="w-full lg:w-[45%] xl:w-[40%] flex flex-col shrink-0">
+            {/* Main Image */}
+            <div className="relative w-full aspect-square sm:aspect-[4/5] lg:aspect-square bg-[#f0f5ff] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden">
               <img src={images[activeImage]} alt="Washing Machine WF-200" className="w-full h-full object-contain mix-blend-multiply" />
-              
-              <button onClick={prevImage} className="absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0a2766] shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-gray-50 transition-all z-10">
-                <ChevronLeft size={20} strokeWidth={2.5} />
-              </button>
-              <button onClick={nextImage} className="absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#0a2766] shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:bg-gray-50 transition-all z-10">
-                <ChevronRight size={20} strokeWidth={2.5} />
-              </button>
             </div>
             
-            <div className="flex flex-row justify-center gap-3 sm:gap-4 overflow-x-auto pb-2 scrollbar-hide">
-              {images.map((img, idx) => (
-                <button 
-                  key={idx}
-                  onClick={() => setActiveImage(idx)}
-                  className={`relative w-16 sm:w-20 lg:w-24 aspect-[4/3] shrink-0 rounded-lg overflow-hidden transition-all bg-white ${activeImage === idx ? 'border-2 border-[#0a2766] shadow-sm' : 'border border-gray-200 hover:border-gray-300 opacity-90 hover:opacity-100'}`}
-                >
-                  <img src={img} alt={`Thumbnail ${idx}`} className="absolute inset-0 w-full h-full object-contain p-1" />
-                </button>
-              ))}
+            {/* Thumbnails Row */}
+            <div className="flex flex-row items-center justify-center w-full">
+              <button onClick={prevImage} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-800 transition-colors shrink-0">
+                <ArrowLeft size={24} strokeWidth={1} />
+              </button>
+
+              <div className="flex flex-row justify-center gap-3 sm:gap-4 overflow-x-auto scrollbar-hide py-2 px-2 flex-1">
+                {images.map((img, idx) => (
+                  <button 
+                    key={idx}
+                    onClick={() => setActiveImage(idx)}
+                    className={`relative w-20 sm:w-24 lg:w-[90px] aspect-square shrink-0 rounded-2xl overflow-hidden transition-all bg-[#f0f5ff] ${activeImage === idx ? 'opacity-100 ring-2 ring-offset-2 ring-[#0a2766]' : 'opacity-70 hover:opacity-100'}`}
+                  >
+                    <img src={img} alt={`Thumbnail ${idx}`} className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" />
+                  </button>
+                ))}
+              </div>
+
+              <button onClick={nextImage} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-800 transition-colors shrink-0">
+                <ArrowRight size={24} strokeWidth={1} />
+              </button>
             </div>
           </div>
 
           {/* Right: Product Info */}
-          <div className="w-full lg:w-[50%] flex flex-col justify-start lg:pb-4">
+          <div className="w-full lg:flex-1 flex flex-col justify-start lg:pb-4">
             <div className="inline-block bg-[#eaf0ff] text-[#0a2766] text-[11px] sm:text-[12px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider w-fit mb-4">
               Apparel Processing Machines
             </div>
@@ -233,7 +238,7 @@ const ProductPage = () => {
                         : 'text-[#0a2766] bg-white hover:bg-gray-50'
                     } ${
                       showSeparator 
-                        ? 'after:content-[""] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-[1px] after:h-[14px] after:bg-[#0a2766]/20' 
+                        ? 'after:content-[""] after:absolute after:right-0 after:top-1/2 after:-translate-y-1/2 after:w-[2px] after:h-[16px] after:bg-[#0a2766]' 
                         : ''
                     }`}
                   >
