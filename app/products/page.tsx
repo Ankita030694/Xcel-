@@ -10,11 +10,11 @@ const categories = [
     title: 'Washing',
     icon: '/New Icons/1.png',
     products: [
-      { name: 'Washer Extractors', image: '/prod.final/Washing 1.png', link: '#' },
-      { name: 'Front Loading Washing Machines', image: '/prod.png/Washing Front 60 kg Left View 1.png', link: '#' },
-      { name: 'Washer Extractors (Model 2)', image: '/prod.final/Washing 1.png', link: '#' },
-      { name: 'Front Loading (Model 2)', image: '/prod.png/Washing Front 60 kg Left View 1.png', link: '#' },
-      { name: 'Washer Extractors (Model 3)', image: '/prod.final/Washing 1.png', link: '#' }
+      { name: 'Washer Extractors', image: '/prod.final/Washing 1.png', link: '/product/wf-200' },
+      { name: 'Front Loading Washing Machines', image: '/prod.png/Washing Front 60 kg Left View 1.png', link: '/product/wf-200' },
+      { name: 'Washer Extractors (Model 2)', image: '/prod.final/Washing 1.png', link: '/product/wf-200' },
+      { name: 'Front Loading (Model 2)', image: '/prod.png/Washing Front 60 kg Left View 1.png', link: '/product/wf-200' },
+      { name: 'Washer Extractors (Model 3)', image: '/prod.final/Washing 1.png', link: '/product/wf-200' }
     ]
   },
   {
@@ -22,11 +22,11 @@ const categories = [
     title: 'Drying',
     icon: '/New Icons/2.png',
     products: [
-      { name: 'Drying Tumblers', image: '/prod.final/Drying 1.png', link: '#' },
-      { name: 'Drying Tumblers (Pro)', image: '/prod.final/Drying 1.png', link: '#' },
-      { name: 'Drying Tumblers (Max)', image: '/prod.final/Drying 1.png', link: '#' },
-      { name: 'Drying Tumblers (Eco)', image: '/prod.final/Drying 1.png', link: '#' },
-      { name: 'Drying Tumblers (Ultra)', image: '/prod.final/Drying 1.png', link: '#' }
+      { name: 'Drying Tumblers', image: '/prod.final/Drying 1.png', link: '/product/wf-200' },
+      { name: 'Drying Tumblers (Pro)', image: '/prod.final/Drying 1.png', link: '/product/wf-200' },
+      { name: 'Drying Tumblers (Max)', image: '/prod.final/Drying 1.png', link: '/product/wf-200' },
+      { name: 'Drying Tumblers (Eco)', image: '/prod.final/Drying 1.png', link: '/product/wf-200' },
+      { name: 'Drying Tumblers (Ultra)', image: '/prod.final/Drying 1.png', link: '/product/wf-200' }
     ]
   },
   {
@@ -34,11 +34,11 @@ const categories = [
     title: 'Apparel Processing',
     icon: '/New Icons/3.png',
     products: [
-      { name: 'Apparel Washing Machines', image: '/prod.final/Apparel Washing 1.png', link: '#' },
-      { name: 'Apparel Washing (Pro)', image: '/prod.final/Apparel Washing 1.png', link: '#' },
-      { name: 'Apparel Washing (Max)', image: '/prod.final/Apparel Washing 1.png', link: '#' },
-      { name: 'Apparel Washing (Eco)', image: '/prod.final/Apparel Washing 1.png', link: '#' },
-      { name: 'Apparel Washing (Ultra)', image: '/prod.final/Apparel Washing 1.png', link: '#' }
+      { name: 'Apparel Washing Machines', image: '/prod.final/Apparel Washing 1.png', link: '/product/wf-200' },
+      { name: 'Apparel Washing (Pro)', image: '/prod.final/Apparel Washing 1.png', link: '/product/wf-200' },
+      { name: 'Apparel Washing (Max)', image: '/prod.final/Apparel Washing 1.png', link: '/product/wf-200' },
+      { name: 'Apparel Washing (Eco)', image: '/prod.final/Apparel Washing 1.png', link: '/product/wf-200' },
+      { name: 'Apparel Washing (Ultra)', image: '/prod.final/Apparel Washing 1.png', link: '/product/wf-200' }
     ]
   },
   {
@@ -46,11 +46,11 @@ const categories = [
     title: 'Dry-Cleaning',
     icon: '/New Icons/4.png',
     products: [
-      { name: 'Perc Dry Cleaning Machines', image: '/prod.final/Dry-Cleaning 1.png', link: '#' },
-      { name: 'Perc Dry Cleaning (Pro)', image: '/prod.final/Dry-Cleaning 1.png', link: '#' },
-      { name: 'Perc Dry Cleaning (Max)', image: '/prod.final/Dry-Cleaning 1.png', link: '#' },
-      { name: 'Perc Dry Cleaning (Eco)', image: '/prod.final/Dry-Cleaning 1.png', link: '#' },
-      { name: 'Perc Dry Cleaning (Ultra)', image: '/prod.final/Dry-Cleaning 1.png', link: '#' }
+      { name: 'Perc Dry Cleaning Machines', image: '/prod.final/Dry-Cleaning 1.png', link: '/product/wf-200' },
+      { name: 'Perc Dry Cleaning (Pro)', image: '/prod.final/Dry-Cleaning 1.png', link: '/product/wf-200' },
+      { name: 'Perc Dry Cleaning (Max)', image: '/prod.final/Dry-Cleaning 1.png', link: '/product/wf-200' },
+      { name: 'Perc Dry Cleaning (Eco)', image: '/prod.final/Dry-Cleaning 1.png', link: '/product/wf-200' },
+      { name: 'Perc Dry Cleaning (Ultra)', image: '/prod.final/Dry-Cleaning 1.png', link: '/product/wf-200' }
     ]
   },
   {
@@ -58,11 +58,11 @@ const categories = [
     title: 'Flat-Work',
     icon: '/New Icons/5.png',
     products: [
-      { name: 'Flat Work Ironers', image: '/prod.final/Flat-Work 1.png', link: '#' },
-      { name: 'Flat Work Ironers (Pro)', image: '/prod.final/Flat-Work 1.png', link: '#' },
-      { name: 'Flat Work Ironers (Max)', image: '/prod.final/Flat-Work 1.png', link: '#' },
-      { name: 'Flat Work Ironers (Eco)', image: '/prod.final/Flat-Work 1.png', link: '#' },
-      { name: 'Flat Work Ironers (Ultra)', image: '/prod.final/Flat-Work 1.png', link: '#' }
+      { name: 'Flat Work Ironers', image: '/prod.final/Flat-Work 1.png', link: '/product/wf-200' },
+      { name: 'Flat Work Ironers (Pro)', image: '/prod.final/Flat-Work 1.png', link: '/product/wf-200' },
+      { name: 'Flat Work Ironers (Max)', image: '/prod.final/Flat-Work 1.png', link: '/product/wf-200' },
+      { name: 'Flat Work Ironers (Eco)', image: '/prod.final/Flat-Work 1.png', link: '/product/wf-200' },
+      { name: 'Flat Work Ironers (Ultra)', image: '/prod.final/Flat-Work 1.png', link: '/product/wf-200' }
     ]
   },
   {
@@ -70,11 +70,11 @@ const categories = [
     title: 'Steam-Finishing',
     icon: '/New Icons/6.png',
     products: [
-      { name: 'Steam Finishing Equipment', image: '/prod.final/Steam-Finishing 1.png', link: '#' },
-      { name: 'Steam Finishing (Pro)', image: '/prod.final/Steam-Finishing 1.png', link: '#' },
-      { name: 'Steam Finishing (Max)', image: '/prod.final/Steam-Finishing 1.png', link: '#' },
-      { name: 'Steam Finishing (Eco)', image: '/prod.final/Steam-Finishing 1.png', link: '#' },
-      { name: 'Steam Finishing (Ultra)', image: '/prod.final/Steam-Finishing 1.png', link: '#' }
+      { name: 'Steam Finishing Equipment', image: '/prod.final/Steam-Finishing 1.png', link: '/product/wf-200' },
+      { name: 'Steam Finishing (Pro)', image: '/prod.final/Steam-Finishing 1.png', link: '/product/wf-200' },
+      { name: 'Steam Finishing (Max)', image: '/prod.final/Steam-Finishing 1.png', link: '/product/wf-200' },
+      { name: 'Steam Finishing (Eco)', image: '/prod.final/Steam-Finishing 1.png', link: '/product/wf-200' },
+      { name: 'Steam Finishing (Ultra)', image: '/prod.final/Steam-Finishing 1.png', link: '/product/wf-200' }
     ]
   },
   {
@@ -82,11 +82,11 @@ const categories = [
     title: 'Water Heater',
     icon: '/New Icons/7.png',
     products: [
-      { name: 'Industrial Water Heaters', image: '/prod.final/Water Heater 1.png', link: '#' },
-      { name: 'Industrial Water Heaters (Pro)', image: '/prod.final/Water Heater 1.png', link: '#' },
-      { name: 'Industrial Water Heaters (Max)', image: '/prod.final/Water Heater 1.png', link: '#' },
-      { name: 'Industrial Water Heaters (Eco)', image: '/prod.final/Water Heater 1.png', link: '#' },
-      { name: 'Industrial Water Heaters (Ultra)', image: '/prod.final/Water Heater 1.png', link: '#' }
+      { name: 'Industrial Water Heaters', image: '/prod.final/Water Heater 1.png', link: '/product/wf-200' },
+      { name: 'Industrial Water Heaters (Pro)', image: '/prod.final/Water Heater 1.png', link: '/product/wf-200' },
+      { name: 'Industrial Water Heaters (Max)', image: '/prod.final/Water Heater 1.png', link: '/product/wf-200' },
+      { name: 'Industrial Water Heaters (Eco)', image: '/prod.final/Water Heater 1.png', link: '/product/wf-200' },
+      { name: 'Industrial Water Heaters (Ultra)', image: '/prod.final/Water Heater 1.png', link: '/product/wf-200' }
     ]
   },
   {
@@ -94,11 +94,11 @@ const categories = [
     title: 'Fabric Checking',
     icon: '/New Icons/8.png',
     products: [
-      { name: 'Fabric Checking Machines', image: '/prod.final/Fabric Checking 1.png', link: '#' },
-      { name: 'Fabric Checking (Pro)', image: '/prod.final/Fabric Checking 1.png', link: '#' },
-      { name: 'Fabric Checking (Max)', image: '/prod.final/Fabric Checking 1.png', link: '#' },
-      { name: 'Fabric Checking (Eco)', image: '/prod.final/Fabric Checking 1.png', link: '#' },
-      { name: 'Fabric Checking (Ultra)', image: '/prod.final/Fabric Checking 1.png', link: '#' }
+      { name: 'Fabric Checking Machines', image: '/prod.final/Fabric Checking 1.png', link: '/product/wf-200' },
+      { name: 'Fabric Checking (Pro)', image: '/prod.final/Fabric Checking 1.png', link: '/product/wf-200' },
+      { name: 'Fabric Checking (Max)', image: '/prod.final/Fabric Checking 1.png', link: '/product/wf-200' },
+      { name: 'Fabric Checking (Eco)', image: '/prod.final/Fabric Checking 1.png', link: '/product/wf-200' },
+      { name: 'Fabric Checking (Ultra)', image: '/prod.final/Fabric Checking 1.png', link: '/product/wf-200' }
     ]
   },
   {
@@ -106,11 +106,11 @@ const categories = [
     title: 'Other Equipment',
     icon: '/New Icons/9.png',
     products: [
-      { name: 'Ancillary Equipment', image: '/prod.final/Other Equipment 1.png', link: '#' },
-      { name: 'Ancillary Equipment (Pro)', image: '/prod.final/Other Equipment 1.png', link: '#' },
-      { name: 'Ancillary Equipment (Max)', image: '/prod.final/Other Equipment 1.png', link: '#' },
-      { name: 'Ancillary Equipment (Eco)', image: '/prod.final/Other Equipment 1.png', link: '#' },
-      { name: 'Ancillary Equipment (Ultra)', image: '/prod.final/Other Equipment 1.png', link: '#' }
+      { name: 'Ancillary Equipment', image: '/prod.final/Other Equipment 1.png', link: '/product/wf-200' },
+      { name: 'Ancillary Equipment (Pro)', image: '/prod.final/Other Equipment 1.png', link: '/product/wf-200' },
+      { name: 'Ancillary Equipment (Max)', image: '/prod.final/Other Equipment 1.png', link: '/product/wf-200' },
+      { name: 'Ancillary Equipment (Eco)', image: '/prod.final/Other Equipment 1.png', link: '/product/wf-200' },
+      { name: 'Ancillary Equipment (Ultra)', image: '/prod.final/Other Equipment 1.png', link: '/product/wf-200' }
     ]
   },
   {
@@ -118,11 +118,11 @@ const categories = [
     title: 'Complete Range',
     icon: '/New Icons/10.png',
     products: [
-      { name: 'Complete Laundry Setup', image: '/prod.final/Complete Range 1.png', link: '#' },
-      { name: 'Complete Laundry Setup (Pro)', image: '/prod.final/Complete Range 1.png', link: '#' },
-      { name: 'Complete Laundry Setup (Max)', image: '/prod.final/Complete Range 1.png', link: '#' },
-      { name: 'Complete Laundry Setup (Eco)', image: '/prod.final/Complete Range 1.png', link: '#' },
-      { name: 'Complete Laundry Setup (Ultra)', image: '/prod.final/Complete Range 1.png', link: '#' }
+      { name: 'Complete Laundry Setup', image: '/prod.final/Complete Range 1.png', link: '/product/wf-200' },
+      { name: 'Complete Laundry Setup (Pro)', image: '/prod.final/Complete Range 1.png', link: '/product/wf-200' },
+      { name: 'Complete Laundry Setup (Max)', image: '/prod.final/Complete Range 1.png', link: '/product/wf-200' },
+      { name: 'Complete Laundry Setup (Eco)', image: '/prod.final/Complete Range 1.png', link: '/product/wf-200' },
+      { name: 'Complete Laundry Setup (Ultra)', image: '/prod.final/Complete Range 1.png', link: '/product/wf-200' }
     ]
   }
 ];

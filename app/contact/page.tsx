@@ -55,11 +55,42 @@ export default function ContactPage() {
                 <div className="border border-gray-200 border-b-0 px-4 py-3.5 relative">
                   <select className="w-full bg-transparent text-[14px] text-[#0a2766] font-medium focus:outline-none appearance-none cursor-pointer" required defaultValue="">
                     <option value="" disabled>Select State/UT*</option>
-                    <option value="dl">Delhi</option>
-                    <option value="mh">Maharashtra</option>
-                    <option value="tn">Tamil Nadu</option>
+                    <option value="ap">Andhra Pradesh</option>
+                    <option value="ar">Arunachal Pradesh</option>
+                    <option value="as">Assam</option>
+                    <option value="br">Bihar</option>
+                    <option value="cg">Chhattisgarh</option>
+                    <option value="ga">Goa</option>
+                    <option value="gj">Gujarat</option>
                     <option value="hr">Haryana</option>
-                    {/* Add more states as needed */}
+                    <option value="hp">Himachal Pradesh</option>
+                    <option value="jh">Jharkhand</option>
+                    <option value="ka">Karnataka</option>
+                    <option value="kl">Kerala</option>
+                    <option value="mp">Madhya Pradesh</option>
+                    <option value="mh">Maharashtra</option>
+                    <option value="mn">Manipur</option>
+                    <option value="ml">Meghalaya</option>
+                    <option value="mz">Mizoram</option>
+                    <option value="nl">Nagaland</option>
+                    <option value="or">Odisha</option>
+                    <option value="pb">Punjab</option>
+                    <option value="rj">Rajasthan</option>
+                    <option value="sk">Sikkim</option>
+                    <option value="tn">Tamil Nadu</option>
+                    <option value="tg">Telangana</option>
+                    <option value="tr">Tripura</option>
+                    <option value="up">Uttar Pradesh</option>
+                    <option value="ut">Uttarakhand</option>
+                    <option value="wb">West Bengal</option>
+                    <option value="an">Andaman and Nicobar Islands</option>
+                    <option value="ch">Chandigarh</option>
+                    <option value="dn">Dadra and Nagar Haveli and Daman and Diu</option>
+                    <option value="dl">Delhi</option>
+                    <option value="jk">Jammu and Kashmir</option>
+                    <option value="la">Ladakh</option>
+                    <option value="ld">Lakshadweep</option>
+                    <option value="py">Puducherry</option>
                   </select>
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
                     <svg className="w-4 h-4 text-[#0a2766]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
