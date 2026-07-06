@@ -173,7 +173,7 @@ export default function ContactPage() {
               <div className="bg-white rounded-xl shadow-[0_4px_25px_rgba(0,0,0,0.03)] border border-gray-100 p-8 flex flex-col sm:flex-row gap-8">
                 
                 <div className="flex-1">
-                  <h3 className="text-gray-800 font-bold text-[15px] mb-4">Regional Office</h3>
+                  <h3 className="text-[#32589c] font-bold text-[15px] mb-4">Regional Office</h3>
                   
                   <div className="flex flex-col gap-1 text-[13px] text-gray-600 leading-relaxed mb-6">
                     <p>12/26, PN Road, Laxmi Nagar,</p>
