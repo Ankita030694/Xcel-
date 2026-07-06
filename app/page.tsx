@@ -652,18 +652,18 @@ const ProductsHoverGallery = () => {
             <div
               key={pane}
               onMouseEnter={() => setActivePane(pane as 1|2|3)}
-              className={`relative h-full overflow-hidden cursor-pointer transition-[flex] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+              className={`relative h-full overflow-hidden cursor-pointer transition-all duration-500 ease-out ${
                 isActive ? 'flex-[2] lg:flex-[2.2]' : 'flex-[1]'
-              } will-change-[flex] rounded-xl bg-[#f8f9fa] transform-gpu`}
+              } rounded-xl bg-[#f8f9fa]`}
             >
               {[1, 2, 3].map((state) => (
                 <img 
                   key={state}
                   src={getImagePath(pane as 1|2|3, state as 1|2|3)} 
                   alt={`Product ${pane}`} 
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-out ${
                     activePane === state ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-                  } object-center transform-gpu backface-hidden will-change-[opacity]`} 
+                  } object-center`} 
                 />
               ))}
             </div>
