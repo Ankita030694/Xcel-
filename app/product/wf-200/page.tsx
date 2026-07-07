@@ -9,6 +9,16 @@ const ProductPage = () => {
   const [activeImage, setActiveImage] = useState(0);
   const [activeSection, setActiveSection] = useState<string | null>('features');
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomOrigin, setZoomOrigin] = useState('center center');
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setZoomOrigin(`${x}% ${y}%`);
+  };
+
 
   const images = [
     '/we-30-photo.jpg.svg',
@@ -24,43 +34,43 @@ const ProductPage = () => {
       shortDesc: 'Explore powerful features and technical specifications',
       content: (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
-          <div className="border-l-2 border-[#32589c] pl-6">
+          <div className="relative pl-6"><div className="absolute left-0 bottom-1 w-[2px] h-[70%] bg-[#32589c]"></div>
             <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">High-Capacity Production Range</h4>
             <p className="text-gray-600 text-[13px] leading-relaxed">Available in 100 kg and 200kg capacities for high-volume processing environments where output, consistency, and operational efficiency are critical.</p>
           </div>
-          <div className="border-l-2 border-[#32589c] pl-6">
+          <div className="relative pl-6"><div className="absolute left-0 bottom-1 w-[2px] h-[70%] bg-[#32589c]"></div>
             <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Auto Forward & Reverse Basket Rotation</h4>
             <p className="text-gray-600 text-[13px] leading-relaxed">Fully programmable reversing action ensures uniform garment movement, improved chemical penetration and tangle-free processing across every batch.</p>
           </div>
-          <div className="border-l-2 border-[#32589c] pl-6">
+          <div className="relative pl-6"><div className="absolute left-0 bottom-1 w-[2px] h-[70%] bg-[#32589c]"></div>
             <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Advanced Multi-Stage Programming</h4>
             <p className="text-gray-600 text-[13px] leading-relaxed">Fully programmable wash cycles with multiple independent process stages, allowing precise control over temperature, water levels, basket speed, chemical dosing and cycle duration.</p>
           </div>
-          <div className="border-l-2 border-[#32589c] pl-6">
+          <div className="relative pl-6"><div className="absolute left-0 bottom-1 w-[2px] h-[70%] bg-[#32589c]"></div>
             <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">SS 304 Chemical-Resistant Inner Drum & Door</h4>
             <p className="text-gray-600 text-[13px] leading-relaxed">Constructed from premium-grade 304 stainless steel to withstand continuous exposure to enzymes, bleach, acids, dyes and textile processing chemicals.</p>
           </div>
-          <div className="border-l-2 border-[#32589c] pl-6">
+          <div className="relative pl-6"><div className="absolute left-0 bottom-1 w-[2px] h-[70%] bg-[#32589c]"></div>
             <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Imported VFD (Variable Frequency Drive)</h4>
             <p className="text-gray-600 text-[13px] leading-relaxed">Enables accurate drum speed control from gentle fabric handling to aggressive denim processing, delivering superior wash quality and process consistency.</p>
           </div>
-          <div className="border-l-2 border-[#32589c] pl-6">
+          <div className="relative pl-6"><div className="absolute left-0 bottom-1 w-[2px] h-[70%] bg-[#32589c]"></div>
             <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Industrial-Grade CNC Fabricated Frame</h4>
             <p className="text-gray-600 text-[13px] leading-relaxed">Precision CNC-cut welded frame construction delivers exceptional structural strength, vibration resistance and long operational life.</p>
           </div>
-          <div className="border-l-2 border-[#32589c] pl-6">
+          <div className="relative pl-6"><div className="absolute left-0 bottom-1 w-[2px] h-[70%] bg-[#32589c]"></div>
             <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">High-Temperature Processing</h4>
             <p className="text-gray-600 text-[13px] leading-relaxed">Steam-heated operation with digital temperature control for enzyme washing, bleaching, dyeing, garment treatment and specialized textile processing applications.</p>
           </div>
-          <div className="border-l-2 border-[#32589c] pl-6">
+          <div className="relative pl-6"><div className="absolute left-0 bottom-1 w-[2px] h-[70%] bg-[#32589c]"></div>
             <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Automatic Water Inlet & Drain System</h4>
             <p className="text-gray-600 text-[13px] leading-relaxed">PLC-controlled water filling and draining enables uninterrupted production with minimal operator intervention.</p>
           </div>
-          <div className="border-l-2 border-[#32589c] pl-6">
+          <div className="relative pl-6"><div className="absolute left-0 bottom-1 w-[2px] h-[70%] bg-[#32589c]"></div>
             <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Programmable Water Level Management</h4>
             <p className="text-gray-600 text-[13px] leading-relaxed">Low, medium and high water level options programmable per wash step for optimized liquor ratio and chemical efficiency.</p>
           </div>
-          <div className="border-l-2 border-[#32589c] pl-6">
+          <div className="relative pl-6"><div className="absolute left-0 bottom-1 w-[2px] h-[70%] bg-[#32589c]"></div>
             <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Operator Safety Protection</h4>
             <p className="text-gray-600 text-[13px] leading-relaxed">The machine automatically stops basket rotation if the door is opened during operation, enhancing workplace safety and reducing operational risks.</p>
           </div>
@@ -135,8 +145,21 @@ const ProductPage = () => {
           {/* Left: Image Gallery */}
           <div className="w-full lg:w-[45%] xl:w-[40%] flex flex-col shrink-0">
             {/* Main Image */}
-            <div className="relative w-full aspect-square sm:aspect-[4/5] lg:aspect-square bg-[#f0f5ff] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden">
-              <img src={images[activeImage]} alt="Washing Machine WF-200" className="w-full h-full object-contain mix-blend-multiply" />
+            <div 
+              className="relative w-full aspect-square sm:aspect-[4/5] lg:aspect-square bg-[#f0f5ff] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden cursor-crosshair sm:cursor-zoom-in"
+              onMouseEnter={() => setIsZoomed(true)}
+              onMouseLeave={() => {
+                setIsZoomed(false);
+                setTimeout(() => setZoomOrigin('center center'), 300); // Reset origin smoothly
+              }}
+              onMouseMove={handleMouseMove}
+            >
+              <img 
+                src={images[activeImage]} 
+                alt="Washing Machine WF-200" 
+                className={`w-full h-full object-contain mix-blend-multiply transition-transform duration-200 ease-out ${isZoomed ? 'scale-[2.0]' : 'scale-100'}`}
+                style={{ transformOrigin: zoomOrigin }}
+              />
             </div>
             
             {/* Thumbnails Row */}
@@ -164,21 +187,19 @@ const ProductPage = () => {
           </div>
 
           {/* Right: Product Info */}
-          <div className="w-full lg:flex-1 flex flex-col justify-start lg:pb-4">
-            <div className="inline-block bg-[#eaf0ff] text-[#0a2766] text-[11px] sm:text-[12px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider w-fit mb-4">
-              Apparel Processing Machines
-            </div>
+          <div className="w-full lg:flex-1 flex flex-col justify-start lg:pb-4 lg:pl-4">
             
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0a2766] tracking-tight leading-tight mb-4">
-              Washing Machine WF-200
+            <h1 className="text-3xl sm:text-4xl lg:text-4xl font-medium text-[#0a2766] tracking-tight leading-tight mb-6">
+              WF-200 | Washing Machine
             </h1>
             
-            <div className="w-16 h-[4px] bg-[#0a2766] rounded-full mb-6 mt-1"></div>
+            <div className="text-gray-600 text-[15px] sm:text-[16px] leading-relaxed mb-8">
+              <p>
+                Xcel's heavy-duty front loading apparel washing machine features advanced PCB programming for enzyme, acid, bleach & stone wash. Built for garment export, apparel processing and denim units PAN India!
+              </p>
+            </div>
             
-            <p className="text-gray-600 text-[15px] sm:text-[16px] leading-relaxed mb-8">
-              Xcel's heavy-duty front loading apparel washing machine features advanced PCB programming for enzyme, acid, bleach & stone wash. Built for garment export, apparel processing and denim units PAN India!
-            </p>
-            
+            {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 mt-auto pt-4 lg:pt-0">
               <button className="flex-1 bg-[#0a2766] text-white py-3 sm:py-3.5 px-4 rounded-xl text-[15px] font-bold flex items-center justify-center gap-2 hover:bg-[#071b4a] hover:-translate-y-1 hover:shadow-lg transition-all">
                 <Send size={18} />
