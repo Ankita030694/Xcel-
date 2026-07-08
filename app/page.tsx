@@ -47,115 +47,25 @@ const Counter = ({ end, duration = 2500, suffix = "" }: { end: number, duration?
 };
 
 const StatsBanner = () => {
-  const scrollRef = React.useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-  
   const stats = [
-    {
-      end: 30000,
-      suffix: "+",
-      title: "Machines Installed",
-      subtitle: "",
-      icon: <MapPin className="w-8 h-8 text-blue-300" />,
-      bgIcon: <MapPin className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
-    },
-    {
-      end: 8000,
-      suffix: "+",
-      title: "Happy Clients",
-      subtitle: "",
-      icon: <Users className="w-8 h-8 text-blue-300" />,
-      bgIcon: <Users className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
-    },
-    {
-      end: 32,
-      suffix: "+",
-      title: "Years of Expertise",
-      subtitle: "",
-      icon: <Award className="w-8 h-8 text-blue-300" />,
-      bgIcon: <Award className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
-    },
-    {
-      end: 20000,
-      suffix: "+",
-      title: "Sq. Ft. Facility",
-      subtitle: "",
-      icon: <Factory className="w-8 h-8 text-blue-300" />,
-      bgIcon: <Factory className="w-32 h-32 text-white/5 absolute -bottom-6 -right-6 transform -rotate-12" />
-    }
+    { end: 30000, suffix: "+", title: "Machines Installed" },
+    { end: 8000, suffix: "+", title: "Happy Clients" },
+    { end: 32, suffix: "+", title: "Years of Expertise" },
+    { end: 20000, suffix: "+", title: "Sq. Ft. Facility" }
   ];
 
-  React.useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % stats.length;
-        if (scrollRef.current) {
-          // If the container fits all items (desktop), don't auto-scroll
-          if (scrollRef.current.clientWidth >= scrollRef.current.scrollWidth) return prevIndex;
-          
-          const firstChild = scrollRef.current.children[0] as HTMLElement;
-          const scrollAmount = firstChild ? firstChild.offsetWidth : 0;
-          if (nextIndex === 0) {
-            scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
-          } else {
-            scrollRef.current.scrollTo({ left: nextIndex * scrollAmount, behavior: 'smooth' });
-          }
-        }
-        return nextIndex;
-      });
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [stats.length]);
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement;
-    const firstChild = target.children[0] as HTMLElement;
-    if (!firstChild) return;
-    const itemWidth = firstChild.offsetWidth;
-    const index = Math.round(target.scrollLeft / itemWidth);
-    if (index !== currentIndex) {
-      setCurrentIndex(index);
-    }
-  };
-
-  const handleDotClick = (idx: number) => {
-    setCurrentIndex(idx);
-    if (scrollRef.current) {
-      const firstChild = scrollRef.current.children[0] as HTMLElement;
-      const scrollAmount = firstChild ? firstChild.offsetWidth + 16 : 0;
-      scrollRef.current.scrollTo({ left: idx * scrollAmount, behavior: 'smooth' });
-    }
-  };
-
-
   return (
-    <div className="relative w-full py-4 lg:py-6 bg-[#32589c] group">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Stats Container */}
-        <div 
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="flex flex-row flex-nowrap items-center w-full max-w-6xl mx-auto overflow-x-auto md:overflow-x-visible snap-x snap-mandatory md:snap-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] py-1 scroll-smooth"
-        >
+    <div className="w-full bg-[#3b5b95] py-3 sm:py-4">
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4 sm:gap-2">
           {stats.map((stat, idx) => (
-            <div 
-              key={idx} 
-              className="w-1/2 md:w-auto md:flex-1 shrink-0 snap-start flex justify-center transition-transform duration-500 hover:-translate-y-1"
-            >
-              
-              <div className="relative z-10 flex flex-row items-center gap-1 sm:gap-2 lg:gap-4 text-left w-full justify-center lg:justify-center">
-                
-                <h3 className="font-extrabold text-[18px] sm:text-xl md:text-2xl lg:text-3xl text-white tracking-tight drop-shadow-sm whitespace-nowrap">
-                  <span>{stat.end.toLocaleString()}{stat.suffix}</span>
-                </h3>
-                
-                <div className="flex items-center">
-                  <p className="font-semibold text-blue-100 text-[10px] sm:text-[11px] md:text-xs lg:text-sm leading-[1.15] sm:leading-tight whitespace-nowrap">
-                    {stat.title}
-                  </p>
-                </div>
-              </div>
+            <div key={idx} className="flex items-center justify-center gap-2 lg:gap-3 w-full sm:w-auto">
+              <h3 className="text-2xl md:text-3xl lg:text-[32px] font-bold text-white tracking-tight drop-shadow-sm">
+                <Counter end={stat.end} suffix={stat.suffix} />
+              </h3>
+              <p className="text-[12px] sm:text-[13px] lg:text-[14px] font-medium text-white/90 leading-tight whitespace-nowrap">
+                {stat.title}
+              </p>
             </div>
           ))}
         </div>
@@ -310,14 +220,14 @@ const AboutUs = () => {
             {/* Header Area */}
             <div className="flex items-center gap-2 mb-4">
               <span className="text-[#32589c] font-bold text-xl md:text-base lg:text-2xl tracking-widest animate-pulse">{"//"}</span>
-              <span className="text-gray-500 font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase">About XCEL</span>
+              <span className="text-[#363636] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase">About XCEL</span>
             </div>
 
             <h2 className="font-extrabold text-xl md:text-base lg:text-3xl leading-[1.15] mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-500">
               Building India's Future in <span className="text-[#32589c]">Commercial Laundry</span> Manufacturing
             </h2>
 
-            <div className="text-gray-600 font-normal text-sm md:text-[13px] lg:text-sm leading-relaxed space-y-3 mb-6">
+            <div className="text-[#363636] font-normal text-sm md:text-[13px] lg:text-sm leading-relaxed space-y-3 mb-6">
               <p 
                 tabIndex={0}
                 className="border-l-4 md:border-l-0 lg:border-l-4 border-[#32589c] pl-5 md:pl-0 lg:pl-5 py-1 opacity-90 transition-all duration-300 hover:border-l-8 md:hover:border-l-0 lg:hover:border-l-8 focus:border-l-8 md:focus:border-l-0 lg:focus:border-l-8 outline-none cursor-pointer"
@@ -341,7 +251,7 @@ const AboutUs = () => {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
                   <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.png" alt="Manufacturing" className="w-full h-full object-contain" />
                 </div>
-                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-[#363636] group-hover:text-gray-900">
                   Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
                 </p>
               </div>
@@ -355,7 +265,7 @@ const AboutUs = () => {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
                   <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.png" alt="Partnership" className="w-full h-full object-contain" />
                 </div>
-                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-[#363636] group-hover:text-gray-900">
                   Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
                 </p>
               </div>
@@ -376,7 +286,7 @@ const AboutUs = () => {
             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
               <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.png" alt="Manufacturing" className="w-full h-full object-contain" />
             </div>
-            <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
+            <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-[#363636] group-hover:text-gray-900">
               Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
             </p>
           </div>
@@ -390,7 +300,7 @@ const AboutUs = () => {
             <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
               <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.png" alt="Partnership" className="w-full h-full object-contain" />
             </div>
-            <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-gray-600 group-hover:text-gray-900">
+            <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-[#363636] group-hover:text-gray-900">
               Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
             </p>
           </div>
@@ -507,7 +417,7 @@ const WhyChooseUs = () => {
           <div className="flex flex-col justify-center w-full xl:w-auto shrink-0 text-center xl:text-left pb-8 xl:pb-0">
             <div className="flex items-center justify-center xl:justify-start gap-2 mb-4">
               <span className="text-[#32589c] font-bold text-xl md:text-2xl tracking-widest animate-pulse">{"//"}</span>
-              <span className="text-gray-500 font-bold text-xs md:text-sm tracking-[0.2em] uppercase">Our USP's</span>
+              <span className="text-[#363636] font-bold text-xs md:text-sm tracking-[0.2em] uppercase">Our USP's</span>
             </div>
             <h2 className="font-extrabold mt-[2px] text-xl md:text-2xl lg:text-3xl leading-[1.15] text-[#0a2766] tracking-tight whitespace-nowrap">
               Decades of Expertise.<br/><span className="text-[#0a2766]">Built on Trust.</span>
@@ -637,9 +547,9 @@ const ProductsHoverGallery = () => {
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
         <div className="flex items-center justify-center gap-2">
           <span className="text-[#32589c] font-bold text-lg lg:text-xl tracking-widest animate-pulse">{"//"}</span>
-          <span className="text-gray-500 font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">ENGINEERING EXCELLENCE</span>
+          <span className="text-[#363636] font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">ENGINEERING EXCELLENCE</span>
         </div>
-        <h2 className="font-extrabold text-[26px] sm:text-[30px] lg:text-[36px] xl:text-[40px] leading-[1.15] text-[#0a2766] max-w-4xl tracking-tight">
+        <h2 className="font-extrabold text-[22px] sm:text-[26px] lg:text-[32px] xl:text-[36px] leading-[1.15] text-[#0a2766] max-w-4xl tracking-tight">
           Complete Laundry Solutions <br className="hidden sm:block lg:hidden" /> Under One Roof
         </h2>
       </div>
@@ -652,20 +562,15 @@ const ProductsHoverGallery = () => {
             <div
               key={pane}
               onMouseEnter={() => setActivePane(pane as 1|2|3)}
-              className={`relative h-full overflow-hidden cursor-pointer transition-all duration-500 ease-out ${
+              className={`relative h-full overflow-hidden cursor-pointer transition-[flex] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                 isActive ? 'flex-[2] lg:flex-[2.2]' : 'flex-[1]'
-              } rounded-xl bg-[#f8f9fa]`}
+              } will-change-[flex] rounded-xl`}
             >
-              {[1, 2, 3].map((state) => (
-                <img 
-                  key={state}
-                  src={getImagePath(pane as 1|2|3, state as 1|2|3)} 
-                  alt={`Product ${pane}`} 
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-out ${
-                    activePane === state ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'
-                  } object-center`} 
-                />
-              ))}
+              <img 
+                src={getImagePath(pane as 1|2|3, activePane)} 
+                alt={`Product ${pane}`} 
+                className="absolute inset-0 w-full h-full object-contain transition-transform duration-[1.5s] ease-out bg-white" 
+              />
             </div>
           );
         })}
@@ -738,7 +643,7 @@ const ProjectsGallery = () => {
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
         <div className="flex items-center justify-center gap-2">
           <span className="text-[#32589c] font-bold text-lg lg:text-xl tracking-widest animate-pulse">{"//"}</span>
-          <span className="text-gray-500 font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">ENGINEERING EXCELLENCE</span>
+          <span className="text-[#363636] font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">ENGINEERING EXCELLENCE</span>
         </div>
         <h2 className="font-extrabold text-[26px] sm:text-[30px] lg:text-[36px] xl:text-[40px] leading-[1.15] text-[#0a2766] max-w-4xl tracking-tight">
           Complete Laundry Solutions <br className="hidden sm:block lg:hidden" /> Under One Roof
@@ -840,8 +745,8 @@ const CTABanner = () => {
           </div>
 
           {/* Right Button */}
-          <div className="shrink-0 mt-3 lg:mt-0 lg:pr-6 pb-2 lg:pb-0">
-            <button className="bg-gradient-to-b from-white to-gray-50 text-[#0a2766] font-bold text-[14px] lg:text-[15px] tracking-wider px-6 py-2.5 lg:px-8 lg:py-3.5 rounded-[12px] border border-gray-100 shadow-[0_5px_0_#cbd5e1,0_10px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_6px_0_#94a3b8,0_15px_25px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:shadow-[0_0px_0_#cbd5e1,0_0px_0_rgba(0,0,0,0.2)] active:translate-y-[5px] transition-all duration-200">
+          <div className="shrink-0 lg:pr-6">
+            <button onClick={() => document.getElementById('footer-contact')?.scrollIntoView({ behavior: 'smooth' })} className="bg-gradient-to-b from-white to-gray-50 text-[#0a2766] font-bold text-[14px] lg:text-[15px] tracking-wider px-6 py-2.5 lg:px-8 lg:py-3.5 rounded-[12px] border border-gray-100 shadow-[0_5px_0_#cbd5e1,0_10px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_6px_0_#94a3b8,0_15px_25px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:shadow-[0_0px_0_#cbd5e1,0_0px_0_rgba(0,0,0,0.2)] active:translate-y-[5px] transition-all duration-200">
               REQUEST A QUOTE
             </button>
           </div>
@@ -852,16 +757,20 @@ const CTABanner = () => {
 };
 
 const PartsToPower = () => {
-  const [sliderPos, setSliderPos] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const overImageRef = useRef<HTMLDivElement>(null);
+  const handleRef = useRef<HTMLDivElement>(null);
 
   const handleMove = (clientX: number) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || !overImageRef.current || !handleRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const x = clientX - rect.left;
     const pos = Math.max(0, Math.min(100, (x / rect.width) * 100));
-    setSliderPos(pos);
+    
+    // Direct DOM manipulation for maximum performance (avoids full page re-renders on drag)
+    overImageRef.current.style.clipPath = `inset(0 ${100 - pos}% 0 0)`;
+    handleRef.current.style.left = `calc(${pos}% - 1.5px)`;
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -952,21 +861,29 @@ const PartsToPower = () => {
               <img 
                 src="/After.jpeg" 
                 alt="Machine After"
+                loading="lazy"
                 className="absolute inset-0 w-full h-full object-cover pointer-events-none"
               />
               
               {/* Over Image (Exterior) */}
-              <img 
-                src="/Before.svg" 
-                alt="Machine Before"
-                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-                style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
-              />
+              <div 
+                ref={overImageRef}
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{ clipPath: `inset(0 50% 0 0)` }}
+              >
+                <img 
+                  src="/Before.svg" 
+                  alt="Machine Before"
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
 
               {/* Slider Line & Handle */}
               <div 
+                ref={handleRef}
                 className="absolute top-0 bottom-0 w-[3px] bg-white z-10"
-                style={{ left: `calc(${sliderPos}% - 1.5px)` }}
+                style={{ left: `calc(50% - 1.5px)` }}
               >
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-[#0a2766] border-[3px] border-white rounded-full flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -983,7 +900,7 @@ const PartsToPower = () => {
               Every Part. <span className="text-[#32589c]">One Purpose.</span>
             </h2>
             <div className="w-12 h-[4px] bg-[#32589c] mt-4 mb-3"></div>
-            <p className="text-gray-600 text-[15px] lg:text-[16px] leading-relaxed max-w-2xl mb-8">
+            <p className="text-[#363636] text-[15px] lg:text-[16px] leading-relaxed max-w-2xl mb-8">
               Performance begins long before a machine reaches your facility. It begins with premium components, precision engineering and rigorous testing that power every XCEL machine.
             </p>
 
@@ -999,7 +916,7 @@ const PartsToPower = () => {
                       {feature.title}
                     </h3>
                   </div>
-                  <p className="text-gray-600 text-[11px] sm:text-[12px] xl:text-[14px] leading-relaxed">
+                  <p className="text-[#363636] text-[11px] sm:text-[12px] xl:text-[14px] leading-relaxed">
                     {feature.desc}
                   </p>
                 </div>
@@ -1027,6 +944,7 @@ const PartsToPower = () => {
     </section>
   );
 };
+
 
 const ProductCategories = () => {
   const [currentIndex, setCurrentIndex] = React.useState(0);

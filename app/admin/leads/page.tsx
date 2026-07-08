@@ -61,7 +61,7 @@ export default function LeadsDashboard() {
 
   if (authChecking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-500 font-sans">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 text-[#363636] font-sans">
         Authenticating...
       </div>
     );
@@ -73,7 +73,7 @@ export default function LeadsDashboard() {
         <div className="flex justify-between items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-[#0a2766]">Leads Dashboard</h1>
-            <p className="text-gray-500 mt-1">View and manage contact form submissions</p>
+            <p className="text-[#363636] mt-1">View and manage contact form submissions</p>
           </div>
           <button 
             onClick={handleLogout}
@@ -84,9 +84,9 @@ export default function LeadsDashboard() {
         </div>
 
         {loading ? (
-          <div className="text-center py-20 text-gray-500">Loading leads...</div>
+          <div className="text-center py-20 text-[#363636]">Loading leads...</div>
         ) : leads.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm p-10 text-center text-gray-500 border border-gray-200">
+          <div className="bg-white rounded-lg shadow-sm p-10 text-center text-[#363636] border border-gray-200">
             No leads found.
           </div>
         ) : (
@@ -107,7 +107,7 @@ export default function LeadsDashboard() {
                 <tbody className="text-sm">
                   {leads.map((lead) => (
                     <tr key={lead.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                      <td className="py-4 px-6 text-gray-500 whitespace-nowrap">
+                      <td className="py-4 px-6 text-[#363636] whitespace-nowrap">
                         {lead.submittedAt?.toDate ? lead.submittedAt.toDate().toLocaleDateString() : 'N/A'}
                       </td>
                       <td className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">{lead.name}</td>
@@ -123,7 +123,7 @@ export default function LeadsDashboard() {
                           '-'
                         )}
                       </td>
-                      <td className="py-4 px-6 text-gray-600 line-clamp-2 max-w-xs" title={lead.message}>
+                      <td className="py-4 px-6 text-[#363636] line-clamp-2 max-w-xs" title={lead.message}>
                         {lead.message || '-'}
                       </td>
                     </tr>

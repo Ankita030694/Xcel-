@@ -16,7 +16,10 @@ export default function InsightsPage() {
         {/* Page Header */}
         <div className="flex flex-col mb-16 lg:mb-24">
           <div className="mb-8">
-            <span className="text-[#3b5b95] font-semibold text-lg lg:text-xl tracking-wide">// Insights & Updates</span>
+            <div className="flex items-center gap-2 text-[#3b5b95] font-semibold text-lg lg:text-xl tracking-wide">
+              <span className="animate-pulse">{"//"}</span>
+              <span>Insights & Updates</span>
+            </div>
             <h1 className="text-4xl md:text-5xl lg:text-[64px] font-extrabold text-[#0a2766] tracking-tight leading-[1.1] mt-4">
               Latest Insights from XCEL
             </h1>
@@ -30,7 +33,7 @@ export default function InsightsPage() {
                 className={`text-[16px] lg:text-[18px] font-semibold pb-2 border-b-2 transition-all ${
                   index === 0 
                     ? "text-[#0a2766] border-[#0a2766]" 
-                    : "text-gray-500 border-transparent hover:text-[#0a2766] hover:border-gray-300"
+                    : "text-[#363636] border-transparent hover:text-[#0a2766] hover:border-gray-300"
                 }`}
               >
                 {filter}
@@ -58,7 +61,7 @@ export default function InsightsPage() {
             <h2 className="text-3xl md:text-4xl lg:text-[44px] font-bold leading-[1.2] text-[#0a2766] mb-6 hover:text-[#3b5b95] transition-colors cursor-pointer">
               Choosing the Right Industrial Washing Machine for Your Business
             </h2>
-            <p className="text-gray-600 text-[18px] lg:text-[22px] leading-relaxed mb-10 max-w-2xl">
+            <p className="text-[#363636] text-[18px] lg:text-[22px] leading-relaxed mb-10 max-w-2xl">
               From hotels and hospitals to garment units and laundromats, selecting the right laundry equipment can improve productivity, reduce operating costs, and ensure consistent performance for years to come.
             </p>
             
@@ -71,7 +74,7 @@ export default function InsightsPage() {
             
             <div className="flex flex-col gap-1">
               <span className="text-[#0a2766] font-bold text-[18px]">By XCEL Engineering Team</span>
-              <span className="text-gray-500 text-[16px]">Apr 12, 2026 • 5 min read</span>
+              <span className="text-[#363636] text-[16px]">Apr 12, 2026 • 5 min read</span>
             </div>
           </div>
         </div>
@@ -99,7 +102,7 @@ export default function InsightsPage() {
                 <h3 className="text-[22px] lg:text-[26px] font-bold leading-[1.3] text-[#0a2766] mb-4 group-hover:text-[#3b5b95] transition-colors">
                   The Future of Digital Experiences in a Fast-Moving World
                 </h3>
-                <p className="text-gray-600 text-[16px] leading-relaxed mb-6">
+                <p className="text-[#363636] text-[16px] leading-relaxed mb-6">
                   Discover how modern businesses are leveraging technology, design, and data-driven strategies to build seamless user experiences that drive engagement and long-term growth across platforms.
                 </p>
                 

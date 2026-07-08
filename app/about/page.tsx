@@ -21,15 +21,15 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story Section - New Layout */}
-      <section id="our-story" className="relative py-6 lg:py-10 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
+      <section id="our-story" className="relative pt-2 pb-6 lg:py-10 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
         <div className="max-w-[1200px] mx-auto relative">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-[100px] mb-2 relative z-10 pt-2 px-4 lg:px-8 items-start">
             {/* Left Column: Vertical Stats */}
             <div className="w-full lg:w-[250px] shrink-0 flex flex-col gap-4 lg:gap-[35px] order-2 lg:order-1">
               {/* Tagline (Desktop) */}
               <div className="hidden lg:flex items-center gap-2 mb-2">
-                <span className="text-[#32589c] font-bold text-base sm:text-lg animate-pulse">{"//"}</span>
-                <span className="text-[#32589c] font-bold text-sm sm:text-base tracking-wide">Our Story</span>
+                <span className="text-[#32589c] font-bold text-xl md:text-base lg:text-2xl tracking-widest animate-pulse">{"//"}</span>
+                <span className="text-[#32589c] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase">OUR STORY</span>
               </div>
 
               <div className="grid grid-cols-2 gap-6 lg:grid-cols-1 lg:gap-[35px]">
@@ -76,21 +76,21 @@ export default function AboutPage() {
             </div>
 
             {/* Right Content: Title & Text */}
-            <div className="w-full lg:flex-1 flex flex-col gap-6 lg:gap-8 relative z-10 pt-8 lg:pt-16 order-1 lg:order-2">
+            <div className="w-full lg:flex-1 flex flex-col gap-4 lg:gap-8 relative z-10 pt-0 lg:pt-16 order-1 lg:order-2">
               {/* Tagline (Mobile) */}
               <div className="flex lg:hidden items-center gap-2 -mb-2">
-                <span className="text-[#32589c] font-bold text-base sm:text-lg animate-pulse">{"//"}</span>
-                <span className="text-[#32589c] font-bold text-sm sm:text-base tracking-wide">Our Story</span>
+                <span className="text-[#32589c] font-bold text-xl md:text-base lg:text-2xl tracking-widest animate-pulse">{"//"}</span>
+                <span className="text-[#32589c] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase">OUR STORY</span>
               </div>
               <h2 className="text-[28px] sm:text-[32px] lg:text-[38px] xl:text-[42px] font-bold text-[#0a2766] leading-[1.15] tracking-tight">
-                Engineering India's Laundry Future with World-Class Manufacturing
+                The People, Purpose and Engineering behind XCEL
               </h2>
-              <div className="mt-2 md:mt-4 lg:mt-8 text-gray-600 font-normal text-sm sm:text-base lg:text-[17px] leading-[1.65] space-y-6 max-w-[850px]">
+              <div className="mt-2 md:mt-4 lg:mt-8 text-[#363636] font-normal text-sm sm:text-base lg:text-[17px] leading-[1.65] space-y-6 max-w-[850px]">
                 <p>
                   Our journey began with a simple conviction that Indian businesses deserve world-class laundry equipment, designed and manufactured right here at home. Built under the Make in India initiative, XCEL operates from a 20,000 sq. ft. manufacturing facility where every machine is engineered to meet international quality and performance standards.
                 </p>
                 <p>
-                  Rather than simply assembling components, we design, fabricate, and manufacture complete commercial laundry solutions from the ground up. Today, our systems power hotels, NABH-accredited hospitals, garment manufacturers, commercial laundries, and retail laundry businesses across India—delivering reliable performance tailored to the unique demands of every industry.
+                  Rather than simply assembling components, we design, fabricate and manufacture complete commercial laundry solutions from the ground up. Today, our machines power hotels, NABH-accredited hospitals, garment manufacturers, commercial laundries and retail laundry businesses across India delivering reliable performance tailored to the unique demands of every industry.
                 </p>
               </div>
             </div>
@@ -131,9 +131,9 @@ export default function AboutPage() {
                          <span className="w-12 h-px bg-[#32589c] opacity-50"></span>
                       </h3>
                       
-                      <div className="space-y-5 text-[15px] leading-[1.8] text-gray-600 font-light">
-                          <p>When we started this journey, our vision was simple—to build industrial washing machines that Indian businesses could trust. Seeing our machines perform reliably in hotels, hospitals, and manufacturing facilities across the country is a reflection of the confidence our customers place in us every day.</p>
-                          <p className="pl-4 border-l-2 border-[#32589c]">As technology evolves, we remain committed to innovation, quality, and long-term value. Our focus continues to be on delivering durable, efficient, and dependable solutions that help our customers operate with confidence and grow sustainably.</p>
+                      <div className="space-y-5 text-[15px] leading-[1.8] text-[#363636] font-light">
+                          <p>When we started this journey, our vision was simple to build industrial washing machines that Indian businesses could trust. Seeing our machines perform reliably in hotels, hospitals and manufacturing facilities across the country is a reflection of the confidence our customers place in us every day.</p>
+                          <p className="pl-4 border-l-2 border-[#32589c]">As technology evolves, we remain committed to innovation, quality and long-term value. Our focus continues to be on delivering durable, efficient and dependable solutions that help our customers operate with confidence and grow sustainably.</p>
                        </div>
                       
                       <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
@@ -165,9 +165,9 @@ export default function AboutPage() {
                          <span className="w-12 h-px bg-[#32589c] opacity-50"></span>
                       </h3>
                       
-                      <div className="space-y-5 text-[15px] leading-[1.8] text-gray-600 font-light">
-                          <p>My father built this company with a simple belief — that success comes from earning trust, not just selling machines. Growing up, I watched him build lasting relationships with customers and learned that our real product has always been reliability, service, and commitment.</p>
-                          <p className="pl-4 border-l-2 border-[#32589c]">As the second generation leading this journey forward, my focus is on preserving those values while embracing the future. With advancements in automation, energy efficiency, and smart technologies, we continue to innovate so our clients can operate with confidence. This company was built on trust, and my commitment is to keep strengthening that trust for generations to come.</p>
+                      <div className="space-y-5 text-[15px] leading-[1.8] text-[#363636] font-light">
+                          <p>My father built this company with a simple belief that success comes from earning trust, not just selling machines. Growing up, I watched him build lasting relationships with customers and learned that our real product has always been reliability, service and commitment.</p>
+                          <p className="pl-4 border-l-2 border-[#32589c]">As the second generation leading this journey forward, my focus is on preserving those values while embracing the future. With advancements in automation, energy efficiency and smart technologies, we continue to innovate so our clients can operate with confidence. This company was built on trust and my commitment is to keep strengthening that trust for generations to come.</p>
                        </div>
                       
                       <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">

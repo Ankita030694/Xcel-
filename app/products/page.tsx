@@ -186,7 +186,7 @@ export default function ProductsPage() {
       {/* Hero Banner Section */}
       <section className="w-full bg-[#f3f5f8]">
          <img 
-           src="/Product overview new.svg" 
+           src="/PO.svg" 
            alt="Product Overview - From Washing To Finishing" 
            className="w-full h-auto object-contain block"
          />
@@ -197,10 +197,10 @@ export default function ProductsPage() {
         
         {/* Header Texts */}
         <div className="flex flex-col items-center text-center mb-10 w-full">
-          <h4 className="text-[#3b5b95] font-bold text-[11px] sm:text-[13px] tracking-[0.2em] uppercase mb-4">
-            OUR PRODUCT CATEGORIES
+          <h4 className="flex items-center justify-center gap-2 text-[#3b5b95] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase mb-4">
+            <span className="animate-pulse">{"//"}</span> OUR PRODUCT CATEGORIES
           </h4>
-          <h2 className="text-[28px] sm:text-[36px] lg:text-[42px] font-bold text-[#0a2766] font-serif mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+          <h2 className="text-[13px] sm:text-[21px] lg:text-[27px] font-bold text-[#0a2766] font-serif mb-3" style={{ fontFamily: 'Georgia, serif' }}>
             Complete Solutions for Every Laundry Need
           </h2>
           <div className="w-16 h-[2px] bg-[#3b5b95]"></div>
@@ -215,10 +215,10 @@ export default function ProductsPage() {
                 <div key={cat.id} className="flex items-center">
                   <button
                     onClick={() => setActiveTab(cat.id)}
-                    className={`px-2 sm:px-4 lg:px-6 py-2 lg:py-4 text-[10px] sm:text-[11px] lg:text-[13px] font-bold uppercase tracking-wider transition-all ${
+                    className={`px-2 sm:px-3 lg:px-4 xl:px-5 py-2 lg:py-4 text-[12px] sm:text-[14px] lg:text-[15px] xl:text-[16px] font-bold uppercase tracking-wider transition-all ${
                       isActive 
                         ? 'text-[#0a2766] border-b-[2px] lg:border-b-[2.5px] border-[#3b5b95] lg:border-[#0a2766]' 
-                        : 'text-gray-500 border-b-[2px] lg:border-b-[2.5px] border-transparent hover:text-gray-800'
+                        : 'text-[#363636] border-b-[2px] lg:border-b-[2.5px] border-transparent hover:text-gray-800'
                     }`}
                   >
                     {cat.title}
@@ -234,16 +234,13 @@ export default function ProductsPage() {
         </div>
 
         {/* Category Header (Mobile specific styling, but visible on all) */}
-        <div className="w-full flex justify-between items-center mb-6">
+        <div className="w-full flex justify-start items-center mb-6">
           <div className="flex items-center gap-2">
             <div className="w-1 h-5 lg:h-6 bg-[#3b5b95]"></div>
             <h2 className="text-[#0a2766] font-bold text-[16px] lg:text-[22px] uppercase tracking-wide">
               {activeCategory.title}
             </h2>
           </div>
-          <Link href="/products" className="text-[#3b5b95] text-[12px] lg:text-[14px] font-bold flex items-center gap-1 hover:text-[#2a4374] transition-colors">
-            View all &rarr;
-          </Link>
         </div>
 
         {/* Product Carousel (Mobile) / Grid (Desktop) */}
@@ -265,7 +262,7 @@ export default function ProductsPage() {
                 <h3 className="text-[12px] lg:text-[15px] font-extrabold text-[#0a2766] uppercase mb-1.5 lg:mb-3 leading-snug">
                   {product.name}
                 </h3>
-                <p className="text-[10px] lg:text-[13px] text-gray-500 leading-relaxed flex-1 line-clamp-3 lg:line-clamp-none">
+                <p className="text-[10px] lg:text-[13px] text-[#363636] leading-relaxed flex-1 line-clamp-3 lg:line-clamp-none">
                   {/* @ts-ignore */}
                   {product.description || 'Built for heavy loads. Engineered for excellence.'}
                 </p>

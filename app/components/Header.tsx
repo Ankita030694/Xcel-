@@ -22,7 +22,7 @@ export const Header = () => {
   }, []);
 
   return (
-    <header className="w-full relative z-40">
+    <header className="w-full sticky top-0 z-50 bg-white shadow-sm">
       {/* Top Bar Ticker */}
       <div className="bg-[#3b5b95] text-white py-2 text-[13px] font-medium tracking-wide overflow-hidden relative flex h-[34px] w-full">
         {TOP_BAR_PHRASES.map((phrase, idx) => (
@@ -66,16 +66,16 @@ export const Header = () => {
                 {/* Full-width Sub-nav Dropdown */}
                 <div className="absolute top-[90px] left-0 w-full bg-[#3b5b95] hidden group-hover:flex items-center justify-center py-3.5 shadow-xl transition-all duration-300 opacity-0 group-hover:opacity-100 border-t border-[#3b5b95]">
                   <div className="flex flex-row items-center justify-center gap-x-4 xl:gap-x-7 gap-y-2 text-white font-semibold text-[11px] xl:text-[12px] tracking-wider uppercase max-w-[1400px] px-4 w-full flex-wrap">
-                    <Link href="/products#washing" className="hover:text-blue-300 transition-colors">WASHING</Link>
-                    <Link href="/products#drying" className="hover:text-blue-300 transition-colors">DRYING</Link>
-                    <Link href="/products#apparel-processing" className="hover:text-blue-300 transition-colors">APPAREL PROCESSING</Link>
-                    <Link href="/products#dry-cleaning" className="hover:text-blue-300 transition-colors">DRY-CLEANING</Link>
-                    <Link href="/products#flat-work" className="hover:text-blue-300 transition-colors">FLAT-WORK</Link>
-                    <Link href="/products#steam-finishing" className="hover:text-blue-300 transition-colors">STEAM-FINISHING</Link>
-                    <Link href="/products#water-heater" className="hover:text-blue-300 transition-colors">WATER HEATER</Link>
-                    <Link href="/products#fabric-checking" className="hover:text-blue-300 transition-colors">FABRIC CHECKING</Link>
-                    <Link href="/products#other-equipment" className="hover:text-blue-300 transition-colors">OTHER EQUIPMENT</Link>
-                    <Link href="/products#complete-range" className="hover:text-blue-300 transition-colors">COMPLETE RANGE</Link>
+                    <a href="/products#washing" className="hover:text-blue-300 transition-colors">WASHING</a>
+                    <a href="/products#drying" className="hover:text-blue-300 transition-colors">DRYING</a>
+                    <a href="/products#apparel-processing" className="hover:text-blue-300 transition-colors">APPAREL PROCESSING</a>
+                    <a href="/products#dry-cleaning" className="hover:text-blue-300 transition-colors">DRY-CLEANING</a>
+                    <a href="/products#flat-work" className="hover:text-blue-300 transition-colors">FLAT-WORK</a>
+                    <a href="/products#steam-finishing" className="hover:text-blue-300 transition-colors">STEAM-FINISHING</a>
+                    <a href="/products#water-heater" className="hover:text-blue-300 transition-colors">WATER HEATER</a>
+                    <a href="/products#fabric-checking" className="hover:text-blue-300 transition-colors">FABRIC CHECKING</a>
+                    <a href="/products#other-equipment" className="hover:text-blue-300 transition-colors">OTHER EQUIPMENT</a>
+                    <a href="/products#complete-range" className="hover:text-blue-300 transition-colors">COMPLETE RANGE</a>
                   </div>
                 </div>
               </div>

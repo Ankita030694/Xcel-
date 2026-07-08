@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import { Phone, Mail, Clock } from 'lucide-react';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 
@@ -13,28 +14,29 @@ export default function ContactPage() {
         <img 
           src="/Contact Us Banner  (1).svg" 
           alt="Contact Us Banner" 
-          className="w-full h-auto object-cover block"
+          className="w-full h-[180px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[650px] object-cover object-center block"
         />
       </section>
 
       {/* Form & Map Section */}
-      <section className="w-full py-16 lg:py-24 px-4 sm:px-8 lg:px-12 flex justify-center bg-white border-b border-gray-100">
+      <section className="w-full py-10 lg:py-12 px-4 sm:px-8 lg:px-12 flex justify-center bg-white border-b border-gray-100">
         <div className="w-full max-w-[1300px] flex flex-col items-center">
           
           <div className="w-full flex flex-col lg:flex-row gap-12 lg:gap-20">
             {/* Left: Form */}
-            <div className="w-full lg:w-1/2 flex flex-col pt-4">
+            <div className="w-full lg:w-1/2 flex flex-col">
               
               <div className="mb-10">
-                <h4 className="text-[#32589c] font-bold text-[11px] tracking-[0.2em] uppercase mb-4 flex items-center gap-2">
-                  <span className="animate-pulse">//</span> GET IN TOUCH
-                </h4>
+                <div className="flex items-center gap-2 mb-4">
+                  <span className="text-[#32589c] font-bold text-xl md:text-base lg:text-2xl tracking-widest animate-pulse">{"//"}</span>
+                  <span className="text-[#363636] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase">Get In Touch</span>
+                </div>
                 <h2 className="text-[36px] sm:text-[44px] font-black text-[#000] leading-[1.15] mb-4 tracking-tight">
                   Let's Start the<br/><span className="text-[#32589c]">Conversation</span>
                 </h2>
                 <div className="w-full h-px bg-gray-200 mb-6"></div>
-                <p className="text-gray-500 text-[14px] leading-relaxed max-w-[90%]">
-                  Whether you're planning a new facility or upgrading existing equipment, we're ready to help you find the right solution.
+                <p className="text-[#363636] text-[19px] leading-relaxed max-w-[90%]">
+                  Whether you're planning a new laundry facility, upgrading your existing setup or looking for genuine spare parts, our team is here to help you find the right solution.
                 </p>
               </div>
 
@@ -108,10 +110,10 @@ export default function ContactPage() {
             </div>
 
             {/* Right: Map */}
-            <div className="w-full lg:w-1/2 flex items-center justify-center min-h-[400px]">
-              <div className="w-full h-full min-h-[400px] lg:min-h-[500px] flex items-center justify-center bg-gray-50 border border-gray-100 relative">
+            <div className="w-full lg:w-1/2 flex flex-col min-h-[400px]">
+              <div className="w-full h-full relative bg-gray-50 border border-gray-100 overflow-hidden">
                  <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3507.0263604850785!2d77.30799797549526!3d28.47875957574884!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce711f1f2e4db%3A0xc54eb8e3f42c2b77!2sSector%2027C%2C%20Faridabad%2C%20Haryana%20121003!5e0!3m2!1sen!2sin!4v1718000000000!5m2!1sen!2sin" 
+                  src="https://maps.google.com/maps?q=Xcel%20Stiro%20Private%20Limited&t=&z=14&ie=UTF8&iwloc=&output=embed"
                   width="100%" 
                   height="100%" 
                   style={{ border: 0, position: 'absolute', inset: 0 }} 
@@ -135,7 +137,7 @@ export default function ContactPage() {
             <h4 className="text-[#32589c] font-bold text-[14px] sm:text-[16px] tracking-[0.2em] uppercase mb-4 flex items-center justify-center gap-2">
               <span className="animate-pulse">//</span> OUR LOCATIONS
             </h4>
-            <p className="text-gray-500 text-[16px] sm:text-[18px] leading-relaxed max-w-2xl">
+            <p className="text-[#363636] text-[16px] sm:text-[18px] leading-relaxed max-w-2xl">
               Our facilities and support network ensure quality products and reliable assistance, wherever you are.
             </p>
           </div>
@@ -172,29 +174,38 @@ export default function ContactPage() {
               <div className="bg-white rounded-xl shadow-[0_4px_25px_rgba(0,0,0,0.03)] border border-gray-100 p-8 flex flex-col sm:flex-row gap-8">
                 
                 <div className="flex-1">
-                  <h3 className="text-[#32589c] font-bold text-[15px] mb-4">Corporate Office and Manufacturing Plant</h3>
+                  <h3 className="text-[#32589c] font-bold text-[18px] mb-4">Corporate Office and Manufacturing Plant</h3>
                   
-                  <div className="flex flex-col gap-1 text-[13px] text-gray-600 leading-relaxed mb-6">
+                  <div className="flex flex-col gap-1 text-[15px] text-[#363636] leading-relaxed mb-6">
                     <p>Plot 70, Sector 27C,</p>
                     <p>Faridabad, Haryana 121003, India</p>
                   </div>
                 </div>
 
                 <div className="flex-1 flex flex-col gap-6">
-                  <div className="flex flex-col gap-1 text-[13px] text-gray-600">
-                    <p>+91 129-4155713</p>
-                    <p>+91 129-4155714</p>
-                    <p>+91 9971025730</p>
+                  <div className="flex gap-4">
+                    <Phone className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                    <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
+                      <a href="tel:+911294155713" className="hover:text-[#0a2766] transition-colors">+91 129-4155713</a>
+                      <a href="tel:+911294155714" className="hover:text-[#0a2766] transition-colors">+91 129-4155714</a>
+                      <a href="tel:+919971025730" className="hover:text-[#0a2766] transition-colors">+91 9971025730</a>
+                    </div>
                   </div>
 
-                  <div className="flex flex-col gap-1 text-[13px] text-gray-600">
-                    <p>sales@xcelstiro.com</p>
-                    <p>servicing@xcelstiro.com</p>
+                  <div className="flex gap-4">
+                    <Mail className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                    <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
+                      <a href="mailto:sales@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">sales@xcelstiro.com</a>
+                      <a href="mailto:servicing@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">servicing@xcelstiro.com</a>
+                    </div>
                   </div>
 
-                  <div className="flex flex-col gap-1 text-[13px] text-gray-600">
-                    <p>Mon – Sat: 8:30 AM – 5:30 PM</p>
-                    <p>Sunday: Closed</p>
+                  <div className="flex gap-4">
+                    <Clock className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                    <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
+                      <p>Mon – Sat: 8:30 AM – 5:30 PM</p>
+                      <p>Sunday: Closed</p>
+                    </div>
                   </div>
                 </div>
 
@@ -204,9 +215,9 @@ export default function ContactPage() {
               <div className="bg-white rounded-xl shadow-[0_4px_25px_rgba(0,0,0,0.03)] border border-gray-100 p-8 flex flex-col sm:flex-row gap-8">
                 
                 <div className="flex-1">
-                  <h3 className="text-[#32589c] font-bold text-[15px] mb-4">Regional Office</h3>
+                  <h3 className="text-[#32589c] font-bold text-[18px] mb-4">Regional Office</h3>
                   
-                  <div className="flex flex-col gap-1 text-[13px] text-gray-600 leading-relaxed mb-6">
+                  <div className="flex flex-col gap-1 text-[15px] text-[#363636] leading-relaxed mb-6">
                     <p>12/26, PN Road, Laxmi Nagar,</p>
                     <p>New Extension, Tiruppur,</p>
                     <p>Tamil Nadu 641602, India</p>
@@ -214,19 +225,28 @@ export default function ContactPage() {
                 </div>
 
                 <div className="flex-1 flex flex-col gap-6">
-                  <div className="flex flex-col gap-1 text-[13px] text-gray-600">
-                    <p>+91 7428087070</p>
-                    <p>+91 8438067251</p>
+                  <div className="flex gap-4">
+                    <Phone className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                    <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
+                      <a href="tel:+917428087070" className="hover:text-[#0a2766] transition-colors">+91 7428087070</a>
+                      <a href="tel:+918438067251" className="hover:text-[#0a2766] transition-colors">+91 8438067251</a>
+                    </div>
                   </div>
 
-                  <div className="flex flex-col gap-1 text-[13px] text-gray-600">
-                    <p>tirupur@xcelstiro.com</p>
-                    <p>sales@xcelstiro.com</p>
+                  <div className="flex gap-4">
+                    <Mail className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                    <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
+                      <a href="mailto:tirupur@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">tirupur@xcelstiro.com</a>
+                      <a href="mailto:sales@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">sales@xcelstiro.com</a>
+                    </div>
                   </div>
 
-                  <div className="flex flex-col gap-1 text-[13px] text-gray-600">
-                    <p>Mon – Sat: 9:30 AM – 7:00 PM</p>
-                    <p>Sunday: Closed</p>
+                  <div className="flex gap-4">
+                    <Clock className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                    <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
+                      <p>Mon – Sat: 9:30 AM – 7:00 PM</p>
+                      <p>Sunday: Closed</p>
+                    </div>
                   </div>
                 </div>
 
