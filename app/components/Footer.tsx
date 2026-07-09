@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { db } from '../../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -149,7 +150,12 @@ export const Footer = () => {
               
               {/* Image spacer block */}
               <div className="hidden md:block w-[120px] relative overflow-hidden bg-[#3b5e94]/20">
-                <img src="/commercial-washing-machine-generated.png" alt="Commercial Washing Machine" className="absolute inset-0 w-full h-full object-cover" />
+                <Image 
+                  src="/commercial-washing-machine-generated.png" 
+                  alt="Commercial Washing Machine" 
+                  fill
+                  className="object-cover" 
+                />
               </div>
               
               <div className="flex-1 bg-[#3b5e94] p-6 text-white">

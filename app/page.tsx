@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { Star, ShieldCheck, Zap, Maximize, Play, Pause, Factory, Handshake } from 'lucide-react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -47,6 +48,29 @@ const Counter = ({ end, duration = 2500, suffix = "" }: { end: number, duration?
 };
 
 const StatsBanner = () => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    // Only auto-play on mobile/tablet (less than 1024px)
+    if (window.innerWidth >= 1024) return;
+    
+    // Auto-play on mobile unless hovered/touched
+    if (isHovered) return;
+    const timer = setInterval(() => {
+      if (scrollRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+        // If at the end, scroll back to 0. Otherwise, scroll to the next slide (which is half the scrollable width since there are 2 slides)
+        if (scrollLeft + clientWidth >= scrollWidth - 10) {
+          scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          scrollRef.current.scrollTo({ left: scrollLeft + clientWidth, behavior: 'smooth' });
+        }
+      }
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [isHovered]);
+
   const stats = [
     { end: 30000, suffix: "+", title: "Machines Installed" },
     { end: 8000, suffix: "+", title: "Happy Clients" },
@@ -55,20 +79,67 @@ const StatsBanner = () => {
   ];
 
   return (
-    <div className="w-full bg-[#3b5b95] py-3 sm:py-4">
-      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col sm:flex-row flex-wrap items-center justify-between gap-4 sm:gap-2">
+    <div className="w-full bg-[#3b5b95] py-2 sm:py-3 lg:py-4 overflow-hidden">
+      <div className="max-w-[1200px] mx-auto px-2 sm:px-6 lg:px-8">
+        
+        {/* Desktop: Show all 4 in a row */}
+        <div className="hidden lg:flex flex-row items-center justify-between gap-4">
           {stats.map((stat, idx) => (
-            <div key={idx} className="flex items-center justify-center gap-2 lg:gap-3 w-full sm:w-auto">
-              <h3 className="text-2xl md:text-3xl lg:text-[32px] font-bold text-white tracking-tight drop-shadow-sm">
+            <div key={idx} className="flex flex-row items-center justify-center gap-3">
+              <h3 className="text-[32px] font-bold text-white tracking-tight drop-shadow-sm">
                 <Counter end={stat.end} suffix={stat.suffix} />
               </h3>
-              <p className="text-[12px] sm:text-[13px] lg:text-[14px] font-medium text-white/90 leading-tight whitespace-nowrap">
+              <p className="text-[14px] font-medium text-white/90 leading-tight whitespace-nowrap">
                 {stat.title}
               </p>
             </div>
           ))}
         </div>
+
+        {/* Mobile/Tablet: Auto-slider showing 2 at a time (Draggable & Swipeable) */}
+        <div 
+          className="relative w-full h-[50px] sm:h-[60px] flex lg:hidden justify-center"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          onTouchStart={() => setIsHovered(true)}
+          onTouchEnd={() => setTimeout(() => setIsHovered(false), 2000)}
+        >
+          <div className="w-full relative">
+            <div 
+              ref={scrollRef}
+              className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] cursor-grab active:cursor-grabbing"
+            >
+              {/* Slide 1 (Items 1 & 2) */}
+              <div className="flex items-center justify-around w-full shrink-0 snap-center px-2">
+                {stats.slice(0, 2).map((stat, idx) => (
+                  <div key={idx} className="flex flex-row items-center justify-center gap-2 w-1/2">
+                    <h3 className="text-[22px] sm:text-[28px] font-bold text-white tracking-tight drop-shadow-sm leading-none">
+                      <Counter end={stat.end} suffix={stat.suffix} />
+                    </h3>
+                    <p className="text-[11px] sm:text-[13px] font-medium text-white/90 leading-tight">
+                      {stat.title.replace(' ', '\n')}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Slide 2 (Items 3 & 4) */}
+              <div className="flex items-center justify-around w-full shrink-0 snap-center px-2">
+                {stats.slice(2, 4).map((stat, idx) => (
+                  <div key={idx} className="flex flex-row items-center justify-center gap-2 w-1/2">
+                    <h3 className="text-[22px] sm:text-[28px] font-bold text-white tracking-tight drop-shadow-sm leading-none">
+                      <Counter end={stat.end} suffix={stat.suffix} />
+                    </h3>
+                    <p className="text-[11px] sm:text-[13px] font-medium text-white/90 leading-tight">
+                      {stat.title.replace(' ', '\n')}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
@@ -812,28 +883,28 @@ const PartsToPower = () => {
       title: "Premium Components",
       desc: "From bearings and valves to heating elements and stainless-steel 304 baskets, every component plays a critical role that modern laundries depend on.",
       icon: (
-        <img src="/Icon home/premium-components.png" alt="Premium Components" className="w-[28px] h-[28px] sm:w-[32px] sm:h-[32px] object-contain" />
+        <img src="/Icon home/premium-components.png" alt="Premium Components" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     },
     {
       title: "Engineered as One System",
       desc: "With every carefully sourced component, the finished product becomes more than just a machine, it becomes a dependable partner.",
       icon: (
-        <img src="/Icon home/engineered-as-one-system.png" alt="Engineered as One System" className="w-[28px] h-[28px] sm:w-[32px] sm:h-[32px] object-contain" />
+        <img src="/Icon home/engineered-as-one-system.png" alt="Engineered as One System" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     },
     {
       title: "Precision Manufacturing",
       desc: "Through advanced manufacturing, we transform high-quality components into industrial laundry equipment built for continuous operation.",
       icon: (
-        <img src="/Icon home/precision-manufacturing.png" alt="Precision Manufacturing" className="w-[28px] h-[28px] sm:w-[32px] sm:h-[32px] object-contain" />
+        <img src="/Icon home/precision-manufacturing.png" alt="Precision Manufacturing" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     },
     {
       title: "Rigorous Testing",
       desc: "Every machine undergoes rigorous testing to ensure dependable performance in demanding commercial and industrial laundries.",
       icon: (
-        <img src="/Icon home/rigorous-testing.png" alt="Rigorous Testing" className="w-[28px] h-[28px] sm:w-[32px] sm:h-[32px] object-contain" />
+        <img src="/Icon home/rigorous-testing.png" alt="Rigorous Testing" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     }
   ];
@@ -858,11 +929,12 @@ const PartsToPower = () => {
               }}
             >
               {/* Under Image (Interior/Parts) */}
-              <img 
+              <Image 
                 src="/After.jpeg" 
                 alt="Machine After"
-                loading="lazy"
-                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                fill
+                priority={false}
+                className="object-cover pointer-events-none"
               />
               
               {/* Over Image (Exterior) */}
@@ -909,7 +981,7 @@ const PartsToPower = () => {
               {features.map((feature, idx) => (
                 <div key={idx} tabIndex={0} className="group bg-white border border-gray-100 p-3 sm:p-4 lg:p-6 rounded-2xl shadow-[0_15px_40px_-10px_rgba(10,39,102,0.15)] hover:shadow-[0_25px_50px_-12px_rgba(10,39,102,0.25)] hover:border-[#32589c]/20 hover:-translate-y-2 transition-all duration-300 flex flex-col cursor-pointer outline-none" onTouchStart={() => {}}>
                   <div className="flex flex-row items-center gap-2 sm:gap-3 xl:gap-4 mb-2 sm:mb-3 xl:mb-4">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 xl:w-12 xl:h-12 shrink-0 bg-[#3b5b95] rounded-full flex items-center justify-center text-white transition-all duration-300 group-hover:scale-110 group-hover:bg-[#1d438a] group-hover:shadow-md">
+                    <div className="w-7 h-7 lg:w-10 lg:h-10 xl:w-12 xl:h-12 shrink-0 bg-[#3b5b95] rounded-full flex items-center justify-center text-white transition-all duration-300 group-hover:scale-110 group-hover:bg-[#1d438a] group-hover:shadow-md">
                       {feature.icon}
                     </div>
                     <h3 className="font-bold text-[#0a2766] text-[12px] sm:text-[14px] xl:text-[17px] leading-snug">

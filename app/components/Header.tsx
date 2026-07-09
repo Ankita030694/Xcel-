@@ -58,9 +58,6 @@ export const Header = () => {
               <div className="group flex flex-col justify-center h-[90px]">
                 <Link href="/products" className="relative flex items-center cursor-pointer pb-1 border-b-[1.5px] border-transparent group-hover:border-[#3b5b95] transition-all">
                   <span className="text-[#3b5b95] font-semibold text-[14px]">PRODUCTS</span>
-                  <svg className="w-[14px] h-[14px] ml-1 text-[#3b5b95] group-hover:rotate-180 transition-transform duration-300" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
                 </Link>
                 
                 {/* Full-width Sub-nav Dropdown */}
@@ -127,9 +124,6 @@ export const Header = () => {
           <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="flex flex-col items-center">
             <div className="flex items-center justify-center cursor-pointer">
               <span className="text-[#3b5b95] font-semibold text-[15px]">PRODUCTS</span>
-              <svg className="w-4 h-4 ml-1 text-[#3b5b95]" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-              </svg>
             </div>
           </Link>
           <Link href="/insights" onClick={() => setIsMobileMenuOpen(false)} className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
