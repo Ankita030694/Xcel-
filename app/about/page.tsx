@@ -23,7 +23,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story Section - New Layout */}
-      <section id="our-story" className="relative pt-2 pb-6 lg:py-10 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
+      <section id="our-story" className="scroll-mt-[130px] relative pt-2 pb-6 lg:py-10 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
         <div className="max-w-[1200px] mx-auto relative">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-[100px] mb-2 relative z-10 pt-2 px-4 lg:px-8 items-start">
             {/* Left Column: Vertical Stats */}
@@ -105,7 +105,7 @@ export default function AboutPage() {
         <div className="max-w-[1200px] mx-auto">
           
           {/* Section Header */}
-          <div id="leadership" className="text-center mb-4 lg:mb-6 relative z-20 bg-[#f8f9fa] py-2 lg:py-4">
+          <div id="leadership" className="scroll-mt-[130px] text-center mb-4 lg:mb-6 relative z-20 bg-[#f8f9fa] py-2 lg:py-4">
              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0a2766] tracking-tight mb-2 lg:mb-4">
                 Two Generations. <br className="sm:hidden" />
                 <span className="text-[#32589c] font-serif italic font-light">One Vision.</span>
@@ -188,7 +188,7 @@ export default function AboutPage() {
       </section>
 
       <DraggableTimeline />
-      <div id="vision">
+      <div id="vision" className="scroll-mt-[130px]">
         <MissionVisionSection />
       </div>
 
