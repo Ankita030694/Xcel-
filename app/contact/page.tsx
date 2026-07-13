@@ -9,12 +9,13 @@ export default function ContactPage() {
     <main className="min-h-screen bg-white font-sans text-gray-800">
       <Header />
 
-      {/* Hero Section */}
-      <section className="w-full relative bg-[#0a2766]">
+      {/* Contact Us Hero Section (Image Banner) */}
+      <section className="relative w-full h-auto flex flex-col items-center justify-center bg-white overflow-hidden">
         <img 
-          src="/Contact Us Banner  (1).svg" 
+          src="/Contact%20Us%20Banner%20%20(1800%20x%20600%20px).svg" 
           alt="Contact Us Banner" 
-          className="w-full h-[180px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[650px] object-cover object-center block"
+          className="w-full h-auto block"
+          style={{ aspectRatio: '1800/600' }}
         />
       </section>
 
