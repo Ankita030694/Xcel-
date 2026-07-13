@@ -389,8 +389,8 @@ const ProductPage = () => {
         </div>
 
         {/* Bottom CTA Banner */}
-        <div className="bg-[#0a2766] rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 shadow-xl">
-          <div className="flex flex-row items-start gap-4 sm:gap-6 w-full md:w-auto text-left">
+        <div className="bg-[#0a2766] rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 shadow-xl">
+          <div className="flex flex-row items-start gap-4 sm:gap-6 w-full lg:w-auto text-left">
             <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 bg-[#e8effa] rounded-full flex items-center justify-center text-[#0a2766]">
               <Headset size={28} strokeWidth={2} />
             </div>
@@ -404,7 +404,7 @@ const ProductPage = () => {
             </div>
           </div>
           
-          <div className="flex flex-row items-center justify-center gap-2 xs:gap-3 sm:gap-6 w-full md:w-auto mt-4 sm:mt-2 md:mt-0">
+          <div className="flex flex-row items-center justify-center gap-2 xs:gap-3 sm:gap-6 w-full lg:w-auto mt-4 sm:mt-2 lg:mt-0">
             <a href="tel:+919971025730" className="flex items-center gap-1.5 sm:gap-3 text-white font-bold text-[13px] xs:text-[14px] sm:text-[18px] hover:text-blue-200 transition-colors flex-1 sm:flex-none justify-center whitespace-nowrap">
               <Phone className="w-4 h-4 sm:w-6 sm:h-6" />
               +91 99710 25730
