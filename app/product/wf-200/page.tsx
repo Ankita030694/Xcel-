@@ -84,32 +84,14 @@ const ProductPage = () => {
     const isOpening = mobileExpanded !== id;
     
     if (isOpening) {
-      const button = e.currentTarget;
-      const initialTop = button.getBoundingClientRect().top;
-      const targetTop = 100; // target 100px from the top of viewport
-      
       setMobileExpanded(id);
-
-      let start = performance.now();
-      const duration = 300; // match transition duration
-
-      const step = (timestamp: number) => {
-        const elapsed = timestamp - start;
-        const progress = Math.min(elapsed / duration, 1);
-        // easeOutQuad
-        const easeProgress = progress * (2 - progress);
-        
-        const currentTargetTop = initialTop + (targetTop - initialTop) * easeProgress;
-        const currentActualTop = button.getBoundingClientRect().top;
-        const diff = currentActualTop - currentTargetTop;
-        
-        window.scrollBy(0, diff);
-
-        if (progress < 1) {
-          requestAnimationFrame(step);
-        }
-      };
-      requestAnimationFrame(step);
+      
+      // Smoothly scroll to the expanded section after the CSS transition completes
+      const button = e.currentTarget;
+      setTimeout(() => {
+        const topOffset = button.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: topOffset, behavior: 'smooth' });
+      }, 310);
     } else {
       setMobileExpanded(null);
     }
