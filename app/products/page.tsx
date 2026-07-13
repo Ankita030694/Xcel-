@@ -254,7 +254,7 @@ export default function ProductsPage() {
                 <img 
                   src={product.image} 
                   alt={product.name} 
-                  className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 mix-blend-multiply lg:mix-blend-normal" 
+                  className="w-full h-full object-contain mix-blend-multiply lg:mix-blend-normal" 
                 />
               </div>
 
