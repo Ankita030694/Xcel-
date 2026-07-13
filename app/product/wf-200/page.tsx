@@ -410,7 +410,7 @@ const ProductPage = () => {
         <div className="bg-[#0a2766] rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8 shadow-xl">
           <div className="flex flex-row items-center gap-4 sm:gap-6 w-full md:w-auto text-left">
             <div className="w-14 h-14 sm:w-16 sm:h-16 shrink-0 bg-white/10 rounded-full flex items-center justify-center text-white border border-white/20">
-              <Phone size={28} />
+              <Headset size={28} />
             </div>
             <div className="flex flex-col">
               <h3 className="text-white font-bold text-[18px] sm:text-[20px] lg:text-[22px] mb-1">
