@@ -430,7 +430,7 @@ const ProductPage = () => {
             
             <div className="w-px h-6 sm:h-8 bg-white/20 shrink-0"></div>
             
-            <a href="https://wa.me/919971025730" target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none bg-white text-[#0a2766] py-2.5 sm:py-3.5 px-2 xs:px-4 sm:px-8 rounded-lg sm:rounded-xl font-bold flex items-center justify-center gap-1.5 sm:gap-3 hover:bg-gray-100 hover:shadow-lg transition-all text-[13px] xs:text-[14px] sm:text-[16px] whitespace-nowrap">
+            <a href="https://wa.me/919971025730?text=Hi%2C%20I%20am%20looking%20to%20buy%20a%20Laundry%20Machine.%20Please%20share%20the%20details." target="_blank" rel="noopener noreferrer" className="flex-1 sm:flex-none bg-white text-[#0a2766] py-2.5 sm:py-3.5 px-2 xs:px-4 sm:px-8 rounded-lg sm:rounded-xl font-bold flex items-center justify-center gap-1.5 sm:gap-3 hover:bg-gray-100 hover:shadow-lg transition-all text-[13px] xs:text-[14px] sm:text-[16px] whitespace-nowrap">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 sm:w-[22px] sm:h-[22px]">
                 <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" />
                 <path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" />
