@@ -18,11 +18,12 @@ export default function AboutPage() {
           src="/ABOUT%20US%20BANNER%202%201.svg" 
           alt="About Us Banner" 
           className="w-full h-auto block"
+          style={{ aspectRatio: '1600/600' }}
         />
       </section>
 
       {/* Our Story Section - New Layout */}
-      <section id="our-story" className="scroll-mt-[120px] relative pt-2 pb-6 lg:py-10 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
+      <section id="our-story" className="relative pt-2 pb-6 lg:py-10 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
         <div className="max-w-[1200px] mx-auto relative">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-[100px] mb-2 relative z-10 pt-2 px-4 lg:px-8 items-start">
             {/* Left Column: Vertical Stats */}
@@ -100,7 +101,7 @@ export default function AboutPage() {
       </section>
 
       {/* Legacy Section - Stacked Layout */}
-      <section id="leadership" className="scroll-mt-[120px] pt-10 lg:pt-16 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-10 lg:pb-16">
+      <section id="leadership" className="pt-10 lg:pt-16 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-10 lg:pb-16">
         <div className="max-w-[1200px] mx-auto">
           
           {/* Section Header */}
@@ -187,7 +188,7 @@ export default function AboutPage() {
       </section>
 
       <DraggableTimeline />
-      <div id="vision" className="scroll-mt-[120px]">
+      <div id="vision">
         <MissionVisionSection />
       </div>
 
