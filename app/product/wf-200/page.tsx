@@ -44,17 +44,17 @@ const FAQList = () => {
               onClick={() => setOpenIndex(isOpen ? null : index)}
               className="w-full flex items-center justify-between p-4 sm:p-5 text-left focus:outline-none"
             >
-              <div className="flex items-start sm:items-center gap-3 sm:gap-6 w-full">
-                <span className="text-[#0a2766] font-semibold text-[15px] shrink-0 mt-0.5 sm:mt-0">Q{index + 1}.</span>
-                <span className="text-[#0a2766] font-medium text-[14px] sm:text-[15px] pr-4">{faq.q}</span>
+              <div className="flex items-start gap-3 sm:gap-4 w-full">
+                <span className="text-[#0a2766] font-bold text-[16px] shrink-0">Q{index + 1}.</span>
+                <span className="text-[#0a2766] font-bold text-[16px] pr-4 leading-tight">{faq.q}</span>
               </div>
               <div className="shrink-0 text-[#0a2766]">
                 {isOpen ? <ChevronUp size={20} strokeWidth={2} /> : <ChevronDown size={20} strokeWidth={2} />}
               </div>
             </button>
             {isOpen && (
-              <div className="px-4 sm:px-[60px] pb-5 pt-0">
-                <p className="text-[#0a2766] opacity-90 text-[17px] sm:text-[18px] leading-relaxed">
+              <div className="px-4 sm:pl-[48px] sm:pr-[60px] pb-5 pt-1">
+                <p className="text-[#363636] text-[16px] leading-relaxed">
                   {faq.a}
                 </p>
               </div>
@@ -131,43 +131,43 @@ const ProductPage = () => {
       content: (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
           <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">High-Capacity Production Range</h4>
+            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">High-Capacity Production Range</h4>
             <p className="text-[#363636] text-[16px] leading-relaxed">Available in 100 kg and 200kg capacities for high-volume processing environments where output, consistency, and operational efficiency are critical.</p>
           </div>
           <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Auto Forward & Reverse Basket Rotation</h4>
+            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Auto Forward & Reverse Basket Rotation</h4>
             <p className="text-[#363636] text-[16px] leading-relaxed">Fully programmable reversing action ensures uniform garment movement, improved chemical penetration and tangle-free processing across every batch.</p>
           </div>
           <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Advanced Multi-Stage Programming</h4>
+            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Advanced Multi-Stage Programming</h4>
             <p className="text-[#363636] text-[16px] leading-relaxed">Fully programmable wash cycles with multiple independent process stages, allowing precise control over temperature, water levels, basket speed, chemical dosing and cycle duration.</p>
           </div>
           <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">SS 304 Chemical-Resistant Inner Drum & Door</h4>
+            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">SS 304 Chemical-Resistant Inner Drum & Door</h4>
             <p className="text-[#363636] text-[16px] leading-relaxed">Constructed from premium-grade 304 stainless steel to withstand continuous exposure to enzymes, bleach, acids, dyes and textile processing chemicals.</p>
           </div>
           <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Imported VFD (Variable Frequency Drive)</h4>
+            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Imported VFD (Variable Frequency Drive)</h4>
             <p className="text-[#363636] text-[16px] leading-relaxed">Enables accurate drum speed control from gentle fabric handling to aggressive denim processing, delivering superior wash quality and process consistency.</p>
           </div>
           <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Industrial-Grade CNC Fabricated Frame</h4>
+            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Industrial-Grade CNC Fabricated Frame</h4>
             <p className="text-[#363636] text-[16px] leading-relaxed">Precision CNC-cut welded frame construction delivers exceptional structural strength, vibration resistance and long operational life.</p>
           </div>
           <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">High-Temperature Processing</h4>
+            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">High-Temperature Processing</h4>
             <p className="text-[#363636] text-[16px] leading-relaxed">Steam-heated operation with digital temperature control for enzyme washing, bleaching, dyeing, garment treatment and specialized textile processing applications.</p>
           </div>
           <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Automatic Water Inlet & Drain System</h4>
+            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Automatic Water Inlet & Drain System</h4>
             <p className="text-[#363636] text-[16px] leading-relaxed">PLC-controlled water filling and draining enables uninterrupted production with minimal operator intervention.</p>
           </div>
           <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Programmable Water Level Management</h4>
+            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Programmable Water Level Management</h4>
             <p className="text-[#363636] text-[16px] leading-relaxed">Low, medium and high water level options programmable per wash step for optimized liquor ratio and chemical efficiency.</p>
           </div>
           <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[14px] sm:text-[15px] mb-1">Operator Safety Protection</h4>
+            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Operator Safety Protection</h4>
             <p className="text-[#363636] text-[16px] leading-relaxed">The machine automatically stops basket rotation if the door is opened during operation, enhancing workplace safety and reducing operational risks.</p>
           </div>
         </div>
@@ -180,7 +180,7 @@ const ProductPage = () => {
       subtext: 'Discover the advantages that set XCEL apart',
       shortDesc: 'Built with quality, engineered for performance',
       content: (
-        <div className="p-2 text-[#363636] text-[17px]">
+        <div className="p-2 text-[#363636] text-[16px] leading-relaxed">
           Built with quality, engineered for performance. We prioritize durability and continuous innovation.
         </div>
       )
@@ -192,7 +192,7 @@ const ProductPage = () => {
       subtext: 'Tailored laundry solutions for every industry we serve',
       shortDesc: 'Solutions trusted across diverse industries',
       content: (
-        <div className="p-2 text-[#363636] text-[17px]">
+        <div className="p-2 text-[#363636] text-[16px] leading-relaxed">
           Content for Industries Served will go here.
         </div>
       )
@@ -315,16 +315,16 @@ const ProductPage = () => {
             <div key={section.id} className="flex flex-col bg-white">
               <button 
                 onClick={(e) => handleMobileAccordionClick(e, section.id)} 
-                className={`flex flex-row items-center justify-between p-4 sm:p-5 text-left w-full transition-colors ${mobileExpanded === section.id ? 'bg-[#0a2766]' : 'hover:bg-gray-50'}`}
+                className="flex flex-row items-center justify-between p-4 sm:p-5 text-left w-full transition-colors bg-[#f4f7fb]"
               >
                 <div className="flex flex-row items-center gap-4">
-                  <div className={`w-[2px] h-[40px] shrink-0 ${mobileExpanded === section.id ? 'bg-white' : 'bg-[#0a2766]'}`}></div>
+                  <div className="w-[2px] h-[40px] shrink-0 bg-[#0a2766]"></div>
                   <div className="flex flex-col gap-0.5 pr-2">
-                    <span className={`font-semibold text-[15px] sm:text-[16px] ${mobileExpanded === section.id ? 'text-white' : 'text-[#0a2766]'}`}>{section.title}</span>
-                    <span className={`text-[13px] leading-snug ${mobileExpanded === section.id ? 'text-blue-100' : 'text-[#363636]'}`}>{section.shortDesc}</span>
+                    <span className="font-semibold text-[16px] sm:text-[17px] text-[#0a2766]">{section.title}</span>
+                    <span className="text-[13px] leading-snug text-[#363636]">{section.shortDesc}</span>
                   </div>
                 </div>
-                <ChevronDown size={22} strokeWidth={1.5} className={`shrink-0 ml-2 transition-transform duration-300 ${mobileExpanded === section.id ? 'rotate-180 text-white' : 'text-[#0a2766]'}`} />
+                <ChevronDown size={22} strokeWidth={1.5} className={`shrink-0 ml-2 text-[#0a2766] transition-transform duration-300 ${mobileExpanded === section.id ? 'rotate-180' : ''}`} />
               </button>
               <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileExpanded === section.id ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0 bg-white'}`}>
                 <div className="p-4 sm:p-5 pt-0 mt-0">
@@ -385,7 +385,7 @@ const ProductPage = () => {
                     <div className="w-16 h-[4px] bg-[#0a2766] rounded-full relative z-10"></div>
                     
                     {/* Decorative Wave Pattern at bottom */}
-                    <div className="absolute bottom-0 left-0 right-0 h-40 opacity-[0.03] pointer-events-none">
+                    <div className="relative w-full h-24 mt-6 opacity-[0.04] pointer-events-none -mb-4">
                       <svg viewBox="0 0 1000 300" preserveAspectRatio="none" className="w-full h-full fill-none stroke-[#0a2766] stroke-[2px]">
                         <path d="M 0 150 Q 250 300 500 150 T 1000 150" />
                         <path d="M 0 170 Q 250 320 500 170 T 1000 170" />
@@ -423,15 +423,15 @@ const ProductPage = () => {
           </div>
           
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full md:w-auto mt-2 md:mt-0">
-            <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-white font-bold text-[16px] sm:text-[18px] hover:text-blue-200 transition-colors w-full sm:w-auto justify-center">
+            <a href="tel:+919876543210" className="flex items-center gap-3 text-white font-bold text-[16px] sm:text-[18px] hover:text-blue-200 transition-colors w-full sm:w-auto justify-center">
               <Phone size={20} className="text-blue-300" />
               +91 98765 43210
             </a>
             
             <div className="hidden sm:block w-px h-8 bg-white/20"></div>
             
-            <a href="/contact" className="w-full sm:w-auto bg-white text-[#0a2766] py-3.5 px-8 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-gray-100 hover:shadow-lg transition-all">
-              <Mail size={18} />
+            <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-white text-[#0a2766] py-3.5 px-8 rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-gray-100 hover:shadow-lg transition-all">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
               Get In Touch
             </a>
           </div>

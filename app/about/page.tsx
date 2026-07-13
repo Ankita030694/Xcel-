@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { MissionVisionSection } from '../components/MissionVisionSection';
+import Image from 'next/image';
 
 
 export default function AboutPage() {
@@ -16,7 +17,7 @@ export default function AboutPage() {
         <img 
           src="/ABOUT%20US%20BANNER%202%201.svg" 
           alt="About Us Banner" 
-          className="w-full h-auto object-cover"
+          className="w-full h-auto block"
         />
       </section>
 

@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { Phone, Mail, Clock } from 'lucide-react';
+import { Phone, Mail, Clock, ExternalLink, CornerUpRight } from 'lucide-react';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 
@@ -145,8 +145,8 @@ export default function ContactPage() {
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center">
             
             {/* Left: India Map Graphic */}
-            <div className="w-full lg:w-[45%] flex items-center justify-center min-h-[400px] lg:min-h-[500px] overflow-visible">
-              <div className="relative w-full max-w-[550px] scale-105 lg:scale-110 hover:scale-[1.08] lg:hover:scale-[1.15] transition-all duration-500 ease-in-out group cursor-default">
+            <div className="w-full lg:w-[45%] flex items-start justify-center pt-4 overflow-visible">
+              <div className="relative w-full max-w-[450px] transition-all duration-500 ease-in-out group cursor-default">
                 <img src="/india-map.svg" alt="India Map" className="w-full h-auto drop-shadow-sm opacity-80 group-hover:opacity-100 group-hover:drop-shadow-lg transition-all duration-500" />
                 
                 {/* Faridabad Pin (Haryana) */}
@@ -180,11 +180,22 @@ export default function ContactPage() {
                     <p>Plot 70, Sector 27C,</p>
                     <p>Faridabad, Haryana 121003, India</p>
                   </div>
+                  
+                  <div className="flex flex-col items-start gap-3">
+                    <a href="https://maps.google.com/?q=Xcel+Stiro+Private+Limited,+Faridabad" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-gradient-to-b from-white to-gray-50 text-[#32589c] font-bold text-[13px] py-2 px-5 rounded-[10px] border border-gray-200 shadow-[0_4px_0_#32589c,0_5px_15px_rgba(0,0,0,0.08)] hover:-translate-y-[1px] hover:shadow-[0_5px_0_#1d438a,0_8px_20px_rgba(0,0,0,0.12)] active:translate-y-[4px] active:shadow-[0_0px_0_#32589c,0_0px_0_rgba(0,0,0,0)] transition-all duration-200 group">
+                      <ExternalLink className="w-4 h-4 text-[#32589c] group-hover:scale-110 transition-transform" strokeWidth={2.5} />
+                      View on Map
+                    </a>
+                    <a href="https://www.google.com/maps/dir//Xcel+Stiro+Private+Limited,+Plot+70,+Sector+27C,+Faridabad,+Haryana+121003" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-gradient-to-b from-white to-gray-50 text-[#32589c] font-bold text-[13px] py-2 px-5 rounded-[10px] border border-gray-200 shadow-[0_4px_0_#32589c,0_5px_15px_rgba(0,0,0,0.08)] hover:-translate-y-[1px] hover:shadow-[0_5px_0_#1d438a,0_8px_20px_rgba(0,0,0,0.12)] active:translate-y-[4px] active:shadow-[0_0px_0_#32589c,0_0px_0_rgba(0,0,0,0)] transition-all duration-200 group">
+                      <CornerUpRight className="w-4 h-4 text-[#32589c] group-hover:translate-x-[2px] transition-transform" strokeWidth={2.5} />
+                      Get Directions
+                    </a>
+                  </div>
                 </div>
 
                 <div className="flex-1 flex flex-col gap-6">
-                  <div className="flex gap-4">
-                    <Phone className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-4">
+                    <Phone className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <a href="tel:+911294155713" className="hover:text-[#0a2766] transition-colors">+91 129-4155713</a>
                       <a href="tel:+911294155714" className="hover:text-[#0a2766] transition-colors">+91 129-4155714</a>
@@ -192,16 +203,16 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
-                    <Mail className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-4">
+                    <Mail className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <a href="mailto:sales@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">sales@xcelstiro.com</a>
                       <a href="mailto:servicing@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">servicing@xcelstiro.com</a>
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
-                    <Clock className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-4">
+                    <Clock className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <p>Mon – Sat: 8:30 AM – 5:30 PM</p>
                       <p>Sunday: Closed</p>
@@ -222,27 +233,38 @@ export default function ContactPage() {
                     <p>New Extension, Tiruppur,</p>
                     <p>Tamil Nadu 641602, India</p>
                   </div>
+                  
+                  <div className="flex flex-col items-start gap-3">
+                    <a href="https://maps.google.com/?q=12/26,+PN+Road,+Laxmi+Nagar,+Tiruppur,+Tamil+Nadu" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-gradient-to-b from-white to-gray-50 text-[#32589c] font-bold text-[13px] py-2 px-5 rounded-[10px] border border-gray-200 shadow-[0_4px_0_#32589c,0_5px_15px_rgba(0,0,0,0.08)] hover:-translate-y-[1px] hover:shadow-[0_5px_0_#1d438a,0_8px_20px_rgba(0,0,0,0.12)] active:translate-y-[4px] active:shadow-[0_0px_0_#32589c,0_0px_0_rgba(0,0,0,0)] transition-all duration-200 group">
+                      <ExternalLink className="w-4 h-4 text-[#32589c] group-hover:scale-110 transition-transform" strokeWidth={2.5} />
+                      View on Map
+                    </a>
+                    <a href="https://www.google.com/maps/dir//12%2F26,+PN+Road,+Laxmi+Nagar,+New+Extension,+Tiruppur,+Tamil+Nadu+641602,+India" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-gradient-to-b from-white to-gray-50 text-[#32589c] font-bold text-[13px] py-2 px-5 rounded-[10px] border border-gray-200 shadow-[0_4px_0_#32589c,0_5px_15px_rgba(0,0,0,0.08)] hover:-translate-y-[1px] hover:shadow-[0_5px_0_#1d438a,0_8px_20px_rgba(0,0,0,0.12)] active:translate-y-[4px] active:shadow-[0_0px_0_#32589c,0_0px_0_rgba(0,0,0,0)] transition-all duration-200 group">
+                      <CornerUpRight className="w-4 h-4 text-[#32589c] group-hover:translate-x-[2px] transition-transform" strokeWidth={2.5} />
+                      Get Directions
+                    </a>
+                  </div>
                 </div>
 
                 <div className="flex-1 flex flex-col gap-6">
-                  <div className="flex gap-4">
-                    <Phone className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-4">
+                    <Phone className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <a href="tel:+917428087070" className="hover:text-[#0a2766] transition-colors">+91 7428087070</a>
                       <a href="tel:+918438067251" className="hover:text-[#0a2766] transition-colors">+91 8438067251</a>
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
-                    <Mail className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-4">
+                    <Mail className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <a href="mailto:tirupur@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">tirupur@xcelstiro.com</a>
                       <a href="mailto:sales@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">sales@xcelstiro.com</a>
                     </div>
                   </div>
 
-                  <div className="flex gap-4">
-                    <Clock className="w-5 h-5 text-[#32589c] shrink-0 mt-0.5" />
+                  <div className="flex items-start gap-4">
+                    <Clock className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <p>Mon – Sat: 9:30 AM – 7:00 PM</p>
                       <p>Sunday: Closed</p>

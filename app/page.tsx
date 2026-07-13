@@ -8,43 +8,7 @@ import { Footer } from './components/Footer';
 import { Users, Award, MapPin } from 'lucide-react';
 
 const Counter = ({ end, duration = 2500, suffix = "" }: { end: number, duration?: number, suffix?: string }) => {
-  const [count, setCount] = useState(0);
-  const countRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    let animationFrame: number;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          let startTimestamp: number | null = null;
-          const step = (timestamp: number) => {
-            if (!startTimestamp) startTimestamp = timestamp;
-            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-            
-            const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-            setCount(Math.floor(easeOutQuart * end));
-            
-            if (progress < 1) {
-              animationFrame = window.requestAnimationFrame(step);
-            }
-          };
-          animationFrame = window.requestAnimationFrame(step);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0, rootMargin: '50px' }
-    );
-
-    if (countRef.current) {
-      observer.observe(countRef.current);
-    }
-    return () => {
-      observer.disconnect();
-      if (animationFrame) cancelAnimationFrame(animationFrame);
-    };
-  }, [end, duration]);
-
-  return <span ref={countRef}>{count.toLocaleString()}{suffix}</span>;
+  return <span>{end.toLocaleString()}{suffix}</span>;
 };
 
 const StatsBanner = () => {
@@ -146,10 +110,12 @@ const StatsBanner = () => {
 };
 
 const HeroCarousel = () => {
-  const images = ['/Hero /Desktop- Hero 1 (1).svg', '/Hero /Desktop- Hero 2 (1).svg', '/Hero /Desktop- Hero 3 (1).svg'];
-  const mobileImages = ['/Hero /Mobile- Hero 1 (1).svg', '/Hero /Mobile- Hero 2 (1).svg', '/Hero /Mobile - Hero 3 (1).svg'];
+  const images = ['/hero.png', '/hero-2.png', '/hero-3.png'];
+  const mobileImages = ['/Mobile- Hero.png', '/Mobile- Hero 2 (1080 x 1250 px).png', '/Mobile - Hero 3 (1080 x 1250 px).png'];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [dragStartX, setDragStartX] = useState<number | null>(null);
+  const [dragOffset, setDragOffset] = useState(0);
   const mobileScrollRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -157,19 +123,20 @@ const HeroCarousel = () => {
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => {
         const nextIndex = (prevIndex + 1) % images.length;
-        if (mobileScrollRef.current) {
+        // Only scroll mobile container if it's actually visible
+        if (mobileScrollRef.current && mobileScrollRef.current.clientWidth > 0) {
           const clientWidth = mobileScrollRef.current.clientWidth;
           mobileScrollRef.current.scrollTo({ left: nextIndex * clientWidth, behavior: 'smooth' });
         }
         return nextIndex;
       });
-    }, 5000);
+    }, 3500);
     return () => clearInterval(interval);
   }, [images.length, isHovered]);
 
   const handleDotClick = (idx: number) => {
     setCurrentIndex(idx);
-    if (mobileScrollRef.current) {
+    if (mobileScrollRef.current && mobileScrollRef.current.clientWidth > 0) {
       const clientWidth = mobileScrollRef.current.clientWidth;
       mobileScrollRef.current.scrollTo({ left: idx * clientWidth, behavior: 'smooth' });
     }
@@ -183,6 +150,29 @@ const HeroCarousel = () => {
     }
   };
 
+  const handleDragStart = (clientX: number) => {
+    setDragStartX(clientX);
+    setIsHovered(true);
+  };
+
+  const handleDragMove = (clientX: number) => {
+    if (dragStartX === null) return;
+    setDragOffset(clientX - dragStartX);
+  };
+
+  const handleDragEnd = () => {
+    if (dragStartX !== null) {
+      if (dragOffset > 50) {
+        setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+      } else if (dragOffset < -50) {
+        setCurrentIndex((prev) => (prev + 1) % images.length);
+      }
+    }
+    setDragStartX(null);
+    setDragOffset(0);
+    setIsHovered(false);
+  };
+
   return (
     <>
       {/* Mobile-Only Hero Carousel */}
@@ -190,6 +180,8 @@ const HeroCarousel = () => {
         className="w-full relative block md:hidden overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onTouchStart={() => setIsHovered(true)}
+        onTouchEnd={() => setTimeout(() => setIsHovered(false), 2000)}
       >
         <div 
           ref={mobileScrollRef}
@@ -207,32 +199,42 @@ const HeroCarousel = () => {
           ))}
         </div>
 
-
-
       </main>
 
       {/* Desktop/Tablet Hero Carousel */}
       <main 
-        className="w-full relative group bg-gray-100 hidden md:block"
+        className="w-full relative group bg-gray-100 hidden md:block select-none cursor-grab active:cursor-grabbing"
         onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          if (dragStartX !== null) handleDragEnd();
+        }}
       >
-        <div className="w-full overflow-hidden relative">
         <div 
-          className="flex transition-transform duration-1000 ease-in-out"
-          style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+          className="w-full overflow-hidden relative"
+          onMouseDown={(e) => handleDragStart(e.clientX)}
+          onMouseMove={(e) => handleDragMove(e.clientX)}
+          onMouseUp={handleDragEnd}
+          onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
+          onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
+          onTouchEnd={handleDragEnd}
         >
-          {images.map((img, idx) => (
-            <div key={idx} className="w-full shrink-0">
-              <img 
-                src={img} 
-                alt={`Hero Banner ${idx + 1}`} 
-                className="w-full h-auto object-cover" 
-              />
-            </div>
-          ))}
+          <div 
+            className={`flex ${dragStartX !== null ? '' : 'transition-transform duration-1000 ease-in-out'}`}
+            style={{ transform: `translateX(calc(-${currentIndex * 100}% + ${dragOffset}px))` }}
+          >
+            {images.map((img, idx) => (
+              <div key={idx} className="w-full shrink-0">
+                <img 
+                  src={img} 
+                  alt={`Hero Banner ${idx + 1}`} 
+                  className="w-full h-auto object-cover pointer-events-none" 
+                  draggable="false"
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
       
 
 
@@ -290,11 +292,11 @@ const AboutUs = () => {
             
             {/* Header Area */}
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-[#32589c] font-bold text-xl md:text-base lg:text-2xl tracking-widest animate-pulse">{"//"}</span>
-              <span className="text-[#363636] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase">About XCEL</span>
+              <span className="text-[#32589c] font-bold text-2xl md:text-lg lg:text-3xl tracking-widest animate-pulse">{"//"}</span>
+              <span className="text-[#363636] font-bold text-[13px] md:text-[12px] lg:text-base tracking-[0.2em] uppercase">About XCEL</span>
             </div>
 
-            <h2 className="font-extrabold text-xl md:text-base lg:text-3xl leading-[1.15] mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-500">
+            <h2 className="font-extrabold text-2xl md:text-xl lg:text-4xl leading-[1.15] mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-500">
               Building India's Future in <span className="text-[#32589c]">Commercial Laundry</span> Manufacturing
             </h2>
 
@@ -305,7 +307,7 @@ const AboutUs = () => {
               >
                 Some businesses are built on opportunity. Ours was built on the belief that India can create world-class commercial laundry equipment without relying on imports. From our early days only, we focused on precision engineering, uncompromising quality and deep industry understanding.
               </p>
-              <p className="pl-6 md:pl-7 opacity-90">
+              <p className="border-l-4 md:border-l-0 lg:border-l-4 border-transparent pl-5 md:pl-0 lg:pl-5 py-1 opacity-90">
                 Every laundry machine at our factory is manufactured to meet the high-stakes demands of hotels, hospitals, garment units and commercial laundries where performance and reliability are critical.
               </p>
             </div>
@@ -316,13 +318,13 @@ const AboutUs = () => {
               {/* Bullet 1 */}
               <div 
                 tabIndex={0}
-                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none md:border-l-4 md:border-l-transparent md:focus:border-l-8 md:focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
+                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-200 border-gray-100 hover:shadow-2xl hover:shadow-[#32589c]/10 outline-none"
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
                   <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.png" alt="Manufacturing" className="w-full h-full object-contain" />
                 </div>
-                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-[#363636] group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 group-hover:text-gray-900">
                   Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
                 </p>
               </div>
@@ -330,13 +332,13 @@ const AboutUs = () => {
               {/* Bullet 2 */}
               <div 
                 tabIndex={0}
-                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none md:border-l-4 md:border-l-transparent md:focus:border-l-8 md:focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
+                className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-200 border-gray-100 hover:shadow-2xl hover:shadow-[#32589c]/10 outline-none"
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
                   <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.png" alt="Partnership" className="w-full h-full object-contain" />
                 </div>
-                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-[#363636] group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 group-hover:text-gray-900">
                   Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
                 </p>
               </div>
@@ -596,19 +598,19 @@ const ProductsHoverGallery = () => {
 
   const getImagePath = (paneNumber: 1 | 2 | 3, targetActivePane: 1 | 2 | 3) => {
     if (targetActivePane === 1) {
-      if (paneNumber === 1) return "/Hov/1st hover.svg";
-      if (paneNumber === 2) return "/Hov/2nd non 1st hov.svg";
-      if (paneNumber === 3) return "/Hov/3rd(noh) 1st hover.svg";
+      if (paneNumber === 1) return "/hover final new/1(hover).svg";
+      if (paneNumber === 2) return "/hover final new/2(noH).svg";
+      if (paneNumber === 3) return "/hover final new/3rd(noh) 1st hover.svg";
     }
     if (targetActivePane === 2) {
-      if (paneNumber === 1) return "/Hov/1(noh).svg";
-      if (paneNumber === 2) return "/Hov/2nd hover.svg";
-      if (paneNumber === 3) return "/Hov/3rd(noh) 2nd hover.svg";
+      if (paneNumber === 1) return "/hover final new/1(noh).svg";
+      if (paneNumber === 2) return "/hover final new/2(Hover).svg";
+      if (paneNumber === 3) return "/hover final new/3rd(noh) 2nd hover.svg";
     }
     if (targetActivePane === 3) {
-      if (paneNumber === 1) return "/Hov/1(noh) 3rd hover.svg";
-      if (paneNumber === 2) return "/Hov/2noh 3rd hov.svg";
-      if (paneNumber === 3) return "/Hov/3rd(HOVER).svg";
+      if (paneNumber === 1) return "/hover final new/1(noh) 3rd hover.svg";
+      if (paneNumber === 2) return "/hover final new/2(noH) 3rd hover.svg";
+      if (paneNumber === 3) return "/hover final new/3rd(HOVER).svg";
     }
     return "";
   };
@@ -661,13 +663,13 @@ const ProductsHoverGallery = () => {
           }}
         >
           <div className="relative w-[85vw] sm:w-[80vw] max-w-[500px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
-             <img src="/Hov/1st hover.svg" alt="Product 1" className="w-full h-auto object-contain block" />
+             <img src="/hover final new/1(hover).svg" alt="Product 1" className="w-full h-auto object-contain block" />
           </div>
           <div className="relative w-[85vw] sm:w-[80vw] max-w-[500px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
-             <img src="/Hov/2nd hover.svg" alt="Product 2" className="w-full h-auto object-contain block" />
+             <img src="/hover final new/2(Hover).svg" alt="Product 2" className="w-full h-auto object-contain block" />
           </div>
           <div className="relative w-[85vw] sm:w-[80vw] max-w-[500px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
-             <img src="/Hov/3rd(HOVER).svg" alt="Product 3" className="w-full h-auto object-contain block" />
+             <img src="/hover final new/3rd(HOVER).svg" alt="Product 3" className="w-full h-auto object-contain block" />
           </div>
         </div>
         
@@ -735,10 +737,12 @@ const ProjectsGallery = () => {
             >
               {/* Hardware Accelerated Background Image Wrapper */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[850px] h-[550px] pointer-events-none will-change-transform">
-                <img 
+                <Image 
                   src={project.img} 
                   alt={project.title} 
-                  className={`absolute inset-0 w-full h-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] ${
+                  fill
+                  sizes="(min-width: 1024px) 850px"
+                  className={`object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] ${
                     isActive ? 'scale-105' : 'scale-100'
                   }`} 
                 />
@@ -779,10 +783,12 @@ const ProjectsGallery = () => {
       <div className="lg:hidden flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 sm:px-6 pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
         {projectsData.map((project) => (
           <div key={project.id} className="relative h-[320px] sm:h-[400px] w-[85vw] sm:w-[400px] shrink-0 snap-center rounded-xl overflow-hidden shadow-sm group cursor-pointer" onTouchStart={() => {}}>
-            <img 
+            <Image 
               src={project.img} 
               alt={project.title} 
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+              fill
+              sizes="(max-width: 640px) 85vw, 400px"
+              className="object-cover transition-transform duration-700 group-hover:scale-105" 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
             <div className="absolute bottom-0 left-0 w-full p-6 flex flex-col justify-end">
@@ -944,7 +950,7 @@ const PartsToPower = () => {
                 style={{ clipPath: `inset(0 50% 0 0)` }}
               >
                 <img 
-                  src="/Before.svg" 
+                  src="/NEW 1.svg" 
                   alt="Machine Before"
                   loading="lazy"
                   className="absolute inset-0 w-full h-full object-cover"
@@ -1125,14 +1131,13 @@ const ProductCategories = () => {
                 <div className="w-6 sm:w-10 h-[2px] bg-[#0a2766] rounded-full mb-2 sm:mb-4 shrink-0"></div>
                 
                 {/* Image */}
-                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-0 overflow-hidden">
-                  <img 
+                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[150px] relative w-full overflow-hidden">
+                  <Image 
                     src={cat.img} 
                     alt={cat.title} 
-                    className="max-h-[90%] sm:max-h-full w-auto object-contain transition-transform duration-500 group-hover:scale-110" 
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%23f3f4f6" width="100" height="100"/><text fill="%239ca3af" x="50%" y="50%" text-anchor="middle" dy=".3em">Missing Image</text></svg>';
-                    }}
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="object-contain transition-transform duration-500 group-hover:scale-110" 
                   />
                 </div>
                 

@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 export function MissionVisionSection() {
   return (
@@ -8,21 +9,27 @@ export function MissionVisionSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
           
           {/* Vision Card */}
-          <div className="w-full rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)]">
-            <img 
-              src="/Vision.jpg" 
-              alt="Our Vision" 
-              className="w-full h-auto object-cover"
-            />
+          <div className="w-full rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)]">
+            <div className="relative w-full aspect-[4/3] lg:aspect-auto lg:h-[600px]">
+              <Image 
+                src="/Vision.jpg" 
+                alt="Our Vision" 
+                fill
+                className="object-cover"
+              />
+            </div>
           </div>
 
           {/* Mission Card */}
-          <div className="w-full rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)]">
-            <img 
-              src="/Mission.jpg" 
-              alt="Our Mission" 
-              className="w-full h-auto object-cover"
-            />
+          <div className="w-full rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)]">
+            <div className="relative w-full aspect-[4/3] lg:aspect-auto lg:h-[600px]">
+              <Image 
+                src="/Mission.jpg" 
+                alt="Our Mission" 
+                fill
+                className="object-cover"
+              />
+            </div>
           </div>
 
         </div>
