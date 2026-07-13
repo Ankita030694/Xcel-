@@ -209,14 +209,14 @@ export default function ProductsPage() {
 
         {/* Tab Navigation */}
         <div className="w-full mb-8 lg:mb-12">
-          <div className="flex flex-wrap justify-center items-center gap-y-2 lg:border-b lg:border-gray-200 px-2">
+          <div className="flex flex-wrap justify-center items-center gap-y-1 sm:gap-y-2 lg:border-b lg:border-gray-200 px-0 sm:px-2">
             {categories.map((cat, index) => {
               const isActive = activeTab === cat.id;
               return (
                 <div key={cat.id} className="flex items-center">
                   <button
                     onClick={() => setActiveTab(cat.id)}
-                    className={`px-2 sm:px-3 lg:px-4 xl:px-5 py-2 lg:py-4 text-[12px] sm:text-[14px] lg:text-[15px] xl:text-[16px] font-bold uppercase tracking-wider transition-all ${
+                    className={`px-1 sm:px-2 lg:px-4 xl:px-5 py-1.5 sm:py-2 lg:py-4 text-[12px] sm:text-[14px] lg:text-[15px] xl:text-[16px] font-bold uppercase tracking-normal lg:tracking-wider transition-all ${
                       isActive 
                         ? 'text-[#0a2766] border-b-[2px] lg:border-b-[2.5px] border-[#3b5b95] lg:border-[#0a2766]' 
                         : 'text-[#363636] border-b-[2px] lg:border-b-[2.5px] border-transparent hover:text-gray-800'
@@ -226,7 +226,7 @@ export default function ProductsPage() {
                   </button>
                   {/* Vertical separator on mobile */}
                   {index !== categories.length - 1 && (
-                    <div className="h-3 w-[1px] bg-gray-300 mx-1 lg:hidden"></div>
+                    <div className="h-3 w-[1px] bg-gray-300 mx-[2px] sm:mx-1 lg:hidden"></div>
                   )}
                 </div>
               );
