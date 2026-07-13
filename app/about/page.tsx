@@ -120,7 +120,7 @@ export default function AboutPage() {
                 <div className="group flex flex-col lg:flex-row items-center gap-8 lg:gap-12 bg-white p-6 lg:py-8 lg:px-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 ease-out">
                    
                    {/* Image */}
-                   <div className="w-full lg:w-[45%] overflow-hidden rounded-2xl">
+                   <div className="w-full sm:w-[75%] md:w-[55%] lg:w-[45%] overflow-hidden rounded-2xl">
                       <div className="bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
                          <img src="/Deepak New .svg" alt="Deepak Chawla" className="w-full h-auto block" />
                       </div>
@@ -154,7 +154,7 @@ export default function AboutPage() {
                 <div className="group flex flex-col lg:flex-row items-center gap-8 lg:gap-12 bg-white p-6 lg:py-8 lg:px-12 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 ease-out">
                    
                    {/* Image */}
-                   <div className="w-full lg:w-[45%] overflow-hidden rounded-2xl">
+                   <div className="w-full sm:w-[75%] md:w-[55%] lg:w-[45%] overflow-hidden rounded-2xl">
                       <div className="bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
                          <img src="/Mehul New.svg" alt="Mehul Chawla" className="w-full h-auto block" />
                       </div>
