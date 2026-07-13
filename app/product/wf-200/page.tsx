@@ -235,7 +235,7 @@ const ProductPage = () => {
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 mb-10 lg:mb-12">
           
           {/* Left: Image Gallery */}
-          <div className="w-full lg:w-[45%] xl:w-[40%] flex flex-col shrink-0">
+          <div className="w-full sm:w-[80%] md:w-[65%] lg:w-[45%] xl:w-[40%] mx-auto lg:mx-0 flex flex-col shrink-0">
             {/* Main Image */}
             <div 
               className="relative w-full aspect-square bg-[#f3f5f8] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden cursor-crosshair sm:cursor-zoom-in"
