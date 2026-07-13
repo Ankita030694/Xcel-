@@ -23,9 +23,9 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story Section - New Layout */}
-      <section id="our-story" className="scroll-mt-[130px] relative pt-2 pb-6 lg:py-10 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
+      <section id="our-story" className="scroll-mt-[130px] relative py-10 lg:py-12 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
         <div className="max-w-[1200px] mx-auto relative">
-          <div className="flex flex-col lg:flex-row gap-12 lg:gap-[100px] mb-2 relative z-10 pt-2 px-4 lg:px-8 items-start">
+          <div className="flex flex-col lg:flex-row gap-12 lg:gap-[100px] mb-2 relative z-10 px-4 lg:px-8 items-start">
             {/* Left Column: Vertical Stats */}
             <div className="w-full lg:w-[250px] shrink-0 flex flex-col gap-4 lg:gap-[35px] order-2 lg:order-1">
               {/* Tagline (Desktop) */}
