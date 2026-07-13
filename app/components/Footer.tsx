@@ -189,7 +189,9 @@ export const Footer = () => {
             {/* Section 3: Links Grid */}
             <div className="w-full bg-[#3b5e94] px-6 py-8 flex flex-col md:flex-row justify-between gap-8 md:gap-4 text-white">
               <div className="flex-1">
-                <h5 className="font-semibold text-[14px] mb-3 md:mb-0">HOME</h5>
+                <h5 className="font-semibold text-[14px] mb-3 md:mb-0">
+                  <a href="/" className="hover:text-white/80 transition-colors">HOME</a>
+                </h5>
               </div>
               <div className="flex-1">
                 <h5 className="font-semibold text-[14px] mb-3 md:mb-3">
@@ -219,7 +221,9 @@ export const Footer = () => {
                 </ul>
               </div>
               <div className="flex-[1.5]">
-                <h5 className="font-semibold text-[14px] mb-3">INDUSTRY INSIGHTS</h5>
+                <h5 className="font-semibold text-[14px] mb-3">
+                  <a href="/insights" className="hover:text-white/80 transition-colors">INDUSTRY INSIGHTS</a>
+                </h5>
                 <ul className="flex flex-col gap-2 text-white/80 text-[11px]">
                   <li><a href="#" className="hover:text-white transition-colors">The Future of Commercial Laundry</a></li>
                   <li><a href="#" className="hover:text-white transition-colors">Eco-Friendly Washing Solutions</a></li>
@@ -228,7 +232,9 @@ export const Footer = () => {
                 </ul>
               </div>
               <div className="flex-1">
-                <h5 className="font-semibold text-[14px] mb-3">CONTACT US</h5>
+                <h5 className="font-semibold text-[14px] mb-3">
+                  <a href="/contact" className="hover:text-white/80 transition-colors">CONTACT US</a>
+                </h5>
               </div>
             </div>
 
