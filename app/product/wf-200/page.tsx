@@ -321,7 +321,7 @@ const ProductPage = () => {
                   <div className="w-[2px] h-[40px] shrink-0 bg-[#0a2766]"></div>
                   <div className="flex flex-col gap-0.5 pr-2">
                     <span className="font-semibold text-[16px] sm:text-[17px] text-[#0a2766]">{section.title}</span>
-                    <span className="text-[13px] leading-snug text-[#363636]">{section.shortDesc}</span>
+                    <span className="text-[13px] leading-snug text-[#363636]">{section.subtext}</span>
                   </div>
                 </div>
                 <ChevronDown size={22} strokeWidth={1.5} className={`shrink-0 ml-2 text-[#0a2766] transition-transform duration-300 ${mobileExpanded === section.id ? 'rotate-180' : ''}`} />
