@@ -101,11 +101,11 @@ export default function AboutPage() {
       </section>
 
       {/* Legacy Section - Stacked Layout */}
-      <section id="leadership" className="pt-10 lg:pt-16 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-10 lg:pb-16">
+      <section className="pt-10 lg:pt-16 px-4 sm:px-6 lg:px-10 bg-[#f8f9fa] border-t border-gray-100 pb-10 lg:pb-16">
         <div className="max-w-[1200px] mx-auto">
           
           {/* Section Header */}
-          <div className="text-center mb-4 lg:mb-6 relative z-20 bg-[#f8f9fa] py-2 lg:py-4">
+          <div id="leadership" className="text-center mb-4 lg:mb-6 relative z-20 bg-[#f8f9fa] py-2 lg:py-4">
              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#0a2766] tracking-tight mb-2 lg:mb-4">
                 Two Generations. <br className="sm:hidden" />
                 <span className="text-[#32589c] font-serif italic font-light">One Vision.</span>
