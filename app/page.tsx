@@ -890,7 +890,7 @@ const PartsToPower = () => {
         <div className="flex flex-col xl:flex-row gap-8 lg:gap-12 items-stretch">
           
           {/* Left Area - Image Comparison Slider */}
-          <div className="w-full xl:w-1/2 shrink-0 flex flex-col">
+          <div className="w-full md:w-[75%] lg:w-[60%] xl:w-1/2 mx-auto xl:mx-0 shrink-0 flex flex-col">
             <div 
               ref={containerRef}
               className="relative w-full h-[400px] md:h-auto md:aspect-square xl:aspect-auto xl:h-auto xl:flex-1 rounded-[20px] overflow-hidden select-none cursor-ew-resize group shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
