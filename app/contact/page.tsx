@@ -182,13 +182,13 @@ export default function ContactPage() {
                     <p>Faridabad, Haryana 121003, India</p>
                   </div>
                   
-                  <div className="flex flex-col items-start gap-3">
-                    <a href="https://maps.google.com/?q=Xcel+Stiro+Private+Limited,+Faridabad" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-gradient-to-b from-white to-gray-50 text-[#32589c] font-bold text-[13px] py-2 px-5 rounded-[10px] border border-gray-200 shadow-[0_4px_0_#32589c,0_5px_15px_rgba(0,0,0,0.08)] hover:-translate-y-[1px] hover:shadow-[0_5px_0_#1d438a,0_8px_20px_rgba(0,0,0,0.12)] active:translate-y-[4px] active:shadow-[0_0px_0_#32589c,0_0px_0_rgba(0,0,0,0)] transition-all duration-200 group">
-                      <ExternalLink className="w-4 h-4 text-[#32589c] group-hover:scale-110 transition-transform" strokeWidth={2.5} />
+                  <div className="flex flex-wrap items-center gap-3">
+                    <a href="https://maps.google.com/?q=Xcel+Stiro+Private+Limited,+Faridabad" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-white text-[#0a2766] font-semibold text-[13px] py-2 px-4 rounded-md border border-[#0a2766] hover:bg-gray-50 transition-colors">
+                      <ExternalLink className="w-4 h-4 text-[#0a2766]" strokeWidth={2} />
                       View on Map
                     </a>
-                    <a href="https://www.google.com/maps/dir//Xcel+Stiro+Private+Limited,+Plot+70,+Sector+27C,+Faridabad,+Haryana+121003" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-gradient-to-b from-white to-gray-50 text-[#32589c] font-bold text-[13px] py-2 px-5 rounded-[10px] border border-gray-200 shadow-[0_4px_0_#32589c,0_5px_15px_rgba(0,0,0,0.08)] hover:-translate-y-[1px] hover:shadow-[0_5px_0_#1d438a,0_8px_20px_rgba(0,0,0,0.12)] active:translate-y-[4px] active:shadow-[0_0px_0_#32589c,0_0px_0_rgba(0,0,0,0)] transition-all duration-200 group">
-                      <CornerUpRight className="w-4 h-4 text-[#32589c] group-hover:translate-x-[2px] transition-transform" strokeWidth={2.5} />
+                    <a href="https://www.google.com/maps/dir//Xcel+Stiro+Private+Limited,+Plot+70,+Sector+27C,+Faridabad,+Haryana+121003" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-white text-[#0a2766] font-semibold text-[13px] py-2 px-4 rounded-md border border-[#0a2766] hover:bg-gray-50 transition-colors">
+                      <CornerUpRight className="w-4 h-4 text-[#0a2766]" strokeWidth={2} />
                       Get Directions
                     </a>
                   </div>
@@ -235,13 +235,13 @@ export default function ContactPage() {
                     <p>Tiruppur, Tamil Nadu 641602, India</p>
                   </div>
                   
-                  <div className="flex flex-col items-start gap-3">
-                    <a href="https://maps.app.goo.gl/RUYUMMWdM2pL91an9" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-gradient-to-b from-white to-gray-50 text-[#32589c] font-bold text-[13px] py-2 px-5 rounded-[10px] border border-gray-200 shadow-[0_4px_0_#32589c,0_5px_15px_rgba(0,0,0,0.08)] hover:-translate-y-[1px] hover:shadow-[0_5px_0_#1d438a,0_8px_20px_rgba(0,0,0,0.12)] active:translate-y-[4px] active:shadow-[0_0px_0_#32589c,0_0px_0_rgba(0,0,0,0)] transition-all duration-200 group">
-                      <ExternalLink className="w-4 h-4 text-[#32589c] group-hover:scale-110 transition-transform" strokeWidth={2.5} />
+                  <div className="flex flex-wrap items-center gap-3">
+                    <a href="https://maps.app.goo.gl/RUYUMMWdM2pL91an9" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-white text-[#0a2766] font-semibold text-[13px] py-2 px-4 rounded-md border border-[#0a2766] hover:bg-gray-50 transition-colors">
+                      <ExternalLink className="w-4 h-4 text-[#0a2766]" strokeWidth={2} />
                       View on Map
                     </a>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=Xcel+Stiro+Private+Limited,+12%2F26,+PN+Rd,+Laxmi+Nagar,+New+Extn,+Tiruppur,+Tamil+Nadu+641602,+India" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-gradient-to-b from-white to-gray-50 text-[#32589c] font-bold text-[13px] py-2 px-5 rounded-[10px] border border-gray-200 shadow-[0_4px_0_#32589c,0_5px_15px_rgba(0,0,0,0.08)] hover:-translate-y-[1px] hover:shadow-[0_5px_0_#1d438a,0_8px_20px_rgba(0,0,0,0.12)] active:translate-y-[4px] active:shadow-[0_0px_0_#32589c,0_0px_0_rgba(0,0,0,0)] transition-all duration-200 group">
-                      <CornerUpRight className="w-4 h-4 text-[#32589c] group-hover:translate-x-[2px] transition-transform" strokeWidth={2.5} />
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=Xcel+Stiro+Private+Limited,+12%2F26,+PN+Rd,+Laxmi+Nagar,+New+Extn,+Tiruppur,+Tamil+Nadu+641602,+India" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 bg-white text-[#0a2766] font-semibold text-[13px] py-2 px-4 rounded-md border border-[#0a2766] hover:bg-gray-50 transition-colors">
+                      <CornerUpRight className="w-4 h-4 text-[#0a2766]" strokeWidth={2} />
                       Get Directions
                     </a>
                   </div>
