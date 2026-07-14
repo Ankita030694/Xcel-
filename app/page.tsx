@@ -313,7 +313,7 @@ const AboutUs = () => {
             </div>
 
             {/* Feature Bullets */}
-            <div className="flex md:hidden lg:flex flex-col gap-6 lg:gap-4 mt-2 lg:mt-0">
+            <div className="flex flex-col gap-6 lg:gap-4 mt-2 lg:mt-0">
               
               {/* Bullet 1 */}
               <div 
@@ -347,38 +347,7 @@ const AboutUs = () => {
           </div>
         </div>
 
-        {/* Feature Bullets (Tablet Only - Full Width) */}
-        <div className="hidden md:flex lg:hidden flex-col gap-6 w-full mt-2">
-          
-          {/* Bullet 1 */}
-          <div 
-            tabIndex={0}
-            className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none md:border-l-4 md:border-l-transparent md:focus:border-l-8 md:focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
-            onTouchStart={() => {}}
-          >
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
-              <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.png" alt="Manufacturing" className="w-full h-full object-contain" />
-            </div>
-            <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-[#363636] group-hover:text-gray-900">
-              Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
-            </p>
-          </div>
 
-          {/* Bullet 2 */}
-          <div 
-            tabIndex={0}
-            className="group flex flex-row gap-3 sm:gap-4 md:gap-5 items-center p-4 sm:p-5 md:p-3 xl:p-5 rounded-3xl transition-all duration-300 cursor-pointer active:scale-[0.98] border bg-white shadow-xl shadow-gray-300 border-gray-100 md:bg-transparent md:shadow-none md:border-transparent hover:bg-white hover:shadow-xl hover:shadow-[#32589c]/10 hover:border-gray-100 outline-none md:border-l-4 md:border-l-transparent md:focus:border-l-8 md:focus:border-l-[#32589c] md:hover:border-l-8 md:hover:border-l-[#32589c]"
-            onTouchStart={() => {}}
-          >
-            <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
-              <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.png" alt="Partnership" className="w-full h-full object-contain" />
-            </div>
-            <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 md:text-[#363636] group-hover:text-gray-900">
-              Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
-            </p>
-          </div>
-
-        </div>
         
         </div>
       </div>
