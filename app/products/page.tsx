@@ -183,15 +183,7 @@ export default function ProductsPage() {
     <div className="min-h-screen bg-white font-sans flex flex-col">
       <Header />
 
-      {/* Hero Banner Section */}
-      <section className="w-full bg-[#f3f5f8]">
-         <img 
-           src="/Product%20Overview%20Banner%20(1800%20x%20600%20px).svg" 
-           alt="Product Overview - From Washing To Finishing" 
-           className="w-full h-auto block"
-           style={{ aspectRatio: '1800/600' }}
-         />
-      </section>
+
 
       {/* Products Content */}
       <section id="products-section" className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 pb-12 lg:pt-16 lg:pb-24 flex flex-col items-center scroll-mt-[100px]">
