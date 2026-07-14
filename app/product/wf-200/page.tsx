@@ -220,19 +220,12 @@ const ProductPage = () => {
           <div className="w-full sm:w-[80%] md:w-[65%] lg:w-[45%] xl:w-[40%] mx-auto lg:mx-0 flex flex-col shrink-0">
             {/* Main Image */}
             <div 
-              className="relative w-full aspect-square bg-[#f3f5f8] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden cursor-crosshair sm:cursor-zoom-in"
-              onMouseEnter={() => setIsZoomed(true)}
-              onMouseLeave={() => {
-                setIsZoomed(false);
-                setTimeout(() => setZoomOrigin('center center'), 300); // Reset origin smoothly
-              }}
-              onMouseMove={handleMouseMove}
+              className="relative w-full aspect-square bg-[#f3f5f8] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden"
             >
               <img 
                 src={images[activeImage]} 
                 alt="Washing Machine WF-200" 
-                className={`w-full h-full object-contain mix-blend-multiply transition-transform duration-200 ease-out ${isZoomed ? 'scale-[2.0]' : 'scale-100'}`}
-                style={{ transformOrigin: zoomOrigin }}
+                className="w-full h-full object-contain mix-blend-multiply"
               />
             </div>
             
