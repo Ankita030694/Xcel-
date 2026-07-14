@@ -6,7 +6,7 @@ import { Footer } from '../../components/Footer';
 import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Mail, ArrowRight, ArrowLeft, Settings, ShieldCheck, Factory, HelpCircle, Home, MessageCircle, PhoneCall, LifeBuoy, HeartHandshake } from 'lucide-react';
 
 const FAQList = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(2);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const faqs = [
     {
