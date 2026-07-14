@@ -196,7 +196,7 @@ export default function ContactPage() {
 
                 <div className="flex-1 flex flex-col gap-6">
                   <div className="flex items-start gap-4">
-                    <Phone className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
+                    <Phone className="w-5 h-5 text-[#32589c] shrink-0" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <a href="tel:+911294155713" className="hover:text-[#0a2766] transition-colors">+91 129-4155713</a>
                       <a href="tel:+911294155714" className="hover:text-[#0a2766] transition-colors">+91 129-4155714</a>
@@ -205,7 +205,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <Mail className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
+                    <Mail className="w-5 h-5 text-[#32589c] shrink-0" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <a href="mailto:sales@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">sales@xcelstiro.com</a>
                       <a href="mailto:servicing@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">servicing@xcelstiro.com</a>
@@ -213,7 +213,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <Clock className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
+                    <Clock className="w-5 h-5 text-[#32589c] shrink-0" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <p>Mon – Sat: 8:30 AM – 5:30 PM</p>
                       <p>Sunday: Closed</p>
@@ -249,7 +249,7 @@ export default function ContactPage() {
 
                 <div className="flex-1 flex flex-col gap-6">
                   <div className="flex items-start gap-4">
-                    <Phone className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
+                    <Phone className="w-5 h-5 text-[#32589c] shrink-0" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <a href="tel:+917428087070" className="hover:text-[#0a2766] transition-colors">+91 7428087070</a>
                       <a href="tel:+918438067251" className="hover:text-[#0a2766] transition-colors">+91 8438067251</a>
@@ -257,7 +257,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <Mail className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
+                    <Mail className="w-5 h-5 text-[#32589c] shrink-0" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <a href="mailto:tirupur@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">tirupur@xcelstiro.com</a>
                       <a href="mailto:sales@xcelstiro.com" className="hover:text-[#0a2766] transition-colors">sales@xcelstiro.com</a>
@@ -265,7 +265,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <Clock className="w-5 h-5 text-[#32589c] shrink-0 translate-y-[2px]" />
+                    <Clock className="w-5 h-5 text-[#32589c] shrink-0" />
                     <div className="flex flex-col gap-1 text-[15px] text-[#363636]">
                       <p>Mon – Sat: 9:30 AM – 7:00 PM</p>
                       <p>Sunday: Closed</p>
