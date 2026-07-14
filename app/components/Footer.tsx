@@ -80,7 +80,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer id="footer-contact" className="w-full bg-[#f3f5f8] pt-8 lg:pt-10 pb-0 px-4 sm:px-8 lg:px-12 flex justify-center font-sans scroll-mt-[140px] min-h-[calc(100vh-140px)]">
+    <footer id="footer-contact" className="w-full bg-[#f3f5f8] pt-4 lg:pt-6 pb-0 px-4 sm:px-8 lg:px-12 flex justify-center font-sans scroll-mt-[140px] min-h-[calc(100vh-140px)]">
       {/* Outer Wrapper for the white grid lines */}
       <div className="w-full max-w-[1500px] bg-white flex flex-col gap-[2px] shadow-sm">
         
@@ -198,7 +198,7 @@ export const Footer = () => {
             </div>
 
             {/* Section 3: Links Grid */}
-            <div className="w-full bg-[#3b5e94] px-6 py-8 flex flex-col md:flex-row justify-between gap-8 md:gap-4 text-white">
+            <div className="w-full bg-[#3b5e94] px-6 py-4 flex flex-col md:flex-row justify-between gap-8 md:gap-4 text-white">
               <div className="flex-1">
                 <h5 className="font-semibold text-[14px] mb-3 md:mb-0">
                   <a href="/" className="hover:text-white/80 transition-colors">HOME</a>
@@ -250,7 +250,7 @@ export const Footer = () => {
             </div>
 
             {/* Section 4: Certifications & Badges */}
-            <div className="w-full bg-[#002d73] py-6 px-6 flex justify-center items-center gap-8 sm:gap-16 flex-wrap">
+            <div className="w-full bg-[#002d73] py-3 sm:py-4 px-6 flex justify-center items-center gap-8 sm:gap-16 flex-wrap">
               <img src="/Logo/ISO_9001_2008_Certification_at_%E2%82%B9_5000_certificate_in_New_Delhi_ID_22229167830_indiamart%201.svg" alt="ISO Certification" className="h-8 sm:h-12 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
               <img src="/Logo/How_to_get_a_CE_Certification_-_tradesnest%201.svg" alt="CE Certification" className="h-8 sm:h-12 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
               <img src="/Logo/Make_in_India_Logo_PNG_Vector_(EPS)_Free_Download_seeklogo%201.svg" alt="Make in India" className="h-12 sm:h-16 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
@@ -262,7 +262,7 @@ export const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="w-full bg-[#002d73] px-6 sm:px-8 py-4 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10">
+        <div className="w-full bg-[#002d73] px-6 sm:px-8 py-2.5 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10">
           <div className="text-white font-semibold text-[12px] sm:text-[14px] tracking-wide">
             XCEL STIRO PRIVATE LIMITED. ALL RIGHTS RESERVED
           </div>
