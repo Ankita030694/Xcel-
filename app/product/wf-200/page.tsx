@@ -360,8 +360,8 @@ const ProductPage = () => {
                     <div className="w-16 h-[4px] bg-[#0a2766] rounded-full relative z-10"></div>
                     
                     {/* Decorative Wave Pattern at bottom */}
-                    <div className="relative w-full h-24 mt-6 opacity-[0.10] pointer-events-none -mb-4 overflow-visible">
-                      <svg viewBox="0 0 1000 400" preserveAspectRatio="none" className="w-full h-full fill-none stroke-[#0a2766] stroke-[2px]">
+                    <div className="relative w-full h-32 mt-6 opacity-[0.10] pointer-events-none -mb-4 overflow-visible">
+                      <svg viewBox="0 0 1000 400" preserveAspectRatio="none" className="w-full h-full fill-none stroke-[#0a2766] stroke-[2px] -rotate-[15deg] scale-[1.3]">
                         <path d="M 0 150 Q 250 300 500 150 T 1000 150" />
                         <path d="M 0 170 Q 250 320 500 170 T 1000 170" />
                         <path d="M 0 190 Q 250 340 500 190 T 1000 190" />
