@@ -1193,8 +1193,6 @@ export default function Home() {
       {/* Why Choose XCEL Section */}
       <WhyChooseUs />
 
-      {/* Products Hover Gallery Section */}
-      <ProductsHoverGallery />
 
       {/* CTA Banner Section */}
       <CTABanner />
