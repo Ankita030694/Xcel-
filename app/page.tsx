@@ -267,12 +267,12 @@ const AboutUs = () => {
 
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
         <div className="flex flex-col gap-6 md:gap-8 lg:gap-16">
-          <div className="flex flex-col md:flex-row gap-8 lg:gap-16 items-stretch md:items-start lg:items-stretch">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-stretch lg:items-stretch">
             
             {/* Left Column - Image */}
           <div 
             tabIndex={0}
-            className="w-full md:w-5/12 lg:w-1/2 shrink-0 relative group flex flex-col cursor-pointer outline-none"
+            className="w-full lg:w-1/2 shrink-0 relative group flex flex-col cursor-pointer outline-none"
             onTouchStart={() => {}}
           >
             {/* Fancy Glow Behind Image */}
@@ -288,7 +288,7 @@ const AboutUs = () => {
           </div>
 
           {/* Right Column - Content */}
-          <div className="w-full md:w-7/12 lg:w-1/2 flex flex-col pt-2 md:pt-4">
+          <div className="w-full lg:w-1/2 flex flex-col pt-2 lg:pt-4">
             
             {/* Header Area */}
             <div className="flex items-center gap-2 mb-4">
