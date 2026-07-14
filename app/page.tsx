@@ -792,7 +792,7 @@ const CTABanner = () => {
 
           {/* Right Button */}
           <div className="shrink-0 lg:pr-6">
-            <button onClick={() => document.getElementById('footer-contact')?.scrollIntoView({ behavior: 'smooth' })} className="bg-gradient-to-b from-white to-gray-50 text-[#0a2766] font-bold text-[14px] lg:text-[15px] tracking-wider px-6 py-2.5 lg:px-8 lg:py-3.5 rounded-[12px] border border-gray-100 shadow-[0_5px_0_#cbd5e1,0_10px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_6px_0_#94a3b8,0_15px_25px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:shadow-[0_0px_0_#cbd5e1,0_0px_0_rgba(0,0,0,0.2)] active:translate-y-[5px] transition-all duration-200">
+            <button onClick={() => document.getElementById('footer-contact')?.scrollIntoView({ behavior: 'smooth', block: 'end' })} className="bg-gradient-to-b from-white to-gray-50 text-[#0a2766] font-bold text-[14px] lg:text-[15px] tracking-wider px-6 py-2.5 lg:px-8 lg:py-3.5 rounded-[12px] border border-gray-100 shadow-[0_5px_0_#cbd5e1,0_10px_20px_rgba(0,0,0,0.2)] hover:shadow-[0_6px_0_#94a3b8,0_15px_25px_rgba(0,0,0,0.3)] hover:-translate-y-1 active:shadow-[0_0px_0_#cbd5e1,0_0px_0_rgba(0,0,0,0.2)] active:translate-y-[5px] transition-all duration-200">
               REQUEST A QUOTE
             </button>
           </div>

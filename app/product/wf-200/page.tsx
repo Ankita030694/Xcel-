@@ -272,7 +272,7 @@ const ProductPage = () => {
             
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 mt-auto pt-4 lg:pt-0">
-              <button onClick={() => document.getElementById('footer-contact')?.scrollIntoView({ behavior: 'smooth' })} className="flex-1 bg-[#0a2766] text-white py-3 sm:py-3.5 px-4 rounded-xl text-[15px] font-bold flex items-center justify-center gap-2 hover:bg-[#071b4a] hover:-translate-y-1 hover:shadow-lg transition-all">
+              <button onClick={() => document.getElementById('footer-contact')?.scrollIntoView({ behavior: 'smooth', block: 'end' })} className="flex-1 bg-[#0a2766] text-white py-3 sm:py-3.5 px-4 rounded-xl text-[15px] font-bold flex items-center justify-center gap-2 hover:bg-[#071b4a] hover:-translate-y-1 hover:shadow-lg transition-all">
                 <Send size={18} />
                 Request a Quote
               </button>
