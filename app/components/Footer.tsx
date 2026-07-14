@@ -80,7 +80,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer id="footer-contact" className="w-full bg-[#f3f5f8] pt-8 lg:pt-10 pb-0 px-4 sm:px-8 lg:px-12 flex justify-center font-sans scroll-mt-[130px] min-h-[calc(100vh-130px)]">
+    <footer id="footer-contact" className="w-full bg-[#f3f5f8] pt-8 lg:pt-10 pb-0 px-4 sm:px-8 lg:px-12 flex justify-center font-sans scroll-mt-[140px] min-h-[calc(100vh-140px)]">
       {/* Outer Wrapper for the white grid lines */}
       <div className="w-full max-w-[1500px] bg-white flex flex-col gap-[2px] shadow-sm">
         
