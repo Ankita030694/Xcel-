@@ -144,7 +144,7 @@ export default function ProductsPage() {
           if (element) {
             setTimeout(() => {
               element.scrollIntoView({ behavior: 'smooth' });
-            }, 1000);
+            }, 500);
           }
         }
       }
