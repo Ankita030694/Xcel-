@@ -1173,93 +1173,6 @@ const ProductCategories = () => {
   );
 };
 
-
-
-const USPAccordion = () => {
-  const [activeTab, setActiveTab] = useState<1 | 2 | 3>(1);
-
-  const accordionData = [
-    {
-      id: 1,
-      title: "High-Performance Apparel Washing",
-      desc: "Deliver consistent, fabric-safe washing with programmable controls, precision chemical dosing, and durable stainless steel construction for industrial laundry operations.",
-      img: "/hover final new/1(hover).svg"
-    },
-    {
-      id: 2,
-      title: "Perfect Finish. Every Cycle.",
-      desc: "Achieve crisp, wrinkle-free linens with high-speed ironing, uniform heat distribution, and energy-efficient performance designed for commercial laundries.",
-      img: "/hover final new/3rd(HOVER).svg"
-    },
-    {
-      id: 3,
-      title: "Smart Washing. Superior Results.",
-      desc: "Built for efficiency and reliability, this advanced washer combines intelligent automation with powerful cleaning performance for every load.",
-      img: "/hover final new/2(Hover).svg"
-    }
-  ];
-
-  return (
-    <section className="bg-white w-full py-10 lg:py-16 overflow-hidden">
-      <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-10 lg:gap-16 items-center">
-          {/* Left Panel - Accordion */}
-          <div className="flex flex-col gap-6 lg:gap-8 lg:pr-10">
-            {accordionData.map((item, index) => (
-              <div key={item.id} className="flex flex-col">
-                <button
-                  onClick={() => setActiveTab(item.id as 1 | 2 | 3)}
-                  className="w-full flex items-start gap-4 lg:gap-6 text-left group"
-                >
-                  <div className="shrink-0 w-8 h-8 lg:w-[42px] lg:h-[42px] flex items-center justify-center mt-1 lg:mt-0 transition-transform duration-300 group-hover:scale-110">
-                    <svg viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-                      <path d="M21 0.44L23.8 14.5L35.5 2.7L27.9 18.1L42 21L27.9 23.9L35.5 39.3L23.8 27.5L21 41.56L18.2 27.5L6.5 39.3L14.1 23.9L0 21L14.1 18.1L6.5 2.7L18.2 14.5L21 0.44Z" fill="#32589c" />
-                    </svg>
-                  </div>
-                  <div className="flex flex-col gap-2 w-full">
-                    <h3 className="font-['Onest'] font-medium text-[24px] sm:text-[28px] lg:text-[38px] leading-[1.15] text-black">
-                      {item.title}
-                    </h3>
-                    
-                    <div 
-                      className={`grid transition-all duration-500 ease-in-out ${
-                        activeTab === item.id ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                      }`}
-                    >
-                      <div className="overflow-hidden">
-                        <p className="font-['Onest'] font-normal text-[16px] lg:text-[25px] leading-[1.4] text-[rgba(0,0,0,0.55)] pt-2 lg:pt-4 pr-4">
-                          {item.desc}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </button>
-                {index < accordionData.length - 1 && (
-                  <div className="w-full h-[1px] bg-gray-200 mt-6 lg:mt-8" />
-                )}
-              </div>
-            ))}
-          </div>
-
-          {/* Right Panel - Image */}
-          <div className="relative w-full aspect-[4/3] lg:aspect-[2560/1707] overflow-hidden">
-            {accordionData.map((item) => (
-              <img
-                key={item.id}
-                src={item.img}
-                alt={item.title}
-                className={`absolute inset-0 w-full h-full object-contain bg-white transition-all duration-700 ease-out transform ${
-                  activeTab === item.id ? 'opacity-100 scale-100 translate-x-0' : 'opacity-0 scale-95 translate-x-4 pointer-events-none'
-                }`}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 export default function Home() {
   return (
     <div className="min-h-screen bg-white font-sans overflow-x-hidden">
@@ -1280,8 +1193,6 @@ export default function Home() {
       {/* Why Choose XCEL Section */}
       <WhyChooseUs />
 
-      {/* USP Accordion Section */}
-      <USPAccordion />
 
       {/* CTA Banner Section */}
       <CTABanner />
