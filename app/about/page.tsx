@@ -30,7 +30,7 @@ export default function AboutPage() {
             <div className="w-full lg:w-[250px] shrink-0 flex flex-col gap-4 lg:gap-[35px] order-2 lg:order-1">
               {/* Tagline (Desktop) */}
               <div className="hidden lg:flex items-center gap-2 mb-2">
-                <span className="text-[#32589c] font-bold text-xl md:text-base lg:text-2xl tracking-widest animate-pulse">{"//"}</span>
+                <span className="text-[#32589c] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-widest animate-pulse">{"//"}</span>
                 <span className="text-[#32589c] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase">OUR STORY</span>
               </div>
 
@@ -81,7 +81,7 @@ export default function AboutPage() {
             <div className="w-full lg:flex-1 flex flex-col gap-4 lg:gap-8 relative z-10 pt-0 lg:pt-16 order-1 lg:order-2">
               {/* Tagline (Mobile) */}
               <div className="flex lg:hidden items-center gap-2 -mb-2">
-                <span className="text-[#32589c] font-bold text-xl md:text-base lg:text-2xl tracking-widest animate-pulse">{"//"}</span>
+                <span className="text-[#32589c] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-widest animate-pulse">{"//"}</span>
                 <span className="text-[#32589c] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase">OUR STORY</span>
               </div>
               <h2 className="text-[28px] sm:text-[32px] lg:text-[38px] xl:text-[42px] font-bold text-[#0a2766] leading-[1.15] tracking-tight">

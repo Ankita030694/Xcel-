@@ -29,7 +29,7 @@ export default function ContactPage() {
               
               <div className="mb-10">
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="text-[#32589c] font-bold text-xl md:text-base lg:text-2xl tracking-widest animate-pulse">{"//"}</span>
+                  <span className="text-[#32589c] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-widest animate-pulse">{"//"}</span>
                   <span className="text-[#363636] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase">Get In Touch</span>
                 </div>
                 <h2 className="text-[36px] sm:text-[44px] font-black text-[#000] leading-[1.15] mb-4 tracking-tight">

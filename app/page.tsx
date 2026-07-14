@@ -292,7 +292,7 @@ const AboutUs = () => {
             
             {/* Header Area */}
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-[#32589c] font-bold text-2xl md:text-lg lg:text-3xl tracking-widest animate-pulse">{"//"}</span>
+              <span className="text-[#32589c] font-bold text-[13px] md:text-[12px] lg:text-base tracking-widest animate-pulse">{"//"}</span>
               <span className="text-[#363636] font-bold text-[13px] md:text-[12px] lg:text-base tracking-[0.2em] uppercase">About XCEL</span>
             </div>
 
@@ -489,7 +489,7 @@ const WhyChooseUs = () => {
           {/* Left Title Area */}
           <div className="flex flex-col justify-center w-full xl:w-auto shrink-0 text-center xl:text-left pb-8 xl:pb-0">
             <div className="flex items-center justify-center xl:justify-start gap-2 mb-4">
-              <span className="text-[#32589c] font-bold text-xl md:text-2xl tracking-widest animate-pulse">{"//"}</span>
+              <span className="text-[#32589c] font-bold text-xs md:text-sm tracking-widest animate-pulse">{"//"}</span>
               <span className="text-[#363636] font-bold text-xs md:text-sm tracking-[0.2em] uppercase">Our USP's</span>
             </div>
             <h2 className="font-extrabold mt-[2px] text-xl md:text-2xl lg:text-3xl leading-[1.15] text-[#0a2766] tracking-tight whitespace-nowrap">
@@ -619,7 +619,7 @@ const ProductsHoverGallery = () => {
     <section className="bg-white w-full pt-10 lg:pt-16 pb-6 lg:pb-8 overflow-hidden">
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
         <div className="flex items-center justify-center gap-2">
-          <span className="text-[#32589c] font-bold text-lg lg:text-xl tracking-widest animate-pulse">{"//"}</span>
+          <span className="text-[#32589c] font-bold text-xs sm:text-[13px] lg:text-sm tracking-widest animate-pulse">{"//"}</span>
           <span className="text-[#363636] font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">ENGINEERING EXCELLENCE</span>
         </div>
         <h2 className="font-extrabold text-[22px] sm:text-[26px] lg:text-[32px] xl:text-[36px] leading-[1.15] text-[#0a2766] max-w-4xl tracking-tight">
@@ -715,7 +715,7 @@ const ProjectsGallery = () => {
       {/* Section Header */}
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
         <div className="flex items-center justify-center gap-2">
-          <span className="text-[#32589c] font-bold text-lg lg:text-xl tracking-widest animate-pulse">{"//"}</span>
+          <span className="text-[#32589c] font-bold text-xs sm:text-[13px] lg:text-sm tracking-widest animate-pulse">{"//"}</span>
           <span className="text-[#363636] font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">ENGINEERING EXCELLENCE</span>
         </div>
         <h2 className="font-extrabold text-[26px] sm:text-[30px] lg:text-[36px] xl:text-[40px] leading-[1.15] text-[#0a2766] max-w-4xl tracking-tight">
