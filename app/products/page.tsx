@@ -186,9 +186,10 @@ export default function ProductsPage() {
       {/* Hero Banner Section */}
       <section className="w-full bg-[#f3f5f8]">
          <img 
-           src="/Poverview%20new.png" 
+           src="/Product%20Overview%20Banner%20(1800%20x%20600%20px).svg" 
            alt="Product Overview - From Washing To Finishing" 
            className="w-full h-auto block"
+           style={{ aspectRatio: '1800/600' }}
          />
       </section>
 
