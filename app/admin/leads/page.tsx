@@ -5,6 +5,7 @@ import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db } from '../../../lib/firebase';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface Lead {
   id: string;
@@ -75,12 +76,17 @@ export default function LeadsDashboard() {
             <h1 className="text-3xl font-bold text-[#0a2766]">Leads Dashboard</h1>
             <p className="text-[#363636] mt-1">View and manage contact form submissions</p>
           </div>
-          <button 
-            onClick={handleLogout}
-            className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded shadow-sm hover:bg-gray-50 transition-colors text-sm font-medium"
-          >
-            Logout
-          </button>
+          <div className="flex items-center gap-6">
+            <Link href="/admin/products" className="text-[#32589c] hover:text-[#0a2766] font-semibold transition-colors">
+              Manage Products &rarr;
+            </Link>
+            <button 
+              onClick={handleLogout}
+              className="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded shadow-sm hover:bg-gray-50 transition-colors text-sm font-medium"
+            >
+              Logout
+            </button>
+          </div>
         </div>
 
         {loading ? (

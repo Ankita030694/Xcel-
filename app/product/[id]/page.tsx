@@ -1,35 +1,30 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../../lib/firebase';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
-import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Mail, ArrowRight, ArrowLeft, Settings, ShieldCheck, Factory, HelpCircle, Home, MessageCircle, PhoneCall, LifeBuoy, HeartHandshake } from 'lucide-react';
+import { ChevronRight, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Settings, ShieldCheck, Factory, HelpCircle, Home, ArrowLeft, ArrowRight } from 'lucide-react';
 
-const FAQList = () => {
+const CATEGORY_NAMES: Record<string, string> = {
+  'washing': 'Washing',
+  'drying': 'Drying',
+  'apparel-processing': 'Apparel Processing',
+  'dry-cleaning': 'Dry-Cleaning',
+  'flat-work': 'Flat-Work',
+  'steam-finishing': 'Steam-Finishing',
+  'water-heater': 'Water Heater',
+  'fabric-checking': 'Fabric Checking',
+  'other-equipment': 'Other Equipment',
+  'complete-range': 'Complete Range'
+};
+
+const FAQList = ({ faqs }: { faqs: { question: string; answer: string }[] }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqs = [
-    {
-      q: "What washing machine capacity should I choose for my laundry business?",
-      a: "The ideal capacity depends on your daily laundry volume and the size of your facility. For high-volume industrial processing, a 100 kg or 200 kg capacity ensures optimal throughput and operational efficiency."
-    },
-    {
-      q: "What is the typical washing cycle time?",
-      a: "Cycle times vary based on the specific program, fabric type, and selected chemical processes. With our advanced PCB programming, cycle times are optimized for maximum efficiency without compromising wash quality."
-    },
-    {
-      q: "Are spare parts readily available?",
-      a: "Yes. We maintain inventory for commonly required spare parts and consumables to minimise downtime and ensure prompt service support throughout the machine's lifecycle."
-    },
-    {
-      q: "Is the machine suitable for hospital and hotel laundry applications requiring high-temperature washing?",
-      a: "Absolutely. Our machines feature high-temperature processing capabilities and steam-heated operation, making them perfect for environments that require stringent hygiene standards like hospitals and hotels."
-    },
-    {
-      q: "Can the machine be customised for garment processing applications such as enzyme wash or stone wash?",
-      a: "Yes, the advanced PCB programming and imported VFD allow for extensive customization of wash cycles, drum speed, and water levels, making it highly suitable for enzyme, acid, bleach, and stone washing."
-    }
-  ];
+  if (!faqs || faqs.length === 0) return <p className="text-gray-500">No FAQs available for this product.</p>;
 
   return (
     <div className="flex flex-col gap-3 w-full">
@@ -46,7 +41,7 @@ const FAQList = () => {
             >
               <div className="flex items-start gap-3 sm:gap-4 w-full">
                 <span className="text-[#0a2766] font-bold text-[16px] shrink-0">Q{index + 1}.</span>
-                <span className="text-[#0a2766] font-bold text-[16px] pr-4 leading-tight">{faq.q}</span>
+                <span className="text-[#0a2766] font-bold text-[16px] pr-4 leading-tight">{faq.question}</span>
               </div>
               <div className="shrink-0 text-[#0a2766]">
                 {isOpen ? <ChevronUp size={20} strokeWidth={2} /> : <ChevronDown size={20} strokeWidth={2} />}
@@ -55,7 +50,7 @@ const FAQList = () => {
             {isOpen && (
               <div className="px-4 sm:pl-[48px] sm:pr-[60px] pb-5 pt-1">
                 <p className="text-[#363636] text-[16px] leading-relaxed">
-                  {faq.a}
+                  {faq.answer}
                 </p>
               </div>
             )}
@@ -66,27 +61,62 @@ const FAQList = () => {
   );
 };
 
-const ProductPage = () => {
-  const [activeImage, setActiveImage] = useState(0);
+export default function ProductDetailPage() {
+  const params = useParams();
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  
   const [activeSection, setActiveSection] = useState<string | null>('features');
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
-  const [isZoomed, setIsZoomed] = useState(false);
-  const [zoomOrigin, setZoomOrigin] = useState('center center');
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - left) / width) * 100;
-    const y = ((e.clientY - top) / height) * 100;
-    setZoomOrigin(`${x}% ${y}%`);
-  };
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (!params.id) return;
+      
+      const id = params.id as string;
+      if (id.startsWith('fallback-')) {
+        setProduct({
+          id,
+          name: 'Demo Product (Placeholder)',
+          categoryId: 'washing',
+          shortDescription: 'Built for heavy loads. Engineered for excellence. This is a temporary placeholder until real products are added via the admin panel.',
+          imageUrl: '/prod.final/Washing 1.png',
+          additionalImages: ['/prod.png/Washing Front 60 kg Left View 1.png'],
+          features: [
+            { title: 'High Capacity Performance', description: 'Engineered to handle massive industrial loads with extreme precision and durability.' },
+            { title: 'Energy Efficient Design', description: 'Advanced internal mechanisms that save up to 40% on power consumption.' }
+          ],
+          faqs: [
+            { question: 'What is the standard warranty on this machine?', answer: 'We provide a 1-year comprehensive warranty on all parts and labor.' },
+            { question: 'Can this machine be customized?', answer: 'Yes, our engineering team can tailor the specifications to meet your specific industrial needs.' }
+          ]
+        });
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const docRef = doc(db, "products", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setProduct({ id: docSnap.id, ...docSnap.data() });
+        } else {
+          setProduct(null);
+        }
+      } catch (err) {
+        console.error("Failed to load product:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [params.id]);
 
   const handleMobileAccordionClick = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     const isOpening = mobileExpanded !== id;
-    
     if (isOpening) {
       setMobileExpanded(id);
-      
-      // Smoothly scroll to the expanded section after the CSS transition completes
       const button = e.currentTarget;
       setTimeout(() => {
         const topOffset = button.getBoundingClientRect().top + window.scrollY - 100;
@@ -97,11 +127,35 @@ const ProductPage = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white font-sans flex flex-col">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <p className="text-gray-500 text-lg">Loading product details...</p>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
-  const images = [
-    '/we-30-photo.jpg.svg',
-    '/we-30-infographic.jpg'
-  ];
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-white font-sans flex flex-col">
+        <Header />
+        <main className="flex-1 flex flex-col items-center justify-center">
+          <h1 className="text-3xl text-[#0a2766] font-bold mb-4">Product Not Found</h1>
+          <p className="text-gray-500 mb-6">The product you are looking for does not exist or has been removed.</p>
+          <a href="/products" className="text-[#32589c] hover:underline">Return to Products</a>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  const productImages = [product.imageUrl, ...(product.additionalImages || [])].filter(Boolean);
+  const nextImage = () => setActiveImageIndex((prev) => (prev + 1) % productImages.length);
+  const prevImage = () => setActiveImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length);
 
   const sections = [
     {
@@ -112,46 +166,17 @@ const ProductPage = () => {
       shortDesc: 'Explore powerful features and technical specifications',
       content: (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
-          <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">High-Capacity Production Range</h4>
-            <p className="text-[#363636] text-[16px] leading-relaxed">Available in 100 kg and 200kg capacities for high-volume processing environments where output, consistency, and operational efficiency are critical.</p>
-          </div>
-          <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Auto Forward & Reverse Basket Rotation</h4>
-            <p className="text-[#363636] text-[16px] leading-relaxed">Fully programmable reversing action ensures uniform garment movement, improved chemical penetration and tangle-free processing across every batch.</p>
-          </div>
-          <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Advanced Multi-Stage Programming</h4>
-            <p className="text-[#363636] text-[16px] leading-relaxed">Fully programmable wash cycles with multiple independent process stages, allowing precise control over temperature, water levels, basket speed, chemical dosing and cycle duration.</p>
-          </div>
-          <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">SS 304 Chemical-Resistant Inner Drum & Door</h4>
-            <p className="text-[#363636] text-[16px] leading-relaxed">Constructed from premium-grade 304 stainless steel to withstand continuous exposure to enzymes, bleach, acids, dyes and textile processing chemicals.</p>
-          </div>
-          <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Imported VFD (Variable Frequency Drive)</h4>
-            <p className="text-[#363636] text-[16px] leading-relaxed">Enables accurate drum speed control from gentle fabric handling to aggressive denim processing, delivering superior wash quality and process consistency.</p>
-          </div>
-          <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Industrial-Grade CNC Fabricated Frame</h4>
-            <p className="text-[#363636] text-[16px] leading-relaxed">Precision CNC-cut welded frame construction delivers exceptional structural strength, vibration resistance and long operational life.</p>
-          </div>
-          <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">High-Temperature Processing</h4>
-            <p className="text-[#363636] text-[16px] leading-relaxed">Steam-heated operation with digital temperature control for enzyme washing, bleaching, dyeing, garment treatment and specialized textile processing applications.</p>
-          </div>
-          <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Automatic Water Inlet & Drain System</h4>
-            <p className="text-[#363636] text-[16px] leading-relaxed">PLC-controlled water filling and draining enables uninterrupted production with minimal operator intervention.</p>
-          </div>
-          <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Programmable Water Level Management</h4>
-            <p className="text-[#363636] text-[16px] leading-relaxed">Low, medium and high water level options programmable per wash step for optimized liquor ratio and chemical efficiency.</p>
-          </div>
-          <div className="relative pl-6"><div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
-            <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">Operator Safety Protection</h4>
-            <p className="text-[#363636] text-[16px] leading-relaxed">The machine automatically stops basket rotation if the door is opened during operation, enhancing workplace safety and reducing operational risks.</p>
-          </div>
+          {product.features && product.features.length > 0 ? (
+            product.features.map((feature: any, idx: number) => (
+              <div key={idx} className="relative pl-6">
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
+                <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">{feature.title}</h4>
+                <p className="text-[#363636] text-[16px] leading-relaxed">{feature.description}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">No key features detailed for this product.</p>
+          )}
         </div>
       )
     },
@@ -163,7 +188,7 @@ const ProductPage = () => {
       shortDesc: 'Built with quality, engineered for performance',
       content: (
         <div className="p-2 text-[#363636] text-[16px] leading-relaxed">
-          Built with quality, engineered for performance. We prioritize durability and continuous innovation.
+          Built with quality, engineered for performance. We prioritize durability and continuous innovation. All our machines are manufactured with rigorous quality control to meet the highest industry standards.
         </div>
       )
     },
@@ -175,7 +200,7 @@ const ProductPage = () => {
       shortDesc: 'Solutions trusted across diverse industries',
       content: (
         <div className="p-2 text-[#363636] text-[16px] leading-relaxed">
-          Content for Industries Served will go here.
+          Our equipment is perfectly suited for commercial laundries, hospitals, hotels, garment processing units, and educational institutions, providing reliable performance in high-stakes environments.
         </div>
       )
     },
@@ -185,12 +210,9 @@ const ProductPage = () => {
       icon: HelpCircle,
       subtext: 'Answers to your most common questions about this machine',
       shortDesc: 'Get answers to common questions',
-      content: <FAQList />
+      content: <FAQList faqs={product.faqs} />
     }
   ];
-
-  const nextImage = () => setActiveImage((prev) => (prev + 1) % images.length);
-  const prevImage = () => setActiveImage((prev) => (prev - 1 + images.length) % images.length);
 
   return (
     <div className="min-h-screen bg-white font-sans flex flex-col">
@@ -206,11 +228,13 @@ const ProductPage = () => {
           <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
           <a href="/" className="hover:text-[#0a2766] transition-colors">Home</a>
           <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
-          <span className="hover:text-[#0a2766] transition-colors cursor-pointer">Products</span>
+          <a href="/products" className="hover:text-[#0a2766] transition-colors cursor-pointer">Products</a>
           <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
-          <span className="hover:text-[#0a2766] transition-colors cursor-pointer">Apparel Processing Machines</span>
+          <span className="hover:text-[#0a2766] transition-colors cursor-pointer">
+            {CATEGORY_NAMES[product.categoryId] || product.categoryId}
+          </span>
           <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
-          <span className="text-[#0a2766] font-semibold">Washing Machine WF-200</span>
+          <span className="text-[#0a2766] font-semibold">{product.name}</span>
         </div>
 
         {/* Top Section */}
@@ -219,55 +243,53 @@ const ProductPage = () => {
           {/* Left: Image Gallery */}
           <div className="w-full sm:w-[80%] md:w-[65%] lg:w-[45%] xl:w-[40%] mx-auto lg:mx-0 flex flex-col shrink-0">
             {/* Main Image */}
-            <div 
-              className="relative w-full aspect-square bg-[#f3f5f8] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden"
-            >
+            <div className="relative w-full aspect-square bg-[#f3f5f8] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden">
               <img 
-                src={images[activeImage]} 
-                alt="Washing Machine WF-200" 
+                src={productImages[activeImageIndex] || '/placeholder.png'} 
+                alt={product.name} 
                 className="w-full h-full object-contain mix-blend-multiply"
               />
             </div>
             
             {/* Thumbnails Row */}
-            <div className="flex flex-row items-center justify-center w-full">
-              <button onClick={prevImage} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-800 transition-colors shrink-0">
-                <ArrowLeft size={24} strokeWidth={1} />
-              </button>
+            {productImages.length > 1 && (
+              <div className="flex flex-row items-center justify-center w-full">
+                <button onClick={prevImage} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-800 transition-colors shrink-0">
+                  <ArrowLeft size={24} strokeWidth={1} />
+                </button>
 
-              <div className="flex flex-row justify-center gap-3 sm:gap-4 overflow-x-auto scrollbar-hide py-2 px-2 flex-1">
-                {images.map((img, idx) => (
-                  <button 
-                    key={idx}
-                    onClick={() => setActiveImage(idx)}
-                    className={`relative w-20 sm:w-24 lg:w-[90px] aspect-square shrink-0 rounded-2xl overflow-hidden transition-all bg-[#f3f5f8] ${activeImage === idx ? 'opacity-100 ring-2 ring-offset-2 ring-[#0a2766]' : 'opacity-70 hover:opacity-100'}`}
-                  >
-                    <img src={img} alt={`Thumbnail ${idx}`} className="absolute inset-0 w-full h-full object-cover mix-blend-multiply" />
-                  </button>
-                ))}
+                <div className="flex flex-row justify-center gap-3 sm:gap-4 overflow-x-auto scrollbar-hide py-2 px-2 flex-1">
+                  {productImages.map((img, idx) => (
+                    <button 
+                      key={idx}
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`relative w-16 sm:w-20 lg:w-[80px] aspect-square shrink-0 rounded-2xl overflow-hidden transition-all bg-[#f3f5f8] ${activeImageIndex === idx ? 'opacity-100 ring-2 ring-offset-2 ring-[#0a2766]' : 'opacity-70 hover:opacity-100'}`}
+                    >
+                      <img src={img} alt={`Thumbnail ${idx}`} className="absolute inset-0 w-full h-full object-contain p-2 mix-blend-multiply" />
+                    </button>
+                  ))}
+                </div>
+
+                <button onClick={nextImage} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-800 transition-colors shrink-0">
+                  <ArrowRight size={24} strokeWidth={1} />
+                </button>
               </div>
-
-              <button onClick={nextImage} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-800 transition-colors shrink-0">
-                <ArrowRight size={24} strokeWidth={1} />
-              </button>
-            </div>
+            )}
           </div>
 
           {/* Right: Product Info */}
           <div className="w-full lg:flex-1 flex flex-col justify-start lg:pb-4 lg:pl-4">
             
             <div className="inline-block bg-[#eaf0ff] text-[#0a2766] text-[11px] sm:text-[12px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider w-fit mb-4">
-              Apparel Processing Machines
+              {CATEGORY_NAMES[product.categoryId] || product.categoryId}
             </div>
             
             <h1 className="text-3xl sm:text-4xl lg:text-4xl font-medium text-[#0a2766] tracking-tight leading-tight mb-6">
-              WF-200 | Washing Machine
+              {product.name}
             </h1>
             
             <div className="text-[#363636] text-[15px] sm:text-[16px] leading-relaxed mb-8">
-              <p>
-                Xcel's heavy-duty front loading apparel washing machine features advanced PCB programming for enzyme, acid, bleach & stone wash. Built for garment export, apparel processing and denim units PAN India!
-              </p>
+              <p>{product.shortDescription}</p>
             </div>
             
             {/* Buttons */}
@@ -420,6 +442,4 @@ const ProductPage = () => {
       <Footer />
     </div>
   );
-};
-
-export default ProductPage;
+}
