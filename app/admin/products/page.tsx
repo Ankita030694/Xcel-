@@ -28,6 +28,9 @@ interface Product {
   additionalImages?: string[];
   features: ProductFeature[];
   faqs: ProductFAQ[];
+  whyChooseUs?: string;
+  industriesServed?: string;
+  brochureUrl?: string;
   createdAt: any;
 }
 
@@ -58,7 +61,10 @@ export default function ProductsDashboard() {
   const [name, setName] = useState('');
   const [categoryId, setCategoryId] = useState(CATEGORIES[0].id);
   const [shortDescription, setShortDescription] = useState('');
+  const [whyChooseUs, setWhyChooseUs] = useState('');
+  const [industriesServed, setIndustriesServed] = useState('');
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [brochureFile, setBrochureFile] = useState<File | null>(null);
   const [features, setFeatures] = useState<ProductFeature[]>([]);
   const [faqs, setFaqs] = useState<ProductFAQ[]>([]);
 
@@ -106,7 +112,10 @@ export default function ProductsDashboard() {
     setName('');
     setCategoryId(CATEGORIES[0].id);
     setShortDescription('');
+    setWhyChooseUs('');
+    setIndustriesServed('');
     setImageFiles([]);
+    setBrochureFile(null);
     setFeatures([]);
     setFaqs([]);
     setError('');
@@ -150,13 +159,24 @@ export default function ProductsDashboard() {
       const imageUrl = imageUrls[0];
       const additionalImages = imageUrls.slice(1);
 
+      // 1.5 Upload Brochure if exists
+      let brochureUrl = '';
+      if (brochureFile) {
+        const brochureRef = ref(storage, `brochures/${Date.now()}_${brochureFile.name}`);
+        await uploadBytes(brochureRef, brochureFile);
+        brochureUrl = await getDownloadURL(brochureRef);
+      }
+
       // 2. Save Product to Firestore
       const newProduct = {
         name,
         categoryId,
         shortDescription,
+        whyChooseUs,
+        industriesServed,
         imageUrl,
         additionalImages,
+        ...(brochureUrl ? { brochureUrl } : {}),
         features: features.filter(f => f.title.trim() && f.description.trim()),
         faqs: faqs.filter(f => f.question.trim() && f.answer.trim()),
         createdAt: serverTimestamp()
@@ -175,27 +195,28 @@ export default function ProductsDashboard() {
     }
   };
 
-  const handleDelete = async (productId: string, imageUrl: string, additionalImages?: string[]) => {
+  const handleDelete = async (productId: string, imageUrl: string, additionalImages?: string[], brochureUrl?: string) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
     
     try {
       // Delete document from Firestore
       await deleteDoc(doc(db, "products", productId));
       
-      // Delete images from Storage
-      const allImages = [imageUrl, ...(additionalImages || [])].filter(Boolean);
+      // Delete images and brochure from Storage
+      const allFiles = [imageUrl, ...(additionalImages || []), brochureUrl].filter(Boolean);
       
-      for (const imgUrl of allImages) {
+      for (const fileUrl of allFiles) {
+        if (!fileUrl) continue;
         try {
-          const pathStart = imgUrl.indexOf('/o/') + 3;
-          const pathEnd = imgUrl.indexOf('?alt=media');
+          const pathStart = fileUrl.indexOf('/o/') + 3;
+          const pathEnd = fileUrl.indexOf('?alt=media');
           if (pathStart > 2 && pathEnd > -1) {
-            const filePath = decodeURIComponent(imgUrl.substring(pathStart, pathEnd));
-            const imageRef = ref(storage, filePath);
-            await deleteObject(imageRef);
+            const filePath = decodeURIComponent(fileUrl.substring(pathStart, pathEnd));
+            const fileRef = ref(storage, filePath);
+            await deleteObject(fileRef);
           }
         } catch (storageErr) {
-          console.warn("Could not delete image from storage:", storageErr);
+          console.warn("Could not delete file from storage:", storageErr);
         }
       }
       
@@ -272,7 +293,7 @@ export default function ProductsDashboard() {
                       <td className="py-4 px-6 text-gray-700 line-clamp-2 max-w-xs">{product.shortDescription}</td>
                       <td className="py-4 px-6 text-right">
                         <button 
-                          onClick={() => handleDelete(product.id, product.imageUrl, product.additionalImages)}
+                          onClick={() => handleDelete(product.id, product.imageUrl, product.additionalImages, product.brochureUrl)}
                           className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors"
                           title="Delete Product"
                         >
@@ -318,11 +339,11 @@ export default function ProductsDashboard() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
-                      <input type="text" required value={name} onChange={e => setName(e.target.value)} className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="e.g., WF-200 Washer Extractor" />
+                      <input type="text" required value={name} onChange={e => setName(e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="e.g., WF-200 Washer Extractor" />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
-                      <select required value={categoryId} onChange={e => setCategoryId(e.target.value)} className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#32589c] focus:border-[#32589c] outline-none">
+                      <select required value={categoryId} onChange={e => setCategoryId(e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none">
                         {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                       </select>
                     </div>
@@ -330,7 +351,7 @@ export default function ProductsDashboard() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Short Description *</label>
-                    <textarea required value={shortDescription} onChange={e => setShortDescription(e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="Brief description for the catalog page..."></textarea>
+                    <textarea required value={shortDescription} onChange={e => setShortDescription(e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="Brief description for the catalog page..."></textarea>
                   </div>
 
                   <div>
@@ -340,6 +361,30 @@ export default function ProductsDashboard() {
                     }} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#e6f0ff] file:text-[#0a2766] hover:file:bg-[#d0e3ff]" />
                     {imageFiles.length > 0 && <p className="text-xs text-gray-500 mt-2">{imageFiles.length} file(s) selected.</p>}
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Brochure (PDF, optional)</label>
+                    <input type="file" accept=".pdf,.doc,.docx" onChange={e => {
+                      if (e.target.files && e.target.files[0]) setBrochureFile(e.target.files[0]);
+                    }} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#e6f0ff] file:text-[#0a2766] hover:file:bg-[#d0e3ff]" />
+                    {brochureFile && <p className="text-xs text-gray-500 mt-2">Selected: {brochureFile.name}</p>}
+                  </div>
+                </div>
+
+                {/* Why Choose Us */}
+                <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm space-y-4">
+                  <div className="flex items-center justify-between border-b pb-2">
+                    <h3 className="font-semibold text-lg text-gray-800">Why Choose Us</h3>
+                  </div>
+                  <textarea value={whyChooseUs} onChange={e => setWhyChooseUs(e.target.value)} rows={4} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="Enter 'Why Choose Us' description..."></textarea>
+                </div>
+
+                {/* Industries Served */}
+                <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm space-y-4">
+                  <div className="flex items-center justify-between border-b pb-2">
+                    <h3 className="font-semibold text-lg text-gray-800">Industries Served</h3>
+                  </div>
+                  <textarea value={industriesServed} onChange={e => setIndustriesServed(e.target.value)} rows={4} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="Enter 'Industries Served' description..."></textarea>
                 </div>
 
                 {/* Features */}
@@ -358,8 +403,8 @@ export default function ProductsDashboard() {
                       {features.map((feature, idx) => (
                         <div key={idx} className="flex gap-4 items-start bg-gray-50 p-4 rounded-md border border-gray-100 relative group">
                           <div className="flex-1 space-y-3">
-                            <input type="text" placeholder="Feature Title (e.g., High-Capacity)" value={feature.title} onChange={e => handleFeatureChange(idx, 'title', e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-sm outline-none focus:border-[#32589c]" />
-                            <textarea placeholder="Feature Description" value={feature.description} onChange={e => handleFeatureChange(idx, 'description', e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-sm outline-none focus:border-[#32589c]" />
+                            <input type="text" placeholder="Feature Title (e.g., High-Capacity)" value={feature.title} onChange={e => handleFeatureChange(idx, 'title', e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
+                            <textarea placeholder="Feature Description" value={feature.description} onChange={e => handleFeatureChange(idx, 'description', e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
                           </div>
                           <button type="button" onClick={() => handleRemoveFeature(idx)} className="text-red-400 hover:text-red-600 mt-2">
                             <X size={20} />
@@ -386,8 +431,8 @@ export default function ProductsDashboard() {
                       {faqs.map((faq, idx) => (
                         <div key={idx} className="flex gap-4 items-start bg-gray-50 p-4 rounded-md border border-gray-100 relative group">
                           <div className="flex-1 space-y-3">
-                            <input type="text" placeholder="Question" value={faq.question} onChange={e => handleFaqChange(idx, 'question', e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-sm outline-none focus:border-[#32589c]" />
-                            <textarea placeholder="Answer" value={faq.answer} onChange={e => handleFaqChange(idx, 'answer', e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-sm outline-none focus:border-[#32589c]" />
+                            <input type="text" placeholder="Question" value={faq.question} onChange={e => handleFaqChange(idx, 'question', e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
+                            <textarea placeholder="Answer" value={faq.answer} onChange={e => handleFaqChange(idx, 'answer', e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
                           </div>
                           <button type="button" onClick={() => handleRemoveFaq(idx)} className="text-red-400 hover:text-red-600 mt-2">
                             <X size={20} />

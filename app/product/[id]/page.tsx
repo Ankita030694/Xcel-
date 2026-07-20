@@ -187,8 +187,8 @@ export default function ProductDetailPage() {
       subtext: 'Discover the advantages that set XCEL apart',
       shortDesc: 'Built with quality, engineered for performance',
       content: (
-        <div className="p-2 text-[#363636] text-[16px] leading-relaxed">
-          Built with quality, engineered for performance. We prioritize durability and continuous innovation. All our machines are manufactured with rigorous quality control to meet the highest industry standards.
+        <div className="p-2 text-[#363636] text-[16px] leading-relaxed whitespace-pre-wrap">
+          {product.whyChooseUs || 'Built with quality, engineered for performance. We prioritize durability and continuous innovation. All our machines are manufactured with rigorous quality control to meet the highest industry standards.'}
         </div>
       )
     },
@@ -199,8 +199,8 @@ export default function ProductDetailPage() {
       subtext: 'Tailored laundry solutions for every industry we serve',
       shortDesc: 'Solutions trusted across diverse industries',
       content: (
-        <div className="p-2 text-[#363636] text-[16px] leading-relaxed">
-          Our equipment is perfectly suited for commercial laundries, hospitals, hotels, garment processing units, and educational institutions, providing reliable performance in high-stakes environments.
+        <div className="p-2 text-[#363636] text-[16px] leading-relaxed whitespace-pre-wrap">
+          {product.industriesServed || 'Our equipment is perfectly suited for commercial laundries, hospitals, hotels, garment processing units, and educational institutions, providing reliable performance in high-stakes environments.'}
         </div>
       )
     },
@@ -298,10 +298,17 @@ export default function ProductDetailPage() {
                 <Send size={18} />
                 Request a Quote
               </button>
-              <button className="flex-1 bg-white text-[#0a2766] border-2 border-[#0a2766] py-3 sm:py-3.5 px-4 rounded-xl text-[15px] font-bold flex items-center justify-center gap-2 hover:bg-[#f8f9fa] hover:-translate-y-1 hover:shadow-md transition-all">
-                <Download size={18} />
-                Download Brochure
-              </button>
+              {product.brochureUrl ? (
+                <a href={product.brochureUrl} target="_blank" rel="noopener noreferrer" className="flex-1 bg-white text-[#0a2766] border-2 border-[#0a2766] py-3 sm:py-3.5 px-4 rounded-xl text-[15px] font-bold flex items-center justify-center gap-2 hover:bg-[#f8f9fa] hover:-translate-y-1 hover:shadow-md transition-all">
+                  <Download size={18} />
+                  Download Brochure
+                </a>
+              ) : (
+                <button disabled className="flex-1 bg-gray-50 text-gray-400 border-2 border-gray-200 py-3 sm:py-3.5 px-4 rounded-xl text-[15px] font-bold flex items-center justify-center gap-2 cursor-not-allowed" title="Brochure not uploaded yet">
+                  <Download size={18} />
+                  Brochure Unavailable
+                </button>
+              )}
             </div>
           </div>
         </div>
