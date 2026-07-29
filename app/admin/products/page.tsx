@@ -7,7 +7,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db, storage } from '../../../lib/firebase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Trash2, Plus, X } from 'lucide-react';
+import { Trash2, Plus, X, Edit } from 'lucide-react';
 
 interface ProductFeature {
   title: string;
@@ -28,8 +28,8 @@ interface Product {
   additionalImages?: string[];
   features: ProductFeature[];
   faqs: ProductFAQ[];
-  whyChooseUs?: string;
-  industriesServed?: string;
+  whyChooseUs?: ProductFeature[] | string;
+  industriesServed?: ProductFeature[] | string;
   brochureUrl?: string;
   createdAt: any;
 }
@@ -58,11 +58,14 @@ export default function ProductsDashboard() {
   const [error, setError] = useState('');
   
   // Form State
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [categoryId, setCategoryId] = useState(CATEGORIES[0].id);
   const [shortDescription, setShortDescription] = useState('');
-  const [whyChooseUs, setWhyChooseUs] = useState('');
-  const [industriesServed, setIndustriesServed] = useState('');
+  const [whyChooseUs, setWhyChooseUs] = useState<ProductFeature[]>([]);
+  const [industriesServed, setIndustriesServed] = useState<ProductFeature[]>([]);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
+  const [existingBrochure, setExistingBrochure] = useState<string | null>(null);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [brochureFile, setBrochureFile] = useState<File | null>(null);
   const [features, setFeatures] = useState<ProductFeature[]>([]);
@@ -109,16 +112,52 @@ export default function ProductsDashboard() {
   };
 
   const resetForm = () => {
+    setEditingProductId(null);
     setName('');
     setCategoryId(CATEGORIES[0].id);
     setShortDescription('');
-    setWhyChooseUs('');
-    setIndustriesServed('');
+    setWhyChooseUs([]);
+    setIndustriesServed([]);
+    setExistingImages([]);
+    setExistingBrochure(null);
     setImageFiles([]);
     setBrochureFile(null);
     setFeatures([]);
     setFaqs([]);
     setError('');
+  };
+
+  const handleEdit = (product: Product) => {
+    setEditingProductId(product.id);
+    setName(product.name);
+    setCategoryId(product.categoryId);
+    setShortDescription(product.shortDescription);
+    setWhyChooseUs(Array.isArray(product.whyChooseUs) ? product.whyChooseUs : []);
+    setIndustriesServed(Array.isArray(product.industriesServed) ? product.industriesServed : []);
+    setExistingImages([product.imageUrl, ...(product.additionalImages || [])].filter(Boolean));
+    setExistingBrochure(product.brochureUrl || null);
+    setFeatures(product.features || []);
+    setFaqs(product.faqs || []);
+    setImageFiles([]); // Clear any previously selected files
+    setBrochureFile(null);
+    setError('');
+    setIsModalOpen(true);
+  };
+
+  const handleAddWhyChooseUs = () => setWhyChooseUs([...whyChooseUs, { title: '', description: '' }]);
+  const handleRemoveWhyChooseUs = (index: number) => setWhyChooseUs(whyChooseUs.filter((_, i) => i !== index));
+  const handleWhyChooseUsChange = (index: number, field: keyof ProductFeature, value: string) => {
+    const newItems = [...whyChooseUs];
+    newItems[index][field] = value;
+    setWhyChooseUs(newItems);
+  };
+
+  const handleAddIndustries = () => setIndustriesServed([...industriesServed, { title: '', description: '' }]);
+  const handleRemoveIndustries = (index: number) => setIndustriesServed(industriesServed.filter((_, i) => i !== index));
+  const handleIndustriesChange = (index: number, field: keyof ProductFeature, value: string) => {
+    const newItems = [...industriesServed];
+    newItems[index][field] = value;
+    setIndustriesServed(newItems);
   };
 
   const handleAddFeature = () => setFeatures([...features, { title: '', description: '' }]);
@@ -139,8 +178,13 @@ export default function ProductsDashboard() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !categoryId || !shortDescription || imageFiles.length === 0) {
-      setError("Please fill all required fields and select at least one image.");
+    if (!name || !categoryId || !shortDescription) {
+      setError("Please fill all required fields.");
+      return;
+    }
+
+    if (!editingProductId && imageFiles.length === 0 && existingImages.length === 0) {
+      setError("Please select at least one image for the product.");
       return;
     }
     
@@ -148,48 +192,71 @@ export default function ProductsDashboard() {
     setError('');
 
     try {
-      // 1. Upload Images to Storage
-      const imageUrls = await Promise.all(
-        imageFiles.map(async (file) => {
-          const fileRef = ref(storage, `products/${Date.now()}_${file.name}`);
-          await uploadBytes(fileRef, file);
-          return await getDownloadURL(fileRef);
-        })
-      );
-      const imageUrl = imageUrls[0];
-      const additionalImages = imageUrls.slice(1);
+      let newImageUrls: string[] = [];
+      let finalBrochureUrl = existingBrochure || '';
 
-      // 1.5 Upload Brochure if exists
-      let brochureUrl = '';
+      // Upload new images if any are selected
+      if (imageFiles.length > 0) {
+        newImageUrls = await Promise.all(
+          imageFiles.map(async (file) => {
+            const fileRef = ref(storage, `products/${Date.now()}_${file.name}`);
+            await uploadBytes(fileRef, file);
+            return await getDownloadURL(fileRef);
+          })
+        );
+      }
+
+      const allImages = [...existingImages, ...newImageUrls];
+      if (allImages.length === 0) {
+        setError("Please provide at least one image.");
+        setIsSubmitting(false);
+        return;
+      }
+      
+      const imageUrl = allImages[0];
+      const additionalImages = allImages.slice(1);
+
+      // Upload Brochure if exists
       if (brochureFile) {
         const brochureRef = ref(storage, `brochures/${Date.now()}_${brochureFile.name}`);
         await uploadBytes(brochureRef, brochureFile);
-        brochureUrl = await getDownloadURL(brochureRef);
+        finalBrochureUrl = await getDownloadURL(brochureRef);
       }
 
-      // 2. Save Product to Firestore
-      const newProduct = {
+      const productData: any = {
         name,
         categoryId,
         shortDescription,
-        whyChooseUs,
-        industriesServed,
-        imageUrl,
-        additionalImages,
-        ...(brochureUrl ? { brochureUrl } : {}),
+        whyChooseUs: whyChooseUs.filter(f => f.title.trim() && f.description.trim()),
+        industriesServed: industriesServed.filter(f => f.title.trim() && f.description.trim()),
         features: features.filter(f => f.title.trim() && f.description.trim()),
         faqs: faqs.filter(f => f.question.trim() && f.answer.trim()),
-        createdAt: serverTimestamp()
+        imageUrl,
+        additionalImages
       };
 
-      await addDoc(collection(db, "products"), newProduct);
+      if (finalBrochureUrl) {
+        productData.brochureUrl = finalBrochureUrl;
+      } else {
+        productData.brochureUrl = ""; // clear if removed
+      }
+
+      if (editingProductId) {
+        // Update Product
+        productData.updatedAt = serverTimestamp();
+        await updateDoc(doc(db, "products", editingProductId), productData);
+      } else {
+        // Save New Product
+        productData.createdAt = serverTimestamp();
+        await addDoc(collection(db, "products"), productData);
+      }
       
       setIsModalOpen(false);
       resetForm();
       fetchProducts();
     } catch (err: any) {
       console.error(err);
-      setError(err.message || "An error occurred while saving the product. Remember: Firebase Storage must be fully enabled in the console to upload product images.");
+      setError(err.message || "An error occurred while saving the product.");
     } finally {
       setIsSubmitting(false);
     }
@@ -293,6 +360,13 @@ export default function ProductsDashboard() {
                       <td className="py-4 px-6 text-gray-700 line-clamp-2 max-w-xs">{product.shortDescription}</td>
                       <td className="py-4 px-6 text-right">
                         <button 
+                          onClick={() => handleEdit(product)}
+                          className="text-[#32589c] hover:text-[#1f3a6a] p-2 rounded-full hover:bg-blue-50 transition-colors mr-2"
+                          title="Edit Product"
+                        >
+                          <Edit size={18} />
+                        </button>
+                        <button 
                           onClick={() => handleDelete(product.id, product.imageUrl, product.additionalImages, product.brochureUrl)}
                           className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors"
                           title="Delete Product"
@@ -316,7 +390,9 @@ export default function ProductsDashboard() {
             
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-gray-100 shrink-0">
-              <h2 className="text-2xl font-bold text-[#0a2766]">Add New Product</h2>
+              <h2 className="text-2xl font-bold text-[#0a2766]">
+                {editingProductId ? 'Edit Product' : 'Add New Product'}
+              </h2>
               <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
                 <X size={24} />
               </button>
@@ -355,19 +431,52 @@ export default function ProductsDashboard() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Images * (Select multiple)</label>
-                    <input type="file" required multiple accept="image/*" onChange={e => {
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      {editingProductId ? 'Manage Product Images *' : 'Product Images * (Select multiple)'}
+                    </label>
+
+                    {existingImages.length > 0 && (
+                      <div className="flex flex-wrap gap-3 mb-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
+                        {existingImages.map((imgUrl, idx) => (
+                          <div key={idx} className="relative w-20 h-20 border border-gray-200 rounded-md overflow-hidden group bg-white shadow-sm">
+                            <img src={imgUrl} alt="Product preview" className="w-full h-full object-contain p-1" />
+                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                              <button type="button" onClick={() => setExistingImages(existingImages.filter((_, i) => i !== idx))} className="text-white hover:text-red-400 p-2" title="Remove Image">
+                                <Trash2 size={18} />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    <input type="file" required={!editingProductId && existingImages.length === 0} multiple accept="image/*" onChange={e => {
                       if (e.target.files) setImageFiles(Array.from(e.target.files));
                     }} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#e6f0ff] file:text-[#0a2766] hover:file:bg-[#d0e3ff]" />
-                    {imageFiles.length > 0 && <p className="text-xs text-gray-500 mt-2">{imageFiles.length} file(s) selected.</p>}
+                    {imageFiles.length > 0 && <p className="text-xs text-[#0a2766] mt-2 font-medium">Ready to upload {imageFiles.length} new file(s).</p>}
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Product Brochure (PDF, optional)</label>
+                    
+                    {existingBrochure && !brochureFile && (
+                      <div className="flex items-center justify-between mb-3 bg-gray-50 p-3 rounded-lg border border-gray-100">
+                        <div className="flex items-center gap-2 overflow-hidden">
+                          <span className="text-sm font-medium text-[#0a2766] truncate max-w-[200px] sm:max-w-[300px]">Existing Brochure Attached</span>
+                        </div>
+                        <button type="button" onClick={() => setExistingBrochure(null)} className="text-red-500 hover:text-red-700 bg-white shadow-sm p-1.5 rounded-md border border-gray-200 transition-colors" title="Remove Brochure">
+                          <Trash2 size={14} />
+                        </button>
+                      </div>
+                    )}
+
                     <input type="file" accept=".pdf,.doc,.docx" onChange={e => {
-                      if (e.target.files && e.target.files[0]) setBrochureFile(e.target.files[0]);
+                      if (e.target.files && e.target.files[0]) {
+                        setBrochureFile(e.target.files[0]);
+                        setExistingBrochure(null); // Clear existing if new selected
+                      }
                     }} className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#e6f0ff] file:text-[#0a2766] hover:file:bg-[#d0e3ff]" />
-                    {brochureFile && <p className="text-xs text-gray-500 mt-2">Selected: {brochureFile.name}</p>}
+                    {brochureFile && <p className="text-xs text-[#0a2766] mt-2 font-medium">Selected: {brochureFile.name}</p>}
                   </div>
                 </div>
 
@@ -375,16 +484,56 @@ export default function ProductsDashboard() {
                 <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm space-y-4">
                   <div className="flex items-center justify-between border-b pb-2">
                     <h3 className="font-semibold text-lg text-gray-800">Why Choose Us</h3>
+                    <button type="button" onClick={handleAddWhyChooseUs} className="text-sm text-[#32589c] font-medium hover:underline flex items-center gap-1">
+                      <Plus size={14} /> Add Item
+                    </button>
                   </div>
-                  <textarea value={whyChooseUs} onChange={e => setWhyChooseUs(e.target.value)} rows={4} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="Enter 'Why Choose Us' description..."></textarea>
+                  
+                  {whyChooseUs.length === 0 ? (
+                    <p className="text-sm text-gray-500 italic">No items added. Click 'Add Item' to start.</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {whyChooseUs.map((item, idx) => (
+                        <div key={idx} className="flex gap-4 items-start bg-gray-50 p-4 rounded-md border border-gray-100 relative group">
+                          <div className="flex-1 space-y-3">
+                            <input type="text" placeholder="Title (e.g., Multiple Capacities)" value={item.title} onChange={e => handleWhyChooseUsChange(idx, 'title', e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
+                            <textarea placeholder="Description" value={item.description} onChange={e => handleWhyChooseUsChange(idx, 'description', e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
+                          </div>
+                          <button type="button" onClick={() => handleRemoveWhyChooseUs(idx)} className="text-red-400 hover:text-red-600 mt-2">
+                            <X size={20} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Industries Served */}
                 <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm space-y-4">
                   <div className="flex items-center justify-between border-b pb-2">
                     <h3 className="font-semibold text-lg text-gray-800">Industries Served</h3>
+                    <button type="button" onClick={handleAddIndustries} className="text-sm text-[#32589c] font-medium hover:underline flex items-center gap-1">
+                      <Plus size={14} /> Add Industry
+                    </button>
                   </div>
-                  <textarea value={industriesServed} onChange={e => setIndustriesServed(e.target.value)} rows={4} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="Enter 'Industries Served' description..."></textarea>
+                  
+                  {industriesServed.length === 0 ? (
+                    <p className="text-sm text-gray-500 italic">No industries added. Click 'Add Industry' to start.</p>
+                  ) : (
+                    <div className="space-y-4">
+                      {industriesServed.map((item, idx) => (
+                        <div key={idx} className="flex gap-4 items-start bg-gray-50 p-4 rounded-md border border-gray-100 relative group">
+                          <div className="flex-1 space-y-3">
+                            <input type="text" placeholder="Industry Name (e.g., Healthcare)" value={item.title} onChange={e => handleIndustriesChange(idx, 'title', e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
+                            <textarea placeholder="Description" value={item.description} onChange={e => handleIndustriesChange(idx, 'description', e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
+                          </div>
+                          <button type="button" onClick={() => handleRemoveIndustries(idx)} className="text-red-400 hover:text-red-600 mt-2">
+                            <X size={20} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Features */}
@@ -462,7 +611,7 @@ export default function ProductsDashboard() {
                 disabled={isSubmitting}
                 className="px-6 py-2 rounded bg-[#0a2766] text-white font-medium hover:bg-[#071b4a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
               >
-                {isSubmitting ? 'Saving...' : 'Save Product'}
+                {isSubmitting ? 'Saving...' : (editingProductId ? 'Update Product' : 'Save Product')}
               </button>
             </div>
 
