@@ -47,13 +47,13 @@ const FAQList = ({ faqs }: { faqs: { question: string; answer: string }[] }) => 
                 {isOpen ? <ChevronUp size={20} strokeWidth={2} /> : <ChevronDown size={20} strokeWidth={2} />}
               </div>
             </button>
-            {isOpen && (
+            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
               <div className="px-4 sm:pl-[48px] sm:pr-[60px] pb-5 pt-1">
                 <p className="text-[#363636] text-[16px] leading-relaxed">
                   {faq.answer}
                 </p>
               </div>
-            )}
+            </div>
           </div>
         );
       })}
@@ -117,11 +117,6 @@ export default function ProductDetailPage() {
     const isOpening = mobileExpanded !== id;
     if (isOpening) {
       setMobileExpanded(id);
-      const button = e.currentTarget;
-      setTimeout(() => {
-        const topOffset = button.getBoundingClientRect().top + window.scrollY - 100;
-        window.scrollTo({ top: topOffset, behavior: 'smooth' });
-      }, 310);
     } else {
       setMobileExpanded(null);
     }
@@ -263,11 +258,11 @@ export default function ProductDetailPage() {
           {/* Left: Image Gallery */}
           <div className="w-full sm:w-[80%] md:w-[65%] lg:w-[45%] xl:w-[40%] mx-auto lg:mx-0 flex flex-col shrink-0">
             {/* Main Image */}
-            <div className="relative w-full aspect-square bg-[#f3f5f8] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden">
+            <div className="relative w-full aspect-square bg-white rounded-[32px] flex items-center justify-center mb-6 overflow-hidden">
               <img 
                 src={productImages[activeImageIndex] || '/placeholder.png'} 
                 alt={product.name} 
-                className="w-full h-full object-contain mix-blend-multiply"
+                className="w-full h-full object-contain"
               />
             </div>
             
@@ -283,9 +278,9 @@ export default function ProductDetailPage() {
                     <button 
                       key={idx}
                       onClick={() => setActiveImageIndex(idx)}
-                      className={`relative w-16 sm:w-20 lg:w-[80px] aspect-square shrink-0 rounded-2xl overflow-hidden transition-all bg-[#f3f5f8] ${activeImageIndex === idx ? 'opacity-100 ring-2 ring-offset-2 ring-[#0a2766]' : 'opacity-70 hover:opacity-100'}`}
+                      className={`relative w-16 sm:w-20 lg:w-[80px] aspect-square shrink-0 rounded-2xl overflow-hidden transition-all bg-white ${activeImageIndex === idx ? 'opacity-100 ring-2 ring-offset-2 ring-[#0a2766]' : 'opacity-70 hover:opacity-100'}`}
                     >
-                      <img src={img} alt={`Thumbnail ${idx}`} className="absolute inset-0 w-full h-full object-contain p-2 mix-blend-multiply" />
+                      <img src={img} alt={`Thumbnail ${idx}`} className="absolute inset-0 w-full h-full object-contain p-2" />
                     </button>
                   ))}
                 </div>
@@ -409,8 +404,8 @@ export default function ProductDetailPage() {
                     <div className="w-16 h-[4px] bg-[#0a2766] rounded-full relative z-10"></div>
                     
                     {/* Decorative Wave Pattern at bottom */}
-                    <div className="relative w-full h-32 mt-0 opacity-[0.10] pointer-events-none -mb-10 overflow-visible">
-                      <svg viewBox="0 0 1000 400" preserveAspectRatio="none" className="w-full h-full fill-none stroke-[#0a2766] stroke-[2px] -rotate-[15deg] scale-[1.3] -translate-y-6">
+                    <div className="relative w-full h-32 mt-auto opacity-[0.10] pointer-events-none -mb-10 overflow-visible">
+                      <svg viewBox="0 0 1000 400" preserveAspectRatio="none" className="w-full h-full fill-none stroke-[#0a2766] stroke-[2px] -rotate-[15deg] scale-[1.2] -translate-y-3">
                         <path d="M 0 150 Q 250 300 500 150 T 1000 150" />
                         <path d="M 0 170 Q 250 320 500 170 T 1000 170" />
                         <path d="M 0 190 Q 250 340 500 190 T 1000 190" />

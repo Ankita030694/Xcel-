@@ -225,9 +225,14 @@ export default function ProductsPage() {
 
                 {/* Product Info */}
                 <div className="flex flex-col flex-1 p-4 lg:p-6 text-left">
-                  <h3 className="text-[12px] lg:text-[15px] font-extrabold text-[#0a2766] uppercase mb-1.5 lg:mb-3 leading-snug">
+                  <h3 className="text-[12px] lg:text-[15px] font-extrabold text-[#0a2766] uppercase mb-1.5 lg:mb-2 leading-snug">
                     {product.name}
                   </h3>
+                  {product.subheading && (
+                    <p className="text-[11px] lg:text-[13px] font-medium text-gray-600 mb-1.5 lg:mb-2">
+                      {product.subheading}
+                    </p>
+                  )}
                   <p className="text-[10px] lg:text-[13px] text-[#363636] leading-relaxed flex-1 line-clamp-2 lg:line-clamp-2">
                     {product.shortDescription}
                   </p>

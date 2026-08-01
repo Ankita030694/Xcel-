@@ -22,6 +22,7 @@ interface ProductFAQ {
 interface Product {
   id: string;
   name: string;
+  subheading?: string;
   categoryId: string;
   shortDescription: string;
   imageUrl: string;
@@ -60,6 +61,7 @@ export default function ProductsDashboard() {
   // Form State
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
   const [name, setName] = useState('');
+  const [subheading, setSubheading] = useState('');
   const [categoryId, setCategoryId] = useState(CATEGORIES[0].id);
   const [shortDescription, setShortDescription] = useState('');
   const [whyChooseUs, setWhyChooseUs] = useState<ProductFeature[]>([]);
@@ -114,6 +116,7 @@ export default function ProductsDashboard() {
   const resetForm = () => {
     setEditingProductId(null);
     setName('');
+    setSubheading('');
     setCategoryId(CATEGORIES[0].id);
     setShortDescription('');
     setWhyChooseUs([]);
@@ -130,6 +133,7 @@ export default function ProductsDashboard() {
   const handleEdit = (product: Product) => {
     setEditingProductId(product.id);
     setName(product.name);
+    setSubheading(product.subheading || '');
     setCategoryId(product.categoryId);
     setShortDescription(product.shortDescription);
     setWhyChooseUs(Array.isArray(product.whyChooseUs) ? product.whyChooseUs : []);
@@ -225,6 +229,7 @@ export default function ProductsDashboard() {
 
       const productData: any = {
         name,
+        subheading,
         categoryId,
         shortDescription,
         whyChooseUs: whyChooseUs.filter(f => f.title.trim() && f.description.trim()),
@@ -423,6 +428,11 @@ export default function ProductsDashboard() {
                         {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                       </select>
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Subheading</label>
+                    <input type="text" value={subheading} onChange={e => setSubheading(e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="e.g., Heavy Duty Automatic" />
                   </div>
 
                   <div>
