@@ -564,6 +564,18 @@ const WhyChooseUs = () => {
 
 const ProductsHoverGallery = () => {
   const [activePane, setActivePane] = useState<1 | 2 | 3>(1);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const mobileScrollRef = useRef<HTMLDivElement>(null);
+  const isDraggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const scrollLeftRef = useRef(0);
+  const hasMovedRef = useRef(false);
+
+  const productImages = [
+    { src: "/Images/1.svg", alt: "Apparel Washing & High Speed Extract Equipment" },
+    { src: "/Images/2.svg", alt: "Softener Washer Dryer Multi-Stage Equipment" },
+    { src: "/Images/3.svg", alt: "Flat-Work Ironer & Finishing Commercial Equipment" },
+  ];
 
   const getImagePath = (paneNumber: 1 | 2 | 3, targetActivePane: 1 | 2 | 3) => {
     if (targetActivePane === 1) {
@@ -584,8 +596,73 @@ const ProductsHoverGallery = () => {
     return "";
   };
 
+  const updateActiveIndex = () => {
+    if (!mobileScrollRef.current) return;
+    const container = mobileScrollRef.current;
+    const children = Array.from(container.children) as HTMLElement[];
+    const containerCenter = container.scrollLeft + container.clientWidth / 2;
+    let closestIndex = 0;
+    let minDistance = Infinity;
+
+    children.forEach((child, index) => {
+      const childCenter = child.offsetLeft + child.offsetWidth / 2;
+      const distance = Math.abs(containerCenter - childCenter);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    if (closestIndex !== activeIndex) {
+      setActiveIndex(closestIndex);
+    }
+  };
+
+  const scrollToImage = (index: number) => {
+    if (!mobileScrollRef.current) return;
+    const container = mobileScrollRef.current;
+    const children = Array.from(container.children) as HTMLElement[];
+    if (children[index]) {
+      const child = children[index];
+      const targetScroll = child.offsetLeft - (container.clientWidth - child.offsetWidth) / 2;
+      container.scrollTo({ left: targetScroll, behavior: 'smooth' });
+      setActiveIndex(index);
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!mobileScrollRef.current) return;
+    isDraggingRef.current = true;
+    hasMovedRef.current = false;
+    startXRef.current = e.pageX - mobileScrollRef.current.offsetLeft;
+    scrollLeftRef.current = mobileScrollRef.current.scrollLeft;
+    mobileScrollRef.current.style.scrollSnapType = 'none';
+    mobileScrollRef.current.style.scrollBehavior = 'auto';
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDraggingRef.current || !mobileScrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - mobileScrollRef.current.offsetLeft;
+    const walk = (x - startXRef.current);
+    if (Math.abs(walk) > 4) {
+      hasMovedRef.current = true;
+    }
+    mobileScrollRef.current.scrollLeft = scrollLeftRef.current - walk;
+    updateActiveIndex();
+  };
+
+  const handleMouseUpOrLeave = () => {
+    if (!isDraggingRef.current || !mobileScrollRef.current) return;
+    isDraggingRef.current = false;
+    mobileScrollRef.current.style.scrollSnapType = 'x mandatory';
+    mobileScrollRef.current.style.scrollBehavior = 'smooth';
+    updateActiveIndex();
+  };
+
   return (
-    <section className="bg-white w-full pt-10 lg:pt-16 pb-6 lg:pb-8 overflow-hidden">
+    <section className="bg-white w-full pt-10 lg:pt-16 pb-8 lg:pb-12 overflow-hidden border-t border-gray-100">
+      {/* Section Title */}
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
         <div className="flex items-center justify-center gap-2">
           <span className="text-[#32589c] font-bold text-xs sm:text-[13px] lg:text-sm tracking-widest animate-pulse">{"//"}</span>
@@ -596,7 +673,7 @@ const ProductsHoverGallery = () => {
         </h2>
       </div>
 
-      {/* Desktop Horizontal Accordion Layout */}
+      {/* Desktop Horizontal Accordion Layout (Visible only on screens >= lg) */}
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 h-[400px] xl:h-[500px] lg:flex gap-[20px] xl:gap-[33px] hidden">
         {[1, 2, 3].map((pane) => {
           const isActive = activePane === pane;
@@ -618,37 +695,51 @@ const ProductsHoverGallery = () => {
         })}
       </div>
 
-      {/* Mobile Slider Layout (Visible only on screens < lg) */}
+      {/* Mobile Draggable Slider Layout (Visible only on screens < lg) */}
       <div className="lg:hidden w-full flex flex-col items-center">
         <div 
-          className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 sm:px-6 w-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-          onScroll={(e) => {
-            const target = e.target as HTMLDivElement;
-            const scrollProgress = target.scrollLeft / (target.scrollWidth - target.clientWidth);
-            const progressBar = document.getElementById('mobile-product-scroll-progress');
-            if (progressBar) {
-              progressBar.style.width = `${Math.min(100, Math.max(0, scrollProgress * 100))}%`;
-            }
-          }}
+          ref={mobileScrollRef}
+          onScroll={updateActiveIndex}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUpOrLeave}
+          onMouseLeave={handleMouseUpOrLeave}
+          onTouchEnd={() => setTimeout(updateActiveIndex, 100)}
+          className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 sm:px-6 w-full cursor-grab active:cursor-grabbing select-none scroll-smooth pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
-          <div className="relative w-[85vw] sm:w-[80vw] max-w-[500px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
-             <img src="/hover final new/1(hover).svg" alt="Product 1" className="w-full h-auto object-contain block" />
-          </div>
-          <div className="relative w-[85vw] sm:w-[80vw] max-w-[500px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
-             <img src="/hover final new/2(Hover).svg" alt="Product 2" className="w-full h-auto object-contain block" />
-          </div>
-          <div className="relative w-[85vw] sm:w-[80vw] max-w-[500px] shrink-0 snap-center rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.05)] bg-white flex items-center justify-center">
-             <img src="/hover final new/3rd(HOVER).svg" alt="Product 3" className="w-full h-auto object-contain block" />
-          </div>
+          {productImages.map((item, idx) => (
+            <div 
+              key={idx}
+              className="relative w-[88vw] sm:w-[80vw] max-w-[520px] shrink-0 snap-center rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] bg-white border border-gray-100 flex items-center justify-center"
+            >
+              <img 
+                src={item.src} 
+                alt={item.alt} 
+                draggable="false"
+                className="w-full h-auto object-contain block pointer-events-none" 
+              />
+            </div>
+          ))}
         </div>
         
-        {/* Progress Bar */}
-        <div className="w-[150px] h-[3px] bg-gray-200 rounded-full mt-6 overflow-hidden">
-          <div 
-            id="mobile-product-scroll-progress"
-            className="h-full bg-[#32589c] transition-all duration-150"
-            style={{ width: '0%' }}
-          />
+        {/* 3 Pagination Dots Indicator */}
+        <div className="flex items-center justify-center gap-2.5 mt-5 sm:mt-6">
+          {productImages.map((_, idx) => {
+            const isActive = activeIndex === idx;
+            return (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => scrollToImage(idx)}
+                aria-label={`Go to image ${idx + 1}`}
+                className={`h-2.5 rounded-full transition-all duration-300 ease-out focus:outline-none ${
+                  isActive 
+                    ? "w-8 bg-[#0a2766] shadow-[0_2px_8px_rgba(10,39,102,0.3)]" 
+                    : "w-2.5 bg-gray-300 hover:bg-gray-400 opacity-80 hover:opacity-100"
+                }`}
+              />
+            );
+          })}
         </div>
       </div>
     </section>
@@ -1162,6 +1253,8 @@ export default function Home() {
       {/* Why Choose XCEL Section */}
       <WhyChooseUs />
 
+      {/* Engineering Excellence Products Carousel */}
+      <ProductsHoverGallery />
 
       {/* CTA Banner Section */}
       <CTABanner />
