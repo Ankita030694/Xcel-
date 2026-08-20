@@ -563,40 +563,103 @@ const WhyChooseUs = () => {
 };
 
 const ProductsHoverGallery = () => {
-  const [activePane, setActivePane] = useState<1 | 2 | 3>(1);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const baseImages = [
+    { src: "/Images/1.svg", alt: "Apparel Washing & High Speed Extract Equipment", title: "APPAREL WASHING & HIGH SPEED EXTRACT" },
+    { src: "/Images/2.svg", alt: "Softener Washer Dryer Multi-Stage Equipment", title: "SOFTENER WASHER DRYER" },
+    { src: "/Images/3.svg", alt: "Flat-Work Ironer & Finishing Commercial Equipment", title: "FLAT-WORK IRONER" },
+  ];
+
+  // Repeat array multiple times for a seamless infinite loop track
+  const REPEAT_COUNT = 9;
+  const trackItems = React.useMemo(() => {
+    const items: Array<{ src: string; alt: string; title: string; originalIndex: number }> = [];
+    for (let r = 0; r < REPEAT_COUNT; r++) {
+      baseImages.forEach((img, idx) => {
+        items.push({ ...img, originalIndex: idx });
+      });
+    }
+    return items;
+  }, []);
+
+  const INITIAL_INDEX = baseImages.length * 4; // Index 12 (starts on baseImages[0])
+  const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const [isHovered, setIsHovered] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Helper to restart the 2-second timer cleanly on user interaction
+  const resetAutoplayTimer = React.useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    if (isHovered) return;
+
+    timerRef.current = setInterval(() => {
+      setIsTransitioning(true);
+      setCurrentIndex((prev) => prev + 1);
+    }, 2000);
+  }, [isHovered]);
+
+  // Auto-play: move right-to-left every 2 seconds on desktop
+  useEffect(() => {
+    resetAutoplayTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [resetAutoplayTimer]);
+
+  // Infinite loop boundary reset: seamlessly snap back without animation
+  const handleTransitionEnd = () => {
+    if (currentIndex >= baseImages.length * 7) {
+      setIsTransitioning(false);
+      const normalizedIndex = baseImages.length * 4 + (currentIndex % baseImages.length);
+      setCurrentIndex(normalizedIndex);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsTransitioning(true);
+        });
+      });
+    } else if (currentIndex <= baseImages.length * 2) {
+      setIsTransitioning(false);
+      const normalizedIndex = baseImages.length * 4 + (currentIndex % baseImages.length);
+      setCurrentIndex(normalizedIndex);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setIsTransitioning(true);
+        });
+      });
+    }
+  };
+
+  const handleNext = () => {
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => prev + 1);
+    resetAutoplayTimer();
+  };
+
+  const handlePrev = () => {
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => prev - 1);
+    resetAutoplayTimer();
+  };
+
+  const handleDotClick = (dotIndex: number) => {
+    const activeModulo = ((currentIndex % baseImages.length) + baseImages.length) % baseImages.length;
+    let diff = dotIndex - activeModulo;
+    if (diff === 2) diff = -1;
+    if (diff === -2) diff = 1;
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => prev + diff);
+    resetAutoplayTimer();
+  };
+
+  // Mobile slider state & handlers
+  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
   const mobileScrollRef = useRef<HTMLDivElement>(null);
   const isDraggingRef = useRef(false);
   const startXRef = useRef(0);
   const scrollLeftRef = useRef(0);
   const hasMovedRef = useRef(false);
 
-  const productImages = [
-    { src: "/Images/1.svg", alt: "Apparel Washing & High Speed Extract Equipment" },
-    { src: "/Images/2.svg", alt: "Softener Washer Dryer Multi-Stage Equipment" },
-    { src: "/Images/3.svg", alt: "Flat-Work Ironer & Finishing Commercial Equipment" },
-  ];
-
-  const getImagePath = (paneNumber: 1 | 2 | 3, targetActivePane: 1 | 2 | 3) => {
-    if (targetActivePane === 1) {
-      if (paneNumber === 1) return "/hover final new/1(hover).svg";
-      if (paneNumber === 2) return "/hover final new/2(noH).svg";
-      if (paneNumber === 3) return "/hover final new/3rd(noh) 1st hover.svg";
-    }
-    if (targetActivePane === 2) {
-      if (paneNumber === 1) return "/hover final new/1(noh).svg";
-      if (paneNumber === 2) return "/hover final new/2(Hover).svg";
-      if (paneNumber === 3) return "/hover final new/3rd(noh) 2nd hover.svg";
-    }
-    if (targetActivePane === 3) {
-      if (paneNumber === 1) return "/hover final new/1(noh) 3rd hover.svg";
-      if (paneNumber === 2) return "/hover final new/2(noH) 3rd hover.svg";
-      if (paneNumber === 3) return "/hover final new/3rd(HOVER).svg";
-    }
-    return "";
-  };
-
-  const updateActiveIndex = () => {
+  const updateMobileActiveIndex = () => {
     if (!mobileScrollRef.current) return;
     const container = mobileScrollRef.current;
     const children = Array.from(container.children) as HTMLElement[];
@@ -613,12 +676,12 @@ const ProductsHoverGallery = () => {
       }
     });
 
-    if (closestIndex !== activeIndex) {
-      setActiveIndex(closestIndex);
+    if (closestIndex !== mobileActiveIndex) {
+      setMobileActiveIndex(closestIndex);
     }
   };
 
-  const scrollToImage = (index: number) => {
+  const scrollToMobileImage = (index: number) => {
     if (!mobileScrollRef.current) return;
     const container = mobileScrollRef.current;
     const children = Array.from(container.children) as HTMLElement[];
@@ -626,11 +689,11 @@ const ProductsHoverGallery = () => {
       const child = children[index];
       const targetScroll = child.offsetLeft - (container.clientWidth - child.offsetWidth) / 2;
       container.scrollTo({ left: targetScroll, behavior: 'smooth' });
-      setActiveIndex(index);
+      setMobileActiveIndex(index);
     }
   };
 
-  const handleMouseDown = (e: React.MouseEvent) => {
+  const handleMobileMouseDown = (e: React.MouseEvent) => {
     if (!mobileScrollRef.current) return;
     isDraggingRef.current = true;
     hasMovedRef.current = false;
@@ -640,7 +703,7 @@ const ProductsHoverGallery = () => {
     mobileScrollRef.current.style.scrollBehavior = 'auto';
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
+  const handleMobileMouseMove = (e: React.MouseEvent) => {
     if (!isDraggingRef.current || !mobileScrollRef.current) return;
     e.preventDefault();
     const x = e.pageX - mobileScrollRef.current.offsetLeft;
@@ -649,21 +712,23 @@ const ProductsHoverGallery = () => {
       hasMovedRef.current = true;
     }
     mobileScrollRef.current.scrollLeft = scrollLeftRef.current - walk;
-    updateActiveIndex();
+    updateMobileActiveIndex();
   };
 
-  const handleMouseUpOrLeave = () => {
+  const handleMobileMouseUpOrLeave = () => {
     if (!isDraggingRef.current || !mobileScrollRef.current) return;
     isDraggingRef.current = false;
     mobileScrollRef.current.style.scrollSnapType = 'x mandatory';
     mobileScrollRef.current.style.scrollBehavior = 'smooth';
-    updateActiveIndex();
+    updateMobileActiveIndex();
   };
 
+  const activeOriginalIndex = ((currentIndex % baseImages.length) + baseImages.length) % baseImages.length;
+
   return (
-    <section className="bg-white w-full pt-10 lg:pt-16 pb-8 lg:pb-12 overflow-hidden border-t border-gray-100">
+    <section className="bg-[#f8fafc] w-full pt-10 lg:pt-14 pb-10 lg:pb-16 overflow-hidden border-t border-gray-100 relative">
       {/* Section Title */}
-      <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
+      <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-6 lg:mb-10 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
         <div className="flex items-center justify-center gap-2">
           <span className="text-[#32589c] font-bold text-xs sm:text-[13px] lg:text-sm tracking-widest animate-pulse">{"//"}</span>
           <span className="text-[#363636] font-bold text-xs sm:text-[13px] lg:text-sm tracking-[0.2em] uppercase">ENGINEERING EXCELLENCE</span>
@@ -673,41 +738,146 @@ const ProductsHoverGallery = () => {
         </h2>
       </div>
 
-      {/* Desktop Horizontal Accordion Layout (Visible only on screens >= lg) */}
-      <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 h-[400px] xl:h-[500px] lg:flex gap-[20px] xl:gap-[33px] hidden">
-        {[1, 2, 3].map((pane) => {
-          const isActive = activePane === pane;
-          return (
-            <div
-              key={pane}
-              onMouseEnter={() => setActivePane(pane as 1|2|3)}
-              className={`relative h-full overflow-hidden cursor-pointer transition-[flex] duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] ${
-                isActive ? 'flex-[2] lg:flex-[2.2]' : 'flex-[1]'
-              } will-change-[flex] rounded-xl`}
-            >
-              <img 
-                src={getImagePath(pane as 1|2|3, activePane)} 
-                alt={`Product ${pane}`} 
-                className="absolute inset-0 w-full h-full object-contain transition-transform duration-[1.5s] ease-out bg-white" 
+      {/* Desktop 3D Infinite Shrinking & Growing Carousel (Visible on screens >= md) */}
+      <div 
+        className="hidden md:block w-full relative group/carousel select-none py-2"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Soft edge fade masks for seamless bleed */}
+        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-32 xl:w-48 bg-gradient-to-r from-[#f8fafc] via-[#f8fafc]/90 to-transparent z-40 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-32 xl:w-48 bg-gradient-to-l from-[#f8fafc] via-[#f8fafc]/90 to-transparent z-40 pointer-events-none" />
+
+        {/* Carousel Stage */}
+        <div className="relative w-full h-[460px] lg:h-[540px] xl:h-[580px] flex items-center justify-center overflow-hidden [perspective:1200px]">
+          <div 
+            className="flex items-center absolute left-1/2 top-1/2 -translate-y-1/2 will-change-transform"
+            style={{ 
+              transform: `translate3d(-${(currentIndex + 0.5) * 660}px, 0, 0)`,
+              transition: isTransitioning ? 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
+            }}
+            onTransitionEnd={handleTransitionEnd}
+          >
+            {trackItems.map((item, idx) => {
+              const offset = idx - currentIndex;
+              const isCenter = offset === 0;
+              const isLeft = offset === -1;
+              const isRight = offset === 1;
+
+              let scaleVal = 0.5;
+              let opacityVal = 0;
+              let zIndexVal = 0;
+              let shadowVal = 'none';
+              let cursorStyle = 'pointer-events-none';
+
+              if (isCenter) {
+                scaleVal = 1;
+                opacityVal = 1;
+                zIndexVal = 30;
+                shadowVal = '0 25px 50px -12px rgba(10,39,102,0.2)';
+                cursorStyle = 'cursor-default';
+              } else if (isLeft || isRight) {
+                scaleVal = 0.78;
+                opacityVal = 0.65;
+                zIndexVal = 20;
+                shadowVal = '0 10px 25px -5px rgba(0,0,0,0.08)';
+                cursorStyle = 'cursor-pointer hover:opacity-85';
+              } else if (Math.abs(offset) === 2) {
+                scaleVal = 0.65;
+                opacityVal = 0.15;
+                zIndexVal = 10;
+                cursorStyle = 'pointer-events-none';
+              }
+
+              return (
+                <div 
+                  key={idx}
+                  onClick={() => {
+                    if (isLeft) handlePrev();
+                    if (isRight) handleNext();
+                  }}
+                  className="w-[660px] shrink-0 flex items-center justify-center py-4"
+                >
+                  <div 
+                    style={{
+                      transform: `scale(${scaleVal}) translateZ(0)`,
+                      opacity: opacityVal,
+                      zIndex: zIndexVal,
+                      boxShadow: shadowVal,
+                      transition: isTransitioning ? 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1), opacity 850ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 850ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
+                    }}
+                    className={`w-[760px] lg:w-[820px] xl:w-[860px] aspect-[825/550] rounded-2xl lg:rounded-3xl overflow-hidden bg-white border border-gray-100 will-change-transform [backface-visibility:hidden] ${cursorStyle}`}
+                  >
+                    <img 
+                      src={item.src} 
+                      alt={item.alt} 
+                      className="w-full h-full object-contain pointer-events-none select-none block bg-white" 
+                      draggable="false"
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Navigation Arrows */}
+        <button 
+          type="button"
+          onClick={handlePrev}
+          aria-label="Previous Slide"
+          className="absolute left-4 lg:left-8 xl:left-12 top-1/2 -translate-y-1/2 z-40 w-11 h-11 lg:w-13 lg:h-13 rounded-full bg-white/90 shadow-xl border border-gray-100 flex items-center justify-center text-[#0a2766] opacity-0 group-hover/carousel:opacity-100 hover:bg-white hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
+        >
+          <svg className="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <button 
+          type="button"
+          onClick={handleNext}
+          aria-label="Next Slide"
+          className="absolute right-4 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 z-40 w-11 h-11 lg:w-13 lg:h-13 rounded-full bg-white/90 shadow-xl border border-gray-100 flex items-center justify-center text-[#0a2766] opacity-0 group-hover/carousel:opacity-100 hover:bg-white hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
+        >
+          <svg className="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        {/* Desktop 3 Pagination Dots */}
+        <div className="flex items-center justify-center gap-2.5 mt-4 lg:mt-6">
+          {baseImages.map((_, idx) => {
+            const isActive = activeOriginalIndex === idx;
+            return (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleDotClick(idx)}
+                aria-label={`Go to slide ${idx + 1}`}
+                className={`h-2.5 rounded-full transition-all duration-300 ease-out focus:outline-none cursor-pointer ${
+                  isActive 
+                    ? "w-9 bg-[#0a2766] shadow-[0_2px_8px_rgba(10,39,102,0.35)]" 
+                    : "w-2.5 bg-gray-300 hover:bg-gray-400 opacity-70 hover:opacity-100"
+                }`}
               />
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
-      {/* Mobile Draggable Slider Layout (Visible only on screens < lg) */}
-      <div className="lg:hidden w-full flex flex-col items-center">
+      {/* Mobile Draggable Slider Layout (Visible only on screens < md) */}
+      <div className="md:hidden w-full flex flex-col items-center">
         <div 
           ref={mobileScrollRef}
-          onScroll={updateActiveIndex}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUpOrLeave}
-          onMouseLeave={handleMouseUpOrLeave}
-          onTouchEnd={() => setTimeout(updateActiveIndex, 100)}
+          onScroll={updateMobileActiveIndex}
+          onMouseDown={handleMobileMouseDown}
+          onMouseMove={handleMobileMouseMove}
+          onMouseUp={handleMobileMouseUpOrLeave}
+          onMouseLeave={handleMobileMouseUpOrLeave}
+          onTouchEnd={() => setTimeout(updateMobileActiveIndex, 100)}
           className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 sm:px-6 w-full cursor-grab active:cursor-grabbing select-none scroll-smooth pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
-          {productImages.map((item, idx) => (
+          {baseImages.map((item, idx) => (
             <div 
               key={idx}
               className="relative w-[88vw] sm:w-[80vw] max-w-[520px] shrink-0 snap-center rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] bg-white border border-gray-100 flex items-center justify-center"
@@ -722,15 +892,15 @@ const ProductsHoverGallery = () => {
           ))}
         </div>
         
-        {/* 3 Pagination Dots Indicator */}
+        {/* Mobile 3 Pagination Dots Indicator */}
         <div className="flex items-center justify-center gap-2.5 mt-5 sm:mt-6">
-          {productImages.map((_, idx) => {
-            const isActive = activeIndex === idx;
+          {baseImages.map((_, idx) => {
+            const isActive = mobileActiveIndex === idx;
             return (
               <button
                 key={idx}
                 type="button"
-                onClick={() => scrollToImage(idx)}
+                onClick={() => scrollToMobileImage(idx)}
                 aria-label={`Go to image ${idx + 1}`}
                 className={`h-2.5 rounded-full transition-all duration-300 ease-out focus:outline-none ${
                   isActive 
