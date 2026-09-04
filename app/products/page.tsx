@@ -7,16 +7,16 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 
 const categories = [
-  { id: 'washing', title: 'Washing', icon: '/New Icons/1.png' },
-  { id: 'drying', title: 'Drying', icon: '/New Icons/2.png' },
-  { id: 'apparel-processing', title: 'Apparel Processing', icon: '/New Icons/3.png' },
-  { id: 'dry-cleaning', title: 'Dry-Cleaning', icon: '/New Icons/4.png' },
-  { id: 'flat-work', title: 'Flat-Work', icon: '/New Icons/5.png' },
-  { id: 'steam-finishing', title: 'Steam-Finishing', icon: '/New Icons/6.png' },
-  { id: 'water-heater', title: 'Water Heater', icon: '/New Icons/7.png' },
-  { id: 'fabric-checking', title: 'Fabric Checking', icon: '/New Icons/8.png' },
-  { id: 'other-equipment', title: 'Other Equipment', icon: '/New Icons/9.png' },
-  { id: 'complete-range', title: 'Complete Range', icon: '/New Icons/10.png' }
+  { id: 'washing', title: 'Washing', icon: '/New Icons/1.webp' },
+  { id: 'drying', title: 'Drying', icon: '/New Icons/2.webp' },
+  { id: 'apparel-processing', title: 'Apparel Processing', icon: '/New Icons/3.webp' },
+  { id: 'dry-cleaning', title: 'Dry-Cleaning', icon: '/New Icons/4.webp' },
+  { id: 'flat-work', title: 'Flat-Work', icon: '/New Icons/5.webp' },
+  { id: 'steam-finishing', title: 'Steam-Finishing', icon: '/New Icons/6.webp' },
+  { id: 'water-heater', title: 'Water Heater', icon: '/New Icons/7.webp' },
+  { id: 'fabric-checking', title: 'Fabric Checking', icon: '/New Icons/8.webp' },
+  { id: 'other-equipment', title: 'Other Equipment', icon: '/New Icons/9.webp' },
+  { id: 'complete-range', title: 'Complete Range', icon: '/New Icons/10.webp' }
 ];
 
 const FALLBACK_PRODUCTS: Record<string, any[]> = {
@@ -144,7 +144,7 @@ export default function ProductsPage() {
       {/* Hero Banner Section */}
       <section className="w-full bg-[#f3f5f8]">
          <img 
-           src="/Desktop%20-%20Product%20Overview%20Banner%20(1600%20x%20600%20px).svg" 
+           src="/Desktop%20-%20Product%20Overview%20Banner%20(1600%20x%20600%20px).webp" 
            alt="Product Overview - From Washing To Finishing" 
            className="w-full h-auto block"
            style={{ aspectRatio: '1600/600' }}

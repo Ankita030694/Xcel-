@@ -12,7 +12,7 @@ export default function ContactPage() {
       {/* Contact Us Hero Section (Image Banner) */}
       <section className="relative w-full h-auto flex flex-col items-center justify-center bg-white overflow-hidden">
         <img 
-          src="/Contact%20Us%20Banner%20%20(1800%20x%20600%20px).svg" 
+          src="/Contact%20Us%20Banner%20%20(1800%20x%20600%20px).webp" 
           alt="Contact Us Banner" 
           className="w-full h-auto block"
           style={{ aspectRatio: '1800/600' }}

@@ -110,8 +110,8 @@ const StatsBanner = () => {
 };
 
 const HeroCarousel = () => {
-  const images = ['/hero.png', '/hero-2.png', '/hero-3.png'];
-  const mobileImages = ['/Mobile- Hero.png', '/Mobile- Hero 2 (1080 x 1250 px).png', '/Mobile - Hero 3 (1080 x 1250 px).png'];
+  const images = ['/hero.webp', '/hero-2.webp', '/hero-3.webp'];
+  const mobileImages = ['/Mobile- Hero.webp', '/Mobile- Hero 2 (1080 x 1250 px).webp', '/Mobile - Hero 3 (1080 x 1250 px).webp'];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [dragStartX, setDragStartX] = useState<number | null>(null);
@@ -279,7 +279,7 @@ const AboutUs = () => {
             <div className="absolute -inset-1 bg-gradient-to-r from-[#32589c] to-[#3b5b95] rounded-[2rem] blur opacity-20 group-hover:opacity-40 group-focus:opacity-40 transition duration-1000 group-hover:duration-200" />
             <div className="relative aspect-square md:aspect-square lg:aspect-auto lg:flex-1 lg:h-full w-full rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-400/50 transform transition duration-700 ease-out group-hover:-translate-y-2 group-focus:-translate-y-2">
               <img 
-                src="/converted_1080x1080%201.svg" 
+                src="/converted_1080x1080%201.webp" 
                 alt="Precision Laser Cutting Manufacturing" 
                 className="absolute inset-0 w-full h-full object-cover transform transition duration-700 ease-out"
               />
@@ -322,7 +322,7 @@ const AboutUs = () => {
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
-                  <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.png" alt="Manufacturing" className="w-full h-full object-contain" />
+                  <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.webp" alt="Manufacturing" className="w-full h-full object-contain" />
                 </div>
                 <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 group-hover:text-gray-900">
                   Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
@@ -336,7 +336,7 @@ const AboutUs = () => {
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
-                  <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.png" alt="Partnership" className="w-full h-full object-contain" />
+                  <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.webp" alt="Partnership" className="w-full h-full object-contain" />
                 </div>
                 <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 group-hover:text-gray-900">
                   Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
@@ -360,36 +360,36 @@ const whyChooseUsData = [
     num: "01",
     title: "Transparent Pricing",
     desc: "Clear, upfront pricing with no hidden charges for complete customer confidence.",
-    beforeIcon: "/New Icons/1.png",
-    afterIcon: "/New Icons/2.png",
+    beforeIcon: "/New Icons/1.webp",
+    afterIcon: "/New Icons/2.webp",
   },
   {
     num: "02",
     title: "Warranty & Protection",
     desc: "Dedicated warranty coverage backed by comprehensive technical support.",
-    beforeIcon: "/New Icons/3.png",
-    afterIcon: "/New Icons/4.png",
+    beforeIcon: "/New Icons/3.webp",
+    afterIcon: "/New Icons/4.webp",
   },
   {
     num: "03",
     title: "Reliable Performance",
     desc: "Laundry Machines that are designed for heavy-duty cycles with consistent performance.",
-    beforeIcon: "/New Icons/5.png",
-    afterIcon: "/New Icons/6.png",
+    beforeIcon: "/New Icons/5.webp",
+    afterIcon: "/New Icons/6.webp",
   },
   {
     num: "04",
     title: "Wide Range",
     desc: "Extensive range of washing, drying, ironing & dry-cleaning equipment under one roof.",
-    beforeIcon: "/New Icons/7.png",
-    afterIcon: "/New Icons/8.png",
+    beforeIcon: "/New Icons/7.webp",
+    afterIcon: "/New Icons/8.webp",
   },
   {
     num: "05",
     title: "After Sales Service",
     desc: "Quick Pan-India support from installation to preventive maintenance.",
-    beforeIcon: "/New Icons/9.png",
-    afterIcon: "/New Icons/10.png",
+    beforeIcon: "/New Icons/9.webp",
+    afterIcon: "/New Icons/10.webp",
   }
 ];
 
@@ -564,9 +564,9 @@ const WhyChooseUs = () => {
 
 const ProductsHoverGallery = () => {
   const baseImages = [
-    { src: "/Images/1.svg", alt: "Apparel Washing & High Speed Extract Equipment", title: "APPAREL WASHING & HIGH SPEED EXTRACT" },
-    { src: "/Images/2.svg", alt: "Softener Washer Dryer Multi-Stage Equipment", title: "SOFTENER WASHER DRYER" },
-    { src: "/Images/3.svg", alt: "Flat-Work Ironer & Finishing Commercial Equipment", title: "FLAT-WORK IRONER" },
+    { src: "/Images/1.webp", alt: "Apparel Washing & High Speed Extract Equipment", title: "APPAREL WASHING & HIGH SPEED EXTRACT" },
+    { src: "/Images/2.webp", alt: "Softener Washer Dryer Multi-Stage Equipment", title: "SOFTENER WASHER DRYER" },
+    { src: "/Images/3.webp", alt: "Flat-Work Ironer & Finishing Commercial Equipment", title: "FLAT-WORK IRONER" },
   ];
 
   // Repeat array multiple times for a seamless infinite loop track
@@ -921,19 +921,19 @@ const projectsData = [
     id: "industrial",
     title: "Industrial Developments",
     desc: "We develop efficient industrial spaces built for productivity, scalability, and long term operational success. Our projects prioritize functionality, strategic locations, and modern infrastructure to support growing businesses.",
-    img: "/industrial.png"
+    img: "/industrial.webp"
   },
   {
     id: "commercial",
     title: "Commercial Properties",
     desc: "Premium commercial spaces designed for modern businesses, featuring state-of-the-art facilities and prime locations to enhance your corporate presence.",
-    img: "/commercial.png"
+    img: "/commercial.webp"
   },
   {
     id: "residential",
     title: "Residential Communities",
     desc: "Thoughtfully designed residential communities that offer the perfect blend of comfort, luxury, and modern living amenities for families.",
-    img: "/residential.png"
+    img: "/residential.webp"
   }
 ];
 
@@ -1119,28 +1119,28 @@ const PartsToPower = () => {
       title: "Premium Components",
       desc: "From bearings and valves to heating elements and stainless-steel 304 baskets, every component plays a critical role that modern laundries depend on.",
       icon: (
-        <img src="/Icon home/premium-components.png" alt="Premium Components" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
+        <img src="/Icon home/premium-components.webp" alt="Premium Components" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     },
     {
       title: "Engineered as One System",
       desc: "With every carefully sourced component, the finished product becomes more than just a machine, it becomes a dependable partner.",
       icon: (
-        <img src="/Icon home/engineered-as-one-system.png" alt="Engineered as One System" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
+        <img src="/Icon home/engineered-as-one-system.webp" alt="Engineered as One System" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     },
     {
       title: "Precision Manufacturing",
       desc: "Through advanced manufacturing, we transform high-quality components into industrial laundry equipment built for continuous operation.",
       icon: (
-        <img src="/Icon home/precision-manufacturing.png" alt="Precision Manufacturing" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
+        <img src="/Icon home/precision-manufacturing.webp" alt="Precision Manufacturing" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     },
     {
       title: "Rigorous Testing",
       desc: "Every machine undergoes rigorous testing to ensure dependable performance in demanding commercial and industrial laundries.",
       icon: (
-        <img src="/Icon home/rigorous-testing.png" alt="Rigorous Testing" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
+        <img src="/Icon home/rigorous-testing.webp" alt="Rigorous Testing" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     }
   ];
@@ -1166,7 +1166,7 @@ const PartsToPower = () => {
             >
               {/* Under Image (Interior/Parts) */}
               <Image 
-                src="/After.jpeg" 
+                src="/After.webp" 
                 alt="Machine After"
                 fill
                 priority={false}
@@ -1180,7 +1180,7 @@ const PartsToPower = () => {
                 style={{ clipPath: `inset(0 50% 0 0)` }}
               >
                 <img 
-                  src="/NEW 1.svg" 
+                  src="/NEW 1.webp" 
                   alt="Machine Before"
                   loading="lazy"
                   className="absolute inset-0 w-full h-full object-cover"

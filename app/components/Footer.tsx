@@ -162,7 +162,7 @@ export const Footer = () => {
               {/* Image spacer block */}
               <div className="hidden md:block w-[120px] relative overflow-hidden bg-[#3b5e94]/20">
                 <Image 
-                  src="/commercial-washing-machine-generated.png" 
+                  src="/commercial-washing-machine-generated.webp" 
                   alt="Commercial Washing Machine" 
                   fill
                   className="object-cover" 
@@ -251,11 +251,11 @@ export const Footer = () => {
 
             {/* Section 4: Certifications & Badges */}
             <div className="w-full bg-[#002d73] pt-3 pb-12 sm:pt-4 sm:pb-16 px-6 flex justify-center items-center gap-8 sm:gap-16 flex-wrap">
-              <img src="/Logo/ISO_9001_2008_Certification_at_%E2%82%B9_5000_certificate_in_New_Delhi_ID_22229167830_indiamart%201.svg" alt="ISO Certification" className="h-8 sm:h-12 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
-              <img src="/Logo/How_to_get_a_CE_Certification_-_tradesnest%201.svg" alt="CE Certification" className="h-8 sm:h-12 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
-              <img src="/Logo/Make_in_India_Logo_PNG_Vector_(EPS)_Free_Download_seeklogo%201.svg" alt="Make in India" className="h-12 sm:h-16 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
-              <img src="/Logo/What_is_NSIC_Online_Finance_Facilitation_Centres_(FFCs)_luxefinalyzer%201..svg" alt="NSIC" className="h-6 sm:h-8 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
-              <img src="/Logo/Our_Certifications_acquafrasassi%201.svg" alt="Certifications" className="h-8 sm:h-12 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
+              <img src="/Logo/ISO_9001_2008_Certification_at_%E2%82%B9_5000_certificate_in_New_Delhi_ID_22229167830_indiamart%201.webp" alt="ISO Certification" className="h-8 sm:h-12 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
+              <img src="/Logo/How_to_get_a_CE_Certification_-_tradesnest%201.webp" alt="CE Certification" className="h-8 sm:h-12 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
+              <img src="/Logo/Make_in_India_Logo_PNG_Vector_(EPS)_Free_Download_seeklogo%201.webp" alt="Make in India" className="h-12 sm:h-16 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
+              <img src="/Logo/What_is_NSIC_Online_Finance_Facilitation_Centres_(FFCs)_luxefinalyzer%201..webp" alt="NSIC" className="h-6 sm:h-8 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
+              <img src="/Logo/Our_Certifications_acquafrasassi%201.webp" alt="Certifications" className="h-8 sm:h-12 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
             </div>
 
           </div>

@@ -12,7 +12,7 @@ export function MissionVisionSection() {
           <div className="w-full rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)]">
             <div className="w-full">
               <img 
-                src="/Vision.jpg" 
+                src="/Vision.webp" 
                 alt="Our Vision" 
                 className="w-full h-auto block"
               />
@@ -23,7 +23,7 @@ export function MissionVisionSection() {
           <div className="w-full rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-50 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)]">
             <div className="w-full">
               <img 
-                src="/Mission.jpg" 
+                src="/Mission.webp" 
                 alt="Our Mission" 
                 className="w-full h-auto block"
               />

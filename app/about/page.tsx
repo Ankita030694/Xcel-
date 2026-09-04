@@ -15,7 +15,7 @@ export default function AboutPage() {
       {/* About Us Hero Section (Image Banner) */}
       <section className="relative w-full h-auto flex flex-col items-center justify-center bg-white overflow-hidden pt-0 pb-0">
         <img 
-          src="/ABOUT%20US%20BANNER%2050px.svg" 
+          src="/ABOUT%20US%20BANNER%2050px.webp" 
           alt="About Us Banner" 
           className="w-full h-auto block"
           style={{ aspectRatio: '1600/600' }}
@@ -122,7 +122,7 @@ export default function AboutPage() {
                    {/* Image */}
                    <div className="w-full sm:w-[75%] md:w-[55%] lg:w-[45%] overflow-hidden rounded-2xl">
                       <div className="bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
-                         <img src="/Deepak New .svg" alt="Deepak Chawla" className="w-full h-auto block" />
+                         <img src="/Deepak New .webp" alt="Deepak Chawla" className="w-full h-auto block" />
                       </div>
                    </div>
                    
@@ -156,7 +156,7 @@ export default function AboutPage() {
                    {/* Image */}
                    <div className="w-full sm:w-[75%] md:w-[55%] lg:w-[45%] overflow-hidden rounded-2xl">
                       <div className="bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
-                         <img src="/Mehul New.svg" alt="Mehul Chawla" className="w-full h-auto block" />
+                         <img src="/Mehul New.webp" alt="Mehul Chawla" className="w-full h-auto block" />
                       </div>
                    </div>
                    

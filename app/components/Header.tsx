@@ -44,7 +44,7 @@ export const Header = () => {
           <div className="flex justify-between items-center h-[90px]">
             {/* Logo */}
             <Link href="/" className="flex shrink-0 items-center focus:outline-none">
-              <img src="/Xcel%20logo%20image%202.svg" alt="XCEL Logo" className="h-[38px] md:h-[46px] w-auto object-contain" />
+              <img src="/Xcel%20logo%20image%202.webp" alt="XCEL Logo" className="h-[38px] md:h-[46px] w-auto object-contain" />
             </Link>
             
             {/* Navigation Links - Desktop */}
