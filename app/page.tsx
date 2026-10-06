@@ -564,8 +564,8 @@ const WhyChooseUs = () => {
 
 const ProductsHoverGallery = () => {
   const baseImages = [
-    { src: "/Images/1.webp", alt: "Apparel Washing & High Speed Extract Equipment", title: "APPAREL WASHING & HIGH SPEED EXTRACT" },
-    { src: "/Images/2.webp", alt: "Softener Washer Dryer Multi-Stage Equipment", title: "SOFTENER WASHER DRYER" },
+    { src: "/1.svg", alt: "Apparel Washing & High Speed Extract Equipment", title: "APPAREL WASHING & HIGH SPEED EXTRACT" },
+    { src: "/2.svg", alt: "Softener Washer Dryer Multi-Stage Equipment", title: "SOFTENER WASHER DRYER" },
     { src: "/Images/3.webp", alt: "Flat-Work Ironer & Finishing Commercial Equipment", title: "FLAT-WORK IRONER" },
   ];
 
