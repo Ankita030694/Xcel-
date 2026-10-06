@@ -27,6 +27,7 @@ interface Product {
   cardDescription?: string;
   detailDescription?: string;
   shortDescription?: string;
+  highlights?: string[];
   imageUrl: string;
   additionalImages?: string[];
   features: ProductFeature[];
@@ -67,6 +68,7 @@ export default function ProductsDashboard() {
   const [categoryId, setCategoryId] = useState(CATEGORIES[0].id);
   const [cardDescription, setCardDescription] = useState('');
   const [detailDescription, setDetailDescription] = useState('');
+  const [highlights, setHighlights] = useState<string[]>([]);
   const [whyChooseUs, setWhyChooseUs] = useState<ProductFeature[]>([]);
   const [industriesServed, setIndustriesServed] = useState<ProductFeature[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
@@ -123,6 +125,7 @@ export default function ProductsDashboard() {
     setCategoryId(CATEGORIES[0].id);
     setCardDescription('');
     setDetailDescription('');
+    setHighlights([]);
     setWhyChooseUs([]);
     setIndustriesServed([]);
     setExistingImages([]);
@@ -141,6 +144,7 @@ export default function ProductsDashboard() {
     setCategoryId(product.categoryId);
     setCardDescription(product.cardDescription || product.shortDescription || '');
     setDetailDescription(product.detailDescription || product.shortDescription || '');
+    setHighlights(Array.isArray(product.highlights) ? product.highlights : []);
     setWhyChooseUs(Array.isArray(product.whyChooseUs) ? product.whyChooseUs : []);
     setIndustriesServed(Array.isArray(product.industriesServed) ? product.industriesServed : []);
     setExistingImages([product.imageUrl, ...(product.additionalImages || [])].filter(Boolean));
@@ -151,6 +155,14 @@ export default function ProductsDashboard() {
     setBrochureFile(null);
     setError('');
     setIsModalOpen(true);
+  };
+
+  const handleAddHighlight = () => setHighlights([...highlights, '']);
+  const handleRemoveHighlight = (index: number) => setHighlights(highlights.filter((_, i) => i !== index));
+  const handleHighlightChange = (index: number, value: string) => {
+    const newHighlights = [...highlights];
+    newHighlights[index] = value;
+    setHighlights(newHighlights);
   };
 
   const handleAddWhyChooseUs = () => setWhyChooseUs([...whyChooseUs, { title: '', description: '' }]);
@@ -187,8 +199,8 @@ export default function ProductsDashboard() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !categoryId || !cardDescription.trim() || !detailDescription.trim()) {
-      setError("Please fill all required fields, including Card Description and Detail Description.");
+    if (!name || !categoryId || !detailDescription.trim()) {
+      setError("Please fill all required fields (Name, Category, and Detail Description).");
       return;
     }
 
@@ -236,9 +248,10 @@ export default function ProductsDashboard() {
         name,
         subheading,
         categoryId,
-        cardDescription: cardDescription.trim(),
+        cardDescription: subheading.trim(),
         detailDescription: detailDescription.trim(),
-        shortDescription: cardDescription.trim(), // Kept for backwards compatibility
+        shortDescription: subheading.trim(), // Kept for backwards compatibility
+        highlights: highlights.map(h => h.trim()).filter(Boolean),
         whyChooseUs: whyChooseUs.filter(f => f.title.trim() && f.description.trim()),
         industriesServed: industriesServed.filter(f => f.title.trim() && f.description.trim()),
         features: features.filter(f => f.title.trim() && f.description.trim()),
@@ -370,10 +383,12 @@ export default function ProductsDashboard() {
                         {CATEGORIES.find(c => c.id === product.categoryId)?.name || product.categoryId}
                       </td>
                       <td className="py-4 px-6 text-gray-700 max-w-xs space-y-1">
-                        <div>
-                          <span className="inline-block text-[10px] font-bold text-[#0a2766] bg-blue-50 px-1.5 py-0.5 rounded mr-1">Card</span>
-                          <span className="text-xs text-gray-800 line-clamp-1">{product.cardDescription || product.shortDescription || '-'}</span>
-                        </div>
+                        {product.subheading && (
+                          <div>
+                            <span className="inline-block text-[10px] font-bold text-[#0a2766] bg-blue-50 px-1.5 py-0.5 rounded mr-1">Subheading</span>
+                            <span className="text-xs text-gray-800 line-clamp-1">{product.subheading}</span>
+                          </div>
+                        )}
                         <div>
                           <span className="inline-block text-[10px] font-bold text-gray-700 bg-gray-100 px-1.5 py-0.5 rounded mr-1">Detail</span>
                           <span className="text-xs text-gray-600 line-clamp-1">{product.detailDescription || product.shortDescription || '-'}</span>
@@ -447,27 +462,15 @@ export default function ProductsDashboard() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Subheading</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Subheading <span className="text-xs font-normal text-gray-500">(Displayed on Product Cards under name)</span>
+                    </label>
                     <input type="text" value={subheading} onChange={e => setSubheading(e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="e.g., Heavy Duty Automatic" />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Product Card Description * <span className="text-xs font-normal text-gray-500">(Displayed on product listing / catalog cards)</span>
-                    </label>
-                    <textarea 
-                      required 
-                      value={cardDescription} 
-                      onChange={e => setCardDescription(e.target.value)} 
-                      rows={2} 
-                      className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" 
-                      placeholder="Brief 1-2 sentence description for the catalog page..."
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Product Detail Page Description * <span className="text-xs font-normal text-gray-500">(Displayed on the product detail page)</span>
+                      Product Description * <span className="text-xs font-normal text-gray-500">(Displayed on the product detail page)</span>
                     </label>
                     <textarea 
                       required 
@@ -477,6 +480,48 @@ export default function ProductsDashboard() {
                       className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" 
                       placeholder="Detailed overview for the product page (supports multiple paragraphs and **bold** text)..."
                     />
+                  </div>
+
+                  {/* Highlighted Lines */}
+                  <div className="pt-3 border-t border-gray-100">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-sm font-medium text-gray-700">
+                        Highlighted Lines <span className="text-xs font-normal text-gray-500">(Displayed in bold dark blue below description)</span>
+                      </label>
+                      <button 
+                        type="button" 
+                        onClick={handleAddHighlight} 
+                        className="text-xs sm:text-sm text-[#0a2766] font-semibold hover:bg-blue-100 flex items-center gap-1 bg-[#eaf0ff] px-2.5 py-1 rounded-md transition-colors"
+                      >
+                        <Plus size={14} /> Add Highlight Line
+                      </button>
+                    </div>
+                    
+                    {highlights.length === 0 ? (
+                      <p className="text-xs text-gray-400 italic">No highlighted lines added yet. Click &apos;+ Add Highlight Line&apos; to add one.</p>
+                    ) : (
+                      <div className="space-y-2">
+                        {highlights.map((item, idx) => (
+                          <div key={idx} className="flex gap-2 items-center">
+                            <input 
+                              type="text" 
+                              placeholder={`Highlighted line #${idx + 1} (e.g., Heavy duty industrial suspension system)`} 
+                              value={item} 
+                              onChange={e => handleHighlightChange(idx, e.target.value)} 
+                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm font-bold text-[#0a2766] outline-none focus:ring-1 focus:ring-[#0a2766] focus:border-[#0a2766]" 
+                            />
+                            <button 
+                              type="button" 
+                              onClick={() => handleRemoveHighlight(idx)} 
+                              className="text-gray-400 hover:text-red-500 p-2 rounded-md hover:bg-red-50 transition-colors shrink-0"
+                              title="Remove Line"
+                            >
+                              <X size={18} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div>

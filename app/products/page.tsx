@@ -21,35 +21,35 @@ const categories = [
 
 const FALLBACK_PRODUCTS: Record<string, any[]> = {
   'washing': [
-    { id: 'fallback-1', name: 'Washer Extractors', imageUrl: '/prod.final/Washing 1.png', categoryId: 'washing', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' },
-    { id: 'fallback-2', name: 'Front Loading Washing Machines', imageUrl: '/prod.png/Washing Front 60 kg Left View 1.png', categoryId: 'washing', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' }
+    { id: 'fallback-1', name: 'Washer Extractors', imageUrl: '/prod.final/Washing 1.png', categoryId: 'washing', subheading: 'Built for heavy loads. Engineered for excellence.' },
+    { id: 'fallback-2', name: 'Front Loading Washing Machines', imageUrl: '/prod.png/Washing Front 60 kg Left View 1.png', categoryId: 'washing', subheading: 'Built for heavy loads. Engineered for excellence.' }
   ],
   'drying': [
-    { id: 'fallback-3', name: 'Drying Tumblers', imageUrl: '/prod.final/Drying 1.png', categoryId: 'drying', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' }
+    { id: 'fallback-3', name: 'Drying Tumblers', imageUrl: '/prod.final/Drying 1.png', categoryId: 'drying', subheading: 'Built for heavy loads. Engineered for excellence.' }
   ],
   'apparel-processing': [
-    { id: 'fallback-4', name: 'Apparel Washing Machines', imageUrl: '/prod.final/Apparel Washing 1.png', categoryId: 'apparel-processing', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' }
+    { id: 'fallback-4', name: 'Apparel Washing Machines', imageUrl: '/prod.final/Apparel Washing 1.png', categoryId: 'apparel-processing', subheading: 'Built for heavy loads. Engineered for excellence.' }
   ],
   'dry-cleaning': [
-    { id: 'fallback-5', name: 'Perc Dry Cleaning Machines', imageUrl: '/prod.final/Dry-Cleaning 1.png', categoryId: 'dry-cleaning', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' }
+    { id: 'fallback-5', name: 'Perc Dry Cleaning Machines', imageUrl: '/prod.final/Dry-Cleaning 1.png', categoryId: 'dry-cleaning', subheading: 'Built for heavy loads. Engineered for excellence.' }
   ],
   'flat-work': [
-    { id: 'fallback-6', name: 'Flat Work Ironers', imageUrl: '/prod.final/Flat-Work 1.png', categoryId: 'flat-work', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' }
+    { id: 'fallback-6', name: 'Flat Work Ironers', imageUrl: '/prod.final/Flat-Work 1.png', categoryId: 'flat-work', subheading: 'Built for heavy loads. Engineered for excellence.' }
   ],
   'steam-finishing': [
-    { id: 'fallback-7', name: 'Steam Finishing Equipment', imageUrl: '/prod.final/Steam-Finishing 1.png', categoryId: 'steam-finishing', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' }
+    { id: 'fallback-7', name: 'Steam Finishing Equipment', imageUrl: '/prod.final/Steam-Finishing 1.png', categoryId: 'steam-finishing', subheading: 'Built for heavy loads. Engineered for excellence.' }
   ],
   'water-heater': [
-    { id: 'fallback-8', name: 'Industrial Water Heaters', imageUrl: '/prod.final/Water Heater 1.png', categoryId: 'water-heater', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' }
+    { id: 'fallback-8', name: 'Industrial Water Heaters', imageUrl: '/prod.final/Water Heater 1.png', categoryId: 'water-heater', subheading: 'Built for heavy loads. Engineered for excellence.' }
   ],
   'fabric-checking': [
-    { id: 'fallback-9', name: 'Fabric Checking Machines', imageUrl: '/prod.final/Fabric Checking 1.png', categoryId: 'fabric-checking', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' }
+    { id: 'fallback-9', name: 'Fabric Checking Machines', imageUrl: '/prod.final/Fabric Checking 1.png', categoryId: 'fabric-checking', subheading: 'Built for heavy loads. Engineered for excellence.' }
   ],
   'other-equipment': [
-    { id: 'fallback-10', name: 'Ancillary Equipment', imageUrl: '/prod.final/Other Equipment 1.png', categoryId: 'other-equipment', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' }
+    { id: 'fallback-10', name: 'Ancillary Equipment', imageUrl: '/prod.final/Other Equipment 1.png', categoryId: 'other-equipment', subheading: 'Built for heavy loads. Engineered for excellence.' }
   ],
   'complete-range': [
-    { id: 'fallback-11', name: 'Complete Laundry Setup', imageUrl: '/prod.final/Complete Range 1.png', categoryId: 'complete-range', cardDescription: 'Built for heavy loads. Engineered for excellence.', shortDescription: 'Built for heavy loads. Engineered for excellence.' }
+    { id: 'fallback-11', name: 'Complete Laundry Setup', imageUrl: '/prod.final/Complete Range 1.png', categoryId: 'complete-range', subheading: 'Built for heavy loads. Engineered for excellence.' }
   ]
 };
 
@@ -229,16 +229,13 @@ export default function ProductsPage() {
                     {product.name}
                   </h3>
                   {product.subheading && (
-                    <p className="text-[11px] lg:text-[13px] font-medium text-gray-600 mb-1.5 lg:mb-2">
+                    <p className="text-[11px] lg:text-[13px] text-[#4b5563] font-normal leading-relaxed line-clamp-2 lg:line-clamp-2">
                       {product.subheading}
                     </p>
                   )}
-                  <p className="text-[10px] lg:text-[13px] text-[#363636] leading-relaxed flex-1 line-clamp-2 lg:line-clamp-2">
-                    {product.cardDescription || product.shortDescription}
-                  </p>
                   
                   {/* Arrow Button */}
-                  <div className="w-full flex justify-end mt-2 lg:mt-5">
+                  <div className="w-full flex justify-end mt-auto pt-2 lg:pt-4">
                     <div className="w-7 h-7 lg:w-9 lg:h-9 rounded-full border border-[#3b5b95] flex items-center justify-center text-[#3b5b95] group-hover:bg-[#3b5b95] group-hover:text-white transition-colors">
                       <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />

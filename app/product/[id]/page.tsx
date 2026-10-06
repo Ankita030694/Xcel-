@@ -89,6 +89,10 @@ export default function ProductDetailPage() {
             { title: 'High Capacity Performance', description: 'Engineered to handle massive industrial loads with extreme precision and durability.' },
             { title: 'Energy Efficient Design', description: 'Advanced internal mechanisms that save up to 40% on power consumption.' }
           ],
+          highlights: [
+            'Heavy-duty industrial grade stainless steel construction',
+            'Engineered for maximum power and water efficiency'
+          ],
           faqs: [
             { question: 'What is the standard warranty on this machine?', answer: 'We provide a 1-year comprehensive warranty on all parts and labor.' },
             { question: 'Can this machine be customized?', answer: 'Yes, our engineering team can tailor the specifications to meet your specific industrial needs.' }
@@ -305,11 +309,22 @@ export default function ProductDetailPage() {
               {product.name}
             </h1>
             
-            <div className="text-[#363636] text-[15px] sm:text-[16px] leading-relaxed mb-8 space-y-3">
+            <div className="text-[#363636] text-[15px] sm:text-[16px] leading-relaxed mb-6 space-y-3">
               {(product.detailDescription || product.shortDescription || '').split('\n').filter(Boolean).map((para: string, i: number) => (
                 <p key={i} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.*?)\*\*/g, '<strong class="text-[#0a2766] font-semibold">$1</strong>') }} />
               ))}
             </div>
+
+            {/* Highlighted Lines */}
+            {product.highlights && product.highlights.length > 0 && (
+              <div className="space-y-2 mb-8">
+                {product.highlights.map((highlight: string, idx: number) => (
+                  <p key={idx} className="text-[#0a2766] font-bold text-[15px] sm:text-[16px] leading-relaxed">
+                    {highlight}
+                  </p>
+                ))}
+              </div>
+            )}
             
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 mt-auto pt-4 lg:pt-0">
