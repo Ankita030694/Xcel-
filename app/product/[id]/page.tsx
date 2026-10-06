@@ -303,8 +303,10 @@ export default function ProductDetailPage() {
               {product.name}
             </h1>
             
-            <div className="text-[#363636] text-[15px] sm:text-[16px] leading-relaxed mb-8">
-              <p>{product.shortDescription}</p>
+            <div className="text-[#363636] text-[15px] sm:text-[16px] leading-relaxed mb-8 space-y-3">
+              {product.shortDescription.split('\n').filter(Boolean).map((para: string, i: number) => (
+                <p key={i} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.*?)\*\*/g, '<strong class="text-[#0a2766] font-semibold">$1</strong>') }} />
+              ))}
             </div>
             
             {/* Buttons */}
