@@ -24,7 +24,9 @@ interface Product {
   name: string;
   subheading?: string;
   categoryId: string;
-  shortDescription: string;
+  cardDescription?: string;
+  detailDescription?: string;
+  shortDescription?: string;
   imageUrl: string;
   additionalImages?: string[];
   features: ProductFeature[];
@@ -63,7 +65,8 @@ export default function ProductsDashboard() {
   const [name, setName] = useState('');
   const [subheading, setSubheading] = useState('');
   const [categoryId, setCategoryId] = useState(CATEGORIES[0].id);
-  const [shortDescription, setShortDescription] = useState('');
+  const [cardDescription, setCardDescription] = useState('');
+  const [detailDescription, setDetailDescription] = useState('');
   const [whyChooseUs, setWhyChooseUs] = useState<ProductFeature[]>([]);
   const [industriesServed, setIndustriesServed] = useState<ProductFeature[]>([]);
   const [existingImages, setExistingImages] = useState<string[]>([]);
@@ -118,7 +121,8 @@ export default function ProductsDashboard() {
     setName('');
     setSubheading('');
     setCategoryId(CATEGORIES[0].id);
-    setShortDescription('');
+    setCardDescription('');
+    setDetailDescription('');
     setWhyChooseUs([]);
     setIndustriesServed([]);
     setExistingImages([]);
@@ -135,7 +139,8 @@ export default function ProductsDashboard() {
     setName(product.name);
     setSubheading(product.subheading || '');
     setCategoryId(product.categoryId);
-    setShortDescription(product.shortDescription);
+    setCardDescription(product.cardDescription || product.shortDescription || '');
+    setDetailDescription(product.detailDescription || product.shortDescription || '');
     setWhyChooseUs(Array.isArray(product.whyChooseUs) ? product.whyChooseUs : []);
     setIndustriesServed(Array.isArray(product.industriesServed) ? product.industriesServed : []);
     setExistingImages([product.imageUrl, ...(product.additionalImages || [])].filter(Boolean));
@@ -182,8 +187,8 @@ export default function ProductsDashboard() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !categoryId || !shortDescription) {
-      setError("Please fill all required fields.");
+    if (!name || !categoryId || !cardDescription.trim() || !detailDescription.trim()) {
+      setError("Please fill all required fields, including Card Description and Detail Description.");
       return;
     }
 
@@ -231,7 +236,9 @@ export default function ProductsDashboard() {
         name,
         subheading,
         categoryId,
-        shortDescription,
+        cardDescription: cardDescription.trim(),
+        detailDescription: detailDescription.trim(),
+        shortDescription: cardDescription.trim(), // Kept for backwards compatibility
         whyChooseUs: whyChooseUs.filter(f => f.title.trim() && f.description.trim()),
         industriesServed: industriesServed.filter(f => f.title.trim() && f.description.trim()),
         features: features.filter(f => f.title.trim() && f.description.trim()),
@@ -348,7 +355,7 @@ export default function ProductsDashboard() {
                     <th className="py-4 px-6 font-semibold">Image</th>
                     <th className="py-4 px-6 font-semibold">Name</th>
                     <th className="py-4 px-6 font-semibold">Category</th>
-                    <th className="py-4 px-6 font-semibold">Description</th>
+                    <th className="py-4 px-6 font-semibold">Descriptions</th>
                     <th className="py-4 px-6 font-semibold text-right">Actions</th>
                   </tr>
                 </thead>
@@ -362,7 +369,16 @@ export default function ProductsDashboard() {
                       <td className="py-4 px-6 text-gray-700">
                         {CATEGORIES.find(c => c.id === product.categoryId)?.name || product.categoryId}
                       </td>
-                      <td className="py-4 px-6 text-gray-700 line-clamp-2 max-w-xs">{product.shortDescription}</td>
+                      <td className="py-4 px-6 text-gray-700 max-w-xs space-y-1">
+                        <div>
+                          <span className="inline-block text-[10px] font-bold text-[#0a2766] bg-blue-50 px-1.5 py-0.5 rounded mr-1">Card</span>
+                          <span className="text-xs text-gray-800 line-clamp-1">{product.cardDescription || product.shortDescription || '-'}</span>
+                        </div>
+                        <div>
+                          <span className="inline-block text-[10px] font-bold text-gray-700 bg-gray-100 px-1.5 py-0.5 rounded mr-1">Detail</span>
+                          <span className="text-xs text-gray-600 line-clamp-1">{product.detailDescription || product.shortDescription || '-'}</span>
+                        </div>
+                      </td>
                       <td className="py-4 px-6 text-right">
                         <button 
                           onClick={() => handleEdit(product)}
@@ -436,8 +452,31 @@ export default function ProductsDashboard() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Short Description *</label>
-                    <textarea required value={shortDescription} onChange={e => setShortDescription(e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="Brief description for the catalog page..."></textarea>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Product Card Description * <span className="text-xs font-normal text-gray-500">(Displayed on product listing / catalog cards)</span>
+                    </label>
+                    <textarea 
+                      required 
+                      value={cardDescription} 
+                      onChange={e => setCardDescription(e.target.value)} 
+                      rows={2} 
+                      className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" 
+                      placeholder="Brief 1-2 sentence description for the catalog page..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Product Detail Page Description * <span className="text-xs font-normal text-gray-500">(Displayed on the product detail page)</span>
+                    </label>
+                    <textarea 
+                      required 
+                      value={detailDescription} 
+                      onChange={e => setDetailDescription(e.target.value)} 
+                      rows={4} 
+                      className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" 
+                      placeholder="Detailed overview for the product page (supports multiple paragraphs and **bold** text)..."
+                    />
                   </div>
 
                   <div>

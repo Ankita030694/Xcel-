@@ -80,6 +80,8 @@ export default function ProductDetailPage() {
           id,
           name: 'Demo Product (Placeholder)',
           categoryId: 'washing',
+          cardDescription: 'Built for heavy loads. Engineered for excellence.',
+          detailDescription: 'Built for heavy loads. Engineered for excellence. This is a temporary placeholder until real products are added via the admin panel.',
           shortDescription: 'Built for heavy loads. Engineered for excellence. This is a temporary placeholder until real products are added via the admin panel.',
           imageUrl: '/prod.final/Washing 1.png',
           additionalImages: ['/prod.png/Washing Front 60 kg Left View 1.png'],
@@ -304,7 +306,7 @@ export default function ProductDetailPage() {
             </h1>
             
             <div className="text-[#363636] text-[15px] sm:text-[16px] leading-relaxed mb-8 space-y-3">
-              {product.shortDescription.split('\n').filter(Boolean).map((para: string, i: number) => (
+              {(product.detailDescription || product.shortDescription || '').split('\n').filter(Boolean).map((para: string, i: number) => (
                 <p key={i} dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.*?)\*\*/g, '<strong class="text-[#0a2766] font-semibold">$1</strong>') }} />
               ))}
             </div>
