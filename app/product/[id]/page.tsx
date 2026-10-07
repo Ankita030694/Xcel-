@@ -264,7 +264,7 @@ export default function ProductDetailPage() {
           {/* Left: Image Gallery */}
           <div className="w-full sm:w-[80%] md:w-[65%] lg:w-[45%] xl:w-[40%] mx-auto lg:mx-0 flex flex-col shrink-0">
             {/* Main Image */}
-            <div className="relative w-full aspect-square bg-white rounded-[32px] flex items-center justify-center mb-6 overflow-hidden">
+            <div className="relative w-full aspect-square bg-[#f4f5f9] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden">
               <img 
                 src={productImages[activeImageIndex] || '/placeholder.png'} 
                 alt={product.name} 
@@ -284,7 +284,7 @@ export default function ProductDetailPage() {
                     <button 
                       key={idx}
                       onClick={() => setActiveImageIndex(idx)}
-                      className={`relative w-16 sm:w-20 lg:w-[80px] aspect-square shrink-0 rounded-2xl overflow-hidden transition-all bg-white ${activeImageIndex === idx ? 'opacity-100 ring-2 ring-offset-2 ring-[#0a2766]' : 'opacity-70 hover:opacity-100'}`}
+                      className={`relative w-16 sm:w-20 lg:w-[80px] aspect-square shrink-0 rounded-2xl overflow-hidden transition-all bg-[#f4f5f9] ${activeImageIndex === idx ? 'opacity-100 ring-2 ring-offset-2 ring-[#0a2766]' : 'opacity-70 hover:opacity-100'}`}
                     >
                       <img src={img} alt={`Thumbnail ${idx}`} className="absolute inset-0 w-full h-full object-contain p-2" />
                     </button>
