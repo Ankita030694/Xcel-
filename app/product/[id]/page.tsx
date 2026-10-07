@@ -169,8 +169,7 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
           {product.features && product.features.length > 0 ? (
             product.features.map((feature: any, idx: number) => (
-              <div key={idx} className="relative pl-6">
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
+              <div key={idx} className="flex flex-col">
                 <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">{feature.title}</h4>
                 <p className="text-[#363636] text-[16px] leading-relaxed">{feature.description}</p>
               </div>
@@ -190,8 +189,7 @@ export default function ProductDetailPage() {
       content: Array.isArray(product.whyChooseUs) && product.whyChooseUs.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
           {product.whyChooseUs.map((item: any, idx: number) => (
-            <div key={idx} className="relative pl-6">
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
+            <div key={idx} className="flex flex-col">
               <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">{item.title}</h4>
               <p className="text-[#363636] text-[16px] leading-relaxed">{item.description}</p>
             </div>
@@ -212,8 +210,7 @@ export default function ProductDetailPage() {
       content: Array.isArray(product.industriesServed) && product.industriesServed.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
           {product.industriesServed.map((item: any, idx: number) => (
-            <div key={idx} className="relative pl-6">
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-[50%] bg-[#32589c]"></div>
+            <div key={idx} className="flex flex-col">
               <h4 className="text-[#0a2766] font-bold text-[16px] mb-1">{item.title}</h4>
               <p className="text-[#363636] text-[16px] leading-relaxed">{item.description}</p>
             </div>

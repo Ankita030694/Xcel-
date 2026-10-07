@@ -1258,6 +1258,9 @@ const ProductCategories = () => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [scrollProgress, setScrollProgress] = React.useState(0);
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  const [isDragging, setIsDragging] = React.useState(false);
+  const [startX, setStartX] = React.useState(0);
+  const [scrollLeft, setScrollLeft] = React.useState(0);
 
   const categories = [
     { title: "WASHING", img: "/prod.final/Washing 1.png" },
@@ -1271,6 +1274,39 @@ const ProductCategories = () => {
     { title: "OTHER EQUIPMENT", img: "/prod.final/Other Equipment 1.png" },
     { title: "COMPLETE RANGE", img: "/prod.final/Complete Range 1.png" }
   ];
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!scrollRef.current) return;
+    setIsDragging(true);
+    setStartX(e.pageX - scrollRef.current.offsetLeft);
+    setScrollLeft(scrollRef.current.scrollLeft);
+    scrollRef.current.style.scrollSnapType = 'none';
+    scrollRef.current.style.scrollBehavior = 'auto';
+  };
+
+  const handleMouseLeave = () => {
+    setIsDragging(false);
+    if (scrollRef.current) {
+      scrollRef.current.style.scrollSnapType = 'x mandatory';
+      scrollRef.current.style.scrollBehavior = 'smooth';
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    if (scrollRef.current) {
+      scrollRef.current.style.scrollSnapType = 'x mandatory';
+      scrollRef.current.style.scrollBehavior = 'smooth';
+    }
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !scrollRef.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const target = e.target as HTMLDivElement;
@@ -1344,7 +1380,11 @@ const ProductCategories = () => {
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
-          className="flex flex-row flex-nowrap items-center w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-6 pt-4 scroll-smooth"
+          onMouseDown={handleMouseDown}
+          onMouseLeave={handleMouseLeave}
+          onMouseUp={handleMouseUp}
+          onMouseMove={handleMouseMove}
+          className={`flex flex-row flex-nowrap items-center w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-6 pt-4 scroll-smooth select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         >
           {categories.map((cat, idx) => (
             <div 
@@ -1366,6 +1406,7 @@ const ProductCategories = () => {
                     src={cat.img} 
                     alt={cat.title} 
                     fill
+                    draggable={false}
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="object-contain transition-transform duration-500 group-hover:scale-110" 
                   />
