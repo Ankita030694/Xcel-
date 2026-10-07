@@ -174,10 +174,10 @@ export default function ProductsPage() {
                 <div key={cat.id} className="flex items-center">
                   <button
                     onClick={() => setActiveTab(cat.id)}
-                    className={`px-1 sm:px-2 lg:px-4 xl:px-5 py-1.5 sm:py-2 lg:py-4 text-[12px] sm:text-[14px] lg:text-[15px] xl:text-[16px] font-bold uppercase tracking-normal lg:tracking-wider transition-all ${
+                    className={`px-3 sm:px-4 lg:px-5 xl:px-6 py-2 sm:py-2.5 lg:py-3 text-[12px] sm:text-[14px] lg:text-[15px] xl:text-[16px] font-bold uppercase tracking-normal lg:tracking-wider transition-all rounded-md ${
                       isActive 
-                        ? 'text-[#0a2766] border-b-[2px] lg:border-b-[2.5px] border-[#3b5b95] lg:border-[#0a2766]' 
-                        : 'text-[#363636] border-b-[2px] lg:border-b-[2.5px] border-transparent hover:text-gray-800'
+                        ? 'text-white bg-[#0a2766]' 
+                        : 'text-[#363636] hover:text-gray-800'
                     }`}
                   >
                     {cat.title}
