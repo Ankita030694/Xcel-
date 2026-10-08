@@ -1263,16 +1263,16 @@ const ProductCategories = () => {
   const [scrollLeft, setScrollLeft] = React.useState(0);
 
   const categories = [
-    { title: "WASHING", img: "/prod.final/Washing 1.png" },
-    { title: "DRYING", img: "/prod.final/Drying 1.png" },
-    { title: "APPAREL PROCESSING", img: "/prod.final/Apparel Washing 1.png" },
-    { title: "DRY-CLEANING", img: "/prod.final/Dry-Cleaning 1.png" },
-    { title: "FLAT-WORK", img: "/prod.final/Flat-Work 1.png" },
-    { title: "STEAM-FINISHING", img: "/prod.final/Steam-Finishing 1.png" },
-    { title: "WATER HEATER", img: "/prod.final/Water Heater 1.png" },
-    { title: "FABRIC CHECKING", img: "/prod.final/Fabric Checking 1.png" },
-    { title: "OTHER EQUIPMENT", img: "/prod.final/Other Equipment 1.png" },
-    { title: "COMPLETE RANGE", img: "/prod.final/Complete Range 1.png" }
+    { title: "WASHING", img: "/category/Washing.svg" },
+    { title: "DRYING", img: "/category/Drying.svg" },
+    { title: "APPAREL PROCESSING", img: "/category/Apparel Washing.svg" },
+    { title: "DRY-CLEANING", img: "/category/Dry Cleaning.svg" },
+    { title: "FLAT-WORK", img: "/category/Flat Work.svg" },
+    { title: "STEAM-FINISHING", img: "/category/Steam Finish.svg" },
+    { title: "WATER HEATER", img: "/category/Water Heater.svg" },
+    { title: "FABRIC CHECKING", img: "/category/Fabric Cleaning.svg" },
+    { title: "OTHER EQUIPMENT", img: "/category/Other Equipment.svg" },
+    { title: "COMPLETE RANGE", img: "/category/Complete Range.svg" }
   ];
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -1401,14 +1401,14 @@ const ProductCategories = () => {
                 <div className="w-6 sm:w-10 h-[2px] bg-[#0a2766] rounded-full mb-2 sm:mb-4 shrink-0"></div>
                 
                 {/* Image */}
-                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[150px] relative w-full overflow-hidden">
+                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[150px] relative w-full overflow-hidden mix-blend-multiply">
                   <Image 
                     src={cat.img} 
                     alt={cat.title} 
                     fill
                     draggable={false}
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-contain transition-transform duration-500 group-hover:scale-110" 
+                    className="object-contain scale-110 transition-transform duration-500 group-hover:scale-125" 
                   />
                 </div>
                 
