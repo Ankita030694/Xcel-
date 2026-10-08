@@ -564,9 +564,9 @@ const WhyChooseUs = () => {
 
 const ProductsHoverGallery = () => {
   const baseImages = [
-    { src: "/1.svg", alt: "Apparel Washing & High Speed Extract Equipment", title: "APPAREL WASHING & HIGH SPEED EXTRACT" },
-    { src: "/2.svg", alt: "Softener Washer Dryer Multi-Stage Equipment", title: "SOFTENER WASHER DRYER" },
-    { src: "/Images/3.webp", alt: "Flat-Work Ironer & Finishing Commercial Equipment", title: "FLAT-WORK IRONER" },
+    { src: "/1 copy.svg", alt: "Apparel Washing & High Speed Extract Equipment", title: "APPAREL WASHING & HIGH SPEED EXTRACT" },
+    { src: "/2 copy.svg", alt: "Softener Washer Dryer Multi-Stage Equipment", title: "SOFTENER WASHER DRYER" },
+    { src: "/3.svg", alt: "Flat-Work Ironer & Finishing Commercial Equipment", title: "FLAT-WORK IRONER" },
   ];
 
   // Repeat array multiple times for a seamless infinite loop track
@@ -806,12 +806,12 @@ const ProductsHoverGallery = () => {
                       boxShadow: shadowVal,
                       transition: isTransitioning ? 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1), opacity 850ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 850ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
                     }}
-                    className={`w-[760px] lg:w-[820px] xl:w-[860px] aspect-[825/550] rounded-2xl lg:rounded-3xl overflow-hidden bg-white border border-gray-100 will-change-transform [backface-visibility:hidden] ${cursorStyle}`}
+                    className={`w-[760px] lg:w-[820px] xl:w-[860px] aspect-[4/3] rounded-2xl lg:rounded-3xl overflow-hidden bg-white border border-gray-100 will-change-transform [backface-visibility:hidden] ${cursorStyle}`}
                   >
                     <img 
                       src={item.src} 
                       alt={item.alt} 
-                      className="w-full h-full object-contain pointer-events-none select-none block bg-white" 
+                      className="w-full h-full object-cover pointer-events-none select-none block bg-white" 
                       draggable="false"
                     />
                   </div>
@@ -880,13 +880,13 @@ const ProductsHoverGallery = () => {
           {baseImages.map((item, idx) => (
             <div 
               key={idx}
-              className="relative w-[88vw] sm:w-[80vw] max-w-[520px] shrink-0 snap-center rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] bg-white border border-gray-100 flex items-center justify-center"
+              className="relative w-[88vw] sm:w-[80vw] max-w-[520px] aspect-[4/3] shrink-0 snap-center rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] bg-white border border-gray-100 flex items-center justify-center"
             >
               <img 
                 src={item.src} 
                 alt={item.alt} 
                 draggable="false"
-                className="w-full h-auto object-contain block pointer-events-none" 
+                className="w-full h-full object-cover block pointer-events-none" 
               />
             </div>
           ))}
