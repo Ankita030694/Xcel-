@@ -1408,7 +1408,11 @@ const ProductCategories = () => {
                     fill
                     draggable={false}
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-contain scale-[1.32] transition-transform duration-500 group-hover:scale-[1.5]" 
+                    className={`object-contain transition-transform duration-500 ${
+                      cat.title === 'DRY-CLEANING' 
+                        ? 'scale-[1.58] group-hover:scale-[1.8]' 
+                        : 'scale-[1.32] group-hover:scale-[1.5]'
+                    }`} 
                   />
                 </div>
                 

@@ -167,7 +167,7 @@ export default function ProductsPage() {
 
         {/* Tab Navigation */}
         <div className="w-full mb-8 lg:mb-12">
-          <div className="flex flex-wrap justify-center items-center gap-y-1 sm:gap-y-2 lg:border-b lg:border-gray-200 px-0 sm:px-2">
+          <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 lg:border-b lg:border-gray-200 px-0 sm:px-2 pb-4">
             {categories.map((cat, index) => {
               const isActive = activeTab === cat.id;
               return (
@@ -177,15 +177,11 @@ export default function ProductsPage() {
                     className={`px-3 sm:px-4 lg:px-5 xl:px-6 py-2 sm:py-2.5 lg:py-3 text-[12px] sm:text-[14px] lg:text-[15px] xl:text-[16px] font-bold uppercase tracking-normal lg:tracking-wider transition-all rounded-md ${
                       isActive 
                         ? 'text-white bg-[#0a2766]' 
-                        : 'text-[#363636] hover:text-gray-800'
+                        : 'text-[#363636] hover:text-gray-800 border border-gray-200 shadow-sm'
                     }`}
                   >
                     {cat.title}
                   </button>
-                  {/* Vertical separator on mobile */}
-                  {index !== categories.length - 1 && (
-                    <div className="h-3 w-[1px] bg-gray-300 mx-[2px] sm:mx-1 lg:hidden"></div>
-                  )}
                 </div>
               );
             })}
