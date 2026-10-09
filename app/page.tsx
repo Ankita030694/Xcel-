@@ -1408,7 +1408,7 @@ const ProductCategories = () => {
                     fill
                     draggable={false}
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-contain scale-110 transition-transform duration-500 group-hover:scale-125" 
+                    className="object-contain scale-[1.32] transition-transform duration-500 group-hover:scale-[1.5]" 
                   />
                 </div>
                 
