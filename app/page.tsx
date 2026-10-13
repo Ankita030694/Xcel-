@@ -564,9 +564,9 @@ const WhyChooseUs = () => {
 
 const ProductsHoverGallery = () => {
   const baseImages = [
-    { src: "/1 copy.svg", alt: "Apparel Washing & High Speed Extract Equipment", title: "APPAREL WASHING & HIGH SPEED EXTRACT" },
-    { src: "/2 copy.svg", alt: "Softener Washer Dryer Multi-Stage Equipment", title: "SOFTENER WASHER DRYER" },
-    { src: "/3.svg", alt: "Flat-Work Ironer & Finishing Commercial Equipment", title: "FLAT-WORK IRONER" },
+    { src: "/Final Banners  (1)/1.svg", alt: "Apparel Washing & High Speed Extract Equipment", title: "APPAREL WASHING & HIGH SPEED EXTRACT" },
+    { src: "/Final Banners  (1)/2.svg", alt: "Flat-Work Ironer & Finishing Commercial Equipment", title: "FLAT-WORK IRONER" },
+    { src: "/Final Banners  (1)/3.svg", alt: "Softener Washer Dryer Multi-Stage Equipment", title: "SOFTENER WASHER DRYER" },
   ];
 
   // Repeat array multiple times for a seamless infinite loop track
