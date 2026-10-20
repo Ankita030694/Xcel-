@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Download, Send } from 'lucide-react';
 
 const TOP_BAR_PHRASES = [
@@ -13,6 +14,21 @@ const TOP_BAR_PHRASES = [
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [phraseIndex, setPhraseIndex] = useState(0);
+  const pathname = usePathname();
+
+  const isActive = (path: string) => {
+    if (!pathname) return false;
+    if (path === '/') {
+      return pathname === '/';
+    }
+    if (path === '/products') {
+      return pathname.startsWith('/products') || pathname.startsWith('/product');
+    }
+    if (path === '/blogs' || path === '/insights') {
+      return pathname.startsWith('/blogs') || pathname.startsWith('/insights');
+    }
+    return pathname.startsWith(path);
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -22,7 +38,7 @@ export const Header = () => {
   }, []);
 
   return (
-    <header className="w-full sticky top-0 z-50 bg-white shadow-sm">
+    <header className="w-full sticky top-0 z-50 bg-white shadow-sm font-sans">
       {/* Top Bar Ticker */}
       <div className="bg-[#3b5b95] text-white py-2 text-[13px] font-medium tracking-wide overflow-hidden relative flex h-[34px] w-full">
         {TOP_BAR_PHRASES.map((phrase, idx) => (
@@ -49,14 +65,29 @@ export const Header = () => {
             
             {/* Navigation Links - Desktop */}
             <nav className="hidden lg:flex items-center space-x-9 mt-1">
-              <Link href="/" className="text-[#3b5b95] font-semibold text-[14px] hover:border-b-[1.5px] hover:border-[#3b5b95] pb-1 border-b-[1.5px] border-transparent transition-all">
+              <Link 
+                href="/" 
+                className={`text-[#3b5b95] font-semibold text-[14px] pb-1 border-b-[2.5px] transition-all ${
+                  isActive('/') ? 'border-[#3b5b95]' : 'border-transparent hover:border-[#3b5b95]'
+                }`}
+              >
                 HOME
               </Link>
-              <Link href="/about" className="text-[#3b5b95] font-semibold text-[14px] hover:border-b-[1.5px] hover:border-[#3b5b95] pb-1 border-b-[1.5px] border-transparent transition-all">
+              <Link 
+                href="/about" 
+                className={`text-[#3b5b95] font-semibold text-[14px] pb-1 border-b-[2.5px] transition-all ${
+                  isActive('/about') ? 'border-[#3b5b95]' : 'border-transparent hover:border-[#3b5b95]'
+                }`}
+              >
                 ABOUT US
               </Link>
               <div className="group flex flex-col justify-center h-[90px]">
-                <Link href="/products" className="relative flex items-center cursor-pointer pb-1 border-b-[1.5px] border-transparent group-hover:border-[#3b5b95] transition-all">
+                <Link 
+                  href="/products" 
+                  className={`relative flex items-center cursor-pointer pb-1 border-b-[2.5px] transition-all ${
+                    isActive('/products') ? 'border-[#3b5b95]' : 'border-transparent group-hover:border-[#3b5b95]'
+                  }`}
+                >
                   <span className="text-[#3b5b95] font-semibold text-[14px]">PRODUCTS</span>
                 </Link>
                 
@@ -76,10 +107,20 @@ export const Header = () => {
                   </div>
                 </div>
               </div>
-              <Link href="/insights" className="text-[#3b5b95] font-semibold text-[14px] hover:border-b-[1.5px] hover:border-[#3b5b95] pb-1 border-b-[1.5px] border-transparent transition-all">
+              <Link 
+                href="/blogs" 
+                className={`text-[#3b5b95] font-semibold text-[14px] pb-1 border-b-[2.5px] transition-all ${
+                  isActive('/blogs') ? 'border-[#3b5b95]' : 'border-transparent hover:border-[#3b5b95]'
+                }`}
+              >
                 INDUSTRY INSIGHTS
               </Link>
-              <Link href="/contact" className="text-[#3b5b95] font-semibold text-[14px] hover:border-b-[1.5px] hover:border-[#3b5b95] pb-1 border-b-[1.5px] border-transparent transition-all">
+              <Link 
+                href="/contact" 
+                className={`text-[#3b5b95] font-semibold text-[14px] pb-1 border-b-[2.5px] transition-all ${
+                  isActive('/contact') ? 'border-[#3b5b95]' : 'border-transparent hover:border-[#3b5b95]'
+                }`}
+              >
                 CONTACT US
               </Link>
             </nav>
@@ -118,21 +159,51 @@ export const Header = () => {
         }`}
       >
         <nav className="flex flex-col items-center py-6 px-6 space-y-6 text-center">
-          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
+          <Link 
+            href="/" 
+            onClick={() => setIsMobileMenuOpen(false)} 
+            className={`text-[#3b5b95] font-semibold text-[15px] pb-1 border-b-[2.5px] transition-all ${
+              isActive('/') ? 'border-[#3b5b95]' : 'border-transparent hover:text-[#2f497a]'
+            }`}
+          >
             HOME
           </Link>
-          <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
+          <Link 
+            href="/about" 
+            onClick={() => setIsMobileMenuOpen(false)} 
+            className={`text-[#3b5b95] font-semibold text-[15px] pb-1 border-b-[2.5px] transition-all ${
+              isActive('/about') ? 'border-[#3b5b95]' : 'border-transparent hover:text-[#2f497a]'
+            }`}
+          >
             ABOUT US
           </Link>
-          <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="flex flex-col items-center">
+          <Link 
+            href="/products" 
+            onClick={() => setIsMobileMenuOpen(false)} 
+            className={`flex flex-col items-center pb-1 border-b-[2.5px] transition-all ${
+              isActive('/products') ? 'border-[#3b5b95]' : 'border-transparent'
+            }`}
+          >
             <div className="flex items-center justify-center cursor-pointer">
               <span className="text-[#3b5b95] font-semibold text-[15px]">PRODUCTS</span>
             </div>
           </Link>
-          <Link href="/insights" onClick={() => setIsMobileMenuOpen(false)} className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
+          <Link 
+            href="/blogs" 
+            onClick={() => setIsMobileMenuOpen(false)} 
+            className={`text-[#3b5b95] font-semibold text-[15px] pb-1 border-b-[2.5px] transition-all ${
+              isActive('/blogs') ? 'border-[#3b5b95]' : 'border-transparent hover:text-[#2f497a]'
+            }`}
+          >
             INDUSTRY INSIGHTS
           </Link>
-          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="text-[#3b5b95] font-semibold text-[15px] hover:text-[#2f497a] transition-colors">
+          <Link 
+            href="/contact" 
+            onClick={() => setIsMobileMenuOpen(false)} 
+            className={`text-[#3b5b95] font-semibold text-[15px] pb-1 border-b-[2.5px] transition-all ${
+              isActive('/contact') ? 'border-[#3b5b95]' : 'border-transparent hover:text-[#2f497a]'
+            }`}
+          >
             CONTACT US
           </Link>
           
