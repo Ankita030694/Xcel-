@@ -110,8 +110,16 @@ const StatsBanner = () => {
 };
 
 const HeroCarousel = () => {
-  const images = ['/hero.webp', '/hero-2.webp', '/hero-3.webp'];
-  const mobileImages = ['/Mobile- Hero.webp', '/Mobile- Hero 2 (1080 x 1250 px).webp', '/Mobile - Hero 3 (1080 x 1250 px).webp'];
+  const images = [
+    '/HERO%20Desktop%20(1800%20x%20600%20px)/HERO%201.svg',
+    '/HERO%20Desktop%20(1800%20x%20600%20px)/HERO%202.svg',
+    '/HERO%20Desktop%20(1800%20x%20600%20px)/HERO%203.svg'
+  ];
+  const mobileImages = [
+    '/HERO%20Mobile%20(1080%20x%201250%20px)/HERO%201.svg',
+    '/HERO%20Mobile%20(1080%20x%201250%20px)/HERO%202.svg',
+    '/HERO%20Mobile%20(1080%20x%201250%20px)/HERO%203.svg'
+  ];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [dragStartX, setDragStartX] = useState<number | null>(null);
@@ -1258,9 +1266,22 @@ const ProductCategories = () => {
   const [currentIndex, setCurrentIndex] = React.useState(0);
   const [scrollProgress, setScrollProgress] = React.useState(0);
   const scrollRef = React.useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = React.useState(false);
-  const [startX, setStartX] = React.useState(0);
-  const [scrollLeft, setScrollLeft] = React.useState(0);
+  const trackRef = React.useRef<HTMLDivElement>(null);
+
+  const [isDraggingCards, setIsDraggingCards] = React.useState(false);
+  const [isDraggingThumb, setIsDraggingThumb] = React.useState(false);
+  const [isHovered, setIsHovered] = React.useState(false);
+
+  const isDraggingCardsRef = React.useRef(false);
+  const isDraggingThumbRef = React.useRef(false);
+
+  const dragStartX = React.useRef(0);
+  const dragStartScroll = React.useRef(0);
+  const hasMoved = React.useRef(false);
+
+  // Thumb dragging refs
+  const thumbDragStartX = React.useRef(0);
+  const thumbStartLeftPx = React.useRef(0);
 
   const categories = [
     { title: "WASHING", img: "/category/Washing.svg" },
@@ -1275,52 +1296,8 @@ const ProductCategories = () => {
     { title: "COMPLETE RANGE", img: "/category/Complete Range.svg" }
   ];
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!scrollRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - scrollRef.current.offsetLeft);
-    setScrollLeft(scrollRef.current.scrollLeft);
-    scrollRef.current.style.scrollSnapType = 'none';
-    scrollRef.current.style.scrollBehavior = 'auto';
-  };
-
-  const handleMouseLeave = () => {
-    setIsDragging(false);
-    if (scrollRef.current) {
-      scrollRef.current.style.scrollSnapType = 'x mandatory';
-      scrollRef.current.style.scrollBehavior = 'smooth';
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    if (scrollRef.current) {
-      scrollRef.current.style.scrollSnapType = 'x mandatory';
-      scrollRef.current.style.scrollBehavior = 'smooth';
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || !scrollRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - scrollRef.current.offsetLeft;
-    const walk = (x - startX) * 1.5;
-    scrollRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.target as HTMLDivElement;
-    const firstChild = target.children[0] as HTMLElement;
-    if (!firstChild) return;
-    
-    // Update current index
-    const itemWidth = firstChild.offsetWidth;
-    const index = Math.round(target.scrollLeft / itemWidth);
-    if (index !== currentIndex) {
-      setCurrentIndex(index);
-    }
-
-    // Update true scroll progress (0 to 100)
+  // Helper to update scroll progress from carousel element
+  const updateScrollProgress = (target: HTMLDivElement) => {
     const maxScroll = target.scrollWidth - target.clientWidth;
     if (maxScroll > 0) {
       setScrollProgress((target.scrollLeft / maxScroll) * 100);
@@ -1329,31 +1306,166 @@ const ProductCategories = () => {
     }
   };
 
-  const handleProgressClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!scrollRef.current) return;
-    const bounds = e.currentTarget.getBoundingClientRect();
-    const clickX = e.clientX - bounds.left;
-    const percentage = clickX / bounds.width;
-    const target = scrollRef.current;
-    const maxScroll = target.scrollWidth - target.clientWidth;
-    target.scrollTo({ left: maxScroll * percentage, behavior: 'smooth' });
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLDivElement;
+    const firstChild = target.children[0] as HTMLElement;
+    if (firstChild) {
+      const itemWidth = firstChild.offsetWidth;
+      const index = Math.round(target.scrollLeft / itemWidth);
+      if (index !== currentIndex) {
+        setCurrentIndex(index);
+      }
+    }
+    // Only sync from scroll event when not actively dragging the thumb
+    if (!isDraggingThumbRef.current) {
+      updateScrollProgress(target);
+    }
   };
 
-  // Add initial scroll check to set progress in case of resizes
-  React.useEffect(() => {
-    if (scrollRef.current) {
-      const target = scrollRef.current;
-      const maxScroll = target.scrollWidth - target.clientWidth;
-      if (maxScroll > 0) {
-        setScrollProgress((target.scrollLeft / maxScroll) * 100);
+  // Start dragging thumb directly
+  const handleThumbStart = (clientX: number) => {
+    if (!trackRef.current || !scrollRef.current) return;
+    isDraggingThumbRef.current = true;
+    setIsDraggingThumb(true);
+    thumbDragStartX.current = clientX;
+
+    // Immediately disable scroll snap and smooth animation during drag
+    scrollRef.current.style.scrollSnapType = 'none';
+    scrollRef.current.style.scrollBehavior = 'auto';
+
+    const trackWidth = trackRef.current.clientWidth;
+    const thumbWidth = trackWidth * 0.3;
+    const maxThumbLeft = trackWidth - thumbWidth;
+
+    const maxScroll = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
+    const currentRatio = maxScroll > 0 ? scrollRef.current.scrollLeft / maxScroll : 0;
+    thumbStartLeftPx.current = currentRatio * maxThumbLeft;
+  };
+
+  // Track click: jump thumb to position and start dragging immediately
+  const handleTrackStart = (clientX: number) => {
+    if (!trackRef.current || !scrollRef.current) return;
+    const bounds = trackRef.current.getBoundingClientRect();
+    const trackWidth = bounds.width;
+    const thumbWidth = trackWidth * 0.3;
+    const maxThumbLeft = trackWidth - thumbWidth;
+
+    const clickX = clientX - bounds.left;
+    const targetLeft = Math.max(0, Math.min(maxThumbLeft, clickX - thumbWidth / 2));
+    const ratio = maxThumbLeft > 0 ? targetLeft / maxThumbLeft : 0;
+
+    // Disable snap and smooth scroll
+    scrollRef.current.style.scrollSnapType = 'none';
+    scrollRef.current.style.scrollBehavior = 'auto';
+
+    const maxScroll = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
+    scrollRef.current.scrollLeft = maxScroll * ratio;
+    setScrollProgress(ratio * 100);
+
+    // Immediately enter thumb dragging mode so dragging continues seamlessly
+    isDraggingThumbRef.current = true;
+    setIsDraggingThumb(true);
+    thumbDragStartX.current = clientX;
+    thumbStartLeftPx.current = targetLeft;
+  };
+
+  // Cards carousel mouse down -> start dragging cards
+  const handleCardsMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!scrollRef.current) return;
+    isDraggingCardsRef.current = true;
+    setIsDraggingCards(true);
+    dragStartX.current = e.clientX;
+    dragStartScroll.current = scrollRef.current.scrollLeft;
+    hasMoved.current = false;
+    scrollRef.current.style.scrollSnapType = 'none';
+    scrollRef.current.style.scrollBehavior = 'auto';
+  };
+
+  // Dragging movement logic for both thumb and cards
+  const handleMove = React.useCallback((clientX: number) => {
+    if (isDraggingThumbRef.current && trackRef.current && scrollRef.current) {
+      const trackWidth = trackRef.current.clientWidth;
+      const thumbWidth = trackWidth * 0.3;
+      const maxThumbLeft = trackWidth - thumbWidth;
+      const delta = clientX - thumbDragStartX.current;
+      const newLeftPx = Math.max(0, Math.min(maxThumbLeft, thumbStartLeftPx.current + delta));
+      const ratio = maxThumbLeft > 0 ? newLeftPx / maxThumbLeft : 0;
+
+      const maxScroll = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
+      scrollRef.current.scrollLeft = maxScroll * ratio;
+      setScrollProgress(ratio * 100);
+    } else if (isDraggingCardsRef.current && scrollRef.current) {
+      const delta = clientX - dragStartX.current;
+      if (Math.abs(delta) > 4) {
+        hasMoved.current = true;
       }
+      scrollRef.current.scrollLeft = dragStartScroll.current - delta;
+      updateScrollProgress(scrollRef.current);
     }
   }, []);
 
-  // Auto-play functionality
+  // Window listeners for smooth, uninterrupted mouse and touch dragging
   React.useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      if (isDraggingThumbRef.current || isDraggingCardsRef.current) {
+        e.preventDefault();
+        handleMove(e.clientX);
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if ((isDraggingThumbRef.current || isDraggingCardsRef.current) && e.touches.length > 0) {
+        e.preventDefault();
+        handleMove(e.touches[0].clientX);
+      }
+    };
+
+    const onEnd = () => {
+      let restored = false;
+      if (isDraggingThumbRef.current) {
+        isDraggingThumbRef.current = false;
+        setIsDraggingThumb(false);
+        restored = true;
+      }
+      if (isDraggingCardsRef.current) {
+        isDraggingCardsRef.current = false;
+        setIsDraggingCards(false);
+        restored = true;
+      }
+      if (restored && scrollRef.current) {
+        scrollRef.current.style.scrollSnapType = 'x mandatory';
+        scrollRef.current.style.scrollBehavior = 'smooth';
+      }
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onEnd);
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onEnd);
+    window.addEventListener('touchcancel', onEnd);
+
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onEnd);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onEnd);
+      window.removeEventListener('touchcancel', onEnd);
+    };
+  }, [handleMove]);
+
+  // Initial scroll progress check
+  React.useEffect(() => {
+    if (scrollRef.current) {
+      updateScrollProgress(scrollRef.current);
+    }
+  }, []);
+
+  // Auto-play functionality (pauses when dragging or hovering)
+  React.useEffect(() => {
+    if (isDraggingCards || isDraggingThumb || isHovered) return;
+
     const interval = setInterval(() => {
-      if (scrollRef.current) {
+      if (scrollRef.current && !isDraggingThumbRef.current && !isDraggingCardsRef.current) {
         const target = scrollRef.current;
         const firstChild = target.children[0] as HTMLElement;
         if (!firstChild) return;
@@ -1362,34 +1474,41 @@ const ProductCategories = () => {
         const maxScroll = target.scrollWidth - target.clientWidth;
         let nextScroll = target.scrollLeft + itemWidth;
         
-        // If we reached the end, loop back to the start
         if (target.scrollLeft >= maxScroll - 10) {
           nextScroll = 0;
         }
 
         target.scrollTo({ left: nextScroll, behavior: 'smooth' });
       }
-    }, 3500); // Auto-scroll every 3.5 seconds
+    }, 3500);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isDraggingCards, isDraggingThumb, isHovered]);
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    if (hasMoved.current) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
 
   return (
     <section className="w-full bg-white py-8 lg:py-12 border-b border-gray-100 relative z-20">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Category Cards Carousel */}
         <div 
           ref={scrollRef}
           onScroll={handleScroll}
-          onMouseDown={handleMouseDown}
-          onMouseLeave={handleMouseLeave}
-          onMouseUp={handleMouseUp}
-          onMouseMove={handleMouseMove}
-          className={`flex flex-row flex-nowrap items-center w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-6 pt-4 scroll-smooth select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+          onMouseDown={handleCardsMouseDown}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          className={`flex flex-row flex-nowrap items-center w-full overflow-x-auto snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] pb-6 pt-4 scroll-smooth select-none ${isDraggingCards ? 'cursor-grabbing' : 'cursor-grab'}`}
         >
           {categories.map((cat, idx) => (
             <div 
               key={idx}
               className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 shrink-0 snap-center px-2 sm:px-3"
+              onClickCapture={handleCardClick}
             >
               <div className="bg-gradient-to-b from-white to-[#eef2f9] border border-gray-200 rounded-[1rem] sm:rounded-[1.5rem] p-3 sm:p-5 flex flex-col aspect-square h-auto transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group cursor-pointer">
                 {/* Title */}
@@ -1408,7 +1527,7 @@ const ProductCategories = () => {
                     fill
                     draggable={false}
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className={`object-contain transition-transform duration-500 ${
+                    className={`object-contain transition-transform duration-500 pointer-events-none select-none ${
                       cat.title === 'DRY-CLEANING' 
                         ? 'scale-[1.58] group-hover:scale-[1.8]' 
                         : 'scale-[1.32] group-hover:scale-[1.5]'
@@ -1428,19 +1547,59 @@ const ProductCategories = () => {
           ))}
         </div>
 
-        {/* Progress Bar */}
+        {/* Progress Slider Track with Draggable Dark Blue Thumb */}
         <div className="w-full max-w-xs sm:max-w-md mx-auto mt-6 px-4">
           <div 
-            className="w-full h-1.5 sm:h-2 bg-gray-200 rounded-full relative overflow-hidden cursor-pointer"
-            onClick={handleProgressClick}
+            className="w-full py-3 select-none flex items-center justify-center relative touch-none"
           >
+            {/* The Track */}
             <div 
-              className="absolute top-0 left-0 h-full bg-[#0a2766] rounded-full transition-all duration-300 ease-out"
-              style={{ 
-                width: '30%',
-                left: `${scrollProgress * 0.7}%` 
+              ref={trackRef}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                handleTrackStart(e.clientX);
               }}
-            />
+              onTouchStart={(e) => {
+                if (e.touches.length > 0) {
+                  e.preventDefault();
+                  handleTrackStart(e.touches[0].clientX);
+                }
+              }}
+              className="w-full h-2 sm:h-2.5 bg-gray-200/90 hover:bg-gray-200 rounded-full relative cursor-pointer select-none"
+            >
+              {/* The Draggable Dark Blue Div Thumb */}
+              <div 
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleThumbStart(e.clientX);
+                }}
+                onTouchStart={(e) => {
+                  e.stopPropagation();
+                  if (e.touches.length > 0) {
+                    e.preventDefault();
+                    handleThumbStart(e.touches[0].clientX);
+                  }
+                }}
+                className={`absolute top-1/2 -translate-y-1/2 h-4 sm:h-5 bg-[#0a2766] hover:bg-[#123985] active:bg-[#071c49] rounded-full shadow-md select-none touch-none cursor-grab active:cursor-grabbing flex items-center justify-center ${
+                  isDraggingThumb 
+                    ? 'cursor-grabbing scale-y-110 shadow-lg ring-2 ring-[#0a2766]/30' 
+                    : 'transition-[left,transform] duration-150 ease-out hover:scale-105'
+                }`}
+                style={{ 
+                  width: '30%',
+                  left: `${(scrollProgress / 100) * 70}%` 
+                }}
+                title="Drag to scroll categories"
+              >
+                {/* Visual tactile grip indicator */}
+                <div className="flex items-center gap-1 opacity-70 pointer-events-none">
+                  <span className="w-1 h-2 rounded-full bg-white/90" />
+                  <span className="w-1 h-2 rounded-full bg-white/90" />
+                  <span className="w-1 h-2 rounded-full bg-white/90" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
