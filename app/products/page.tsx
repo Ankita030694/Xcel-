@@ -76,6 +76,18 @@ export default function ProductsPage() {
           const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
           return timeB - timeA;
         });
+
+        // Pre-cache products in sessionStorage for instant flicker-free navigation to product detail page
+        try {
+          if (typeof window !== 'undefined') {
+            Object.values(FALLBACK_PRODUCTS).flat().forEach((p) => {
+              sessionStorage.setItem(`xcel_prod_${p.id}`, JSON.stringify(p));
+            });
+            fetchedProducts.forEach((p) => {
+              sessionStorage.setItem(`xcel_prod_${p.id}`, JSON.stringify(p));
+            });
+          }
+        } catch (e) {}
         
         setProducts(fetchedProducts);
       } catch (error) {
@@ -88,28 +100,65 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
+  const scrollToCategoryHeader = () => {
+    const element = document.getElementById('category-header');
+    if (element) {
+      const headerOffset = 135;
+      const rect = element.getBoundingClientRect();
+      const targetY = rect.top + window.pageYOffset - headerOffset;
+      window.scrollTo({
+        top: Math.max(0, targetY),
+        behavior: 'smooth'
+      });
+    }
+  };
+
   useEffect(() => {
+    const handleCategoryTarget = (targetId: string) => {
+      if (targetId && categories.some(c => c.id === targetId)) {
+        setActiveTab(targetId);
+        setTimeout(scrollToCategoryHeader, 60);
+        setTimeout(scrollToCategoryHeader, 250);
+        setTimeout(scrollToCategoryHeader, 600);
+      }
+    };
+
     const handleHashChange = () => {
       const hash = window.location.hash ? window.location.hash.substring(1) : '';
       const urlParams = new URLSearchParams(window.location.search);
       const categoryParam = urlParams.get('category') || '';
-      
       const targetId = hash || categoryParam;
-      if (targetId && categories.some(c => c.id === targetId)) {
-        setActiveTab(targetId);
-        const element = document.getElementById('products-section');
-        if (element) {
-          setTimeout(() => {
-            element.scrollIntoView({ behavior: 'smooth' });
-          }, 300);
-        }
+      if (targetId) {
+        handleCategoryTarget(targetId);
+      }
+    };
+
+    const handleCustomCategoryEvent = (e: any) => {
+      if (e?.detail) {
+        handleCategoryTarget(e.detail);
       }
     };
 
     handleHashChange();
     window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('select-product-category', handleCustomCategoryEvent);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('select-product-category', handleCustomCategoryEvent);
+    };
   }, []);
+
+  // When products finish loading, re-align if hash exists
+  useEffect(() => {
+    if (!loading) {
+      const hash = window.location.hash ? window.location.hash.substring(1) : '';
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetId = hash || urlParams.get('category');
+      if (targetId && categories.some(c => c.id === targetId)) {
+        setTimeout(scrollToCategoryHeader, 100);
+      }
+    }
+  }, [loading]);
 
   // Reset scroll and dot index when category changes
   useEffect(() => {
@@ -119,11 +168,28 @@ export default function ProductsPage() {
     }
   }, [activeTab]);
 
+  const isCompleteRange = activeTab === 'complete-range';
   const activeCategory = categories.find(c => c.id === activeTab) || categories[0];
-  let activeCategoryProducts = products.filter(p => p.categoryId === activeCategory.id);
   
-  if (activeCategoryProducts.length === 0) {
-    activeCategoryProducts = FALLBACK_PRODUCTS[activeCategory.id] || [];
+  let activeCategoryProducts: any[] = [];
+  if (isCompleteRange) {
+    if (products.length > 0) {
+      const catOrder = categories.map(c => c.id);
+      activeCategoryProducts = [...products].sort((a, b) => {
+        const orderA = catOrder.indexOf(a.categoryId);
+        const orderB = catOrder.indexOf(b.categoryId);
+        return (orderA === -1 ? 999 : orderA) - (orderB === -1 ? 999 : orderB);
+      });
+    } else {
+      activeCategoryProducts = Object.entries(FALLBACK_PRODUCTS)
+        .filter(([catId]) => catId !== 'complete-range')
+        .flatMap(([_, list]) => list);
+    }
+  } else {
+    activeCategoryProducts = products.filter(p => p.categoryId === activeCategory.id);
+    if (activeCategoryProducts.length === 0) {
+      activeCategoryProducts = FALLBACK_PRODUCTS[activeCategory.id] || [];
+    }
   }
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
@@ -145,7 +211,7 @@ export default function ProductsPage() {
       {/* Hero Banner Section */}
       <section className="w-full bg-[#f3f5f8]">
          <img 
-           src="/Desktop%20-%20Product%20Overview%20Banner%20(1600%20x%20600%20px).webp" 
+           src="/Product%20Overview%20(1600%20x%20600%20px).svg" 
            alt="Product Overview - From Washing To Finishing" 
            className="w-full h-auto block"
            style={{ aspectRatio: '1600/600' }}
@@ -190,7 +256,7 @@ export default function ProductsPage() {
         </div>
 
         {/* Category Header */}
-        <div className="w-full flex justify-start items-center mb-6">
+        <div id="category-header" className="w-full flex justify-start items-center mb-6 scroll-mt-[135px]">
           <div className="flex items-center gap-2">
             <div className="w-1 h-5 lg:h-6 bg-[#3b5b95]"></div>
             <h2 className="text-[#0a2766] font-bold text-[16px] lg:text-[22px] uppercase tracking-wide">
@@ -207,34 +273,50 @@ export default function ProductsPage() {
             No products available in this category yet.
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 w-full pb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 xl:gap-8 w-full pb-8">
             {activeCategoryProducts.map((product) => (
-              <Link href={`/product/${product.id}`} key={product.id} className="bg-white rounded-xl lg:rounded-2xl border border-gray-100 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-row lg:flex-col group cursor-pointer h-[160px] sm:h-[180px] lg:h-full">
+              <Link 
+                href={`/product/${product.id}`} 
+                key={product.id} 
+                onClick={() => {
+                  try {
+                    sessionStorage.setItem(`xcel_prod_${product.id}`, JSON.stringify(product));
+                  } catch (e) {}
+                }}
+                onMouseEnter={() => {
+                  try {
+                    sessionStorage.setItem(`xcel_prod_${product.id}`, JSON.stringify(product));
+                  } catch (e) {}
+                }}
+                className="bg-white rounded-xl md:rounded-2xl border border-gray-100 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-row xl:flex-col group cursor-pointer h-[180px] sm:h-[195px] md:h-[215px] xl:h-full"
+              >
                 
                 {/* Product Image */}
-                <div className="w-[45%] lg:w-full h-full lg:h-[260px] bg-[#f8f9fa] lg:bg-white p-3 lg:p-6 relative flex items-center justify-center flex-shrink-0 lg:border-b lg:border-gray-50">
+                <div className="w-[42%] sm:w-[44%] md:w-[45%] xl:w-full h-full xl:h-[260px] bg-[#f8f9fa] xl:bg-white p-3 sm:p-4 md:p-5 xl:p-6 relative flex items-center justify-center flex-shrink-0 xl:border-b xl:border-gray-50">
                   <img 
                     src={product.imageUrl || '/placeholder.png'} 
                     alt={product.name} 
-                    className="w-full h-full object-contain mix-blend-multiply lg:mix-blend-normal" 
+                    className="w-full h-full object-contain mix-blend-multiply xl:mix-blend-normal" 
                   />
                 </div>
 
                 {/* Product Info */}
-                <div className="flex flex-col flex-1 p-4 lg:p-6 text-left">
-                  <h3 className="text-[12px] lg:text-[15px] font-extrabold text-[#0a2766] uppercase mb-1.5 lg:mb-2 leading-snug">
-                    {product.name}
-                  </h3>
-                  {product.subheading && (
-                    <p className="text-[11px] lg:text-[13px] text-[#4b5563] font-normal leading-relaxed line-clamp-2 lg:line-clamp-2">
-                      {product.subheading}
-                    </p>
-                  )}
+                <div className="flex flex-col flex-1 p-3.5 sm:p-4 md:p-5 xl:p-6 text-left justify-between">
+                  <div>
+                    <h3 className="text-[12px] sm:text-[13px] md:text-[15px] font-extrabold text-[#0a2766] uppercase mb-1.5 leading-snug">
+                      {product.name}
+                    </h3>
+                    {product.subheading && (
+                      <p className="text-[11px] sm:text-[12px] md:text-[13px] text-[#4b5563] font-normal leading-relaxed line-clamp-2 sm:line-clamp-3">
+                        {product.subheading}
+                      </p>
+                    )}
+                  </div>
                   
                   {/* Arrow Button */}
-                  <div className="w-full flex justify-end mt-auto pt-2 lg:pt-4">
-                    <div className="w-7 h-7 lg:w-9 lg:h-9 rounded-full border border-[#3b5b95] flex items-center justify-center text-[#3b5b95] group-hover:bg-[#3b5b95] group-hover:text-white transition-colors">
-                      <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                  <div className="w-full flex justify-end mt-auto pt-2">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-full border border-[#3b5b95] flex items-center justify-center text-[#3b5b95] group-hover:bg-[#3b5b95] group-hover:text-white transition-colors">
+                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
                     </div>

@@ -130,6 +130,15 @@ export default function ProductDetailPage() {
   const SECTION_IDS = ['features', 'why-us', 'industries', 'faqs'];
 
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    const cached = getProductFromCache(id);
+    if (cached) {
+      setProduct(cached);
+      setLoading(false);
+    }
+  }, [id]);
+
+  useEffect(() => {
     const fetchProduct = async () => {
       if (!id) return;
       

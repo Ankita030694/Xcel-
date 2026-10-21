@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { Star, ShieldCheck, Zap, Maximize, Play, Pause, Factory, Handshake } from 'lucide-react';
 import { Header } from './components/Header';
@@ -116,9 +117,9 @@ const HeroCarousel = () => {
     '/HERO%20Desktop%20(1800%20x%20600%20px)/HERO%203.svg'
   ];
   const mobileImages = [
-    '/HERO%20Mobile%20(1080%20x%201250%20px)/HERO%201.svg',
-    '/HERO%20Mobile%20(1080%20x%201250%20px)/HERO%202.svg',
-    '/HERO%20Mobile%20(1080%20x%201250%20px)/HERO%203.svg'
+    '/FINAL%203%20Mobile%20-%20(1080%20x%201250%20px)%20(1)/HERO%201.svg',
+    '/FINAL%203%20Mobile%20-%20(1080%20x%201250%20px)%20(1)/HERO%202.svg',
+    '/FINAL%203%20Mobile%20-%20(1080%20x%201250%20px)%20(1)/HERO%203.svg'
   ];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -572,166 +573,175 @@ const WhyChooseUs = () => {
 
 const ProductsHoverGallery = () => {
   const baseImages = [
-    { src: "/Final Banners  (1)/1.svg", alt: "Apparel Washing & High Speed Extract Equipment", title: "APPAREL WASHING & HIGH SPEED EXTRACT" },
-    { src: "/Final Banners  (1)/2.svg", alt: "Flat-Work Ironer & Finishing Commercial Equipment", title: "FLAT-WORK IRONER" },
-    { src: "/Final Banners  (1)/3.svg", alt: "Softener Washer Dryer Multi-Stage Equipment", title: "SOFTENER WASHER DRYER" },
+    { 
+      id: 0,
+      src: "/03%20Banners%2C%201350%20x%201080%20Baners/1.svg", 
+      alt: "Apparel Washing & High Speed Extract Equipment", 
+      title: "APPAREL WASHING & HIGH SPEED EXTRACT",
+      link: "/products#apparel-processing"
+    },
+    { 
+      id: 1,
+      src: "/03%20Banners%2C%201350%20x%201080%20Baners/2.svg", 
+      alt: "Flat-Work Ironer & Finishing Commercial Equipment", 
+      title: "FLAT-WORK IRONER",
+      link: "/products#flat-work"
+    },
+    { 
+      id: 2,
+      src: "/03%20Banners%2C%201350%20x%201080%20Baners/3.svg", 
+      alt: "Softener Washer Dryer Multi-Stage Equipment", 
+      title: "SOFTENER WASHER DRYER",
+      link: "/products#washing"
+    },
   ];
 
-  // Repeat array multiple times for a seamless infinite loop track
-  const REPEAT_COUNT = 9;
-  const trackItems = React.useMemo(() => {
-    const items: Array<{ src: string; alt: string; title: string; originalIndex: number }> = [];
-    for (let r = 0; r < REPEAT_COUNT; r++) {
-      baseImages.forEach((img, idx) => {
-        items.push({ ...img, originalIndex: idx });
-      });
+  // 5-card looping track: clone2, item0, item1, item2, clone0
+  const cards = [
+    { key: 'clone-2', ...baseImages[2] }, // index 0 (clone of 2)
+    { key: 'item-0', ...baseImages[0] },  // index 1 (Apparel Washing, active)
+    { key: 'item-1', ...baseImages[1] },  // index 2 (Flat-Work Ironer)
+    { key: 'item-2', ...baseImages[2] },  // index 3 (Softener Wash)
+    { key: 'clone-0', ...baseImages[0] }, // index 4 (clone of 0)
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(1); // start at Apparel Washing
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
+  const [isDraggingThumb, setIsDraggingThumb] = useState(false);
+
+  const dragStartX = useRef(0);
+  const hasMoved = useRef(false);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const goToIndex = (newIndex: number) => {
+    setDragOffset(0);
+    setCurrentIndex(newIndex);
+  };
+
+  const handleDragStart = (clientX: number) => {
+    setIsDragging(true);
+    dragStartX.current = clientX;
+    setDragOffset(0);
+    hasMoved.current = false;
+  };
+
+  const handleDragMove = (clientX: number) => {
+    if (!isDragging) return;
+    const delta = clientX - dragStartX.current;
+    if (Math.abs(delta) > 5) {
+      hasMoved.current = true;
     }
-    return items;
-  }, []);
+    setDragOffset(delta);
+  };
 
-  const INITIAL_INDEX = baseImages.length * 4; // Index 12 (starts on baseImages[0])
-  const [currentIndex, setCurrentIndex] = useState(INITIAL_INDEX);
-  const [isTransitioning, setIsTransitioning] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
 
-  // Helper to restart the 2-second timer cleanly on user interaction
-  const resetAutoplayTimer = React.useCallback(() => {
-    if (timerRef.current) clearInterval(timerRef.current);
-    if (isHovered) return;
+    if (dragOffset < -50) {
+      goToIndex(currentIndex + 1);
+    } else if (dragOffset > 50) {
+      goToIndex(currentIndex - 1);
+    } else {
+      setDragOffset(0);
+    }
+  };
 
-    timerRef.current = setInterval(() => {
-      setIsTransitioning(true);
-      setCurrentIndex((prev) => prev + 1);
-    }, 2000);
-  }, [isHovered]);
-
-  // Auto-play: move right-to-left every 2 seconds on desktop
-  useEffect(() => {
-    resetAutoplayTimer();
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, [resetAutoplayTimer]);
-
-  // Infinite loop boundary reset: seamlessly snap back without animation
   const handleTransitionEnd = () => {
-    if (currentIndex >= baseImages.length * 7) {
-      setIsTransitioning(false);
-      const normalizedIndex = baseImages.length * 4 + (currentIndex % baseImages.length);
-      setCurrentIndex(normalizedIndex);
+    if (currentIndex === 4) {
+      setIsResetting(true);
+      setCurrentIndex(1);
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          setIsTransitioning(true);
+          setIsResetting(false);
         });
       });
-    } else if (currentIndex <= baseImages.length * 2) {
-      setIsTransitioning(false);
-      const normalizedIndex = baseImages.length * 4 + (currentIndex % baseImages.length);
-      setCurrentIndex(normalizedIndex);
+    } else if (currentIndex === 0) {
+      setIsResetting(true);
+      setCurrentIndex(3);
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          setIsTransitioning(true);
+          setIsResetting(false);
         });
       });
     }
   };
 
-  const handleNext = () => {
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => prev + 1);
-    resetAutoplayTimer();
-  };
-
-  const handlePrev = () => {
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => prev - 1);
-    resetAutoplayTimer();
-  };
-
-  const handleDotClick = (dotIndex: number) => {
-    const activeModulo = ((currentIndex % baseImages.length) + baseImages.length) % baseImages.length;
-    let diff = dotIndex - activeModulo;
-    if (diff === 2) diff = -1;
-    if (diff === -2) diff = 1;
-    setIsTransitioning(true);
-    setCurrentIndex((prev) => prev + diff);
-    resetAutoplayTimer();
-  };
-
-  // Mobile slider state & handlers
-  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
-  const mobileScrollRef = useRef<HTMLDivElement>(null);
-  const isDraggingRef = useRef(false);
-  const startXRef = useRef(0);
-  const scrollLeftRef = useRef(0);
-  const hasMovedRef = useRef(false);
-
-  const updateMobileActiveIndex = () => {
-    if (!mobileScrollRef.current) return;
-    const container = mobileScrollRef.current;
-    const children = Array.from(container.children) as HTMLElement[];
-    const containerCenter = container.scrollLeft + container.clientWidth / 2;
-    let closestIndex = 0;
-    let minDistance = Infinity;
-
-    children.forEach((child, index) => {
-      const childCenter = child.offsetLeft + child.offsetWidth / 2;
-      const distance = Math.abs(containerCenter - childCenter);
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestIndex = index;
-      }
-    });
-
-    if (closestIndex !== mobileActiveIndex) {
-      setMobileActiveIndex(closestIndex);
+  // Slider thumb handling
+  const handleTrackClick = (clientX: number) => {
+    if (!trackRef.current) return;
+    const rect = trackRef.current.getBoundingClientRect();
+    const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    if (ratio < 0.33) {
+      goToIndex(1);
+    } else if (ratio < 0.66) {
+      goToIndex(2);
+    } else {
+      goToIndex(3);
     }
   };
 
-  const scrollToMobileImage = (index: number) => {
-    if (!mobileScrollRef.current) return;
-    const container = mobileScrollRef.current;
-    const children = Array.from(container.children) as HTMLElement[];
-    if (children[index]) {
-      const child = children[index];
-      const targetScroll = child.offsetLeft - (container.clientWidth - child.offsetWidth) / 2;
-      container.scrollTo({ left: targetScroll, behavior: 'smooth' });
-      setMobileActiveIndex(index);
-    }
-  };
-
-  const handleMobileMouseDown = (e: React.MouseEvent) => {
-    if (!mobileScrollRef.current) return;
-    isDraggingRef.current = true;
-    hasMovedRef.current = false;
-    startXRef.current = e.pageX - mobileScrollRef.current.offsetLeft;
-    scrollLeftRef.current = mobileScrollRef.current.scrollLeft;
-    mobileScrollRef.current.style.scrollSnapType = 'none';
-    mobileScrollRef.current.style.scrollBehavior = 'auto';
-  };
-
-  const handleMobileMouseMove = (e: React.MouseEvent) => {
-    if (!isDraggingRef.current || !mobileScrollRef.current) return;
+  const handleThumbMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
-    const x = e.pageX - mobileScrollRef.current.offsetLeft;
-    const walk = (x - startXRef.current);
-    if (Math.abs(walk) > 4) {
-      hasMovedRef.current = true;
-    }
-    mobileScrollRef.current.scrollLeft = scrollLeftRef.current - walk;
-    updateMobileActiveIndex();
+    e.stopPropagation();
+    setIsDraggingThumb(true);
   };
 
-  const handleMobileMouseUpOrLeave = () => {
-    if (!isDraggingRef.current || !mobileScrollRef.current) return;
-    isDraggingRef.current = false;
-    mobileScrollRef.current.style.scrollSnapType = 'x mandatory';
-    mobileScrollRef.current.style.scrollBehavior = 'smooth';
-    updateMobileActiveIndex();
+  const handleThumbTouchStart = (e: React.TouchEvent) => {
+    e.stopPropagation();
+    setIsDraggingThumb(true);
   };
 
-  const activeOriginalIndex = ((currentIndex % baseImages.length) + baseImages.length) % baseImages.length;
+  useEffect(() => {
+    const onMouseMove = (e: MouseEvent) => {
+      if (isDragging) {
+        handleDragMove(e.clientX);
+      } else if (isDraggingThumb && trackRef.current) {
+        const rect = trackRef.current.getBoundingClientRect();
+        const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        if (ratio < 0.33) goToIndex(1);
+        else if (ratio < 0.66) goToIndex(2);
+        else goToIndex(3);
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        if (isDragging) {
+          handleDragMove(e.touches[0].clientX);
+        } else if (isDraggingThumb && trackRef.current) {
+          const rect = trackRef.current.getBoundingClientRect();
+          const ratio = Math.max(0, Math.min(1, (e.touches[0].clientX - rect.left) / rect.width));
+          if (ratio < 0.33) goToIndex(1);
+          else if (ratio < 0.66) goToIndex(2);
+          else goToIndex(3);
+        }
+      }
+    };
+
+    const onEnd = () => {
+      if (isDragging) handleDragEnd();
+      if (isDraggingThumb) setIsDraggingThumb(false);
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onEnd);
+    window.addEventListener('touchmove', onTouchMove);
+    window.addEventListener('touchend', onEnd);
+
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onEnd);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onEnd);
+    };
+  }, [isDragging, isDraggingThumb, dragOffset, currentIndex]);
+
+  // Current active 0-indexed banner: 0, 1, or 2
+  const activeBanner = ((currentIndex - 1) % 3 + 3) % 3;
+  const thumbLeftPercent = (activeBanner / 2) * 65;
 
   return (
     <section className="bg-[#f8fafc] w-full pt-10 lg:pt-14 pb-10 lg:pb-16 overflow-hidden border-t border-gray-100 relative">
@@ -746,82 +756,73 @@ const ProductsHoverGallery = () => {
         </h2>
       </div>
 
-      {/* Desktop 3D Infinite Shrinking & Growing Carousel (Visible on screens >= md) */}
-      <div 
-        className="hidden md:block w-full relative group/carousel select-none py-2"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        {/* Soft edge fade masks for seamless bleed */}
-        <div className="absolute left-0 top-0 bottom-0 w-24 md:w-32 xl:w-48 bg-gradient-to-r from-[#f8fafc] via-[#f8fafc]/90 to-transparent z-40 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-24 md:w-32 xl:w-48 bg-gradient-to-l from-[#f8fafc] via-[#f8fafc]/90 to-transparent z-40 pointer-events-none" />
+      <div className="relative w-full max-w-[1750px] mx-auto overflow-hidden px-2 sm:px-4">
+        {/* Soft Left and Right Gradient Edge Fades (as in screenshot) */}
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-16 sm:w-28 md:w-40 lg:w-56 bg-gradient-to-r from-[#f8fafc] via-[#f8fafc]/85 to-transparent z-30" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-16 sm:w-28 md:w-40 lg:w-56 bg-gradient-to-l from-[#f8fafc] via-[#f8fafc]/85 to-transparent z-30" />
 
-        {/* Carousel Stage */}
-        <div className="relative w-full h-[460px] lg:h-[540px] xl:h-[580px] flex items-center justify-center overflow-hidden [perspective:1200px]">
+        {/* Carousel Center Stage Anchor */}
+        <div 
+          className="w-[84vw] sm:w-[70vw] md:w-[52vw] lg:w-[44vw] xl:w-[40vw] max-w-[620px] mx-auto relative select-none cursor-grab active:cursor-grabbing touch-pan-y py-4"
+          onMouseDown={(e) => handleDragStart(e.clientX)}
+          onTouchStart={(e) => e.touches.length > 0 && handleDragStart(e.touches[0].clientX)}
+        >
+          {/* 5-Card Sliding Track with continuous translation */}
           <div 
-            className="flex items-center absolute left-1/2 top-1/2 -translate-y-1/2 will-change-transform"
-            style={{ 
-              transform: `translate3d(-${(currentIndex + 0.5) * 660}px, 0, 0)`,
-              transition: isTransitioning ? 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none'
+            className="flex flex-row items-center will-change-transform"
+            style={{
+              width: '500%',
+              transform: `translate3d(calc(${-currentIndex * 20}% + ${dragOffset}px), 0, 0)`,
+              transition: isDragging || isResetting ? 'none' : 'transform 600ms cubic-bezier(0.16, 1, 0.3, 1)'
             }}
             onTransitionEnd={handleTransitionEnd}
           >
-            {trackItems.map((item, idx) => {
-              const offset = idx - currentIndex;
-              const isCenter = offset === 0;
-              const isLeft = offset === -1;
-              const isRight = offset === 1;
-
-              let scaleVal = 0.5;
-              let opacityVal = 0;
-              let zIndexVal = 0;
-              let shadowVal = 'none';
-              let cursorStyle = 'pointer-events-none';
-
-              if (isCenter) {
-                scaleVal = 1;
-                opacityVal = 1;
-                zIndexVal = 30;
-                shadowVal = '0 25px 50px -12px rgba(10,39,102,0.2)';
-                cursorStyle = 'cursor-default';
-              } else if (isLeft || isRight) {
-                scaleVal = 0.78;
-                opacityVal = 0.65;
-                zIndexVal = 20;
-                shadowVal = '0 10px 25px -5px rgba(0,0,0,0.08)';
-                cursorStyle = 'cursor-pointer hover:opacity-85';
-              } else if (Math.abs(offset) === 2) {
-                scaleVal = 0.65;
-                opacityVal = 0.15;
-                zIndexVal = 10;
-                cursorStyle = 'pointer-events-none';
-              }
-
+            {cards.map((card, idx) => {
+              const isCenter = idx === currentIndex;
               return (
                 <div 
-                  key={idx}
+                  key={card.key}
                   onClick={() => {
-                    if (isLeft) handlePrev();
-                    if (isRight) handleNext();
+                    if (hasMoved.current) return;
+                    if (idx === currentIndex - 1) goToIndex(currentIndex - 1);
+                    else if (idx === currentIndex + 1) goToIndex(currentIndex + 1);
                   }}
-                  className="w-[660px] shrink-0 flex items-center justify-center py-4"
+                  style={{ width: '20%' }}
+                  className="shrink-0 px-2 sm:px-3 md:px-4"
                 >
                   <div 
-                    style={{
-                      transform: `scale(${scaleVal}) translateZ(0)`,
-                      opacity: opacityVal,
-                      zIndex: zIndexVal,
-                      boxShadow: shadowVal,
-                      transition: isTransitioning ? 'transform 850ms cubic-bezier(0.16, 1, 0.3, 1), opacity 850ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 850ms cubic-bezier(0.16, 1, 0.3, 1)' : 'none',
-                    }}
-                    className={`w-[760px] lg:w-[820px] xl:w-[860px] aspect-[4/3] rounded-2xl lg:rounded-3xl overflow-hidden bg-white border border-gray-100 will-change-transform [backface-visibility:hidden] ${cursorStyle}`}
+                    className={`w-full aspect-[1350/1080] rounded-2xl lg:rounded-3xl overflow-hidden bg-white border border-gray-100 transition-all duration-500 ease-out cursor-pointer ${
+                      isCenter
+                        ? 'scale-100 opacity-100 shadow-[0_12px_44px_rgba(0,0,0,0.14)] z-20'
+                        : 'scale-[0.80] sm:scale-[0.82] opacity-45 hover:opacity-75 shadow-md z-10'
+                    }`}
                   >
-                    <img 
-                      src={item.src} 
-                      alt={item.alt} 
-                      className="w-full h-full object-cover pointer-events-none select-none block bg-white" 
-                      draggable="false"
-                    />
+                    {isCenter ? (
+                      <Link 
+                        href={card.link}
+                        onClick={(e) => {
+                          if (hasMoved.current) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }
+                        }}
+                        className="w-full h-full block group"
+                      >
+                        <img 
+                          src={card.src} 
+                          alt={card.alt} 
+                          draggable="false" 
+                          className="w-full h-full object-cover block pointer-events-none transition-transform duration-500 group-hover:scale-[1.02]" 
+                        />
+                      </Link>
+                    ) : (
+                      <img 
+                        src={card.src} 
+                        alt={card.alt} 
+                        draggable="false" 
+                        className="w-full h-full object-cover block pointer-events-none" 
+                      />
+                    )}
                   </div>
                 </div>
               );
@@ -829,95 +830,39 @@ const ProductsHoverGallery = () => {
           </div>
         </div>
 
-        {/* Navigation Arrows */}
-        <button 
-          type="button"
-          onClick={handlePrev}
-          aria-label="Previous Slide"
-          className="absolute left-4 lg:left-8 xl:left-12 top-1/2 -translate-y-1/2 z-40 w-11 h-11 lg:w-13 lg:h-13 rounded-full bg-white/90 shadow-xl border border-gray-100 flex items-center justify-center text-[#0a2766] opacity-0 group-hover/carousel:opacity-100 hover:bg-white hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
-        >
-          <svg className="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-
-        <button 
-          type="button"
-          onClick={handleNext}
-          aria-label="Next Slide"
-          className="absolute right-4 lg:right-8 xl:right-12 top-1/2 -translate-y-1/2 z-40 w-11 h-11 lg:w-13 lg:h-13 rounded-full bg-white/90 shadow-xl border border-gray-100 flex items-center justify-center text-[#0a2766] opacity-0 group-hover/carousel:opacity-100 hover:bg-white hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
-        >
-          <svg className="w-5 h-5 lg:w-6 lg:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-
-        {/* Desktop 3 Pagination Dots */}
-        <div className="flex items-center justify-center gap-2.5 mt-4 lg:mt-6">
-          {baseImages.map((_, idx) => {
-            const isActive = activeOriginalIndex === idx;
-            return (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => handleDotClick(idx)}
-                aria-label={`Go to slide ${idx + 1}`}
-                className={`h-2.5 rounded-full transition-all duration-300 ease-out focus:outline-none cursor-pointer ${
-                  isActive 
-                    ? "w-9 bg-[#0a2766] shadow-[0_2px_8px_rgba(10,39,102,0.35)]" 
-                    : "w-2.5 bg-gray-300 hover:bg-gray-400 opacity-70 hover:opacity-100"
-                }`}
-              />
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Mobile Draggable Slider Layout (Visible only on screens < md) */}
-      <div className="md:hidden w-full flex flex-col items-center">
-        <div 
-          ref={mobileScrollRef}
-          onScroll={updateMobileActiveIndex}
-          onMouseDown={handleMobileMouseDown}
-          onMouseMove={handleMobileMouseMove}
-          onMouseUp={handleMobileMouseUpOrLeave}
-          onMouseLeave={handleMobileMouseUpOrLeave}
-          onTouchEnd={() => setTimeout(updateMobileActiveIndex, 100)}
-          className="flex overflow-x-auto snap-x snap-mandatory gap-4 px-4 sm:px-6 w-full cursor-grab active:cursor-grabbing select-none scroll-smooth pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
-        >
-          {baseImages.map((item, idx) => (
+        {/* Progress Slider Track with Draggable Dark Blue Thumb */}
+        <div className="w-full max-w-xs sm:max-w-md mx-auto mt-6 px-4">
+          <div className="w-full py-3 select-none flex items-center justify-center relative touch-none">
+            {/* The Track */}
             <div 
-              key={idx}
-              className="relative w-[88vw] sm:w-[80vw] max-w-[520px] aspect-[4/3] shrink-0 snap-center rounded-2xl overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] bg-white border border-gray-100 flex items-center justify-center"
+              ref={trackRef}
+              onClick={(e) => handleTrackClick(e.clientX)}
+              className="w-full h-2 sm:h-2.5 bg-gray-200/90 hover:bg-gray-200 rounded-full relative cursor-pointer select-none"
             >
-              <img 
-                src={item.src} 
-                alt={item.alt} 
-                draggable="false"
-                className="w-full h-full object-cover block pointer-events-none" 
-              />
-            </div>
-          ))}
-        </div>
-        
-        {/* Mobile 3 Pagination Dots Indicator */}
-        <div className="flex items-center justify-center gap-2.5 mt-5 sm:mt-6">
-          {baseImages.map((_, idx) => {
-            const isActive = mobileActiveIndex === idx;
-            return (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => scrollToMobileImage(idx)}
-                aria-label={`Go to image ${idx + 1}`}
-                className={`h-2.5 rounded-full transition-all duration-300 ease-out focus:outline-none ${
-                  isActive 
-                    ? "w-8 bg-[#0a2766] shadow-[0_2px_8px_rgba(10,39,102,0.3)]" 
-                    : "w-2.5 bg-gray-300 hover:bg-gray-400 opacity-80 hover:opacity-100"
+              {/* The Draggable Dark Blue Div Thumb */}
+              <div 
+                onMouseDown={handleThumbMouseDown}
+                onTouchStart={handleThumbTouchStart}
+                className={`absolute top-1/2 -translate-y-1/2 h-4 sm:h-5 bg-[#0a2766] hover:bg-[#123985] active:bg-[#071c49] rounded-full shadow-md select-none touch-none cursor-grab active:cursor-grabbing flex items-center justify-center ${
+                  isDraggingThumb 
+                    ? 'cursor-grabbing scale-y-110 shadow-lg ring-2 ring-[#0a2766]/30' 
+                    : 'transition-[left,transform] duration-300 ease-out hover:scale-105'
                 }`}
-              />
-            );
-          })}
+                style={{ 
+                  width: '35%',
+                  left: `${thumbLeftPercent}%` 
+                }}
+                title="Drag or click to switch banners"
+              >
+                {/* Visual tactile grip indicator */}
+                <div className="flex items-center gap-1 opacity-70 pointer-events-none">
+                  <span className="w-1 h-2 rounded-full bg-white/90" />
+                  <span className="w-1 h-2 rounded-full bg-white/90" />
+                  <span className="w-1 h-2 rounded-full bg-white/90" />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -1284,16 +1229,16 @@ const ProductCategories = () => {
   const thumbStartLeftPx = React.useRef(0);
 
   const categories = [
-    { title: "WASHING", img: "/category/Washing.svg" },
-    { title: "DRYING", img: "/category/Drying.svg" },
-    { title: "APPAREL PROCESSING", img: "/category/Apparel Washing.svg" },
-    { title: "DRY-CLEANING", img: "/category/Dry Cleaning.svg" },
-    { title: "FLAT-WORK", img: "/category/Flat Work.svg" },
-    { title: "STEAM-FINISHING", img: "/category/Steam Finish.svg" },
-    { title: "WATER HEATER", img: "/category/Water Heater.svg" },
-    { title: "FABRIC CHECKING", img: "/category/Fabric Cleaning.svg" },
-    { title: "OTHER EQUIPMENT", img: "/category/Other Equipment.svg" },
-    { title: "COMPLETE RANGE", img: "/category/Complete Range.svg" }
+    { id: "washing", title: "WASHING", img: "/category/Washing.svg" },
+    { id: "drying", title: "DRYING", img: "/category/Drying.svg" },
+    { id: "apparel-processing", title: "APPAREL PROCESSING", img: "/category/Apparel Washing.svg" },
+    { id: "dry-cleaning", title: "DRY-CLEANING", img: "/category/Dry Cleaning.svg" },
+    { id: "flat-work", title: "FLAT-WORK", img: "/category/Flat Work.svg" },
+    { id: "steam-finishing", title: "STEAM-FINISHING", img: "/category/Steam Finish.svg" },
+    { id: "water-heater", title: "WATER HEATER", img: "/category/Water Heater.svg" },
+    { id: "fabric-checking", title: "FABRIC CHECKING", img: "/category/Fabric Cleaning.svg" },
+    { id: "other-equipment", title: "OTHER EQUIPMENT", img: "/category/Other Equipment.svg" },
+    { id: "complete-range", title: "COMPLETE RANGE", img: "/category/Complete Range.svg" }
   ];
 
   // Helper to update scroll progress from carousel element
@@ -1460,30 +1405,7 @@ const ProductCategories = () => {
     }
   }, []);
 
-  // Auto-play functionality (pauses when dragging or hovering)
-  React.useEffect(() => {
-    if (isDraggingCards || isDraggingThumb || isHovered) return;
 
-    const interval = setInterval(() => {
-      if (scrollRef.current && !isDraggingThumbRef.current && !isDraggingCardsRef.current) {
-        const target = scrollRef.current;
-        const firstChild = target.children[0] as HTMLElement;
-        if (!firstChild) return;
-
-        const itemWidth = firstChild.offsetWidth;
-        const maxScroll = target.scrollWidth - target.clientWidth;
-        let nextScroll = target.scrollLeft + itemWidth;
-        
-        if (target.scrollLeft >= maxScroll - 10) {
-          nextScroll = 0;
-        }
-
-        target.scrollTo({ left: nextScroll, behavior: 'smooth' });
-      }
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, [isDraggingCards, isDraggingThumb, isHovered]);
 
   const handleCardClick = (e: React.MouseEvent) => {
     if (hasMoved.current) {
@@ -1508,9 +1430,17 @@ const ProductCategories = () => {
             <div 
               key={idx}
               className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 shrink-0 snap-center px-2 sm:px-3"
-              onClickCapture={handleCardClick}
             >
-              <div className="bg-gradient-to-b from-white to-[#eef2f9] border border-gray-200 rounded-[1rem] sm:rounded-[1.5rem] p-3 sm:p-5 flex flex-col aspect-square h-auto transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group cursor-pointer">
+              <Link
+                href={`/products#${cat.id}`}
+                onClick={(e) => {
+                  if (hasMoved.current) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }
+                }}
+                className="bg-gradient-to-b from-white to-[#eef2f9] border border-gray-200 rounded-[1rem] sm:rounded-[1.5rem] p-3 sm:p-5 flex flex-col aspect-square h-auto transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group cursor-pointer block isolate"
+              >
                 {/* Title */}
                 <h3 className="text-[#0a2766] font-extrabold text-[12px] min-[400px]:text-[13px] sm:text-[15px] lg:text-[16px] xl:text-[18px] tracking-tighter leading-snug mb-1 sm:mb-3 text-left shrink-0 whitespace-nowrap overflow-visible pt-1">
                   {cat.title}
@@ -1520,7 +1450,7 @@ const ProductCategories = () => {
                 <div className="w-6 sm:w-10 h-[2px] bg-[#0a2766] rounded-full mb-2 sm:mb-4 shrink-0"></div>
                 
                 {/* Image */}
-                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[150px] relative w-full overflow-hidden mix-blend-multiply">
+                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[150px] relative w-full overflow-hidden mix-blend-multiply [transform:translateZ(0)]">
                   <Image 
                     src={cat.img} 
                     alt={cat.title} 
@@ -1542,7 +1472,7 @@ const ProductCategories = () => {
                     <path d="M0 12H30M22 4L30 12L22 20" />
                   </svg>
                 </div>
-              </div>
+              </Link>
             </div>
           ))}
         </div>
