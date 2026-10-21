@@ -136,7 +136,7 @@ export const Footer = () => {
               
               <label className="flex items-start gap-2 cursor-pointer">
                 <input type="checkbox" checked={formData.acceptedPolicy} onChange={(e) => setFormData({ ...formData, acceptedPolicy: e.target.checked })} className="w-3.5 h-3.5 mt-0.5 accent-[#002d73] cursor-pointer shrink-0" />
-                <span className="text-[#0a2766] text-[13px] leading-tight">By checking this box I accept the <strong>Privacy Policy</strong></span>
+                <span className="text-[#0a2766] text-[13px] leading-tight">By checking this box I accept the <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline font-bold hover:text-[#001f54]">Privacy Policy</a></span>
               </label>
             </div>
 
@@ -153,6 +153,7 @@ export const Footer = () => {
               <div className="flex-1 bg-[#3b5e94] p-6 text-white">
                 <h4 className="text-[16px] font-semibold mb-3">Our Corporate Office</h4>
                 <p className="text-white/90 leading-relaxed text-[13px]">
+                  Xcel Stiro Private Limited<br />
                   Plot No. 70, Sector 27C,<br />
                   Faridabad, Haryana 121003, India<br /><br />
                   sales@xcelstiro.com
@@ -180,21 +181,36 @@ export const Footer = () => {
             {/* Section 2: Social Icons */}
             <div className="w-full bg-[#3b5e94] py-3 flex justify-center items-center gap-6">
               {/* Facebook Icon */}
-              <a href="#" className="text-white hover:text-white/70 transition-colors">
+              <a 
+                href="https://www.facebook.com/profile.php?id=100068674694991&mibextid=LQQJ4d" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Facebook"
+                className="text-white hover:text-white/70 transition-colors"
+              >
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.312h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"/></svg>
               </a>
               {/* Instagram Icon */}
-              <a href="#" className="text-white hover:text-white/70 transition-colors">
+              <a 
+                href="https://www.instagram.com/xcelstiro?obrf=ZzB3N2s3MHN2dm5m&utm_source=qr" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="Instagram"
+                className="text-white hover:text-white/70 transition-colors"
+              >
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
               </a>
               {/* YouTube Icon */}
-              <a href="#" className="text-white hover:text-white/70 transition-colors">
+              <a 
+                href="https://www.youtube.com/@XcelStiroPrivateLimited" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                aria-label="YouTube"
+                className="text-white hover:text-white/70 transition-colors"
+              >
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.377.55a3.016 3.016 0 0 0-2.122 2.136C0 8.07 0 12 0 12s0 3.93.501 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.55 9.377.55 9.377.55s7.505 0 9.377-.55a3.016 3.016 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               </a>
-              {/* WhatsApp Icon */}
-              <a href="#" className="text-white hover:text-white/70 transition-colors">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.347-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.876 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-              </a>
+              
             </div>
 
             {/* Section 3: Links Grid */}
@@ -267,7 +283,7 @@ export const Footer = () => {
             XCEL STIRO PRIVATE LIMITED. ALL RIGHTS RESERVED
           </div>
           <div className="flex flex-wrap justify-center gap-5 sm:gap-8 text-[12px] font-semibold tracking-wide text-white">
-            <a href="/privacy" className="hover:text-white/70 transition-colors">PRIVACY</a>
+            <a href="/privacy" className="hover:text-white/70 transition-colors">PRIVACY POLICY</a>
             <a href="/terms" className="hover:text-white/70 transition-colors">TERMS OF SERVICE</a>
             <a href="/sitemap" className="hover:text-white/70 transition-colors">SITEMAP</a>
           </div>

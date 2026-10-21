@@ -15,7 +15,7 @@ export default function AboutPage() {
       {/* About Us Hero Section (Image Banner) */}
       <section className="relative w-full h-auto flex flex-col items-center justify-center bg-white overflow-hidden pt-0 pb-0">
         <img 
-          src="/ABOUT%20US%20BANNER%2050px.webp" 
+          src="/ABOUT%20US%20(1600%20x%20600).svg" 
           alt="About Us Banner" 
           className="w-full h-auto block"
           style={{ aspectRatio: '1600/600' }}
@@ -23,7 +23,7 @@ export default function AboutPage() {
       </section>
 
       {/* Our Story Section - New Layout */}
-      <section id="our-story" className="scroll-mt-[130px] relative py-10 lg:py-12 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
+      <section id="our-story" className="scroll-mt-[90px] relative pt-12 lg:pt-14 pb-10 lg:pb-12 px-4 sm:px-6 lg:px-10 bg-white overflow-hidden">
         <div className="max-w-[1200px] mx-auto relative">
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-[100px] mb-2 relative z-10 px-4 lg:px-8 items-start">
             {/* Left Column: Vertical Stats */}
@@ -67,11 +67,11 @@ export default function AboutPage() {
                 
                 <div className="flex flex-col items-start text-left gap-1">
                   <h3 className="text-[36px] sm:text-[42px] font-bold text-[#0a2766] leading-none">
-                    25+
+                    100%
                   </h3>
                   <div className="w-12 h-[2px] bg-[#32589c] opacity-30 my-1"></div>
                   <p className="text-[#32589c] text-[13px] sm:text-[14px] font-semibold leading-tight max-w-[180px]">
-                    States Covered
+                    Made in India
                   </p>
                 </div>
               </div>
@@ -188,7 +188,7 @@ export default function AboutPage() {
       </section>
 
       <DraggableTimeline />
-      <div id="vision" className="scroll-mt-[130px]">
+      <div id="vision" className="scroll-mt-[124px]">
         <MissionVisionSection />
       </div>
 
