@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
@@ -33,25 +34,47 @@ const FAQList = ({ faqs }: { faqs: { question: string; answer: string }[] }) => 
         return (
           <div 
             key={index} 
-            className="bg-white border border-gray-100 rounded-lg overflow-hidden shadow-[0_2px_12px_rgba(0,0,0,0.03)] transition-all"
+            className={`bg-white border rounded-xl overflow-hidden transition-all duration-300 ease-out ${
+              isOpen 
+                ? 'border-[#0a2766]/25 shadow-[0_4px_16px_rgba(10,39,102,0.06)] bg-[#fafcff]' 
+                : 'border-gray-100 shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:border-gray-200'
+            }`}
           >
             <button 
+              type="button"
               onClick={() => setOpenIndex(isOpen ? null : index)}
-              className="w-full flex items-center justify-between p-4 sm:p-5 text-left focus:outline-none"
+              className="w-full flex items-center justify-between p-4 sm:p-5 text-left focus:outline-none cursor-pointer transition-colors duration-200"
+              aria-expanded={isOpen}
             >
-              <div className="flex items-start gap-3 sm:gap-4 w-full">
-                <span className="text-[#0a2766] font-bold text-[16px] shrink-0">Q{index + 1}.</span>
-                <span className="text-[#0a2766] font-bold text-[16px] pr-4 leading-tight">{faq.question}</span>
+              <div className="flex items-start gap-3 sm:gap-4 w-full pr-3">
+                <span className={`font-bold text-[15px] sm:text-[16px] shrink-0 transition-colors duration-200 ${
+                  isOpen ? 'text-[#0a2766]' : 'text-[#0a2766]/80'
+                }`}>
+                  Q{index + 1}.
+                </span>
+                <span className={`font-bold text-[15px] sm:text-[16px] leading-snug transition-colors duration-200 ${
+                  isOpen ? 'text-[#0a2766]' : 'text-gray-800'
+                }`}>
+                  {faq.question}
+                </span>
               </div>
-              <div className="shrink-0 text-[#0a2766]">
-                {isOpen ? <ChevronUp size={20} strokeWidth={2} /> : <ChevronDown size={20} strokeWidth={2} />}
+              <div className="shrink-0 text-[#0a2766] ml-2">
+                <ChevronDown 
+                  size={20} 
+                  strokeWidth={2} 
+                  className={`transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                    isOpen ? 'rotate-180 text-[#0a2766]' : 'rotate-0 text-gray-400'
+                  }`} 
+                />
               </div>
             </button>
-            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-              <div className="px-4 sm:pl-[48px] sm:pr-[60px] pb-5 pt-1">
-                <p className="text-[#363636] text-[16px] leading-relaxed">
-                  {faq.answer}
-                </p>
+            <div className={`smooth-accordion-grid ${isOpen ? 'is-open' : ''}`}>
+              <div className="smooth-accordion-inner">
+                <div className="smooth-accordion-content px-4 sm:pl-[48px] sm:pr-[60px] pb-5 pt-1">
+                  <p className="text-[#363636] text-[15px] sm:text-[16px] leading-relaxed">
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -61,22 +84,57 @@ const FAQList = ({ faqs }: { faqs: { question: string; answer: string }[] }) => 
   );
 };
 
+const productCache = new Map<string, any>();
+
+function getProductFromCache(id: string) {
+  if (!id) return null;
+  if (productCache.has(id)) {
+    return productCache.get(id);
+  }
+  if (typeof window !== 'undefined') {
+    try {
+      const stored = sessionStorage.getItem(`xcel_prod_${id}`);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        productCache.set(id, parsed);
+        return parsed;
+      }
+    } catch (e) {}
+  }
+  return null;
+}
+
+function saveProductToCache(id: string, data: any) {
+  if (!id || !data) return;
+  productCache.set(id, data);
+  if (typeof window !== 'undefined') {
+    try {
+      sessionStorage.setItem(`xcel_prod_${id}`, JSON.stringify(data));
+    } catch (e) {}
+  }
+}
+
 export default function ProductDetailPage() {
   const params = useParams();
-  const [product, setProduct] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const id = (params?.id as string) || '';
+
+  const [product, setProduct] = useState<any>(() => getProductFromCache(id));
+  const [loading, setLoading] = useState<boolean>(() => !getProductFromCache(id));
   
   const [activeSection, setActiveSection] = useState<string | null>('features');
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const thumbnailContainerRef = useRef<HTMLDivElement>(null);
+  const mobileAccordionRef = useRef<HTMLDivElement>(null);
+  const desktopTabsRef = useRef<HTMLDivElement>(null);
+  const SECTION_IDS = ['features', 'why-us', 'industries', 'faqs'];
 
   useEffect(() => {
     const fetchProduct = async () => {
-      if (!params.id) return;
+      if (!id) return;
       
-      const id = params.id as string;
       if (id.startsWith('fallback-')) {
-        setProduct({
+        const fallbackData = {
           id,
           name: 'Demo Product (Placeholder)',
           categoryId: 'washing',
@@ -97,7 +155,9 @@ export default function ProductDetailPage() {
             { question: 'What is the standard warranty on this machine?', answer: 'We provide a 1-year comprehensive warranty on all parts and labor.' },
             { question: 'Can this machine be customized?', answer: 'Yes, our engineering team can tailor the specifications to meet your specific industrial needs.' }
           ]
-        });
+        };
+        setProduct(fallbackData);
+        saveProductToCache(id, fallbackData);
         setLoading(false);
         return;
       }
@@ -106,7 +166,9 @@ export default function ProductDetailPage() {
         const docRef = doc(db, "products", id);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
-          setProduct({ id: docSnap.id, ...docSnap.data() });
+          const productData = { id: docSnap.id, ...docSnap.data() };
+          setProduct(productData);
+          saveProductToCache(id, productData);
         } else {
           setProduct(null);
         }
@@ -117,14 +179,73 @@ export default function ProductDetailPage() {
       }
     };
     fetchProduct();
-  }, [params.id]);
+  }, [id]);
+
+  useEffect(() => {
+    const container = thumbnailContainerRef.current;
+    if (container && container.children && container.children[activeImageIndex]) {
+      const targetThumb = container.children[activeImageIndex] as HTMLElement;
+      if (targetThumb) {
+        targetThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      }
+    }
+  }, [activeImageIndex]);
 
   const handleMobileAccordionClick = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     const isOpening = mobileExpanded !== id;
     if (isOpening) {
       setMobileExpanded(id);
+
+      if (mobileAccordionRef.current) {
+        const container = mobileAccordionRef.current;
+        const sectionIndex = SECTION_IDS.indexOf(id);
+        const buttons = container.querySelectorAll<HTMLButtonElement>('button[data-accordion-btn]');
+        
+        let accumulatedTop = 0;
+        for (let i = 0; i < sectionIndex; i++) {
+          accumulatedTop += (buttons[i]?.offsetHeight || 72) + 1;
+        }
+
+        const containerTop = container.getBoundingClientRect().top + window.pageYOffset;
+        const headerOffset = 135; // sticky header total height (ticker 34px + navbar 90px + spacing)
+        const targetScrollTop = Math.max(0, containerTop + accumulatedTop - headerOffset);
+
+        window.scrollTo({
+          top: targetScrollTop,
+          behavior: 'smooth'
+        });
+
+        // Refine positioning once collapse transition settles
+        setTimeout(() => {
+          const btn = document.getElementById(`mobile-tab-${id}`);
+          if (btn) {
+            const currentTop = btn.getBoundingClientRect().top;
+            if (Math.abs(currentTop - headerOffset) > 8) {
+              window.scrollTo({
+                top: Math.max(0, currentTop + window.pageYOffset - headerOffset),
+                behavior: 'smooth'
+              });
+            }
+          }
+        }, 360);
+      }
     } else {
       setMobileExpanded(null);
+    }
+  };
+
+  const handleDesktopTabClick = (sectionId: string) => {
+    setActiveSection(sectionId);
+    if (desktopTabsRef.current) {
+      const rect = desktopTabsRef.current.getBoundingClientRect();
+      const headerOffset = 135;
+      if (rect.top < headerOffset || rect.top > 250) {
+        const targetY = rect.top + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: Math.max(0, targetY),
+          behavior: 'smooth'
+        });
+      }
     }
   };
 
@@ -132,10 +253,18 @@ export default function ProductDetailPage() {
     return (
       <div className="min-h-screen bg-white font-sans flex flex-col">
         <Header />
-        <main className="flex-1 flex items-center justify-center">
-          <p className="text-gray-500 text-lg">Loading product details...</p>
+        <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10 animate-pulse">
+          <div className="h-4 w-60 bg-gray-200 rounded-md mb-8"></div>
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 mb-12">
+            <div className="w-full sm:w-[80%] md:w-[65%] lg:w-[45%] xl:w-[40%] aspect-square bg-gray-100 rounded-[32px]"></div>
+            <div className="flex-1 flex flex-col space-y-4 pt-2">
+              <div className="h-6 w-24 bg-gray-200 rounded-full"></div>
+              <div className="h-10 w-3/4 bg-gray-200 rounded-lg"></div>
+              <div className="h-28 w-full bg-gray-100 rounded-xl mt-4"></div>
+              <div className="h-12 w-full sm:w-64 bg-gray-200 rounded-xl mt-8"></div>
+            </div>
+          </div>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -155,8 +284,18 @@ export default function ProductDetailPage() {
   }
 
   const productImages = [product.imageUrl, ...(product.additionalImages || [])].filter(Boolean);
-  const nextImage = () => setActiveImageIndex((prev) => (prev + 1) % productImages.length);
-  const prevImage = () => setActiveImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length);
+  
+  const scrollToThumbnail = (index: number) => {
+    setActiveImageIndex(index);
+  };
+
+  const nextImage = () => {
+    setActiveImageIndex((prev) => (prev + 1) % productImages.length);
+  };
+
+  const prevImage = () => {
+    setActiveImageIndex((prev) => (prev - 1 + productImages.length) % productImages.length);
+  };
 
   const sections = [
     {
@@ -240,19 +379,31 @@ export default function ProductDetailPage() {
         
         {/* Breadcrumbs */}
         <div className="flex flex-row items-center gap-3 text-[13px] text-[#363636] mb-6 lg:mb-10 overflow-x-auto whitespace-nowrap pb-2">
-          <a href="/" className="text-[#363636] hover:text-[#0a2766] transition-colors flex items-center">
+          <Link href="/" className="text-[#363636] hover:text-[#0a2766] transition-colors flex items-center" title="Home">
              <Home size={14} strokeWidth={1.5} />
-          </a>
-          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
-          <a href="/" className="hover:text-[#0a2766] transition-colors">Home</a>
-          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
-          <a href="/products" className="hover:text-[#0a2766] transition-colors cursor-pointer">Products</a>
-          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
-          <span className="hover:text-[#0a2766] transition-colors cursor-pointer">
+          </Link>
+          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+          <Link href="/" className="hover:text-[#0a2766] transition-colors">
+            Home
+          </Link>
+          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+          <Link href="/products" className="hover:text-[#0a2766] transition-colors">
+            Products
+          </Link>
+          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+          <Link 
+            href={`/products#${product.categoryId}`} 
+            className="hover:text-[#0a2766] transition-colors"
+          >
             {CATEGORY_NAMES[product.categoryId] || product.categoryId}
-          </span>
-          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400" />
-          <span className="text-[#0a2766] font-semibold">{product.name}</span>
+          </Link>
+          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+          <Link 
+            href={`/product/${product.id}`}
+            className="text-[#0a2766] font-semibold hover:text-[#081e4f] transition-colors"
+          >
+            {product.name}
+          </Link>
         </div>
 
         {/* Top Section */}
@@ -271,25 +422,52 @@ export default function ProductDetailPage() {
             
             {/* Thumbnails Row */}
             {productImages.length > 1 && (
-              <div className="flex flex-row items-center justify-center w-full">
-                <button onClick={prevImage} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-800 transition-colors shrink-0">
-                  <ArrowLeft size={24} strokeWidth={1} />
+              <div className="flex flex-row items-center justify-between w-full gap-2 sm:gap-3">
+                <button 
+                  type="button"
+                  onClick={prevImage} 
+                  className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-gray-500 hover:text-[#0a2766] hover:bg-gray-100 rounded-full transition-colors shrink-0 cursor-pointer"
+                  aria-label="Previous thumbnail"
+                >
+                  <ArrowLeft size={20} strokeWidth={1.8} />
                 </button>
 
-                <div className="flex flex-row justify-center gap-3 sm:gap-4 overflow-x-auto scrollbar-hide py-2 px-2 flex-1">
+                <div 
+                  ref={thumbnailContainerRef}
+                  className={`flex flex-row gap-[10px] overflow-x-auto scrollbar-hide py-1.5 flex-1 snap-x snap-mandatory scroll-smooth ${
+                    productImages.length < 4 ? 'justify-center' : ''
+                  }`}
+                  style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
                   {productImages.map((img, idx) => (
                     <button 
                       key={idx}
-                      onClick={() => setActiveImageIndex(idx)}
-                      className={`relative w-16 sm:w-20 lg:w-[80px] aspect-square shrink-0 rounded-2xl overflow-hidden transition-all bg-[#f4f5f9] ${activeImageIndex === idx ? 'opacity-100 ring-2 ring-offset-2 ring-[#0a2766]' : 'opacity-70 hover:opacity-100'}`}
+                      type="button"
+                      onClick={() => scrollToThumbnail(idx)}
+                      className={`relative aspect-square shrink-0 rounded-xl sm:rounded-2xl overflow-hidden transition-all bg-[#f4f5f9] snap-start border-2 cursor-pointer ${
+                        activeImageIndex === idx 
+                          ? 'border-[#0a2766] opacity-100 shadow-sm' 
+                          : 'border-transparent opacity-70 hover:opacity-100 hover:border-gray-200'
+                      }`}
+                      style={{ width: 'calc((100% - 30px) / 4)' }}
+                      aria-label={`View image ${idx + 1}`}
                     >
-                      <img src={img} alt={`Thumbnail ${idx}`} className="absolute inset-0 w-full h-full object-contain p-2" />
+                      <img 
+                        src={img} 
+                        alt={`Thumbnail ${idx + 1}`} 
+                        className="absolute inset-0 w-full h-full object-contain p-2" 
+                      />
                     </button>
                   ))}
                 </div>
 
-                <button onClick={nextImage} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-gray-800 transition-colors shrink-0">
-                  <ArrowRight size={24} strokeWidth={1} />
+                <button 
+                  type="button"
+                  onClick={nextImage} 
+                  className="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-gray-500 hover:text-[#0a2766] hover:bg-gray-100 rounded-full transition-colors shrink-0 cursor-pointer"
+                  aria-label="Next thumbnail"
+                >
+                  <ArrowRight size={20} strokeWidth={1.8} />
                 </button>
               </div>
             )}
@@ -345,35 +523,55 @@ export default function ProductDetailPage() {
         </div>
 
         {/* Features Accordion Section (Mobile) */}
-        <div className="flex lg:hidden flex-col mb-12 bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden divide-y divide-gray-100">
-          {sections.map(section => (
-            <div key={section.id} className="flex flex-col bg-white">
-              <button 
-                onClick={(e) => handleMobileAccordionClick(e, section.id)} 
-                className="flex flex-row items-center justify-between p-4 sm:p-5 text-left w-full transition-colors bg-[#f4f7fb]"
-              >
-                <div className="flex flex-row items-center gap-4">
-                  <div className="w-[2px] h-[40px] shrink-0 bg-[#0a2766]"></div>
-                  <div className="flex flex-col gap-0.5 pr-2">
-                    <span className="font-semibold text-[16px] sm:text-[17px] text-[#0a2766]">{section.title}</span>
-                    <span className="text-[13px] leading-snug text-[#363636]">{section.subtext}</span>
+        <div 
+          ref={mobileAccordionRef}
+          className="flex lg:hidden flex-col mb-12 bg-white rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.04)] border border-gray-100 overflow-hidden divide-y divide-gray-100"
+        >
+          {sections.map(section => {
+            const isSectionOpen = mobileExpanded === section.id;
+            return (
+              <div key={section.id} className="flex flex-col bg-white">
+                <button 
+                  data-accordion-btn="true"
+                  id={`mobile-tab-${section.id}`}
+                  onClick={(e) => handleMobileAccordionClick(e, section.id)} 
+                  className="flex flex-row items-center justify-between p-4 sm:p-5 text-left w-full transition-colors bg-[#f4f7fb] cursor-pointer scroll-mt-20"
+                  aria-expanded={isSectionOpen}
+                >
+                  <div className="flex flex-row items-center gap-4">
+                    <div className="w-[2px] h-[40px] shrink-0 bg-[#0a2766]"></div>
+                    <div className="flex flex-col gap-0.5 pr-2">
+                      <span className="font-semibold text-[16px] sm:text-[17px] text-[#0a2766]">{section.title}</span>
+                      <span className="text-[13px] leading-snug text-[#363636]">{section.subtext}</span>
+                    </div>
                   </div>
-                </div>
-                <ChevronDown size={22} strokeWidth={1.5} className={`shrink-0 ml-2 text-[#0a2766] transition-transform duration-300 ${mobileExpanded === section.id ? 'rotate-180' : ''}`} />
-              </button>
-              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileExpanded === section.id ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0 bg-white'}`}>
-                <div className="p-4 sm:p-5 pt-0 mt-0">
-                  <div className="pt-4 border-t border-gray-100">
-                    {section.content}
+                  <ChevronDown 
+                    size={22} 
+                    strokeWidth={1.5} 
+                    className={`shrink-0 ml-2 text-[#0a2766] transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                      isSectionOpen ? 'rotate-180' : 'rotate-0'
+                    }`} 
+                  />
+                </button>
+                <div className={`smooth-accordion-grid ${isSectionOpen ? 'is-open' : ''}`}>
+                  <div className="smooth-accordion-inner">
+                    <div className="smooth-accordion-content p-4 sm:p-5 pt-0 mt-0">
+                      <div className="pt-4 border-t border-gray-100">
+                        {section.content}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Features Tabs Section (Desktop) */}
-        <div className="hidden lg:flex mb-12 lg:mb-20 bg-white rounded-2xl shadow-sm border border-gray-100 flex-col">
+        <div 
+          ref={desktopTabsRef}
+          className="hidden lg:flex mb-12 lg:mb-20 bg-white rounded-2xl shadow-sm border border-gray-100 flex-col scroll-mt-36"
+        >
             {/* Tabs Header */}
             <div className="flex flex-row w-full mb-0 relative z-20 [&>button:first-child]:rounded-tl-2xl [&>button:last-child]:rounded-tr-2xl">
               {sections.map((section, index) => {
@@ -383,8 +581,8 @@ export default function ProductDetailPage() {
                 return (
                   <button
                     key={section.id}
-                    onClick={() => setActiveSection(section.id)}
-                    className={`relative flex-1 flex items-center justify-center gap-2 py-4 sm:py-5 text-sm sm:text-base font-bold transition-all ${
+                    onClick={() => handleDesktopTabClick(section.id)}
+                    className={`relative flex-1 flex items-center justify-center gap-2 py-4 sm:py-5 text-sm sm:text-base font-bold transition-all cursor-pointer ${
                       activeSection === section.id 
                         ? 'text-white bg-[#0a2766]' 
                         : 'text-[#0a2766] bg-white hover:bg-gray-50'
@@ -409,27 +607,27 @@ export default function ProductDetailPage() {
               {sections.map((section) => (
                 <div 
                   key={section.id}
-                  className={activeSection === section.id ? 'block' : 'hidden'}
+                  className={activeSection === section.id ? 'block animate-tab-fade-in' : 'hidden'}
                 >
                   <div className="flex flex-col lg:flex-row gap-10 lg:gap-16 pt-0 pr-6 sm:pr-10 lg:pr-12 pb-6 sm:pb-10 lg:pb-0 pl-0">
                     {/* Left: Subtext Box */}
                     <div className="w-full lg:w-[35%] flex flex-col items-start shrink-0 bg-[#f8f9fc] rounded-br-[24px] rounded-tr-[24px] lg:rounded-bl-2xl p-8 sm:p-10 relative overflow-hidden shadow-sm">
-                    <h3 className="text-[#0a2766] font-semibold text-[16px] sm:text-[20px] lg:text-[22px] leading-[1.3] mb-8 relative z-10">
-                      {section.subtext}
-                    </h3>
-                    <div className="w-16 h-[4px] bg-[#0a2766] rounded-full relative z-10"></div>
-                    
-                    {/* Decorative Wave Pattern at bottom */}
-                    <div className="relative w-full h-32 mt-auto opacity-[0.10] pointer-events-none -mb-10 overflow-visible">
-                      <svg viewBox="0 0 1000 400" preserveAspectRatio="none" className="w-full h-full fill-none stroke-[#0a2766] stroke-[2px] -rotate-[15deg] scale-[1.2] -translate-y-3">
-                        <path d="M 0 150 Q 250 300 500 150 T 1000 150" />
-                        <path d="M 0 170 Q 250 320 500 170 T 1000 170" />
-                        <path d="M 0 190 Q 250 340 500 190 T 1000 190" />
-                        <path d="M 0 210 Q 250 360 500 210 T 1000 210" />
-                        <path d="M 0 230 Q 250 380 500 230 T 1000 230" />
-                      </svg>
+                      <h3 className="text-[#0a2766] font-semibold text-[16px] sm:text-[20px] lg:text-[22px] leading-[1.3] mb-5 relative z-10">
+                        {section.subtext}
+                      </h3>
+                      <div className="w-16 h-[4px] bg-[#0a2766] rounded-full relative z-10 mb-5"></div>
+                      
+                      {/* Curvy Decorative Lines directly below heading & small horizontal line (Edge-to-edge, unclipped) */}
+                      <div className="relative -mx-8 sm:-mx-10 w-[calc(100%+4rem)] sm:w-[calc(100%+5rem)] h-32 sm:h-40 opacity-[0.22] pointer-events-none mt-5 sm:mt-7 mb-2">
+                        <svg viewBox="-50 40 1100 290" preserveAspectRatio="none" className="w-full h-full fill-none stroke-[#0a2766] stroke-[2.2px]">
+                          <path d="M -80 240 C 250 240, 360 80, 600 85 C 780 90, 950 135, 1080 140" />
+                          <path d="M -80 256 C 250 256, 360 96, 600 101 C 780 106, 950 151, 1080 156" />
+                          <path d="M -80 272 C 250 272, 360 112, 600 117 C 780 122, 950 167, 1080 172" />
+                          <path d="M -80 288 C 250 288, 360 128, 600 133 C 780 138, 950 183, 1080 188" />
+                          <path d="M -80 304 C 250 304, 360 144, 600 149 C 780 154, 950 199, 1080 204" />
+                        </svg>
+                      </div>
                     </div>
-                  </div>
                   
                   {/* Right: Actual Content */}
                   <div className="w-full lg:w-[65%] pt-6 sm:pt-8 lg:pt-12 lg:pb-12">

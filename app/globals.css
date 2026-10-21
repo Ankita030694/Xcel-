@@ -51,3 +51,56 @@ body {
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #1e448a; 
 }
+
+/* Buttery Smooth Accordion Animations */
+.smooth-accordion-grid {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: grid-template-rows;
+}
+
+.smooth-accordion-grid.is-open {
+  grid-template-rows: 1fr;
+}
+
+.smooth-accordion-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.smooth-accordion-content {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 320ms cubic-bezier(0.16, 1, 0.3, 1), transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.smooth-accordion-grid.is-open .smooth-accordion-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-tab-fade-in {
+  animation: tabFadeIn 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

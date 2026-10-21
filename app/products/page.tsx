@@ -90,17 +90,18 @@ export default function ProductsPage() {
 
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash;
-      if (hash) {
-        const id = hash.substring(1);
-        if (categories.some(c => c.id === id)) {
-          setActiveTab(id);
-          const element = document.getElementById('products-section');
-          if (element) {
-            setTimeout(() => {
-              element.scrollIntoView({ behavior: 'smooth' });
-            }, 500);
-          }
+      const hash = window.location.hash ? window.location.hash.substring(1) : '';
+      const urlParams = new URLSearchParams(window.location.search);
+      const categoryParam = urlParams.get('category') || '';
+      
+      const targetId = hash || categoryParam;
+      if (targetId && categories.some(c => c.id === targetId)) {
+        setActiveTab(targetId);
+        const element = document.getElementById('products-section');
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }, 300);
         }
       }
     };
