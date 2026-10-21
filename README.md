@@ -1,38 +1,33 @@
-# XCEL
+# XCEL - Commercial & Industrial Laundry Equipment
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+XCEL is a modern web application showcasing premier commercial, industrial, and institutional laundry solutions, equipment ranges, product specifications, and insights.
+
+## Tech Stack
+
+- **Framework**: [Next.js](https://nextjs.org/) (App Router, Turbopack)
+- **UI & Styling**: React 19, Tailwind CSS v4, Lucide Icons
+- **Backend / Database**: Firebase
+- **Language**: TypeScript
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Key Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Product Showcase**: Detailed catalog for commercial washers, dry cleaners, finishing equipment, and accessories.
+- **Admin Management**: Dedicated portal for managing products and inbound customer leads.
+- **Interactive UI**: Responsive layouts, interactive India service map, and clean modern aesthetic.
+- **SEO Optimized**: Static metadata generation, dynamic blogs, dynamic sitemaps, and optimized routing.
 
-## Learn More
+## Deployment
 
-To learn more about Next.js, take a look at the following resources:
+This Next.js application can be deployed directly to [Vercel](https://vercel.com/) or any Node.js hosting platform.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
