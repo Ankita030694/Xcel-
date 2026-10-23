@@ -816,7 +816,7 @@ const ProductsHoverGallery = () => {
                           src={card.src} 
                           alt={card.alt} 
                           draggable="false" 
-                          className="w-full h-full object-cover block pointer-events-none transition-transform duration-500 group-hover:scale-[1.02]" 
+                          className="w-full h-full object-cover block pointer-events-none" 
                         />
                       </Link>
                     ) : (
@@ -929,9 +929,7 @@ const ProjectsGallery = () => {
                   alt={project.title} 
                   fill
                   sizes="(min-width: 1024px) 850px"
-                  className={`object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,1,0.5,1)] ${
-                    isActive ? 'scale-105' : 'scale-100'
-                  }`} 
+                  className="object-cover" 
                 />
               </div>
               
@@ -975,7 +973,7 @@ const ProjectsGallery = () => {
               alt={project.title} 
               fill
               sizes="(max-width: 640px) 85vw, 400px"
-              className="object-cover transition-transform duration-700 group-hover:scale-105" 
+              className="object-cover" 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
             <div className="absolute bottom-0 left-0 w-full p-6 flex flex-col justify-end">
@@ -1454,14 +1452,14 @@ const ProductCategories = () => {
                 <div className="w-6 sm:w-10 h-[2px] bg-[#0a2766] rounded-full mb-2 sm:mb-4 shrink-0"></div>
                 
                 {/* Image */}
-                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[150px] relative w-full overflow-hidden mix-blend-multiply [transform:translateZ(0)] p-2">
+                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[150px] relative w-full overflow-hidden mix-blend-multiply [transform:translateZ(0)]">
                   <Image 
                     src={cat.img} 
                     alt={cat.title} 
                     fill
                     draggable={false}
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className="object-contain p-2 pointer-events-none select-none" 
+                    className="object-contain scale-[1.20] pointer-events-none select-none" 
                   />
                 </div>
                 
