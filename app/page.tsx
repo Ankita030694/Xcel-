@@ -1454,18 +1454,14 @@ const ProductCategories = () => {
                 <div className="w-6 sm:w-10 h-[2px] bg-[#0a2766] rounded-full mb-2 sm:mb-4 shrink-0"></div>
                 
                 {/* Image */}
-                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[150px] relative w-full overflow-hidden mix-blend-multiply [transform:translateZ(0)]">
+                <div className="flex-grow flex items-center justify-center mb-1 sm:mb-2 min-h-[100px] sm:min-h-[150px] relative w-full overflow-hidden mix-blend-multiply [transform:translateZ(0)] p-2">
                   <Image 
                     src={cat.img} 
                     alt={cat.title} 
                     fill
                     draggable={false}
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                    className={`object-contain transition-transform duration-500 pointer-events-none select-none ${
-                      cat.title === 'DRY-CLEANING' 
-                        ? 'scale-[1.58] group-hover:scale-[1.8]' 
-                        : 'scale-[1.32] group-hover:scale-[1.5]'
-                    }`} 
+                    className="object-contain p-2 pointer-events-none select-none" 
                   />
                 </div>
                 
