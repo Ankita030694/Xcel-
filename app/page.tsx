@@ -112,14 +112,14 @@ const StatsBanner = () => {
 
 const HeroCarousel = () => {
   const images = [
-    '/HERO%20Desktop%20(1800%20x%20600%20px)/HERO%201.svg',
-    '/HERO%20Desktop%20(1800%20x%20600%20px)/HERO%202.svg',
-    '/HERO%20Desktop%20(1800%20x%20600%20px)/HERO%203.svg'
+    '/banners/hero-desktop-1.webp',
+    '/banners/hero-desktop-2.webp',
+    '/banners/hero-desktop-3.webp'
   ];
   const mobileImages = [
-    '/FINAL%203%20Mobile%20-%20(1080%20x%201250%20px)%20(1)/HERO%201.svg',
-    '/FINAL%203%20Mobile%20-%20(1080%20x%201250%20px)%20(1)/HERO%202.svg',
-    '/FINAL%203%20Mobile%20-%20(1080%20x%201250%20px)%20(1)/HERO%203.svg'
+    '/banners/hero-mobile-1.webp',
+    '/banners/hero-mobile-2.webp',
+    '/banners/hero-mobile-3.webp'
   ];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -186,7 +186,7 @@ const HeroCarousel = () => {
     <>
       {/* Mobile-Only Hero Carousel */}
       <main 
-        className="w-full relative block md:hidden overflow-hidden"
+        className="w-full relative block md:hidden overflow-hidden bg-gray-100 aspect-[1080/1250]"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onTouchStart={() => setIsHovered(true)}
@@ -195,14 +195,16 @@ const HeroCarousel = () => {
         <div 
           ref={mobileScrollRef}
           onScroll={handleMobileScroll}
-          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth w-full h-full [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
         >
           {mobileImages.map((img, idx) => (
-            <div key={idx} className="w-full h-full shrink-0 snap-center">
+            <div key={idx} className="w-full h-full shrink-0 snap-center relative aspect-[1080/1250]">
               <img 
                 src={img} 
                 alt={`Mobile Hero Banner ${idx + 1}`} 
-                className="w-full h-auto object-cover" 
+                className="w-full h-full object-cover" 
+                loading={idx === 0 ? "eager" : "lazy"}
+                fetchPriority={idx === 0 ? "high" : "auto"}
               />
             </div>
           ))}
@@ -212,7 +214,7 @@ const HeroCarousel = () => {
 
       {/* Desktop/Tablet Hero Carousel */}
       <main 
-        className="w-full relative group bg-gray-100 hidden md:block select-none cursor-grab active:cursor-grabbing"
+        className="w-full relative group bg-gray-100 hidden md:block select-none cursor-grab active:cursor-grabbing aspect-[1800/600]"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => {
           setIsHovered(false);
@@ -220,7 +222,7 @@ const HeroCarousel = () => {
         }}
       >
         <div 
-          className="w-full overflow-hidden relative"
+          className="w-full h-full overflow-hidden relative"
           onMouseDown={(e) => handleDragStart(e.clientX)}
           onMouseMove={(e) => handleDragMove(e.clientX)}
           onMouseUp={handleDragEnd}
@@ -229,16 +231,18 @@ const HeroCarousel = () => {
           onTouchEnd={handleDragEnd}
         >
           <div 
-            className={`flex ${dragStartX !== null ? '' : 'transition-transform duration-1000 ease-in-out'}`}
+            className={`flex h-full ${dragStartX !== null ? '' : 'transition-transform duration-1000 ease-in-out'}`}
             style={{ transform: `translateX(calc(-${currentIndex * 100}% + ${dragOffset}px))` }}
           >
             {images.map((img, idx) => (
-              <div key={idx} className="w-full shrink-0">
+              <div key={idx} className="w-full h-full shrink-0 relative aspect-[1800/600]">
                 <img 
                   src={img} 
                   alt={`Hero Banner ${idx + 1}`} 
-                  className="w-full h-auto object-cover pointer-events-none" 
+                  className="w-full h-full object-cover pointer-events-none" 
                   draggable="false"
+                  loading={idx === 0 ? "eager" : "lazy"}
+                  fetchPriority={idx === 0 ? "high" : "auto"}
                 />
               </div>
             ))}
@@ -575,21 +579,21 @@ const ProductsHoverGallery = () => {
   const baseImages = [
     { 
       id: 0,
-      src: "/03%20Banners%2C%201350%20x%201080%20Baners/1.svg", 
+      src: "/banners/excellence-banner-1.webp", 
       alt: "Apparel Washing & High Speed Extract Equipment", 
       title: "APPAREL WASHING & HIGH SPEED EXTRACT",
       link: "/products#apparel-processing"
     },
     { 
       id: 1,
-      src: "/03%20Banners%2C%201350%20x%201080%20Baners/2.svg", 
+      src: "/banners/excellence-banner-2.webp", 
       alt: "Flat-Work Ironer & Finishing Commercial Equipment", 
       title: "FLAT-WORK IRONER",
       link: "/products#flat-work"
     },
     { 
       id: 2,
-      src: "/03%20Banners%2C%201350%20x%201080%20Baners/3.svg", 
+      src: "/banners/excellence-banner-3.webp", 
       alt: "Softener Washer Dryer Multi-Stage Equipment", 
       title: "SOFTENER WASHER DRYER",
       link: "/products#washing"
@@ -1229,16 +1233,16 @@ const ProductCategories = () => {
   const thumbStartLeftPx = React.useRef(0);
 
   const categories = [
-    { id: "washing", title: "WASHING", img: "/category/Washing.svg" },
-    { id: "drying", title: "DRYING", img: "/category/Drying.svg" },
-    { id: "apparel-processing", title: "APPAREL PROCESSING", img: "/category/Apparel Washing.svg" },
-    { id: "dry-cleaning", title: "DRY-CLEANING", img: "/category/Dry Cleaning.svg" },
-    { id: "flat-work", title: "FLAT-WORK", img: "/category/Flat Work.svg" },
-    { id: "steam-finishing", title: "STEAM-FINISHING", img: "/category/Steam Finish.svg" },
-    { id: "water-heater", title: "WATER HEATER", img: "/category/Water Heater.svg" },
-    { id: "fabric-checking", title: "FABRIC CHECKING", img: "/category/Fabric Cleaning.svg" },
-    { id: "other-equipment", title: "OTHER EQUIPMENT", img: "/category/Other Equipment.svg" },
-    { id: "complete-range", title: "COMPLETE RANGE", img: "/category/Complete Range.svg" }
+    { id: "washing", title: "WASHING", img: "/category/washing.webp" },
+    { id: "drying", title: "DRYING", img: "/category/drying.webp" },
+    { id: "apparel-processing", title: "APPAREL PROCESSING", img: "/category/apparel-washing.webp" },
+    { id: "dry-cleaning", title: "DRY-CLEANING", img: "/category/dry-cleaning.webp" },
+    { id: "flat-work", title: "FLAT-WORK", img: "/category/flat-work.webp" },
+    { id: "steam-finishing", title: "STEAM-FINISHING", img: "/category/steam-finish.webp" },
+    { id: "water-heater", title: "WATER HEATER", img: "/category/water-heater.webp" },
+    { id: "fabric-checking", title: "FABRIC CHECKING", img: "/category/fabric-cleaning.webp" },
+    { id: "other-equipment", title: "OTHER EQUIPMENT", img: "/category/other-equipment.webp" },
+    { id: "complete-range", title: "COMPLETE RANGE", img: "/category/complete-range.webp" }
   ];
 
   // Helper to update scroll progress from carousel element

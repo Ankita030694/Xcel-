@@ -15,10 +15,12 @@ export default function AboutPage() {
       {/* About Us Hero Section (Image Banner) */}
       <section className="relative w-full h-auto flex flex-col items-center justify-center bg-white overflow-hidden pt-0 pb-0">
         <img 
-          src="/ABOUT%20US%20(1600%20x%20600).svg" 
+          src="/banners/about-us-banner.webp" 
           alt="About Us Banner" 
           className="w-full h-auto block"
           style={{ aspectRatio: '1600/600' }}
+          loading="eager"
+          fetchPriority="high"
         />
       </section>
 

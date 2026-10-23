@@ -211,10 +211,12 @@ export default function ProductsPage() {
       {/* Hero Banner Section */}
       <section className="w-full bg-[#f3f5f8]">
          <img 
-           src="/Product%20Overview%20(1600%20x%20600%20px).svg" 
+           src="/banners/product-overview-banner.webp" 
            alt="Product Overview - From Washing To Finishing" 
            className="w-full h-auto block"
            style={{ aspectRatio: '1600/600' }}
+           loading="eager"
+           fetchPriority="high"
          />
       </section>
 

@@ -17,9 +17,10 @@ export function MissionVisionSection() {
             }}
           >
             <img 
-              src="/Our%20Vision%20(1080%20x%201080%20px).svg" 
+              src="/banners/our-vision.webp" 
               alt="Our Vision" 
               className="w-full h-full object-contain block"
+              loading="lazy"
             />
           </div>
 
@@ -32,9 +33,10 @@ export function MissionVisionSection() {
             }}
           >
             <img 
-              src="/Our%20Mission%20(1080%20x%201080%20px).svg" 
+              src="/banners/our-mission.webp" 
               alt="Our Mission" 
               className="w-full h-full object-contain block"
+              loading="lazy"
             />
           </div>
 
