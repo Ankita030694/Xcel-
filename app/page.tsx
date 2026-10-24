@@ -600,19 +600,25 @@ const ProductsHoverGallery = () => {
     },
   ];
 
-  // 5-card looping track: clone2, item0, item1, item2, clone0
-  const cards = [
-    { key: 'clone-2', ...baseImages[2] }, // index 0 (clone of 2)
-    { key: 'item-0', ...baseImages[0] },  // index 1 (Apparel Washing, active)
-    { key: 'item-1', ...baseImages[1] },  // index 2 (Flat-Work Ironer)
-    { key: 'item-2', ...baseImages[2] },  // index 3 (Softener Wash)
-    { key: 'clone-0', ...baseImages[0] }, // index 4 (clone of 0)
-  ];
+  const REPEAT_COUNT = 30; // 30 repetitions of the 3 banners = 90 cards
+  const cards = React.useMemo(() => {
+    const list = [];
+    for (let r = 0; r < REPEAT_COUNT; r++) {
+      for (let b = 0; b < baseImages.length; b++) {
+        list.push({
+          ...baseImages[b],
+          key: `banner-${r}-${b}`
+        });
+      }
+    }
+    return list;
+  }, []);
 
-  const [currentIndex, setCurrentIndex] = useState(1); // start at Apparel Washing
+  // Start in the exact middle of the 90-card track on Banner 0 (Apparel Washing)
+  const startIndex = Math.floor(REPEAT_COUNT / 2) * 3; // index 45
+  const [currentIndex, setCurrentIndex] = useState(startIndex);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [isResetting, setIsResetting] = useState(false);
   const [isDraggingThumb, setIsDraggingThumb] = useState(false);
 
   const dragStartX = useRef(0);
@@ -653,39 +659,17 @@ const ProductsHoverGallery = () => {
     }
   };
 
-  const handleTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
-    if (e.target !== e.currentTarget) return;
-    if (currentIndex === 4) {
-      setIsResetting(true);
-      setCurrentIndex(1);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setIsResetting(false);
-        });
-      });
-    } else if (currentIndex === 0) {
-      setIsResetting(true);
-      setCurrentIndex(3);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setIsResetting(false);
-        });
-      });
-    }
-  };
-
   // Slider thumb handling
   const handleTrackClick = (clientX: number) => {
     if (!trackRef.current) return;
     const rect = trackRef.current.getBoundingClientRect();
     const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-    if (ratio < 0.33) {
-      goToIndex(1);
-    } else if (ratio < 0.66) {
-      goToIndex(2);
-    } else {
-      goToIndex(3);
-    }
+    const targetBanner = ratio < 0.33 ? 0 : ratio < 0.66 ? 1 : 2;
+    const currentBanner = ((currentIndex % 3) + 3) % 3;
+    let diff = targetBanner - currentBanner;
+    if (diff === 2) diff = -1;
+    if (diff === -2) diff = 1;
+    goToIndex(currentIndex + diff);
   };
 
   const handleThumbMouseDown = (e: React.MouseEvent) => {
@@ -706,9 +690,12 @@ const ProductsHoverGallery = () => {
       } else if (isDraggingThumb && trackRef.current) {
         const rect = trackRef.current.getBoundingClientRect();
         const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-        if (ratio < 0.33) goToIndex(1);
-        else if (ratio < 0.66) goToIndex(2);
-        else goToIndex(3);
+        const targetBanner = ratio < 0.33 ? 0 : ratio < 0.66 ? 1 : 2;
+        const currentBanner = ((currentIndex % 3) + 3) % 3;
+        let diff = targetBanner - currentBanner;
+        if (diff === 2) diff = -1;
+        if (diff === -2) diff = 1;
+        goToIndex(currentIndex + diff);
       }
     };
 
@@ -719,9 +706,12 @@ const ProductsHoverGallery = () => {
         } else if (isDraggingThumb && trackRef.current) {
           const rect = trackRef.current.getBoundingClientRect();
           const ratio = Math.max(0, Math.min(1, (e.touches[0].clientX - rect.left) / rect.width));
-          if (ratio < 0.33) goToIndex(1);
-          else if (ratio < 0.66) goToIndex(2);
-          else goToIndex(3);
+          const targetBanner = ratio < 0.33 ? 0 : ratio < 0.66 ? 1 : 2;
+          const currentBanner = ((currentIndex % 3) + 3) % 3;
+          let diff = targetBanner - currentBanner;
+          if (diff === 2) diff = -1;
+          if (diff === -2) diff = 1;
+          goToIndex(currentIndex + diff);
         }
       }
     };
@@ -745,7 +735,7 @@ const ProductsHoverGallery = () => {
   }, [isDragging, isDraggingThumb, dragOffset, currentIndex]);
 
   // Current active 0-indexed banner: 0, 1, or 2
-  const activeBanner = ((currentIndex - 1) % 3 + 3) % 3;
+  const activeBanner = ((currentIndex % 3) + 3) % 3;
   const thumbLeftPercent = (activeBanner / 2) * 65;
 
   return (
@@ -772,15 +762,14 @@ const ProductsHoverGallery = () => {
           onMouseDown={(e) => handleDragStart(e.clientX)}
           onTouchStart={(e) => e.touches.length > 0 && handleDragStart(e.touches[0].clientX)}
         >
-          {/* 5-Card Sliding Track with continuous translation */}
+          {/* Continuous Infinite Sliding Track */}
           <div 
             className="flex flex-row items-center will-change-transform"
             style={{
-              width: '500%',
-              transform: `translate3d(calc(${-currentIndex * 20}% + ${dragOffset}px), 0, 0)`,
-              transition: isDragging || isResetting ? 'none' : 'transform 600ms cubic-bezier(0.16, 1, 0.3, 1)'
+              width: `${cards.length * 100}%`,
+              transform: `translate3d(calc(${-currentIndex * (100 / cards.length)}% + ${dragOffset}px), 0, 0)`,
+              transition: isDragging ? 'none' : 'transform 500ms cubic-bezier(0.16, 1, 0.3, 1)'
             }}
-            onTransitionEnd={handleTransitionEnd}
           >
             {cards.map((card, idx) => {
               const isCenter = idx === currentIndex;
@@ -789,10 +778,10 @@ const ProductsHoverGallery = () => {
                   key={card.key}
                   onClick={() => {
                     if (hasMoved.current) return;
-                    if (idx === currentIndex - 1) goToIndex(currentIndex - 1);
-                    else if (idx === currentIndex + 1) goToIndex(currentIndex + 1);
+                    if (idx < currentIndex) goToIndex(currentIndex - 1);
+                    else if (idx > currentIndex) goToIndex(currentIndex + 1);
                   }}
-                  style={{ width: '20%' }}
+                  style={{ width: `${100 / cards.length}%` }}
                   className="shrink-0 px-2 sm:px-3 md:px-4"
                 >
                   <div 
@@ -841,11 +830,11 @@ const ProductsHoverGallery = () => {
                 className={`absolute top-1/2 -translate-y-1/2 h-4 sm:h-5 bg-[#0a2766] hover:bg-[#123985] active:bg-[#071c49] rounded-full shadow-md select-none touch-none cursor-grab active:cursor-grabbing flex items-center justify-center ${
                   isDraggingThumb 
                     ? 'cursor-grabbing scale-y-110 shadow-lg ring-2 ring-[#0a2766]/30' 
-                    : 'transition-[left,transform] duration-300 ease-out hover:scale-105'
+                    : 'hover:scale-105 transition-[left,transform] duration-300 ease-out'
                 }`}
                 style={{ 
                   width: '35%',
-                  left: `${thumbLeftPercent}%` 
+                  left: `${thumbLeftPercent}%`
                 }}
                 title="Drag or click to switch banners"
               >
