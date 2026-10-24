@@ -279,18 +279,18 @@ const AboutUs = () => {
       </div>
 
       <div className="max-w-[1500px] mx-auto px-4 sm:px-6 lg:px-10 relative z-10">
-        <div className="flex flex-col gap-6 md:gap-8 lg:gap-16">
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-stretch lg:items-stretch">
+        <div className="flex flex-col gap-6 md:gap-8 xl:gap-16">
+          <div className="flex flex-col xl:flex-row gap-8 xl:gap-16 items-stretch xl:items-stretch">
             
             {/* Left Column - Image */}
           <div 
             tabIndex={0}
-            className="w-full lg:w-1/2 shrink-0 relative group flex flex-col cursor-pointer outline-none"
+            className="w-full md:w-[75%] lg:w-[60%] xl:w-1/2 mx-auto xl:mx-0 shrink-0 relative group flex flex-col cursor-pointer outline-none"
             onTouchStart={() => {}}
           >
             {/* Fancy Glow Behind Image */}
             <div className="absolute -inset-1 bg-gradient-to-r from-[#32589c] to-[#3b5b95] rounded-[2rem] blur opacity-20 group-hover:opacity-40 group-focus:opacity-40 transition duration-1000 group-hover:duration-200" />
-            <div className="relative aspect-square md:aspect-square lg:aspect-auto lg:flex-1 lg:h-full w-full rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-400/50 transform transition duration-700 ease-out group-hover:-translate-y-2 group-focus:-translate-y-2">
+            <div className="relative w-full aspect-square md:aspect-square xl:aspect-auto xl:h-auto xl:flex-1 rounded-[1.5rem] overflow-hidden shadow-2xl shadow-gray-400/50 transform transition duration-700 ease-out group-hover:-translate-y-2 group-focus:-translate-y-2">
               <img 
                 src="/converted_1080x1080%201.webp" 
                 alt="Precision Laser Cutting Manufacturing" 
@@ -301,32 +301,32 @@ const AboutUs = () => {
           </div>
 
           {/* Right Column - Content */}
-          <div className="w-full lg:w-1/2 flex flex-col pt-2 lg:pt-4">
+          <div className="w-full xl:w-1/2 flex flex-col pt-2 xl:pt-4">
             
             {/* Header Area */}
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-[#32589c] font-bold text-[13px] md:text-[12px] lg:text-base tracking-widest animate-pulse">{"//"}</span>
-              <span className="text-[#363636] font-bold text-[13px] md:text-[12px] lg:text-base tracking-[0.2em] uppercase">About XCEL</span>
+              <span className="text-[#32589c] font-bold text-[13px] md:text-[12px] xl:text-base tracking-widest animate-pulse">{"//"}</span>
+              <span className="text-[#363636] font-bold text-[13px] md:text-[12px] xl:text-base tracking-[0.2em] uppercase">About XCEL</span>
             </div>
 
-            <h2 className="font-extrabold text-2xl md:text-xl lg:text-4xl leading-[1.15] mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-500">
+            <h2 className="font-extrabold text-2xl md:text-xl xl:text-4xl leading-[1.15] mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-gray-900 via-gray-800 to-gray-500">
               Building India's Future in <span className="text-[#32589c]">Commercial Laundry</span> Manufacturing
             </h2>
 
-            <div className="text-[#363636] font-normal text-sm md:text-[13px] lg:text-sm leading-relaxed space-y-3 mb-6">
+            <div className="text-[#363636] font-normal text-sm md:text-[13px] xl:text-sm leading-relaxed space-y-3 mb-6">
               <p 
                 tabIndex={0}
-                className="border-l-4 md:border-l-0 lg:border-l-4 border-[#32589c] pl-5 md:pl-0 lg:pl-5 py-1 opacity-90 transition-all duration-300 hover:border-l-8 md:hover:border-l-0 lg:hover:border-l-8 focus:border-l-8 md:focus:border-l-0 lg:focus:border-l-8 outline-none cursor-pointer"
+                className="border-l-4 md:border-l-0 xl:border-l-4 border-[#32589c] pl-5 md:pl-0 xl:pl-5 py-1 opacity-90 transition-all duration-300 hover:border-l-8 md:hover:border-l-0 xl:hover:border-l-8 focus:border-l-8 md:focus:border-l-0 xl:focus:border-l-8 outline-none cursor-pointer"
               >
                 Some businesses are built on opportunity. Ours was built on the belief that India can create world-class commercial laundry equipment without relying on imports. From our early days only, we focused on precision engineering, uncompromising quality and deep industry understanding.
               </p>
-              <p className="border-l-4 md:border-l-0 lg:border-l-4 border-transparent pl-5 md:pl-0 lg:pl-5 py-1 opacity-90">
+              <p className="border-l-4 md:border-l-0 xl:border-l-4 border-transparent pl-5 md:pl-0 xl:pl-5 py-1 opacity-90">
                 Every laundry machine at our factory is manufactured to meet the high-stakes demands of hotels, hospitals, garment units and commercial laundries where performance and reliability are critical.
               </p>
             </div>
 
             {/* Feature Bullets */}
-            <div className="flex flex-col gap-6 lg:gap-4 mt-2 lg:mt-0">
+            <div className="flex flex-col gap-6 xl:gap-4 mt-2 xl:mt-0">
               
               {/* Bullet 1 */}
               <div 
@@ -337,7 +337,7 @@ const AboutUs = () => {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
                   <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.webp" alt="Manufacturing" className="w-full h-full object-contain" />
                 </div>
-                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] xl:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 group-hover:text-gray-900">
                   Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
                 </p>
               </div>
@@ -351,7 +351,7 @@ const AboutUs = () => {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
                   <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.webp" alt="Partnership" className="w-full h-full object-contain" />
                 </div>
-                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] lg:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 group-hover:text-gray-900">
+                <p className="font-medium text-[13px] sm:text-sm md:text-[13px] xl:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 group-hover:text-gray-900">
                   Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
                 </p>
               </div>
@@ -411,55 +411,34 @@ const WhyChooseUs = () => {
   const isHoveredRef = useRef(false);
 
   useEffect(() => {
-    let animationFrameId: number;
-
-    const smoothScrollTo = (element: HTMLElement, target: number, duration: number) => {
-      const start = element.scrollLeft;
-      const change = target - start;
-      const startTime = performance.now();
-
-      // Temporarily disable CSS scroll snapping so it doesn't fight our animation
-      element.style.scrollSnapType = 'none';
-
-      const animateScroll = (currentTime: number) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        
-        // easeInOutQuad for smooth acceleration and deceleration
-        const ease = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress;
-        element.scrollLeft = start + change * ease;
-
-        if (progress < 1) {
-          animationFrameId = requestAnimationFrame(animateScroll);
-        } else {
-          // Restore CSS scroll snapping once animation finishes
-          element.style.scrollSnapType = '';
-        }
-      };
-
-      animationFrameId = requestAnimationFrame(animateScroll);
-    };
-
     const interval = setInterval(() => {
       // Only auto-play on mobile/tablet screens (not XL desktop)
       if (window.innerWidth >= 1280 || isHoveredRef.current) return;
       
-      if (sliderRef.current) {
-        const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-        
-        // If we reach the end of the scrollable area, loop back to start smoothly
-        if (scrollLeft >= scrollWidth - clientWidth - 20) {
-          smoothScrollTo(sliderRef.current, 0, 500);
-        } else {
-          // Scroll right by enough distance to snap to the next card (approx 200px)
-          smoothScrollTo(sliderRef.current, scrollLeft + 200, 500);
-        }
+      const slider = sliderRef.current;
+      if (!slider) return;
+
+      const firstCard = slider.firstElementChild as HTMLElement;
+      if (!firstCard) return;
+
+      const computedStyle = window.getComputedStyle(slider);
+      const gap = parseFloat(computedStyle.gap || computedStyle.columnGap || '16') || 16;
+      const stride = firstCard.offsetWidth + gap;
+
+      const { scrollLeft, scrollWidth, clientWidth } = slider;
+      
+      // If we reach the end of the scrollable area, loop back smoothly
+      if (scrollLeft + clientWidth >= scrollWidth - 15) {
+        slider.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        // Move by exact card stride so it aligns seamlessly without any snap fighting
+        const nextTarget = Math.round((scrollLeft + stride) / stride) * stride;
+        slider.scrollTo({ left: nextTarget, behavior: 'smooth' });
       }
-    }, 2000);
+    }, 2800);
     
     return () => {
       clearInterval(interval);
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
@@ -483,7 +462,7 @@ const WhyChooseUs = () => {
           {/* Right Cards Area */}
           <div 
             ref={sliderRef}
-            className="w-full xl:flex-1 flex flex-nowrap justify-start gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory pb-4 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+            className="w-full xl:flex-1 flex flex-nowrap justify-start gap-4 lg:gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 sm:pb-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             onMouseEnter={() => isHoveredRef.current = true}
             onMouseLeave={() => isHoveredRef.current = false}
             onTouchStart={() => isHoveredRef.current = true}

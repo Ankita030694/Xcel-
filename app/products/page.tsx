@@ -106,7 +106,7 @@ export default function ProductsPage() {
     const element = document.getElementById('category-header');
     if (element) {
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
-      const headerOffset = isMobile ? 120 : 135;
+      const headerOffset = isMobile ? 155 : 165;
       const elementY = element.getBoundingClientRect().top + window.scrollY;
       const targetY = Math.max(0, elementY - headerOffset);
       window.scrollTo({
@@ -251,7 +251,7 @@ export default function ProductsPage() {
         </div>
 
         {/* Category Header */}
-        <div id="category-header" className="w-full flex justify-start items-center mb-6 scroll-mt-[120px] lg:scroll-mt-[135px]">
+        <div id="category-header" className="w-full flex justify-start items-center mb-6 scroll-mt-[155px] lg:scroll-mt-[165px]">
           <div className="flex items-center gap-2">
             <div className="w-1 h-5 lg:h-6 bg-[#3b5b95]"></div>
             <h2 className="text-[#0a2766] font-bold text-[16px] lg:text-[22px] uppercase tracking-wide">
