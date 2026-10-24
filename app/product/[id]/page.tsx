@@ -191,11 +191,22 @@ export default function ProductDetailPage() {
   }, [id]);
 
   useEffect(() => {
+    if (!loading && product) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    }
+  }, [loading, product]);
+
+  useEffect(() => {
+    // Only scroll within the horizontal thumbnail container, never scrolling the window
+    if (activeImageIndex === 0) return;
     const container = thumbnailContainerRef.current;
     if (container && container.children && container.children[activeImageIndex]) {
       const targetThumb = container.children[activeImageIndex] as HTMLElement;
       if (targetThumb) {
-        targetThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+        container.scrollTo({
+          left: targetThumb.offsetLeft - container.offsetLeft,
+          behavior: 'smooth'
+        });
       }
     }
   }, [activeImageIndex]);

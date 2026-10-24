@@ -272,11 +272,15 @@ export default function ProductsPage() {
             {activeCategoryProducts.map((product) => (
               <Link 
                 href={`/product/${product.id}`} 
+                scroll={true}
                 key={product.id} 
                 onClick={() => {
                   try {
                     sessionStorage.setItem(`xcel_prod_${product.id}`, JSON.stringify(product));
                   } catch (e) {}
+                  if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+                    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                  }
                 }}
                 onMouseEnter={() => {
                   try {

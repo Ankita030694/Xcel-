@@ -1,8 +1,10 @@
 "use client";
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { db } from '../../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { BLOG_ARTICLES } from '@/data/blogs';
 
 export const Footer = () => {
   const [formData, setFormData] = useState({
@@ -249,13 +251,28 @@ export const Footer = () => {
               </div>
               <div className="flex-[1.5]">
                 <h5 className="font-semibold text-[14px] mb-3">
-                  <a href="/insights" className="hover:text-white/80 transition-colors">INDUSTRY INSIGHTS</a>
+                  <Link href="/blogs" className="hover:text-white/80 transition-colors">INDUSTRY INSIGHTS</Link>
                 </h5>
-                <ul className="flex flex-col gap-2 text-white/80 text-[11px]">
-                  <li><a href="#" className="hover:text-white transition-colors">The Future of Commercial Laundry</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Eco-Friendly Washing Solutions</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Optimizing Hotel Laundry Operations</a></li>
-                  <li><a href="#" className="hover:text-white transition-colors">Preventive Maintenance Guide</a></li>
+                <ul className="flex flex-col gap-2.5 text-white/80 text-[11px]">
+                  {BLOG_ARTICLES.slice(0, 4).map((article) => {
+                    const hook = article.title
+                      .split(/ — | – | \(/)[0]
+                      .replace(/\?$/, '')
+                      .replace(' for Your Business', '')
+                      .trim();
+
+                    return (
+                      <li key={article.id}>
+                        <Link 
+                          href={`/blogs/${article.slug}`} 
+                          title={article.title}
+                          className="hover:text-white transition-colors block leading-snug"
+                        >
+                          {hook}
+                        </Link>
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
               <div className="flex-1">
