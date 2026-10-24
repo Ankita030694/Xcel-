@@ -395,10 +395,10 @@ export default function ProductDetailPage() {
     <div className="min-h-screen bg-white font-sans flex flex-col">
       <Header />
 
-      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10">
         
-        {/* Breadcrumbs */}
-        <div className="flex flex-row items-center gap-3 text-[13px] text-[#363636] mb-6 lg:mb-10 overflow-x-auto whitespace-nowrap pb-2">
+        {/* Breadcrumbs - Hidden on Mobile, Visible on Tablet & Desktop */}
+        <div className="hidden sm:flex flex-row items-center gap-3 text-[13px] text-[#363636] mb-6 lg:mb-10 overflow-x-auto whitespace-nowrap pb-2">
           <Link href="/" className="text-[#363636] hover:text-[#0a2766] transition-colors flex items-center" title="Home">
              <Home size={14} strokeWidth={1.5} />
           </Link>
