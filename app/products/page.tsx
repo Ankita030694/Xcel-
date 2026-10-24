@@ -100,15 +100,18 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  const scrollToCategoryHeader = () => {
+  const scrollTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const scrollToCategoryHeader = (behavior: ScrollBehavior = 'smooth') => {
     const element = document.getElementById('category-header');
     if (element) {
-      const headerOffset = 135;
-      const rect = element.getBoundingClientRect();
-      const targetY = rect.top + window.pageYOffset - headerOffset;
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+      const headerOffset = isMobile ? 120 : 135;
+      const elementY = element.getBoundingClientRect().top + window.scrollY;
+      const targetY = Math.max(0, elementY - headerOffset);
       window.scrollTo({
-        top: Math.max(0, targetY),
-        behavior: 'smooth'
+        top: targetY,
+        behavior
       });
     }
   };
@@ -117,9 +120,10 @@ export default function ProductsPage() {
     const handleCategoryTarget = (targetId: string) => {
       if (targetId && categories.some(c => c.id === targetId)) {
         setActiveTab(targetId);
-        setTimeout(scrollToCategoryHeader, 60);
-        setTimeout(scrollToCategoryHeader, 250);
-        setTimeout(scrollToCategoryHeader, 600);
+        if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+        scrollTimerRef.current = setTimeout(() => {
+          scrollToCategoryHeader('smooth');
+        }, 120);
       }
     };
 
@@ -143,22 +147,11 @@ export default function ProductsPage() {
     window.addEventListener('hashchange', handleHashChange);
     window.addEventListener('select-product-category', handleCustomCategoryEvent);
     return () => {
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
       window.removeEventListener('hashchange', handleHashChange);
       window.removeEventListener('select-product-category', handleCustomCategoryEvent);
     };
   }, []);
-
-  // When products finish loading, re-align if hash exists
-  useEffect(() => {
-    if (!loading) {
-      const hash = window.location.hash ? window.location.hash.substring(1) : '';
-      const urlParams = new URLSearchParams(window.location.search);
-      const targetId = hash || urlParams.get('category');
-      if (targetId && categories.some(c => c.id === targetId)) {
-        setTimeout(scrollToCategoryHeader, 100);
-      }
-    }
-  }, [loading]);
 
   // Reset scroll and dot index when category changes
   useEffect(() => {
@@ -258,7 +251,7 @@ export default function ProductsPage() {
         </div>
 
         {/* Category Header */}
-        <div id="category-header" className="w-full flex justify-start items-center mb-6 scroll-mt-[135px]">
+        <div id="category-header" className="w-full flex justify-start items-center mb-6 scroll-mt-[120px] lg:scroll-mt-[135px]">
           <div className="flex items-center gap-2">
             <div className="w-1 h-5 lg:h-6 bg-[#3b5b95]"></div>
             <h2 className="text-[#0a2766] font-bold text-[16px] lg:text-[22px] uppercase tracking-wide">
@@ -268,7 +261,7 @@ export default function ProductsPage() {
         </div>
 
         {/* Product Carousel (Mobile) / Grid (Desktop) */}
-        {loading ? (
+        {loading && activeCategoryProducts.length === 0 ? (
           <div className="w-full text-center py-12 text-gray-500">Loading products...</div>
         ) : activeCategoryProducts.length === 0 ? (
           <div className="w-full text-center py-12 text-gray-500 bg-gray-50 rounded-xl border border-gray-100">
