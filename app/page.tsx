@@ -596,7 +596,7 @@ const ProductsHoverGallery = () => {
       src: "/banners/excellence-banner-3.webp", 
       alt: "Softener Washer Dryer Multi-Stage Equipment", 
       title: "SOFTENER WASHER DRYER",
-      link: "/products#washing"
+      link: "/products#apparel-processing"
     },
   ];
 
@@ -653,7 +653,8 @@ const ProductsHoverGallery = () => {
     }
   };
 
-  const handleTransitionEnd = () => {
+  const handleTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return;
     if (currentIndex === 4) {
       setIsResetting(true);
       setCurrentIndex(1);
@@ -795,38 +796,28 @@ const ProductsHoverGallery = () => {
                   className="shrink-0 px-2 sm:px-3 md:px-4"
                 >
                   <div 
-                    className={`w-full aspect-[1350/1080] rounded-2xl lg:rounded-3xl overflow-hidden bg-white border border-gray-100 transition-all duration-500 ease-out cursor-pointer ${
+                    className={`w-full aspect-[1350/1080] rounded-2xl lg:rounded-3xl overflow-hidden bg-white border border-gray-100 transition-[transform,opacity,box-shadow] duration-500 ease-out cursor-pointer ${
                       isCenter
                         ? 'scale-100 opacity-100 shadow-[0_12px_44px_rgba(0,0,0,0.14)] z-20'
                         : 'scale-[0.80] sm:scale-[0.82] opacity-45 hover:opacity-75 shadow-md z-10'
                     }`}
                   >
-                    {isCenter ? (
-                      <Link 
-                        href={card.link}
-                        onClick={(e) => {
-                          if (hasMoved.current) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                          }
-                        }}
-                        className="w-full h-full block group"
-                      >
-                        <img 
-                          src={card.src} 
-                          alt={card.alt} 
-                          draggable="false" 
-                          className="w-full h-full object-cover block pointer-events-none" 
-                        />
-                      </Link>
-                    ) : (
+                    <Link 
+                      href={card.link}
+                      onClick={(e) => {
+                        if (!isCenter || hasMoved.current) {
+                          e.preventDefault();
+                        }
+                      }}
+                      className="w-full h-full block group cursor-pointer"
+                    >
                       <img 
                         src={card.src} 
                         alt={card.alt} 
                         draggable="false" 
                         className="w-full h-full object-cover block pointer-events-none" 
                       />
-                    )}
+                    </Link>
                   </div>
                 </div>
               );
