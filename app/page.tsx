@@ -1496,7 +1496,7 @@ const ProductCategories = () => {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white font-sans overflow-x-hidden">
+    <div className="min-h-screen bg-white font-sans overflow-x-clip">
       <Header />
 
       {/* Hero Section */}

@@ -165,7 +165,7 @@ export const Footer = () => {
               {/* Image spacer block */}
               <div className="hidden md:block w-[120px] relative overflow-hidden bg-[#3b5e94]/20">
                 <Image 
-                  src="/commercial-washing-machine-generated.webp" 
+                  src="/Footer Image - 120 x 210 px (1).svg" 
                   alt="Commercial Washing Machine" 
                   fill
                   className="object-cover" 
