@@ -7,7 +7,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db, storage } from '../../../lib/firebase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Trash2, Plus, X, Edit } from 'lucide-react';
+import { Trash2, Plus, X, Edit, ArrowUp, ArrowDown, ExternalLink } from 'lucide-react';
 
 interface ProductFeature {
   title: string;
@@ -24,6 +24,9 @@ interface Product {
   name: string;
   subheading?: string;
   categoryId: string;
+  order?: number;
+  slug?: string;
+  customUrl?: string;
   cardDescription?: string;
   detailDescription?: string;
   shortDescription?: string;
@@ -55,6 +58,8 @@ export default function ProductsDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [authChecking, setAuthChecking] = useState(true);
+  const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
+  const [orderSaveStatus, setOrderSaveStatus] = useState<string | null>(null);
   
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,6 +71,9 @@ export default function ProductsDashboard() {
   const [name, setName] = useState('');
   const [subheading, setSubheading] = useState('');
   const [categoryId, setCategoryId] = useState(CATEGORIES[0].id);
+  const [order, setOrder] = useState<number | ''>('');
+  const [customUrl, setCustomUrl] = useState('');
+  const [isCustomUrlEdited, setIsCustomUrlEdited] = useState(false);
   const [cardDescription, setCardDescription] = useState('');
   const [detailDescription, setDetailDescription] = useState('');
   const [highlights, setHighlights] = useState<string[]>([]);
@@ -99,8 +107,11 @@ export default function ProductsDashboard() {
       querySnapshot.forEach((doc) => {
         fetchedProducts.push({ id: doc.id, ...doc.data() } as Product);
       });
-      // Sort by creation date client-side
+      // Sort by order ascending, then by creation date descending
       fetchedProducts.sort((a, b) => {
+        const orderA = typeof a.order === 'number' ? a.order : 9999;
+        const orderB = typeof b.order === 'number' ? b.order : 9999;
+        if (orderA !== orderB) return orderA - orderB;
         const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
         const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
         return timeB - timeA;
@@ -110,6 +121,66 @@ export default function ProductsDashboard() {
       console.error("Error fetching products:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleMoveProduct = async (productToMove: Product, direction: 'up' | 'down') => {
+    // Get all products in the same category, sorted by current order
+    const categoryProducts = products
+      .filter(p => p.categoryId === productToMove.categoryId)
+      .sort((a, b) => {
+        const orderA = typeof a.order === 'number' ? a.order : 9999;
+        const orderB = typeof b.order === 'number' ? b.order : 9999;
+        if (orderA !== orderB) return orderA - orderB;
+        const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+        const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+        return timeB - timeA;
+      });
+
+    const currentIndex = categoryProducts.findIndex(p => p.id === productToMove.id);
+    if (currentIndex === -1) return;
+    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (targetIndex < 0 || targetIndex >= categoryProducts.length) return;
+
+    const otherProduct = categoryProducts[targetIndex];
+    const updatedCategoryProducts = [...categoryProducts];
+    updatedCategoryProducts[currentIndex] = otherProduct;
+    updatedCategoryProducts[targetIndex] = productToMove;
+
+    const orderUpdates = updatedCategoryProducts.map((p, idx) => ({
+      id: p.id,
+      order: idx + 1
+    }));
+
+    // Optimistically update local state
+    setProducts(prev => {
+      const updated = prev.map(p => {
+        const match = orderUpdates.find(u => u.id === p.id);
+        return match ? { ...p, order: match.order } : p;
+      });
+      return updated.sort((a, b) => {
+        const orderA = typeof a.order === 'number' ? a.order : 9999;
+        const orderB = typeof b.order === 'number' ? b.order : 9999;
+        if (orderA !== orderB) return orderA - orderB;
+        const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+        const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+        return timeB - timeA;
+      });
+    });
+
+    setOrderSaveStatus('Updating sequence...');
+    try {
+      await Promise.all(
+        orderUpdates.map(({ id, order }) => 
+          updateDoc(doc(db, "products", id), { order })
+        )
+      );
+      setOrderSaveStatus('Sequence updated successfully!');
+      setTimeout(() => setOrderSaveStatus(null), 2500);
+    } catch (err) {
+      console.error("Error updating sequence:", err);
+      setOrderSaveStatus('Failed to update sequence');
+      setTimeout(() => setOrderSaveStatus(null), 3000);
     }
   };
 
@@ -123,6 +194,9 @@ export default function ProductsDashboard() {
     setName('');
     setSubheading('');
     setCategoryId(CATEGORIES[0].id);
+    setOrder('');
+    setCustomUrl('');
+    setIsCustomUrlEdited(false);
     setCardDescription('');
     setDetailDescription('');
     setHighlights([]);
@@ -142,6 +216,10 @@ export default function ProductsDashboard() {
     setName(product.name);
     setSubheading(product.subheading || '');
     setCategoryId(product.categoryId);
+    setOrder(typeof product.order === 'number' ? product.order : '');
+    const currentUrl = product.customUrl || product.slug || '';
+    setCustomUrl(currentUrl);
+    setIsCustomUrlEdited(Boolean(currentUrl));
     setCardDescription(product.cardDescription || product.shortDescription || '');
     setDetailDescription(product.detailDescription || product.shortDescription || '');
     setHighlights(Array.isArray(product.highlights) ? product.highlights : []);
@@ -155,6 +233,21 @@ export default function ProductsDashboard() {
     setBrochureFile(null);
     setError('');
     setIsModalOpen(true);
+  };
+
+  const generateSlugFromName = (input: string) => {
+    return input
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  };
+
+  const handleNameChange = (newName: string) => {
+    setName(newName);
+    if (!isCustomUrlEdited) {
+      setCustomUrl(generateSlugFromName(newName));
+    }
   };
 
   const handleAddHighlight = () => setHighlights([...highlights, '']);
@@ -260,6 +353,22 @@ export default function ProductsDashboard() {
         additionalImages
       };
 
+      const cleanedSlug = customUrl
+        .trim()
+        .replace(/^\/+|\/+$/g, '')
+        .replace(/^product\//, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9-_]/g, '-')
+        .replace(/-+/g, '-');
+
+      if (cleanedSlug) {
+        productData.slug = cleanedSlug;
+        productData.customUrl = customUrl.trim();
+      } else {
+        productData.slug = '';
+        productData.customUrl = '';
+      }
+
       if (finalBrochureUrl) {
         productData.brochureUrl = finalBrochureUrl;
       } else {
@@ -268,10 +377,15 @@ export default function ProductsDashboard() {
 
       if (editingProductId) {
         // Update Product
+        if (order !== '') {
+          productData.order = Number(order);
+        }
         productData.updatedAt = serverTimestamp();
         await updateDoc(doc(db, "products", editingProductId), productData);
       } else {
         // Save New Product
+        const categoryProducts = products.filter(p => p.categoryId === categoryId);
+        productData.order = order !== '' ? Number(order) : categoryProducts.length + 1;
         productData.createdAt = serverTimestamp();
         await addDoc(collection(db, "products"), productData);
       }
@@ -344,10 +458,30 @@ export default function ProductsDashboard() {
           </div>
         </div>
 
-        <div className="mb-6 flex justify-end">
+        <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+          <div className="flex items-center gap-3 flex-wrap">
+            <span className="text-sm font-semibold text-gray-700">Filter Category:</span>
+            <select
+              value={selectedCategoryFilter}
+              onChange={(e) => setSelectedCategoryFilter(e.target.value)}
+              className="border border-gray-300 rounded px-3 py-1.5 text-sm bg-white text-gray-800 font-medium focus:outline-none focus:border-[#32589c]"
+            >
+              <option value="all">All Categories ({products.length})</option>
+              {CATEGORIES.map(cat => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name} ({products.filter(p => p.categoryId === cat.id).length})
+                </option>
+              ))}
+            </select>
+            {orderSaveStatus && (
+              <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 animate-pulse">
+                {orderSaveStatus}
+              </span>
+            )}
+          </div>
           <button 
             onClick={() => { resetForm(); setIsModalOpen(true); }}
-            className="flex items-center gap-2 bg-[#32589c] text-white px-4 py-2 rounded shadow-md hover:bg-[#1f3a6a] transition-colors font-medium"
+            className="flex items-center gap-2 bg-[#32589c] text-white px-4 py-2 rounded shadow-md hover:bg-[#1f3a6a] transition-colors font-medium self-end sm:self-auto"
           >
             <Plus size={18} /> Add New Product
           </button>
@@ -365,7 +499,8 @@ export default function ProductsDashboard() {
               <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-[#f3f5f8] text-[#0a2766] border-b border-gray-200 text-sm">
-                    <th className="py-4 px-6 font-semibold">Image</th>
+                    <th className="py-4 px-4 font-semibold text-center w-28">Sequence</th>
+                    <th className="py-4 px-4 font-semibold">Image</th>
                     <th className="py-4 px-6 font-semibold">Name</th>
                     <th className="py-4 px-6 font-semibold">Category</th>
                     <th className="py-4 px-6 font-semibold">Descriptions</th>
@@ -373,45 +508,108 @@ export default function ProductsDashboard() {
                   </tr>
                 </thead>
                 <tbody className="text-sm">
-                  {products.map((product) => (
-                    <tr key={product.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                      <td className="py-4 px-6">
-                        <img src={product.imageUrl} alt={product.name} className="w-16 h-16 object-contain bg-white border border-gray-200 rounded" />
-                      </td>
-                      <td className="py-4 px-6 font-medium text-gray-900">{product.name}</td>
-                      <td className="py-4 px-6 text-gray-700">
-                        {CATEGORIES.find(c => c.id === product.categoryId)?.name || product.categoryId}
-                      </td>
-                      <td className="py-4 px-6 text-gray-700 max-w-xs space-y-1">
-                        {product.subheading && (
-                          <div>
-                            <span className="inline-block text-[10px] font-bold text-[#0a2766] bg-blue-50 px-1.5 py-0.5 rounded mr-1">Subheading</span>
-                            <span className="text-xs text-gray-800 line-clamp-1">{product.subheading}</span>
+                  {(selectedCategoryFilter === 'all' 
+                    ? products 
+                    : products.filter(p => p.categoryId === selectedCategoryFilter)
+                  ).map((product) => {
+                    const categoryProducts = products.filter(p => p.categoryId === product.categoryId);
+                    const indexInCat = categoryProducts.findIndex(p => p.id === product.id);
+                    const isFirst = indexInCat === 0;
+                    const isLast = indexInCat === categoryProducts.length - 1;
+
+                    return (
+                      <tr key={product.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                        <td className="py-4 px-4 text-center whitespace-nowrap">
+                          <div className="inline-flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-lg border border-gray-200">
+                            <span className={`font-bold px-2 py-0.5 rounded text-xs ${
+                              indexInCat === 0 
+                                ? 'bg-amber-100 text-amber-900 border border-amber-300' 
+                                : 'bg-blue-50 text-[#0a2766]'
+                            }`}>
+                              #{indexInCat + 1}
+                            </span>
+                            <div className="flex flex-col gap-0.5">
+                              <button
+                                type="button"
+                                disabled={isFirst}
+                                onClick={() => handleMoveProduct(product, 'up')}
+                                className={`p-0.5 rounded transition-colors ${
+                                  isFirst 
+                                    ? 'text-gray-300 cursor-not-allowed' 
+                                    : 'text-gray-600 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'
+                                }`}
+                                title="Move Up (Display Earlier)"
+                              >
+                                <ArrowUp size={13} strokeWidth={2.5} />
+                              </button>
+                              <button
+                                type="button"
+                                disabled={isLast}
+                                onClick={() => handleMoveProduct(product, 'down')}
+                                className={`p-0.5 rounded transition-colors ${
+                                  isLast 
+                                    ? 'text-gray-300 cursor-not-allowed' 
+                                    : 'text-gray-600 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'
+                                }`}
+                                title="Move Down (Display Later)"
+                              >
+                                <ArrowDown size={13} strokeWidth={2.5} />
+                              </button>
+                            </div>
                           </div>
-                        )}
-                        <div>
-                          <span className="inline-block text-[10px] font-bold text-gray-700 bg-gray-100 px-1.5 py-0.5 rounded mr-1">Detail</span>
-                          <span className="text-xs text-gray-600 line-clamp-1">{product.detailDescription || product.shortDescription || '-'}</span>
-                        </div>
-                      </td>
-                      <td className="py-4 px-6 text-right">
-                        <button 
-                          onClick={() => handleEdit(product)}
-                          className="text-[#32589c] hover:text-[#1f3a6a] p-2 rounded-full hover:bg-blue-50 transition-colors mr-2"
-                          title="Edit Product"
-                        >
-                          <Edit size={18} />
-                        </button>
-                        <button 
-                          onClick={() => handleDelete(product.id, product.imageUrl, product.additionalImages, product.brochureUrl)}
-                          className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors"
-                          title="Delete Product"
-                        >
-                          <Trash2 size={18} />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                        <td className="py-4 px-4">
+                          <img src={product.imageUrl} alt={product.name} className="w-16 h-16 object-contain bg-white border border-gray-200 rounded" />
+                        </td>
+                        <td className="py-4 px-6 font-medium text-gray-900">
+                          <div className="font-semibold text-gray-900">{product.name}</div>
+                          <div className="mt-1">
+                            <a 
+                              href={`/product/${product.slug || product.id}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1 text-xs text-[#0a2766] hover:text-[#32589c] hover:underline font-mono bg-blue-50/80 px-2 py-0.5 rounded border border-blue-200 transition-colors"
+                              title="Preview product page"
+                            >
+                              <ExternalLink size={11} className="text-[#32589c]" />
+                              /product/{product.slug || product.id}
+                            </a>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6 text-gray-700">
+                          {CATEGORIES.find(c => c.id === product.categoryId)?.name || product.categoryId}
+                        </td>
+                        <td className="py-4 px-6 text-gray-700 max-w-xs space-y-1">
+                          {product.subheading && (
+                            <div>
+                              <span className="inline-block text-[10px] font-bold text-[#0a2766] bg-blue-50 px-1.5 py-0.5 rounded mr-1">Subheading</span>
+                              <span className="text-xs text-gray-800 line-clamp-1">{product.subheading}</span>
+                            </div>
+                          )}
+                          <div>
+                            <span className="inline-block text-[10px] font-bold text-gray-700 bg-gray-100 px-1.5 py-0.5 rounded mr-1">Detail</span>
+                            <span className="text-xs text-gray-600 line-clamp-1">{product.detailDescription || product.shortDescription || '-'}</span>
+                          </div>
+                        </td>
+                        <td className="py-4 px-6 text-right whitespace-nowrap">
+                          <button 
+                            onClick={() => handleEdit(product)}
+                            className="text-[#32589c] hover:text-[#1f3a6a] p-2 rounded-full hover:bg-blue-50 transition-colors mr-2 cursor-pointer"
+                            title="Edit Product"
+                          >
+                            <Edit size={18} />
+                          </button>
+                          <button 
+                            onClick={() => handleDelete(product.id, product.imageUrl, product.additionalImages, product.brochureUrl)}
+                            className="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors cursor-pointer"
+                            title="Delete Product"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -448,10 +646,17 @@ export default function ProductsDashboard() {
                 <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm space-y-4">
                   <h3 className="font-semibold text-lg text-gray-800 border-b pb-2">Basic Information</h3>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="md:col-span-1">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Product Name *</label>
-                      <input type="text" required value={name} onChange={e => setName(e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="e.g., WF-200 Washer Extractor" />
+                      <input 
+                        type="text" 
+                        required 
+                        value={name} 
+                        onChange={e => handleNameChange(e.target.value)} 
+                        className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" 
+                        placeholder="e.g., WF-200 Washer Extractor" 
+                      />
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
@@ -459,13 +664,65 @@ export default function ProductsDashboard() {
                         {CATEGORIES.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                       </select>
                     </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Display Order <span className="text-xs text-gray-500">(#1 displays first)</span>
+                      </label>
+                      <input 
+                        type="number" 
+                        min="1" 
+                        value={order} 
+                        onChange={e => setOrder(e.target.value === '' ? '' : parseInt(e.target.value))} 
+                        className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" 
+                        placeholder="e.g. 1 (auto-assigned if blank)" 
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Subheading <span className="text-xs font-normal text-gray-500">(Displayed on Product Cards under name)</span>
-                    </label>
-                    <input type="text" value={subheading} onChange={e => setSubheading(e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="e.g., Heavy Duty Automatic" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Subheading <span className="text-xs font-normal text-gray-500">(Displayed on cards)</span>
+                      </label>
+                      <input type="text" value={subheading} onChange={e => setSubheading(e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none" placeholder="e.g., Heavy Duty Automatic" />
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between mb-1">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Product Page URL (Slug) <span className="text-xs text-gray-500">(Auto-generated from name)</span>
+                        </label>
+                        {isCustomUrlEdited && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setCustomUrl(generateSlugFromName(name));
+                              setIsCustomUrlEdited(false);
+                            }}
+                            className="text-[11px] text-[#32589c] hover:underline hover:text-[#1f3a6a] font-medium"
+                          >
+                            Reset to name slug
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex items-center">
+                        <span className="inline-flex items-center px-2.5 py-2 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-xs font-mono">
+                          /product/
+                        </span>
+                        <input 
+                          type="text" 
+                          value={customUrl} 
+                          onChange={e => {
+                            setCustomUrl(e.target.value);
+                            setIsCustomUrlEdited(true);
+                          }} 
+                          className="w-full border border-gray-300 rounded-r-md p-2 text-gray-900 focus:ring-[#32589c] focus:border-[#32589c] outline-none font-mono text-xs" 
+                          placeholder="e.g., commercial-barrier-washer" 
+                        />
+                      </div>
+                      <p className="text-[11px] text-gray-500 mt-1">
+                        Accessible at: <span className="font-mono text-[#0a2766]">/product/{customUrl.trim().replace(/^\/+|\/+$/g, '').replace(/^product\//, '').toLowerCase().replace(/[^a-z0-9-_]/g, '-').replace(/-+/g, '-') || (editingProductId || 'auto-id')}</span>
+                      </p>
+                    </div>
                   </div>
 
                   <div>

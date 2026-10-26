@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
@@ -99,6 +99,17 @@ function getProductFromCache(id: string) {
         productCache.set(id, parsed);
         return parsed;
       }
+      const allStored = sessionStorage.getItem('xcel_all_products');
+      if (allStored) {
+        const allList = JSON.parse(allStored);
+        if (Array.isArray(allList)) {
+          const found = allList.find((p: any) => p.id === id || p.slug === id || p.customUrl === id);
+          if (found) {
+            productCache.set(id, found);
+            return found;
+          }
+        }
+      }
     } catch (e) {}
   }
   return null;
@@ -130,6 +141,12 @@ export default function ProductDetailPage() {
   const SECTION_IDS = ['features', 'why-us', 'industries', 'faqs'];
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+  }, []);
+
+  useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
     const cached = getProductFromCache(id);
     if (cached) {
@@ -137,6 +154,14 @@ export default function ProductDetailPage() {
       setLoading(false);
     }
   }, [id]);
+
+  useEffect(() => {
+    if (product?.categoryId && typeof window !== 'undefined') {
+      try {
+        sessionStorage.setItem('xcel_active_category', product.categoryId);
+      } catch (e) {}
+    }
+  }, [product?.categoryId]);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -172,12 +197,36 @@ export default function ProductDetailPage() {
       }
 
       try {
-        const docRef = doc(db, "products", id);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const productData = { id: docSnap.id, ...docSnap.data() };
+        let productData: any = null;
+        
+        // 1. First attempt: direct document ID
+        try {
+          const docRef = doc(db, "products", id);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            productData = { id: docSnap.id, ...docSnap.data() };
+          }
+        } catch (e) {}
+
+        // 2. Second attempt: query by slug or customUrl
+        if (!productData) {
+          const q1 = query(collection(db, "products"), where("slug", "==", id));
+          let querySnap = await getDocs(q1);
+          if (querySnap.empty) {
+            const q2 = query(collection(db, "products"), where("customUrl", "==", id));
+            querySnap = await getDocs(q2);
+          }
+          if (!querySnap.empty) {
+            const matchedDoc = querySnap.docs[0];
+            productData = { id: matchedDoc.id, ...matchedDoc.data() };
+          }
+        }
+
+        if (productData) {
           setProduct(productData);
           saveProductToCache(id, productData);
+          if (productData.id) saveProductToCache(productData.id, productData);
+          if (productData.slug) saveProductToCache(productData.slug, productData);
         } else {
           setProduct(null);
         }
@@ -273,7 +322,7 @@ export default function ProductDetailPage() {
     return (
       <div className="min-h-screen bg-white font-sans flex flex-col">
         <Header />
-        <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10 animate-pulse">
+        <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10 animate-pulse min-h-[85vh]">
           <div className="h-4 w-60 bg-gray-200 rounded-md mb-8"></div>
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 mb-12">
             <div className="w-full sm:w-[80%] md:w-[65%] lg:w-[45%] xl:w-[40%] aspect-square bg-gray-100 rounded-[32px]"></div>
@@ -395,32 +444,33 @@ export default function ProductDetailPage() {
     <div className="min-h-screen bg-white font-sans flex flex-col">
       <Header />
 
-      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10">
+      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10 min-h-[80vh]">
         
-        {/* Breadcrumbs - Hidden on Mobile, Visible on Tablet & Desktop */}
-        <div className="hidden sm:flex flex-row items-center gap-3 text-[13px] text-[#363636] mb-6 lg:mb-10 overflow-x-auto whitespace-nowrap pb-2">
-          <Link href="/" className="text-[#363636] hover:text-[#0a2766] transition-colors flex items-center" title="Home">
-             <Home size={14} strokeWidth={1.5} />
+        {/* Breadcrumbs - Visible on Mobile, Tablet & Desktop */}
+        <div className="flex flex-row items-center gap-2 sm:gap-3 text-[12px] sm:text-[13px] text-[#363636] mb-4 sm:mb-6 lg:mb-10 overflow-x-auto scrollbar-hide whitespace-nowrap pb-1.5 sm:pb-2">
+          <Link href="/" className="text-[#363636] hover:text-[#0a2766] transition-colors flex items-center shrink-0" title="Home">
+             <Home size={13} className="sm:w-[14px] sm:h-[14px]" strokeWidth={1.5} />
           </Link>
-          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400 shrink-0" />
-          <Link href="/" className="hover:text-[#0a2766] transition-colors">
+          <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+          <Link href="/" className="hover:text-[#0a2766] transition-colors shrink-0">
             Home
           </Link>
-          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400 shrink-0" />
-          <Link href="/products" className="hover:text-[#0a2766] transition-colors">
+          <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+          <Link href="/products" className="hover:text-[#0a2766] transition-colors shrink-0">
             Products
           </Link>
-          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+          <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
           <Link 
             href={`/products#${product.categoryId}`} 
-            className="hover:text-[#0a2766] transition-colors"
+            className="hover:text-[#0a2766] transition-colors shrink-0"
           >
             {CATEGORY_NAMES[product.categoryId] || product.categoryId}
           </Link>
-          <ChevronRight size={14} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+          <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
           <Link 
-            href={`/product/${product.id}`}
-            className="text-[#0a2766] font-semibold hover:text-[#081e4f] transition-colors"
+            href={`/product/${product.slug || product.id}`}
+            className="text-[#0a2766] font-semibold hover:text-[#081e4f] transition-colors shrink-0 truncate max-w-[180px] sm:max-w-none"
+            title={product.name}
           >
             {product.name}
           </Link>

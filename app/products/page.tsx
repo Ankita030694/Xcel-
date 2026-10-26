@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
+import { Home, ChevronRight } from 'lucide-react';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 
@@ -58,7 +59,15 @@ export default function ProductsPage() {
   const [activeDotIndex, setActiveDotIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = sessionStorage.getItem('xcel_all_products');
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+    }
+    return [];
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -70,8 +79,11 @@ export default function ProductsPage() {
           fetchedProducts.push({ id: doc.id, ...doc.data() });
         });
         
-        // Sort by creation date
+        // Sort by order ascending, then by creation date descending
         fetchedProducts.sort((a, b) => {
+          const orderA = typeof a.order === 'number' ? a.order : 9999;
+          const orderB = typeof b.order === 'number' ? b.order : 9999;
+          if (orderA !== orderB) return orderA - orderB;
           const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
           const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
           return timeB - timeA;
@@ -80,11 +92,15 @@ export default function ProductsPage() {
         // Pre-cache products in sessionStorage for instant flicker-free navigation to product detail page
         try {
           if (typeof window !== 'undefined') {
+            sessionStorage.setItem('xcel_all_products', JSON.stringify(fetchedProducts));
             Object.values(FALLBACK_PRODUCTS).flat().forEach((p) => {
               sessionStorage.setItem(`xcel_prod_${p.id}`, JSON.stringify(p));
             });
             fetchedProducts.forEach((p) => {
               sessionStorage.setItem(`xcel_prod_${p.id}`, JSON.stringify(p));
+              if (p.slug) {
+                sessionStorage.setItem(`xcel_prod_${p.slug}`, JSON.stringify(p));
+              }
             });
           }
         } catch (e) {}
@@ -116,39 +132,52 @@ export default function ProductsPage() {
     }
   };
 
-  useEffect(() => {
-    const handleCategoryTarget = (targetId: string) => {
-      if (targetId && categories.some(c => c.id === targetId)) {
-        setActiveTab(targetId);
-        if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
-        scrollTimerRef.current = setTimeout(() => {
-          scrollToCategoryHeader('smooth');
-        }, 120);
+  const handleCategorySelect = (targetId: string, shouldPushHistory: boolean = false) => {
+    if (targetId && categories.some(c => c.id === targetId)) {
+      setActiveTab(targetId);
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('xcel_active_category', targetId);
+        if (shouldPushHistory) {
+          window.history.pushState(null, '', `/products#${targetId}`);
+        }
       }
-    };
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+      scrollTimerRef.current = setTimeout(() => {
+        scrollToCategoryHeader('smooth');
+      }, 120);
+    }
+  };
 
+  useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash ? window.location.hash.substring(1) : '';
       const urlParams = new URLSearchParams(window.location.search);
       const categoryParam = urlParams.get('category') || '';
       const targetId = hash || categoryParam;
-      if (targetId) {
-        handleCategoryTarget(targetId);
+      if (targetId && categories.some(c => c.id === targetId)) {
+        handleCategorySelect(targetId, false);
+      } else {
+        const saved = typeof window !== 'undefined' ? sessionStorage.getItem('xcel_active_category') : null;
+        if (saved && categories.some(c => c.id === saved)) {
+          handleCategorySelect(saved, false);
+        }
       }
     };
 
     const handleCustomCategoryEvent = (e: any) => {
       if (e?.detail) {
-        handleCategoryTarget(e.detail);
+        handleCategorySelect(e.detail, false);
       }
     };
 
     handleHashChange();
     window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleHashChange);
     window.addEventListener('select-product-category', handleCustomCategoryEvent);
     return () => {
       if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
       window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('popstate', handleHashChange);
       window.removeEventListener('select-product-category', handleCustomCategoryEvent);
     };
   }, []);
@@ -214,8 +243,23 @@ export default function ProductsPage() {
       </section>
 
       {/* Products Content */}
-      <section id="products-section" className="max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-8 pb-12 lg:pt-16 lg:pb-24 flex flex-col items-center scroll-mt-[100px]">
+      <section id="products-section" className="min-h-[75vh] max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-12 lg:pt-8 lg:pb-24 flex flex-col items-center scroll-mt-[100px]">
         
+        {/* Breadcrumb Navigation */}
+        <div className="w-full flex flex-row items-center gap-2 sm:gap-3 text-[12px] sm:text-[13px] text-[#363636] mb-6 sm:mb-8 overflow-x-auto scrollbar-hide whitespace-nowrap self-start">
+          <Link href="/" className="text-[#363636] hover:text-[#0a2766] transition-colors flex items-center shrink-0" title="Home">
+            <Home size={13} className="sm:w-[14px] sm:h-[14px]" strokeWidth={1.5} />
+          </Link>
+          <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+          <Link href="/" className="hover:text-[#0a2766] transition-colors shrink-0">
+            Home
+          </Link>
+          <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+          <span className="text-[#0a2766] font-semibold shrink-0">
+            Products
+          </span>
+        </div>
+
         {/* Header Texts */}
         <div className="flex flex-col items-center text-center mb-10 w-full">
           <h4 className="flex items-center justify-center gap-2 text-[#3b5b95] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase mb-4">
@@ -235,7 +279,7 @@ export default function ProductsPage() {
               return (
                 <div key={cat.id} className="flex items-center">
                   <button
-                    onClick={() => setActiveTab(cat.id)}
+                    onClick={() => handleCategorySelect(cat.id, true)}
                     className={`px-3 sm:px-4 lg:px-5 xl:px-6 py-2 sm:py-2.5 lg:py-3 text-[12px] sm:text-[14px] lg:text-[15px] xl:text-[16px] font-bold uppercase tracking-normal lg:tracking-wider transition-all rounded-md ${
                       isActive 
                         ? 'text-white bg-[#0a2766]' 
@@ -269,23 +313,35 @@ export default function ProductsPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-5 md:gap-6 xl:gap-8 w-full pb-8">
-            {activeCategoryProducts.map((product) => (
-              <Link 
-                href={`/product/${product.id}`} 
-                scroll={true}
-                key={product.id} 
-                onClick={() => {
-                  try {
-                    sessionStorage.setItem(`xcel_prod_${product.id}`, JSON.stringify(product));
-                  } catch (e) {}
-                }}
-                onMouseEnter={() => {
-                  try {
-                    sessionStorage.setItem(`xcel_prod_${product.id}`, JSON.stringify(product));
-                  } catch (e) {}
-                }}
-                className="bg-white rounded-xl md:rounded-2xl border border-gray-100 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-row xl:flex-col group cursor-pointer h-[180px] sm:h-[195px] md:h-[215px] xl:h-full"
-              >
+            {activeCategoryProducts.map((product) => {
+              const productUrl = `/product/${product.slug || product.id}`;
+              return (
+                <Link 
+                  href={productUrl} 
+                  scroll={true}
+                  key={product.id} 
+                  onClick={() => {
+                    try {
+                      sessionStorage.setItem(`xcel_prod_${product.id}`, JSON.stringify(product));
+                      if (product.slug) {
+                        sessionStorage.setItem(`xcel_prod_${product.slug}`, JSON.stringify(product));
+                      }
+                      sessionStorage.setItem('xcel_active_category', activeTab);
+                      if (typeof window !== 'undefined') {
+                        window.history.replaceState(null, '', `/products#${activeTab}`);
+                      }
+                    } catch (e) {}
+                  }}
+                  onMouseEnter={() => {
+                    try {
+                      sessionStorage.setItem(`xcel_prod_${product.id}`, JSON.stringify(product));
+                      if (product.slug) {
+                        sessionStorage.setItem(`xcel_prod_${product.slug}`, JSON.stringify(product));
+                      }
+                    } catch (e) {}
+                  }}
+                  className="bg-white rounded-xl md:rounded-2xl border border-gray-100 shadow-[0_4px_16px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)] hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-row xl:flex-col group cursor-pointer h-[180px] sm:h-[195px] md:h-[215px] xl:h-full"
+                >
                 
                 {/* Product Image */}
                 <div className="w-[42%] sm:w-[44%] md:w-[45%] xl:w-full h-full xl:h-[260px] bg-[#f8f9fa] xl:bg-white p-3 sm:p-4 md:p-5 xl:p-6 relative flex items-center justify-center flex-shrink-0 xl:border-b xl:border-gray-50">
@@ -320,7 +376,8 @@ export default function ProductsPage() {
                 </div>
 
               </Link>
-            ))}
+              );
+            })}
           </div>
         )}
 

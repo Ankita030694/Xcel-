@@ -218,11 +218,31 @@ function DraggableTimeline() {
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isTouchPaused, setIsTouchPaused] = useState(false);
+  const resumeTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Check if viewport is mobile or tablet/iPad (<= 1024px)
+  const isMobileOrTablet = () => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth <= 1024;
+  };
+
+  const triggerMobilePause = () => {
+    if (!isMobileOrTablet()) return;
+    setIsTouchPaused(true);
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+    }
+    resumeTimerRef.current = setTimeout(() => {
+      setIsTouchPaused(false);
+      resumeTimerRef.current = null;
+    }, 3000);
+  };
 
   useEffect(() => {
     let animationId: number;
     const scroll = () => {
-      if (scrollRef.current && !isHovered && !isDragging) {
+      if (scrollRef.current && !isHovered && !isDragging && !isTouchPaused) {
         scrollRef.current.scrollLeft += 1;
         
         // Endless loop logic
@@ -239,7 +259,16 @@ function DraggableTimeline() {
     };
     animationId = requestAnimationFrame(scroll);
     return () => cancelAnimationFrame(animationId);
-  }, [isHovered, isDragging]);
+  }, [isHovered, isDragging, isTouchPaused]);
+
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      if (resumeTimerRef.current) {
+        clearTimeout(resumeTimerRef.current);
+      }
+    };
+  }, []);
 
   // Start in the middle segment
   useEffect(() => {
@@ -249,25 +278,73 @@ function DraggableTimeline() {
   }, []);
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (isMobileOrTablet()) {
+      triggerMobilePause();
+    }
     setIsDragging(true);
     if (scrollRef.current) {
       setStartX(e.pageX - scrollRef.current.offsetLeft);
       setScrollLeft(scrollRef.current.scrollLeft);
     }
   };
+
   const handleMouseLeave = () => {
     setIsDragging(false);
     setIsHovered(false);
   };
+
   const handleMouseUp = () => {
     setIsDragging(false);
+    if (isMobileOrTablet()) {
+      triggerMobilePause();
+    }
   };
+
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !scrollRef.current) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current.offsetLeft;
     const walk = (x - startX) * 2;
     scrollRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseEnter = () => {
+    // Only pause on hover on desktop screens (> 1024px)
+    if (!isMobileOrTablet()) {
+      setIsHovered(true);
+    }
+  };
+
+  const handleTouchStart = () => {
+    if (isMobileOrTablet()) {
+      setIsTouchPaused(true);
+      if (resumeTimerRef.current) {
+        clearTimeout(resumeTimerRef.current);
+        resumeTimerRef.current = null;
+      }
+    }
+  };
+
+  const handleTouchMove = () => {
+    if (isMobileOrTablet()) {
+      setIsTouchPaused(true);
+      if (resumeTimerRef.current) {
+        clearTimeout(resumeTimerRef.current);
+        resumeTimerRef.current = null;
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (isMobileOrTablet()) {
+      triggerMobilePause();
+    }
+  };
+
+  const handleClick = () => {
+    if (isMobileOrTablet()) {
+      triggerMobilePause();
+    }
   };
 
   return (
@@ -293,7 +370,12 @@ function DraggableTimeline() {
           onMouseLeave={handleMouseLeave}
           onMouseUp={handleMouseUp}
           onMouseMove={handleMouseMove}
-          onMouseEnter={() => setIsHovered(true)}
+          onMouseEnter={handleMouseEnter}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onTouchCancel={handleTouchEnd}
+          onClick={handleClick}
         >
           <div className="flex w-max relative py-12">
             {/* Background Line */}

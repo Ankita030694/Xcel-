@@ -261,7 +261,17 @@ export const Footer = () => {
               </div>
               <div className="flex-[1.5]">
                 <h5 className="font-semibold text-[14px] mb-3">
-                  <Link href="/blogs" className="hover:text-white/80 transition-colors">INDUSTRY INSIGHTS</Link>
+                  <Link 
+                    href="/blogs" 
+                    onClick={() => {
+                      if (typeof window !== 'undefined') {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }}
+                    className="hover:text-white/80 transition-colors"
+                  >
+                    INDUSTRY INSIGHTS
+                  </Link>
                 </h5>
                 <ul className="flex flex-col gap-2.5 text-white/80 text-[11px]">
                   {BLOG_ARTICLES.slice(0, 4).map((article) => {
