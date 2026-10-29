@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, serverTimestamp } from 'firebase/firestore';
+import { useEffect, useState, useRef } from 'react';
+import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db, storage } from '../../../lib/firebase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Trash2, Plus, X, Edit, ArrowUp, ArrowDown, ExternalLink } from 'lucide-react';
+import { Trash2, Plus, X, Edit, ArrowUp, ArrowDown, ExternalLink, Layers, ArrowUpDown, Check, RotateCcw, ChevronDown } from 'lucide-react';
 
 interface ProductFeature {
   title: string;
@@ -54,12 +54,46 @@ const CATEGORIES = [
   { id: 'complete-range', name: 'Complete Range' }
 ];
 
+const DEFAULT_CATEGORY_ORDER = [
+  'washing',
+  'drying',
+  'apparel-processing',
+  'dry-cleaning',
+  'flat-work',
+  'steam-finishing',
+  'water-heater',
+  'fabric-checking',
+  'other-equipment'
+];
+
 export default function ProductsDashboard() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [authChecking, setAuthChecking] = useState(true);
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string>('all');
   const [orderSaveStatus, setOrderSaveStatus] = useState<string | null>(null);
+
+  // Complete Range Category Order State
+  const [categoryOrder, setCategoryOrder] = useState<string[]>(DEFAULT_CATEGORY_ORDER);
+  const [isCategoryOrderModalOpen, setIsCategoryOrderModalOpen] = useState(false);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+  const [isSavingCategoryOrder, setIsSavingCategoryOrder] = useState(false);
+  const [categoryOrderSaveStatus, setCategoryOrderSaveStatus] = useState<string | null>(null);
+  const categoryDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(event.target as Node)) {
+        setIsCategoryDropdownOpen(false);
+      }
+    };
+    if (isCategoryDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isCategoryDropdownOpen]);
   
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -93,12 +127,32 @@ export default function ProductsDashboard() {
       if (user) {
         setAuthChecking(false);
         fetchProducts();
+        fetchCategoryOrder();
       } else {
         router.push('/adminloginn');
       }
     });
     return () => unsubscribe();
   }, [router]);
+
+  const fetchCategoryOrder = async () => {
+    try {
+      const orderDoc = await getDoc(doc(db, "settings", "categoryOrder"));
+      if (orderDoc.exists()) {
+        const data = orderDoc.data();
+        if (Array.isArray(data?.order) && data.order.length > 0) {
+          const savedOrder = data.order.filter((id: string) => id !== 'complete-range');
+          const missing = DEFAULT_CATEGORY_ORDER.filter(id => !savedOrder.includes(id));
+          setCategoryOrder([...savedOrder, ...missing]);
+          return;
+        }
+      }
+      setCategoryOrder(DEFAULT_CATEGORY_ORDER);
+    } catch (e) {
+      console.error("Error fetching category order:", e);
+      setCategoryOrder(DEFAULT_CATEGORY_ORDER);
+    }
+  };
 
   const fetchProducts = async () => {
     try {
@@ -181,6 +235,65 @@ export default function ProductsDashboard() {
       console.error("Error updating sequence:", err);
       setOrderSaveStatus('Failed to update sequence');
       setTimeout(() => setOrderSaveStatus(null), 3000);
+    }
+  };
+
+  const handleSetFirstCategory = (catId: string) => {
+    if (!catId) return;
+    const filtered = categoryOrder.filter(id => id !== catId);
+    setCategoryOrder([catId, ...filtered]);
+  };
+
+  const handleMoveCategory = (index: number, direction: 'up' | 'down') => {
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= categoryOrder.length) return;
+    const updated = [...categoryOrder];
+    const [moved] = updated.splice(index, 1);
+    updated.splice(targetIndex, 0, moved);
+    setCategoryOrder(updated);
+  };
+
+  const handleMoveCategoryToExtreme = (index: number, position: 'top' | 'bottom') => {
+    if (position === 'top' && index === 0) return;
+    if (position === 'bottom' && index === categoryOrder.length - 1) return;
+    const updated = [...categoryOrder];
+    const [moved] = updated.splice(index, 1);
+    if (position === 'top') {
+      updated.unshift(moved);
+    } else {
+      updated.push(moved);
+    }
+    setCategoryOrder(updated);
+  };
+
+  const handleResetCategoryOrder = () => {
+    setCategoryOrder(DEFAULT_CATEGORY_ORDER);
+  };
+
+  const handleSaveCategoryOrder = async () => {
+    setIsSavingCategoryOrder(true);
+    try {
+      await setDoc(doc(db, "settings", "categoryOrder"), {
+        order: categoryOrder,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+
+      if (typeof window !== 'undefined') {
+        try {
+          sessionStorage.setItem('xcel_category_order', JSON.stringify(categoryOrder));
+        } catch (e) {}
+      }
+
+      setCategoryOrderSaveStatus('Category sequence saved successfully!');
+      setTimeout(() => {
+        setCategoryOrderSaveStatus(null);
+        setIsCategoryOrderModalOpen(false);
+      }, 1200);
+    } catch (err) {
+      console.error("Failed to save category order:", err);
+      alert("Failed to save category sequence.");
+    } finally {
+      setIsSavingCategoryOrder(false);
     }
   };
 
@@ -459,20 +572,175 @@ export default function ProductsDashboard() {
         </div>
 
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
-          <div className="flex items-center gap-3 flex-wrap">
-            <span className="text-sm font-semibold text-gray-700">Filter Category:</span>
-            <select
-              value={selectedCategoryFilter}
-              onChange={(e) => setSelectedCategoryFilter(e.target.value)}
-              className="border border-gray-300 rounded px-3 py-1.5 text-sm bg-white text-gray-800 font-medium focus:outline-none focus:border-[#32589c]"
-            >
-              <option value="all">All Categories ({products.length})</option>
-              {CATEGORIES.map(cat => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name} ({products.filter(p => p.categoryId === cat.id).length})
-                </option>
-              ))}
-            </select>
+          <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold text-gray-700">Filter Category:</span>
+              <select
+                value={selectedCategoryFilter}
+                onChange={(e) => setSelectedCategoryFilter(e.target.value)}
+                className="border border-gray-300 rounded px-3 py-1.5 text-sm bg-white text-gray-800 font-medium focus:outline-none focus:border-[#32589c]"
+              >
+                <option value="all">All Categories ({products.length})</option>
+                {CATEGORIES.map(cat => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name} ({products.filter(p => p.categoryId === cat.id).length})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Complete Range Category Sequence Dropdown */}
+            <div className="relative" ref={categoryDropdownRef}>
+              <button
+                type="button"
+                onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+                className={`border rounded px-3 py-1.5 text-sm font-medium flex items-center gap-2 cursor-pointer transition-all shadow-xs ${
+                  isCategoryDropdownOpen 
+                    ? 'border-[#0a2766] bg-blue-50 text-[#0a2766] ring-2 ring-[#0a2766]/15' 
+                    : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-800'
+                }`}
+                title="Change category display sequence for Complete Range"
+              >
+                <Layers size={15} className="text-[#32589c]" />
+                <span className="text-gray-700">Complete Range Order:</span>
+                <span className="font-bold text-[#0a2766] bg-white px-2 py-0.5 rounded border border-gray-200 text-xs">
+                  1st: {CATEGORIES.find(c => c.id === categoryOrder[0])?.name || categoryOrder[0]}
+                </span>
+                <ChevronDown size={14} className={`text-gray-500 transition-transform duration-200 ${isCategoryDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Dropdown Menu Popover */}
+              {isCategoryDropdownOpen && (
+                <div className="absolute left-0 mt-2 w-[340px] sm:w-[390px] bg-white rounded-xl shadow-2xl border border-gray-200 p-4 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <div>
+                      <h4 className="font-bold text-sm text-[#0a2766] flex items-center gap-1.5">
+                        <Layers size={16} className="text-[#32589c]" />
+                        Complete Range Sequence
+                      </h4>
+                      <p className="text-[11px] text-gray-500 mt-0.5">
+                        Controls which category appears 1st, 2nd, etc. in Complete Range
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsCategoryDropdownOpen(false)}
+                      className="text-gray-400 hover:text-gray-600 p-1 rounded-md hover:bg-gray-100 cursor-pointer"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+
+                  {/* Quick Select: Which category to display 1st */}
+                  <div className="mt-3 p-2.5 bg-amber-50/80 border border-amber-200 rounded-lg">
+                    <label className="block text-[11px] font-bold text-amber-900 uppercase tracking-wider mb-1">
+                      Display First (1st Position)
+                    </label>
+                    <select
+                      value={categoryOrder[0]}
+                      onChange={(e) => handleSetFirstCategory(e.target.value)}
+                      className="w-full bg-white border border-amber-300 rounded px-2.5 py-1.5 text-xs font-bold text-[#0a2766] focus:outline-none focus:ring-1 focus:ring-amber-500 cursor-pointer"
+                    >
+                      {categoryOrder.map((catId) => (
+                        <option key={catId} value={catId}>
+                          {CATEGORIES.find(c => c.id === catId)?.name || catId} ({products.filter(p => p.categoryId === catId).length} products)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Full Reorderable Category List */}
+                  <div className="mt-3 max-h-[250px] overflow-y-auto space-y-1.5 pr-1">
+                    {categoryOrder.map((catId, index) => {
+                      const name = CATEGORIES.find(c => c.id === catId)?.name || catId;
+                      const prodCount = products.filter(p => p.categoryId === catId).length;
+                      const isFirst = index === 0;
+                      const isLast = index === categoryOrder.length - 1;
+
+                      return (
+                        <div
+                          key={catId}
+                          className={`flex items-center justify-between p-2 rounded-lg border text-xs transition-colors ${
+                            isFirst 
+                              ? 'bg-amber-50/90 border-amber-200 shadow-2xs' 
+                              : 'bg-gray-50/70 border-gray-200 hover:bg-gray-100'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 truncate pr-2">
+                            <span className={`w-5 h-5 rounded flex items-center justify-center font-bold text-[10px] shrink-0 ${
+                              isFirst ? 'bg-amber-500 text-white' : 'bg-gray-200 text-gray-700'
+                            }`}>
+                              #{index + 1}
+                            </span>
+                            <span className={`font-semibold truncate ${isFirst ? 'text-amber-950 font-bold' : 'text-gray-800'}`}>
+                              {name}
+                            </span>
+                            <span className="text-[10px] text-gray-400 shrink-0">
+                              ({prodCount})
+                            </span>
+                          </div>
+
+                          <div className="flex items-center gap-1 shrink-0">
+                            <button
+                              type="button"
+                              disabled={isFirst}
+                              onClick={() => handleMoveCategory(index, 'up')}
+                              className={`p-1 rounded border transition-colors ${
+                                isFirst
+                                  ? 'border-gray-100 text-gray-300 cursor-not-allowed bg-white/50'
+                                  : 'border-gray-200 text-gray-700 hover:text-[#0a2766] hover:bg-white cursor-pointer'
+                              }`}
+                              title="Move Up"
+                            >
+                              <ArrowUp size={12} strokeWidth={2.5} />
+                            </button>
+                            <button
+                              type="button"
+                              disabled={isLast}
+                              onClick={() => handleMoveCategory(index, 'down')}
+                              className={`p-1 rounded border transition-colors ${
+                                isLast
+                                  ? 'border-gray-100 text-gray-300 cursor-not-allowed bg-white/50'
+                                  : 'border-gray-200 text-gray-700 hover:text-[#0a2766] hover:bg-white cursor-pointer'
+                              }`}
+                              title="Move Down"
+                            >
+                              <ArrowDown size={12} strokeWidth={2.5} />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {categoryOrderSaveStatus && (
+                    <div className="mt-3 text-xs font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-1.5 rounded-lg border border-emerald-200 text-center animate-pulse">
+                      {categoryOrderSaveStatus}
+                    </div>
+                  )}
+
+                  {/* Actions */}
+                  <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
+                    <button
+                      type="button"
+                      onClick={handleResetCategoryOrder}
+                      className="text-[11px] font-semibold text-gray-500 hover:text-gray-800 px-2 py-1 rounded hover:bg-gray-100 cursor-pointer"
+                    >
+                      Reset Default
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleSaveCategoryOrder}
+                      disabled={isSavingCategoryOrder}
+                      className="bg-[#0a2766] hover:bg-[#123985] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold shadow-sm transition-all cursor-pointer disabled:opacity-50 flex items-center gap-1"
+                    >
+                      {isSavingCategoryOrder ? 'Saving...' : 'Save Sequence'}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {orderSaveStatus && (
               <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200 animate-pulse">
                 {orderSaveStatus}
@@ -481,11 +749,31 @@ export default function ProductsDashboard() {
           </div>
           <button 
             onClick={() => { resetForm(); setIsModalOpen(true); }}
-            className="flex items-center gap-2 bg-[#32589c] text-white px-4 py-2 rounded shadow-md hover:bg-[#1f3a6a] transition-colors font-medium self-end sm:self-auto"
+            className="flex items-center gap-2 bg-[#32589c] text-white px-4 py-2 rounded shadow-md hover:bg-[#1f3a6a] transition-colors font-medium self-end sm:self-auto cursor-pointer"
           >
             <Plus size={18} /> Add New Product
           </button>
         </div>
+
+        {selectedCategoryFilter === 'complete-range' && (
+          <div className="bg-blue-50/80 border border-blue-200 rounded-lg p-3.5 mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs sm:text-sm text-[#0a2766]">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-[#0a2766] text-white flex items-center justify-center shrink-0">
+                <Layers size={15} />
+              </div>
+              <div>
+                <span className="font-bold">Complete Range Mode:</span> Showing all products ordered by your configured category sequence.
+              </div>
+            </div>
+            <button 
+              type="button"
+              onClick={() => setIsCategoryDropdownOpen(true)}
+              className="font-bold text-[#32589c] hover:text-[#0a2766] hover:underline cursor-pointer shrink-0 inline-flex items-center gap-1"
+            >
+              Change Category Order &rarr;
+            </button>
+          </div>
+        )}
 
         {loading ? (
           <div className="text-center py-20 text-[#363636]">Loading products...</div>
@@ -510,6 +798,22 @@ export default function ProductsDashboard() {
                 <tbody className="text-sm">
                   {(selectedCategoryFilter === 'all' 
                     ? products 
+                    : selectedCategoryFilter === 'complete-range'
+                    ? [...products].sort((a, b) => {
+                        const orderA = categoryOrder.indexOf(a.categoryId);
+                        const orderB = categoryOrder.indexOf(b.categoryId);
+                        const effectiveOrderA = orderA === -1 ? 999 : orderA;
+                        const effectiveOrderB = orderB === -1 ? 999 : orderB;
+                        if (effectiveOrderA !== effectiveOrderB) {
+                          return effectiveOrderA - effectiveOrderB;
+                        }
+                        const pOrderA = typeof a.order === 'number' ? a.order : 9999;
+                        const pOrderB = typeof b.order === 'number' ? b.order : 9999;
+                        if (pOrderA !== pOrderB) return pOrderA - pOrderB;
+                        const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+                        const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+                        return timeB - timeA;
+                      })
                     : products.filter(p => p.categoryId === selectedCategoryFilter)
                   ).map((product) => {
                     const categoryProducts = products.filter(p => p.categoryId === product.categoryId);

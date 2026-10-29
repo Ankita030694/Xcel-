@@ -561,21 +561,24 @@ const ProductsHoverGallery = () => {
       src: "/banners/excellence-banner-1.webp", 
       alt: "Apparel Washing & High Speed Extract Equipment", 
       title: "APPAREL WASHING & HIGH SPEED EXTRACT",
-      link: "/products#apparel-processing"
+      link: "/products?category=apparel-processing#apparel-processing",
+      category: "apparel-processing"
     },
     { 
       id: 1,
       src: "/banners/excellence-banner-2.webp", 
       alt: "Flat-Work Ironer & Finishing Commercial Equipment", 
       title: "FLAT-WORK IRONER",
-      link: "/products#flat-work"
+      link: "/products?category=flat-work#flat-work",
+      category: "flat-work"
     },
     { 
       id: 2,
       src: "/banners/excellence-banner-3.webp", 
       alt: "Softener Washer Dryer Multi-Stage Equipment", 
       title: "SOFTENER WASHER DRYER",
-      link: "/products#apparel-processing"
+      link: "/products?category=apparel-processing#apparel-processing",
+      category: "apparel-processing"
     },
   ];
 
@@ -717,8 +720,19 @@ const ProductsHoverGallery = () => {
   const activeBanner = ((currentIndex % 3) + 3) % 3;
   const thumbLeftPercent = (activeBanner / 2) * 65;
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#engineering-excellence') {
+      setTimeout(() => {
+        const el = document.getElementById('engineering-excellence');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
+    }
+  }, []);
+
   return (
-    <section className="bg-[#f8fafc] w-full pt-10 lg:pt-14 pb-10 lg:pb-16 overflow-hidden border-t border-gray-100 relative">
+    <section id="engineering-excellence" className="bg-[#f8fafc] w-full pt-10 lg:pt-14 pb-10 lg:pb-16 overflow-hidden border-t border-gray-100 relative scroll-mt-20">
       {/* Section Title */}
       <div className="max-w-[1550px] mx-auto px-4 sm:px-6 lg:px-8 mb-6 lg:mb-10 flex flex-col items-center justify-center text-center gap-2 lg:gap-3">
         <div className="flex items-center justify-center gap-2">
@@ -775,7 +789,16 @@ const ProductsHoverGallery = () => {
                       onClick={(e) => {
                         if (!isCenter || hasMoved.current) {
                           e.preventDefault();
+                          return;
                         }
+                        try {
+                          if (card.category) {
+                            sessionStorage.setItem('xcel_active_category', card.category);
+                          }
+                          if (typeof window !== 'undefined') {
+                            window.history.replaceState(window.history.state, '', '/#engineering-excellence');
+                          }
+                        } catch (err) {}
                       }}
                       className="w-full h-full block group cursor-pointer"
                     >
@@ -1393,12 +1416,16 @@ const ProductCategories = () => {
               className="w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 shrink-0 snap-center px-2 sm:px-3"
             >
               <Link
-                href={`/products#${cat.id}`}
+                href={`/products?category=${cat.id}#${cat.id}`}
                 onClick={(e) => {
                   if (hasMoved.current) {
                     e.preventDefault();
                     e.stopPropagation();
+                    return;
                   }
+                  try {
+                    sessionStorage.setItem('xcel_active_category', cat.id);
+                  } catch (err) {}
                 }}
                 className="bg-gradient-to-b from-white to-[#eef2f9] border border-gray-200 rounded-[1rem] sm:rounded-[1.5rem] p-3 sm:p-5 flex flex-col aspect-square h-auto transition-all duration-300 hover:shadow-xl hover:-translate-y-2 group cursor-pointer block isolate"
               >

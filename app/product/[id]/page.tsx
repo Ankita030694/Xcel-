@@ -7,7 +7,7 @@ import { doc, getDoc, collection, query, where, getDocs } from 'firebase/firesto
 import { db } from '../../../lib/firebase';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
-import { ChevronRight, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Settings, ShieldCheck, Factory, HelpCircle, Home, ArrowLeft, ArrowRight } from 'lucide-react';
+import { ChevronRight, ChevronLeft, ChevronDown, ChevronUp, Send, Download, Headset, Phone, Settings, ShieldCheck, Factory, HelpCircle, Home, ArrowLeft, ArrowRight } from 'lucide-react';
 
 const CATEGORY_NAMES: Record<string, string> = {
   'washing': 'Washing',
@@ -20,6 +20,40 @@ const CATEGORY_NAMES: Record<string, string> = {
   'fabric-checking': 'Fabric Checking',
   'other-equipment': 'Other Equipment',
   'complete-range': 'Complete Range'
+};
+
+const FALLBACK_PRODUCTS: Record<string, any[]> = {
+  'washing': [
+    { id: 'fallback-1', name: 'Washer Extractors', imageUrl: '/prod.final/Washing 1.png', categoryId: 'washing', subheading: 'Built for heavy loads. Engineered for excellence.' },
+    { id: 'fallback-2', name: 'Front Loading Washing Machines', imageUrl: '/prod.png/Washing Front 60 kg Left View 1.png', categoryId: 'washing', subheading: 'Built for heavy loads. Engineered for excellence.' }
+  ],
+  'drying': [
+    { id: 'fallback-3', name: 'Drying Tumblers', imageUrl: '/prod.final/Drying 1.png', categoryId: 'drying', subheading: 'Built for heavy loads. Engineered for excellence.' }
+  ],
+  'apparel-processing': [
+    { id: 'fallback-4', name: 'Apparel Washing Machines', imageUrl: '/prod.final/Apparel Washing 1.png', categoryId: 'apparel-processing', subheading: 'Built for heavy loads. Engineered for excellence.' }
+  ],
+  'dry-cleaning': [
+    { id: 'fallback-5', name: 'Perc Dry Cleaning Machines', imageUrl: '/prod.final/Dry-Cleaning 1.png', categoryId: 'dry-cleaning', subheading: 'Built for heavy loads. Engineered for excellence.' }
+  ],
+  'flat-work': [
+    { id: 'fallback-6', name: 'Flat Work Ironers', imageUrl: '/prod.final/Flat-Work 1.png', categoryId: 'flat-work', subheading: 'Built for heavy loads. Engineered for excellence.' }
+  ],
+  'steam-finishing': [
+    { id: 'fallback-7', name: 'Steam Finishing Equipment', imageUrl: '/prod.final/Steam-Finishing 1.png', categoryId: 'steam-finishing', subheading: 'Built for heavy loads. Engineered for excellence.' }
+  ],
+  'water-heater': [
+    { id: 'fallback-8', name: 'Industrial Water Heaters', imageUrl: '/prod.final/Water Heater 1.png', categoryId: 'water-heater', subheading: 'Built for heavy loads. Engineered for excellence.' }
+  ],
+  'fabric-checking': [
+    { id: 'fallback-9', name: 'Fabric Checking Machines', imageUrl: '/prod.final/Fabric Checking 1.png', categoryId: 'fabric-checking', subheading: 'Built for heavy loads. Engineered for excellence.' }
+  ],
+  'other-equipment': [
+    { id: 'fallback-10', name: 'Ancillary Equipment', imageUrl: '/prod.final/Other Equipment 1.png', categoryId: 'other-equipment', subheading: 'Built for heavy loads. Engineered for excellence.' }
+  ],
+  'complete-range': [
+    { id: 'fallback-11', name: 'Complete Laundry Setup', imageUrl: '/prod.final/Complete Range 1.png', categoryId: 'complete-range', subheading: 'Built for heavy loads. Engineered for excellence.' }
+  ]
 };
 
 const FAQList = ({ faqs }: { faqs: { question: string; answer: string }[] }) => {
@@ -132,6 +166,30 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<any>(() => getProductFromCache(id));
   const [loading, setLoading] = useState<boolean>(() => !getProductFromCache(id));
   
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
+  const [loadingRelated, setLoadingRelated] = useState<boolean>(true);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const updateScrollButtons = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+      setCanScrollLeft(scrollLeft > 10);
+      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 10);
+    }
+  };
+
+  const scrollCarousel = (direction: 'left' | 'right') => {
+    if (carouselRef.current) {
+      const scrollDistance = Math.min(carouselRef.current.clientWidth * 0.8, 640);
+      carouselRef.current.scrollBy({
+        left: direction === 'left' ? -scrollDistance : scrollDistance,
+        behavior: 'smooth'
+      });
+    }
+  };
+  
   const [activeSection, setActiveSection] = useState<string | null>('features');
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -148,6 +206,10 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    setActiveImageIndex(0);
+    if (carouselRef.current) {
+      carouselRef.current.scrollTo({ left: 0, behavior: 'instant' as ScrollBehavior });
+    }
     const cached = getProductFromCache(id);
     if (cached) {
       setProduct(cached);
@@ -238,6 +300,98 @@ export default function ProductDetailPage() {
     };
     fetchProduct();
   }, [id]);
+
+  useEffect(() => {
+    if (!product?.categoryId) return;
+
+    let isMounted = true;
+    setLoadingRelated(true);
+
+    const loadRelated = async () => {
+      try {
+        let allProds: any[] = [];
+        
+        // 1. Check sessionStorage
+        if (typeof window !== 'undefined') {
+          try {
+            const stored = sessionStorage.getItem('xcel_all_products');
+            if (stored) {
+              allProds = JSON.parse(stored);
+            }
+          } catch (e) {}
+        }
+
+        // 2. Fetch from Firestore if not in sessionStorage
+        if (!allProds || allProds.length === 0) {
+          try {
+            const querySnapshot = await getDocs(collection(db, "products"));
+            querySnapshot.forEach((d) => {
+              allProds.push({ id: d.id, ...d.data() });
+            });
+            if (typeof window !== 'undefined' && allProds.length > 0) {
+              try {
+                sessionStorage.setItem('xcel_all_products', JSON.stringify(allProds));
+              } catch (e) {}
+            }
+          } catch (e) {
+            console.error("Error fetching products for related section:", e);
+          }
+        }
+
+        const fallbackList = Object.values(FALLBACK_PRODUCTS).flat();
+        const currentProdId = product.id;
+        const currentProdSlug = product.slug;
+
+        const isCurrent = (p: any) => {
+          if (p.id === currentProdId || p.slug === currentProdId) return true;
+          if (currentProdSlug && (p.id === currentProdSlug || p.slug === currentProdSlug)) return true;
+          return false;
+        };
+
+        // Filter products in the same category
+        let sameCat = allProds.filter((p: any) => p.categoryId === product.categoryId && !isCurrent(p));
+
+        // If none found in Firestore/session, check FALLBACK_PRODUCTS for this category
+        if (sameCat.length === 0 && FALLBACK_PRODUCTS[product.categoryId]) {
+          sameCat = FALLBACK_PRODUCTS[product.categoryId].filter((p: any) => !isCurrent(p));
+        }
+
+        let finalList = sameCat;
+
+        // If category has few or no other products, supplement with other equipment
+        if (finalList.length < 2) {
+          const pool = allProds.length > 0 ? allProds : fallbackList;
+          const otherProds = pool.filter((p: any) => 
+            p.categoryId !== product.categoryId && !isCurrent(p) && !finalList.some(f => f.id === p.id)
+          );
+          finalList = [...finalList, ...otherProds.slice(0, 6 - finalList.length)];
+        }
+
+        if (isMounted) {
+          setRelatedProducts(finalList);
+        }
+      } catch (err) {
+        console.error("Failed to load related products:", err);
+      } finally {
+        if (isMounted) {
+          setLoadingRelated(false);
+        }
+      }
+    };
+
+    loadRelated();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [product?.categoryId, product?.id, product?.slug]);
+
+  useEffect(() => {
+    updateScrollButtons();
+    const handleResize = () => updateScrollButtons();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [relatedProducts]);
 
   useEffect(() => {
     if (!loading && product) {
@@ -446,34 +600,66 @@ export default function ProductDetailPage() {
 
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10 min-h-[80vh]">
         
-        {/* Breadcrumbs - Visible on Mobile, Tablet & Desktop */}
-        <div className="flex flex-row items-center gap-2 sm:gap-3 text-[12px] sm:text-[13px] text-[#363636] mb-4 sm:mb-6 lg:mb-10 overflow-x-auto scrollbar-hide whitespace-nowrap pb-1.5 sm:pb-2">
-          <Link href="/" className="text-[#363636] hover:text-[#0a2766] transition-colors flex items-center shrink-0" title="Home">
-             <Home size={13} className="sm:w-[14px] sm:h-[14px]" strokeWidth={1.5} />
-          </Link>
-          <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
-          <Link href="/" className="hover:text-[#0a2766] transition-colors shrink-0">
-            Home
-          </Link>
-          <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
-          <Link href="/products" className="hover:text-[#0a2766] transition-colors shrink-0">
-            Products
-          </Link>
-          <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
-          <Link 
-            href={`/products#${product.categoryId}`} 
-            className="hover:text-[#0a2766] transition-colors shrink-0"
+        {/* Breadcrumbs & Back Navigation */}
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 sm:mb-6 lg:mb-10">
+          <div className="flex flex-row items-center gap-2 sm:gap-3 text-[12px] sm:text-[13px] text-[#363636] overflow-x-auto scrollbar-hide whitespace-nowrap pb-1.5 sm:pb-0">
+            <Link href="/" className="text-[#363636] hover:text-[#0a2766] transition-colors flex items-center shrink-0" title="Home">
+               <Home size={13} className="sm:w-[14px] sm:h-[14px]" strokeWidth={1.5} />
+            </Link>
+            <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+            <Link href="/" className="hover:text-[#0a2766] transition-colors shrink-0">
+              Home
+            </Link>
+            <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+            <Link 
+              href={`/products?category=${product.categoryId}#${product.categoryId}`}
+              onClick={() => {
+                try {
+                  sessionStorage.setItem('xcel_active_category', product.categoryId);
+                } catch (e) {}
+              }}
+              className="hover:text-[#0a2766] transition-colors shrink-0"
+            >
+              Products
+            </Link>
+            <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+            <Link 
+              href={`/products?category=${product.categoryId}#${product.categoryId}`} 
+              onClick={() => {
+                try {
+                  sessionStorage.setItem('xcel_active_category', product.categoryId);
+                } catch (e) {}
+              }}
+              className="hover:text-[#0a2766] transition-colors shrink-0"
+            >
+              {CATEGORY_NAMES[product.categoryId] || product.categoryId}
+            </Link>
+            <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
+            <span 
+              className="text-[#0a2766] font-semibold shrink-0 truncate max-w-[180px] sm:max-w-none"
+              title={product.name}
+            >
+              {product.name}
+            </span>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                if (window.history.length > 1) {
+                  window.history.back();
+                } else {
+                  window.location.href = `/products?category=${product.categoryId}#${product.categoryId}`;
+                }
+              }
+            }}
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0a2766] hover:text-[#32589c] bg-[#f4f7fb] hover:bg-[#eaf0ff] px-3 py-1.5 rounded-lg transition-colors cursor-pointer shrink-0 border border-gray-200/60"
+            title="Go back to products"
           >
-            {CATEGORY_NAMES[product.categoryId] || product.categoryId}
-          </Link>
-          <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
-          <Link 
-            href={`/product/${product.slug || product.id}`}
-            className="text-[#0a2766] font-semibold hover:text-[#081e4f] transition-colors shrink-0 truncate max-w-[180px] sm:max-w-none"
-            title={product.name}
-          >
-            {product.name}
-          </Link>
+            <ArrowLeft size={13} strokeWidth={2.2} />
+            <span>Back to Products</span>
+          </button>
         </div>
 
         {/* Top Section */}
@@ -708,6 +894,151 @@ export default function ProductDetailPage() {
             ))}
           </div>
         </div>
+
+        {/* Related Category Products Carousel Section */}
+        {relatedProducts.length > 0 && (
+          <section className="mb-14 sm:mb-20">
+            {/* Section Header */}
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-1 h-4 sm:h-5 bg-[#3b5b95] rounded-full"></div>
+                  <span className="text-[#3b5b95] font-bold text-[11px] sm:text-[12px] tracking-[0.2em] uppercase">
+                    RELATED PRODUCTS
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0a2766] tracking-tight">
+                  {relatedProducts.some((p: any) => p.categoryId === product.categoryId)
+                    ? `More in ${CATEGORY_NAMES[product.categoryId] || 'this Category'}`
+                    : 'Related Laundry Equipment'}
+                </h3>
+              </div>
+
+              <div className="flex items-center gap-3 justify-between sm:justify-end">
+                <Link 
+                  href={`/products?category=${product.categoryId}#${product.categoryId}`}
+                  onClick={() => {
+                    try {
+                      sessionStorage.setItem('xcel_active_category', product.categoryId);
+                    } catch (e) {}
+                  }}
+                  className="text-xs sm:text-sm font-semibold text-[#0a2766] hover:text-[#32589c] flex items-center gap-1 group transition-colors"
+                >
+                  <span>View All {CATEGORY_NAMES[product.categoryId] || 'Category'}</span>
+                  <ChevronRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+                
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => scrollCarousel('left')}
+                    disabled={!canScrollLeft}
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-all ${
+                      canScrollLeft
+                        ? 'border-gray-200 text-[#0a2766] hover:bg-[#0a2766] hover:text-white hover:border-[#0a2766] shadow-sm cursor-pointer'
+                        : 'border-gray-100 text-gray-300 cursor-not-allowed opacity-50'
+                    }`}
+                    aria-label="Scroll related products left"
+                  >
+                    <ChevronLeft size={18} strokeWidth={2} />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => scrollCarousel('right')}
+                    disabled={!canScrollRight}
+                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-all ${
+                      canScrollRight
+                        ? 'border-gray-200 text-[#0a2766] hover:bg-[#0a2766] hover:text-white hover:border-[#0a2766] shadow-sm cursor-pointer'
+                        : 'border-gray-100 text-gray-300 cursor-not-allowed opacity-50'
+                    }`}
+                    aria-label="Scroll related products right"
+                  >
+                    <ChevronRight size={18} strokeWidth={2} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Horizontal Carousel */}
+            <div 
+              ref={carouselRef}
+              onScroll={updateScrollButtons}
+              className="flex flex-row gap-4 sm:gap-6 overflow-x-auto scrollbar-hide py-3 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 snap-x snap-mandatory scroll-smooth"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {relatedProducts.map((relProd) => {
+                const prodUrl = `/product/${relProd.slug || relProd.id}`;
+                const prodImg = relProd.imageUrl || (Array.isArray(relProd.additionalImages) && relProd.additionalImages[0]) || '/placeholder.png';
+                const desc = relProd.subheading || relProd.cardDescription || relProd.shortDescription || '';
+
+                return (
+                  <Link
+                    key={relProd.id}
+                    href={prodUrl}
+                    onClick={() => {
+                      try {
+                        sessionStorage.setItem(`xcel_prod_${relProd.id}`, JSON.stringify(relProd));
+                        if (relProd.slug) {
+                          sessionStorage.setItem(`xcel_prod_${relProd.slug}`, JSON.stringify(relProd));
+                        }
+                        sessionStorage.setItem('xcel_active_category', relProd.categoryId);
+                      } catch (e) {}
+                    }}
+                    onMouseEnter={() => {
+                      try {
+                        sessionStorage.setItem(`xcel_prod_${relProd.id}`, JSON.stringify(relProd));
+                        if (relProd.slug) {
+                          sessionStorage.setItem(`xcel_prod_${relProd.slug}`, JSON.stringify(relProd));
+                        }
+                      } catch (e) {}
+                    }}
+                    className="group flex flex-col w-[260px] xs:w-[280px] sm:w-[310px] md:w-[320px] shrink-0 bg-white rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgba(0,0,0,0.04)] hover:shadow-[0_12px_28px_rgba(10,39,102,0.1)] hover:-translate-y-1.5 transition-all duration-300 overflow-hidden snap-start cursor-pointer"
+                  >
+                    {/* Product Image */}
+                    <div className="relative w-full h-[180px] sm:h-[200px] bg-[#f8f9fc] p-4 flex items-center justify-center overflow-hidden border-b border-gray-50">
+                      <img
+                        src={prodImg}
+                        alt={relProd.name}
+                        className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                      <div className="absolute top-3 left-3">
+                        <span className="text-[10px] sm:text-[11px] font-bold text-[#0a2766] uppercase bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-gray-200/70 shadow-xs tracking-wider">
+                          {CATEGORY_NAMES[relProd.categoryId] || relProd.categoryId}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Product Info */}
+                    <div className="p-4 sm:p-5 flex flex-col flex-1 justify-between">
+                      <div>
+                        <h4 className="font-bold text-[#0a2766] text-[14px] sm:text-[15px] md:text-[16px] leading-snug line-clamp-1 group-hover:text-[#32589c] transition-colors mb-1.5">
+                          {relProd.name}
+                        </h4>
+                        {desc && (
+                          <p className="text-[#4b5563] text-[12px] sm:text-[13px] leading-relaxed line-clamp-2">
+                            {desc}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Action Button */}
+                      <div className="flex items-center justify-between pt-3.5 mt-3 border-t border-gray-100">
+                        <span className="text-[12px] sm:text-[13px] font-bold text-[#0a2766] group-hover:text-[#32589c] transition-colors">
+                          View Details
+                        </span>
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border border-[#0a2766]/20 bg-[#f8fafd] flex items-center justify-center text-[#0a2766] group-hover:bg-[#0a2766] group-hover:text-white group-hover:border-[#0a2766] transition-all">
+                          <ArrowRight size={14} strokeWidth={2.2} />
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* Bottom CTA Banner */}
         <div className="bg-[#0a2766] rounded-2xl sm:rounded-3xl p-6 sm:p-8 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 shadow-xl">

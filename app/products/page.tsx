@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { Home, ChevronRight } from 'lucide-react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
 
 const categories = [
@@ -55,7 +55,22 @@ const FALLBACK_PRODUCTS: Record<string, any[]> = {
 };
 
 export default function ProductsPage() {
-  const [activeTab, setActiveTab] = useState<string>('washing');
+  const [activeTab, setActiveTab] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash ? window.location.hash.substring(1) : '';
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('category') || '';
+      const targetId = hash || catParam;
+      if (targetId && categories.some(c => c.id === targetId)) {
+        return targetId;
+      }
+      const saved = sessionStorage.getItem('xcel_active_category');
+      if (saved && categories.some(c => c.id === saved)) {
+        return saved;
+      }
+    }
+    return 'washing';
+  });
   const [activeDotIndex, setActiveDotIndex] = useState(0);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
@@ -69,6 +84,27 @@ export default function ProductsPage() {
     return [];
   });
   const [loading, setLoading] = useState(true);
+
+  // Category sequence for Complete Range (configurable by Admin)
+  const [categoryOrder, setCategoryOrder] = useState<string[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = sessionStorage.getItem('xcel_category_order');
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+    }
+    return [
+      'washing',
+      'drying',
+      'apparel-processing',
+      'dry-cleaning',
+      'flat-work',
+      'steam-finishing',
+      'water-heater',
+      'fabric-checking',
+      'other-equipment'
+    ];
+  });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -88,6 +124,22 @@ export default function ProductsPage() {
           const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
           return timeB - timeA;
         });
+
+        // Also fetch category display sequence for Complete Range
+        try {
+          const orderDoc = await getDoc(doc(db, "settings", "categoryOrder"));
+          if (orderDoc.exists()) {
+            const data = orderDoc.data();
+            if (Array.isArray(data?.order) && data.order.length > 0) {
+              setCategoryOrder(data.order);
+              if (typeof window !== 'undefined') {
+                sessionStorage.setItem('xcel_category_order', JSON.stringify(data.order));
+              }
+            }
+          }
+        } catch (orderErr) {
+          console.warn("Could not load category order from settings:", orderErr);
+        }
 
         // Pre-cache products in sessionStorage for instant flicker-free navigation to product detail page
         try {
@@ -132,34 +184,46 @@ export default function ProductsPage() {
     }
   };
 
-  const handleCategorySelect = (targetId: string, shouldPushHistory: boolean = false) => {
+  const handleCategorySelect = (targetId: string, shouldScroll: boolean = true) => {
     if (targetId && categories.some(c => c.id === targetId)) {
       setActiveTab(targetId);
       if (typeof window !== 'undefined') {
         sessionStorage.setItem('xcel_active_category', targetId);
-        if (shouldPushHistory) {
-          window.history.pushState(null, '', `/products#${targetId}`);
-        }
+        try {
+          const newUrl = `/products?category=${targetId}#${targetId}`;
+          window.history.replaceState(window.history.state, '', newUrl);
+        } catch (e) {}
       }
-      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
-      scrollTimerRef.current = setTimeout(() => {
-        scrollToCategoryHeader('smooth');
-      }, 120);
+      if (shouldScroll) {
+        if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+        scrollTimerRef.current = setTimeout(() => {
+          scrollToCategoryHeader('smooth');
+        }, 120);
+      }
     }
   };
 
   useEffect(() => {
-    const handleHashChange = () => {
+    const syncCategoryFromUrlOrStorage = (shouldScroll: boolean = false) => {
       const hash = window.location.hash ? window.location.hash.substring(1) : '';
       const urlParams = new URLSearchParams(window.location.search);
       const categoryParam = urlParams.get('category') || '';
       const targetId = hash || categoryParam;
       if (targetId && categories.some(c => c.id === targetId)) {
-        handleCategorySelect(targetId, false);
+        setActiveTab(targetId);
+        try {
+          sessionStorage.setItem('xcel_active_category', targetId);
+        } catch (e) {}
+        if (shouldScroll) {
+          if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+          scrollTimerRef.current = setTimeout(() => {
+            scrollToCategoryHeader('smooth');
+          }, 150);
+        }
       } else {
         const saved = typeof window !== 'undefined' ? sessionStorage.getItem('xcel_active_category') : null;
         if (saved && categories.some(c => c.id === saved)) {
-          handleCategorySelect(saved, false);
+          setActiveTab(saved);
         }
       }
     };
@@ -170,14 +234,20 @@ export default function ProductsPage() {
       }
     };
 
-    handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
-    window.addEventListener('popstate', handleHashChange);
+    const hasInitialTarget = typeof window !== 'undefined' && Boolean(
+      (window.location.hash && window.location.hash.length > 1) || 
+      new URLSearchParams(window.location.search).get('category')
+    );
+    syncCategoryFromUrlOrStorage(hasInitialTarget);
+
+    const onPopOrHash = () => syncCategoryFromUrlOrStorage(false);
+    window.addEventListener('hashchange', onPopOrHash);
+    window.addEventListener('popstate', onPopOrHash);
     window.addEventListener('select-product-category', handleCustomCategoryEvent);
     return () => {
       if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
-      window.removeEventListener('hashchange', handleHashChange);
-      window.removeEventListener('popstate', handleHashChange);
+      window.removeEventListener('hashchange', onPopOrHash);
+      window.removeEventListener('popstate', onPopOrHash);
       window.removeEventListener('select-product-category', handleCustomCategoryEvent);
     };
   }, []);
@@ -195,17 +265,34 @@ export default function ProductsPage() {
   
   let activeCategoryProducts: any[] = [];
   if (isCompleteRange) {
+    const catOrder = categoryOrder.length > 0 
+      ? categoryOrder 
+      : categories.map(c => c.id).filter(id => id !== 'complete-range');
+
     if (products.length > 0) {
-      const catOrder = categories.map(c => c.id);
       activeCategoryProducts = [...products].sort((a, b) => {
         const orderA = catOrder.indexOf(a.categoryId);
         const orderB = catOrder.indexOf(b.categoryId);
-        return (orderA === -1 ? 999 : orderA) - (orderB === -1 ? 999 : orderB);
+        const effectiveOrderA = orderA === -1 ? 999 : orderA;
+        const effectiveOrderB = orderB === -1 ? 999 : orderB;
+        if (effectiveOrderA !== effectiveOrderB) {
+          return effectiveOrderA - effectiveOrderB;
+        }
+        const pOrderA = typeof a.order === 'number' ? a.order : 9999;
+        const pOrderB = typeof b.order === 'number' ? b.order : 9999;
+        if (pOrderA !== pOrderB) return pOrderA - pOrderB;
+        const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+        const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+        return timeB - timeA;
       });
     } else {
-      activeCategoryProducts = Object.entries(FALLBACK_PRODUCTS)
-        .filter(([catId]) => catId !== 'complete-range')
-        .flatMap(([_, list]) => list);
+      const fallbackEntries = Object.entries(FALLBACK_PRODUCTS).filter(([catId]) => catId !== 'complete-range');
+      fallbackEntries.sort(([catA], [catB]) => {
+        const idxA = catOrder.indexOf(catA);
+        const idxB = catOrder.indexOf(catB);
+        return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+      });
+      activeCategoryProducts = fallbackEntries.flatMap(([_, list]) => list);
     }
   } else {
     activeCategoryProducts = products.filter(p => p.categoryId === activeCategory.id);
@@ -327,9 +414,6 @@ export default function ProductsPage() {
                         sessionStorage.setItem(`xcel_prod_${product.slug}`, JSON.stringify(product));
                       }
                       sessionStorage.setItem('xcel_active_category', activeTab);
-                      if (typeof window !== 'undefined') {
-                        window.history.replaceState(null, '', `/products#${activeTab}`);
-                      }
                     } catch (e) {}
                   }}
                   onMouseEnter={() => {
@@ -355,6 +439,11 @@ export default function ProductsPage() {
                 {/* Product Info */}
                 <div className="flex flex-col flex-1 p-3.5 sm:p-4 md:p-5 xl:p-6 text-left justify-between">
                   <div>
+                    {isCompleteRange && (
+                      <span className="inline-block text-[10px] sm:text-[11px] font-bold text-[#0a2766] uppercase bg-[#eaf0ff] px-2 py-0.5 rounded-full w-fit mb-1.5 tracking-wider">
+                        {categories.find(c => c.id === product.categoryId)?.title || product.categoryId}
+                      </span>
+                    )}
                     <h3 className="text-[12px] sm:text-[13px] md:text-[15px] font-extrabold text-[#0a2766] uppercase mb-1.5 leading-snug">
                       {product.name}
                     </h3>
