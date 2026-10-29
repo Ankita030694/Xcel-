@@ -899,64 +899,42 @@ export default function ProductDetailPage() {
         {relatedProducts.length > 0 && (
           <section className="mb-14 sm:mb-20">
             {/* Section Header */}
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="w-1 h-4 sm:h-5 bg-[#3b5b95] rounded-full"></div>
-                  <span className="text-[#3b5b95] font-bold text-[11px] sm:text-[12px] tracking-[0.2em] uppercase">
-                    RELATED PRODUCTS
-                  </span>
-                </div>
+            <div className="flex items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-2.5">
+                <div className="w-1.5 h-6 bg-[#3b5b95] rounded-full"></div>
                 <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#0a2766] tracking-tight">
-                  {relatedProducts.some((p: any) => p.categoryId === product.categoryId)
-                    ? `More in ${CATEGORY_NAMES[product.categoryId] || 'this Category'}`
-                    : 'Related Laundry Equipment'}
+                  Related Products
                 </h3>
               </div>
 
-              <div className="flex items-center gap-3 justify-between sm:justify-end">
-                <Link 
-                  href={`/products?category=${product.categoryId}#${product.categoryId}`}
-                  onClick={() => {
-                    try {
-                      sessionStorage.setItem('xcel_active_category', product.categoryId);
-                    } catch (e) {}
-                  }}
-                  className="text-xs sm:text-sm font-semibold text-[#0a2766] hover:text-[#32589c] flex items-center gap-1 group transition-colors"
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => scrollCarousel('left')}
+                  disabled={!canScrollLeft}
+                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-all ${
+                    canScrollLeft
+                      ? 'border-gray-200 text-[#0a2766] hover:bg-[#0a2766] hover:text-white hover:border-[#0a2766] shadow-sm cursor-pointer'
+                      : 'border-gray-100 text-gray-300 cursor-not-allowed opacity-50'
+                  }`}
+                  aria-label="Scroll related products left"
                 >
-                  <span>View All {CATEGORY_NAMES[product.categoryId] || 'Category'}</span>
-                  <ChevronRight size={15} className="group-hover:translate-x-0.5 transition-transform" />
-                </Link>
-                
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => scrollCarousel('left')}
-                    disabled={!canScrollLeft}
-                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-all ${
-                      canScrollLeft
-                        ? 'border-gray-200 text-[#0a2766] hover:bg-[#0a2766] hover:text-white hover:border-[#0a2766] shadow-sm cursor-pointer'
-                        : 'border-gray-100 text-gray-300 cursor-not-allowed opacity-50'
-                    }`}
-                    aria-label="Scroll related products left"
-                  >
-                    <ChevronLeft size={18} strokeWidth={2} />
-                  </button>
+                  <ChevronLeft size={18} strokeWidth={2} />
+                </button>
 
-                  <button
-                    type="button"
-                    onClick={() => scrollCarousel('right')}
-                    disabled={!canScrollRight}
-                    className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-all ${
-                      canScrollRight
-                        ? 'border-gray-200 text-[#0a2766] hover:bg-[#0a2766] hover:text-white hover:border-[#0a2766] shadow-sm cursor-pointer'
-                        : 'border-gray-100 text-gray-300 cursor-not-allowed opacity-50'
-                    }`}
-                    aria-label="Scroll related products right"
-                  >
-                    <ChevronRight size={18} strokeWidth={2} />
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => scrollCarousel('right')}
+                  disabled={!canScrollRight}
+                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full border flex items-center justify-center transition-all ${
+                    canScrollRight
+                      ? 'border-gray-200 text-[#0a2766] hover:bg-[#0a2766] hover:text-white hover:border-[#0a2766] shadow-sm cursor-pointer'
+                      : 'border-gray-100 text-gray-300 cursor-not-allowed opacity-50'
+                  }`}
+                  aria-label="Scroll related products right"
+                >
+                  <ChevronRight size={18} strokeWidth={2} />
+                </button>
               </div>
             </div>
 
@@ -1003,11 +981,6 @@ export default function ProductDetailPage() {
                         className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
                       />
-                      <div className="absolute top-3 left-3">
-                        <span className="text-[10px] sm:text-[11px] font-bold text-[#0a2766] uppercase bg-white/95 backdrop-blur-xs px-2.5 py-1 rounded-full border border-gray-200/70 shadow-xs tracking-wider">
-                          {CATEGORY_NAMES[relProd.categoryId] || relProd.categoryId}
-                        </span>
-                      </div>
                     </div>
 
                     {/* Product Info */}
