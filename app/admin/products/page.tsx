@@ -7,7 +7,7 @@ import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth, db, storage } from '../../../lib/firebase';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Trash2, Plus, X, Edit, ArrowUp, ArrowDown, ExternalLink, Layers, ArrowUpDown, Check, RotateCcw, ChevronDown } from 'lucide-react';
+import { Trash2, Plus, X, Edit, ArrowUp, ArrowDown, ExternalLink, Layers, ArrowUpDown, Check, RotateCcw, ChevronDown, GripVertical } from 'lucide-react';
 
 interface ProductFeature {
   title: string;
@@ -119,6 +119,25 @@ export default function ProductsDashboard() {
   const [brochureFile, setBrochureFile] = useState<File | null>(null);
   const [features, setFeatures] = useState<ProductFeature[]>([]);
   const [faqs, setFaqs] = useState<ProductFAQ[]>([]);
+
+  // Drag-and-drop state trackers for modal reordering
+  const [draggedImageIdx, setDraggedImageIdx] = useState<number | null>(null);
+  const [dragOverImageIdx, setDragOverImageIdx] = useState<number | null>(null);
+
+  const [draggedWhyChooseIdx, setDraggedWhyChooseIdx] = useState<number | null>(null);
+  const [dragOverWhyChooseIdx, setDragOverWhyChooseIdx] = useState<number | null>(null);
+
+  const [draggedIndustryIdx, setDraggedIndustryIdx] = useState<number | null>(null);
+  const [dragOverIndustryIdx, setDragOverIndustryIdx] = useState<number | null>(null);
+
+  const [draggedFeatureIdx, setDraggedFeatureIdx] = useState<number | null>(null);
+  const [dragOverFeatureIdx, setDragOverFeatureIdx] = useState<number | null>(null);
+
+  const [draggedFaqIdx, setDraggedFaqIdx] = useState<number | null>(null);
+  const [dragOverFaqIdx, setDragOverFaqIdx] = useState<number | null>(null);
+
+  const [draggedHighlightIdx, setDraggedHighlightIdx] = useState<number | null>(null);
+  const [dragOverHighlightIdx, setDragOverHighlightIdx] = useState<number | null>(null);
 
   const router = useRouter();
 
@@ -401,6 +420,36 @@ export default function ProductsDashboard() {
     const newFaqs = [...faqs];
     newFaqs[index][field] = value;
     setFaqs(newFaqs);
+  };
+
+  // Generic array reordering helper
+  const reorderArray = <T,>(arr: T[], fromIndex: number, toIndex: number): T[] => {
+    if (fromIndex === toIndex || fromIndex < 0 || toIndex < 0 || fromIndex >= arr.length || toIndex >= arr.length) {
+      return arr;
+    }
+    const updated = [...arr];
+    const [moved] = updated.splice(fromIndex, 1);
+    updated.splice(toIndex, 0, moved);
+    return updated;
+  };
+
+  const moveImage = (from: number, to: number) => {
+    setExistingImages(prev => reorderArray(prev, from, to));
+  };
+  const moveWhyChooseUs = (from: number, to: number) => {
+    setWhyChooseUs(prev => reorderArray(prev, from, to));
+  };
+  const moveIndustriesServed = (from: number, to: number) => {
+    setIndustriesServed(prev => reorderArray(prev, from, to));
+  };
+  const moveFeature = (from: number, to: number) => {
+    setFeatures(prev => reorderArray(prev, from, to));
+  };
+  const moveFaq = (from: number, to: number) => {
+    setFaqs(prev => reorderArray(prev, from, to));
+  };
+  const moveHighlight = (from: number, to: number) => {
+    setHighlights(prev => reorderArray(prev, from, to));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -1049,13 +1098,20 @@ export default function ProductsDashboard() {
                   {/* Highlighted Lines */}
                   <div className="pt-3 border-t border-gray-100">
                     <div className="flex items-center justify-between mb-2">
-                      <label className="block text-sm font-medium text-gray-700">
-                        Highlighted Lines <span className="text-xs font-normal text-gray-500">(Displayed in bold dark blue below description)</span>
-                      </label>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700">
+                          Highlighted Lines <span className="text-xs font-normal text-gray-500">(Displayed in bold dark blue below description)</span>
+                        </label>
+                        {highlights.length > 1 && (
+                          <span className="text-[11px] text-[#32589c] font-medium flex items-center gap-1">
+                            <GripVertical size={12} /> Drag by handle to reorder
+                          </span>
+                        )}
+                      </div>
                       <button 
                         type="button" 
                         onClick={handleAddHighlight} 
-                        className="text-xs sm:text-sm text-[#0a2766] font-semibold hover:bg-blue-100 flex items-center gap-1 bg-[#eaf0ff] px-2.5 py-1 rounded-md transition-colors"
+                        className="text-xs sm:text-sm text-[#0a2766] font-semibold hover:bg-blue-100 flex items-center gap-1 bg-[#eaf0ff] px-2.5 py-1 rounded-md transition-colors cursor-pointer"
                       >
                         <Plus size={14} /> Add Highlight Line
                       </button>
@@ -1065,46 +1121,227 @@ export default function ProductsDashboard() {
                       <p className="text-xs text-gray-400 italic">No highlighted lines added yet. Click &apos;+ Add Highlight Line&apos; to add one.</p>
                     ) : (
                       <div className="space-y-2">
-                        {highlights.map((item, idx) => (
-                          <div key={idx} className="flex gap-2 items-center">
-                            <input 
-                              type="text" 
-                              placeholder={`Highlighted line #${idx + 1} (e.g., Heavy duty industrial suspension system)`} 
-                              value={item} 
-                              onChange={e => handleHighlightChange(idx, e.target.value)} 
-                              className="flex-1 border border-gray-300 rounded-md p-2 text-sm font-bold text-[#0a2766] outline-none focus:ring-1 focus:ring-[#0a2766] focus:border-[#0a2766]" 
-                            />
-                            <button 
-                              type="button" 
-                              onClick={() => handleRemoveHighlight(idx)} 
-                              className="text-gray-400 hover:text-red-500 p-2 rounded-md hover:bg-red-50 transition-colors shrink-0"
-                              title="Remove Line"
+                        {highlights.map((item, idx) => {
+                          const isDragging = draggedHighlightIdx === idx;
+                          const isDragOver = dragOverHighlightIdx === idx && draggedHighlightIdx !== idx;
+                          const isFirst = idx === 0;
+                          const isLast = idx === highlights.length - 1;
+
+                          return (
+                            <div 
+                              key={idx} 
+                              draggable
+                              onDragStart={(e) => {
+                                const target = e.target as HTMLElement;
+                                if (target.tagName === 'INPUT' || target.tagName === 'BUTTON') {
+                                  e.preventDefault();
+                                  return;
+                                }
+                                e.dataTransfer.effectAllowed = 'move';
+                                setDraggedHighlightIdx(idx);
+                              }}
+                              onDragOver={(e) => {
+                                e.preventDefault();
+                                e.dataTransfer.dropEffect = 'move';
+                              }}
+                              onDragEnter={(e) => {
+                                e.preventDefault();
+                                setDragOverHighlightIdx(idx);
+                              }}
+                              onDragEnd={() => {
+                                setDraggedHighlightIdx(null);
+                                setDragOverHighlightIdx(null);
+                              }}
+                              onDrop={(e) => {
+                                e.preventDefault();
+                                if (draggedHighlightIdx !== null && draggedHighlightIdx !== idx) {
+                                  moveHighlight(draggedHighlightIdx, idx);
+                                }
+                                setDraggedHighlightIdx(null);
+                                setDragOverHighlightIdx(null);
+                              }}
+                              className={`flex gap-2 items-center p-1.5 rounded-lg border transition-all ${
+                                isDragging 
+                                  ? 'opacity-40 border-dashed border-2 border-[#32589c] bg-blue-50/50' 
+                                  : isDragOver 
+                                  ? 'border-2 border-[#32589c] ring-2 ring-blue-100 bg-blue-50/70 scale-[1.01]' 
+                                  : 'bg-white border-gray-200 hover:border-gray-300'
+                              }`}
                             >
-                              <X size={18} />
-                            </button>
-                          </div>
-                        ))}
+                              <div 
+                                className="cursor-grab active:cursor-grabbing p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded transition-colors select-none shrink-0"
+                                title="Drag to reorder"
+                              >
+                                <GripVertical size={16} />
+                              </div>
+                              <span className="text-[11px] font-bold text-gray-500 bg-gray-50 border border-gray-200 px-1.5 py-0.5 rounded select-none shrink-0">
+                                #{idx + 1}
+                              </span>
+                              <div className="flex flex-col gap-0.5 shrink-0 select-none">
+                                <button
+                                  type="button"
+                                  disabled={isFirst}
+                                  onClick={() => moveHighlight(idx, idx - 1)}
+                                  className={`p-0.5 rounded transition-colors ${isFirst ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'}`}
+                                  title="Move Up"
+                                >
+                                  <ArrowUp size={11} strokeWidth={2.5} />
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={isLast}
+                                  onClick={() => moveHighlight(idx, idx + 1)}
+                                  className={`p-0.5 rounded transition-colors ${isLast ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'}`}
+                                  title="Move Down"
+                                >
+                                  <ArrowDown size={11} strokeWidth={2.5} />
+                                </button>
+                              </div>
+                              <input 
+                                type="text" 
+                                placeholder={`Highlighted line #${idx + 1} (e.g., Heavy duty industrial suspension system)`} 
+                                value={item} 
+                                onChange={e => handleHighlightChange(idx, e.target.value)} 
+                                className="flex-1 border border-gray-300 rounded-md p-2 text-sm font-bold text-[#0a2766] outline-none focus:ring-1 focus:ring-[#0a2766] focus:border-[#0a2766]" 
+                              />
+                              <button 
+                                type="button" 
+                                onClick={() => handleRemoveHighlight(idx)} 
+                                className="text-gray-400 hover:text-red-500 p-2 rounded-md hover:bg-red-50 transition-colors shrink-0 cursor-pointer"
+                                title="Remove Line"
+                              >
+                                <X size={18} />
+                              </button>
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      {editingProductId ? 'Manage Product Images *' : 'Product Images * (Select multiple)'}
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        {editingProductId ? 'Manage Product Images *' : 'Product Images * (Select multiple)'}
+                      </label>
+                      {existingImages.length > 1 && (
+                        <span className="text-xs text-[#32589c] font-medium flex items-center gap-1">
+                          <GripVertical size={13} /> Drag image cards to change placement
+                        </span>
+                      )}
+                    </div>
 
                     {existingImages.length > 0 && (
-                      <div className="flex flex-wrap gap-3 mb-3 p-3 bg-gray-50 rounded-lg border border-gray-100">
-                        {existingImages.map((imgUrl, idx) => (
-                          <div key={idx} className="relative w-20 h-20 border border-gray-200 rounded-md overflow-hidden group bg-white shadow-sm">
-                            <img src={imgUrl} alt="Product preview" className="w-full h-full object-contain p-1" />
-                            <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                              <button type="button" onClick={() => setExistingImages(existingImages.filter((_, i) => i !== idx))} className="text-white hover:text-red-400 p-2" title="Remove Image">
-                                <Trash2 size={18} />
-                              </button>
-                            </div>
-                          </div>
-                        ))}
+                      <div className="mb-3 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                        <div className="flex flex-wrap gap-3">
+                          {existingImages.map((imgUrl, idx) => {
+                            const isDragging = draggedImageIdx === idx;
+                            const isDragOver = dragOverImageIdx === idx && draggedImageIdx !== idx;
+
+                            return (
+                              <div
+                                key={idx}
+                                draggable
+                                onDragStart={(e) => {
+                                  e.dataTransfer.effectAllowed = 'move';
+                                  setDraggedImageIdx(idx);
+                                }}
+                                onDragOver={(e) => {
+                                  e.preventDefault();
+                                  e.dataTransfer.dropEffect = 'move';
+                                }}
+                                onDragEnter={(e) => {
+                                  e.preventDefault();
+                                  setDragOverImageIdx(idx);
+                                }}
+                                onDragEnd={() => {
+                                  setDraggedImageIdx(null);
+                                  setDragOverImageIdx(null);
+                                }}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  if (draggedImageIdx !== null && draggedImageIdx !== idx) {
+                                    moveImage(draggedImageIdx, idx);
+                                  }
+                                  setDraggedImageIdx(null);
+                                  setDragOverImageIdx(null);
+                                }}
+                                className={`relative w-24 h-24 border rounded-lg overflow-hidden group bg-white shadow-sm cursor-grab active:cursor-grabbing transition-all select-none ${
+                                  isDragging
+                                    ? 'opacity-40 border-dashed border-2 border-[#32589c] scale-95'
+                                    : isDragOver
+                                    ? 'border-2 border-[#32589c] ring-2 ring-blue-200 scale-105 shadow-md'
+                                    : 'border-gray-200 hover:border-gray-300 hover:shadow'
+                                }`}
+                                title="Drag to reorder placement"
+                              >
+                                <img src={imgUrl} alt={`Product image ${idx + 1}`} className="w-full h-full object-contain p-1 pointer-events-none" />
+                                
+                                {/* Badge */}
+                                <div className="absolute top-1 left-1 pointer-events-none">
+                                  <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                                    idx === 0
+                                      ? 'bg-[#0a2766] text-white shadow-sm'
+                                      : 'bg-black/70 text-white'
+                                  }`}>
+                                    {idx === 0 ? 'Main' : `#${idx + 1}`}
+                                  </span>
+                                </div>
+
+                                {/* Drag Overlay & Quick Actions */}
+                                <div className="absolute inset-0 bg-black/55 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-between p-1">
+                                  <div className="flex justify-between items-center text-white">
+                                    <span className="text-[10px] font-medium flex items-center gap-0.5 text-white/90">
+                                      <GripVertical size={12} /> Drag
+                                    </span>
+                                    <button 
+                                      type="button" 
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setExistingImages(existingImages.filter((_, i) => i !== idx));
+                                      }} 
+                                      className="text-white hover:text-red-400 p-0.5 transition-colors cursor-pointer" 
+                                      title="Remove Image"
+                                    >
+                                      <Trash2 size={14} />
+                                    </button>
+                                  </div>
+                                  
+                                  {/* Quick Left/Right Arrow buttons */}
+                                  <div className="flex justify-center gap-2 text-white">
+                                    <button
+                                      type="button"
+                                      disabled={idx === 0}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        moveImage(idx, idx - 1);
+                                      }}
+                                      className={`px-1.5 py-0.5 rounded bg-white/20 hover:bg-white/40 text-white text-xs ${idx === 0 ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
+                                      title="Move Left"
+                                    >
+                                      &larr;
+                                    </button>
+                                    <button
+                                      type="button"
+                                      disabled={idx === existingImages.length - 1}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        moveImage(idx, idx + 1);
+                                      }}
+                                      className={`px-1.5 py-0.5 rounded bg-white/20 hover:bg-white/40 text-white text-xs ${idx === existingImages.length - 1 ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
+                                      title="Move Right"
+                                    >
+                                      &rarr;
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <p className="text-[11px] text-gray-500 mt-2">
+                          Tip: The <span className="font-semibold text-[#0a2766]">Main</span> image (#1) is shown on product cards and search results. Drag any image to the 1st position to make it the primary cover image.
+                        </p>
                       </div>
                     )}
 
@@ -1141,27 +1378,129 @@ export default function ProductsDashboard() {
                 {/* Why Choose Us */}
                 <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm space-y-4">
                   <div className="flex items-center justify-between border-b pb-2">
-                    <h3 className="font-semibold text-lg text-gray-800">Why Choose Us</h3>
-                    <button type="button" onClick={handleAddWhyChooseUs} className="text-sm text-[#32589c] font-medium hover:underline flex items-center gap-1">
+                    <div>
+                      <h3 className="font-semibold text-lg text-gray-800">Why Choose Us</h3>
+                      <p className="text-xs text-gray-500">Drag pointers by the grip handle to change their sequence, or edit text directly.</p>
+                    </div>
+                    <button type="button" onClick={handleAddWhyChooseUs} className="text-sm text-[#32589c] font-medium hover:underline flex items-center gap-1 cursor-pointer">
                       <Plus size={14} /> Add Item
                     </button>
                   </div>
                   
                   {whyChooseUs.length === 0 ? (
-                    <p className="text-sm text-gray-500 italic">No items added. Click 'Add Item' to start.</p>
+                    <p className="text-sm text-gray-500 italic">No items added. Click &apos;Add Item&apos; to start.</p>
                   ) : (
-                    <div className="space-y-4">
-                      {whyChooseUs.map((item, idx) => (
-                        <div key={idx} className="flex gap-4 items-start bg-gray-50 p-4 rounded-md border border-gray-100 relative group">
-                          <div className="flex-1 space-y-3">
-                            <input type="text" placeholder="Title (e.g., Multiple Capacities)" value={item.title} onChange={e => handleWhyChooseUsChange(idx, 'title', e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
-                            <textarea placeholder="Description" value={item.description} onChange={e => handleWhyChooseUsChange(idx, 'description', e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
+                    <div className="space-y-3">
+                      {whyChooseUs.map((item, idx) => {
+                        const isDragging = draggedWhyChooseIdx === idx;
+                        const isDragOver = dragOverWhyChooseIdx === idx && draggedWhyChooseIdx !== idx;
+                        const isFirst = idx === 0;
+                        const isLast = idx === whyChooseUs.length - 1;
+
+                        return (
+                          <div
+                            key={idx}
+                            draggable
+                            onDragStart={(e) => {
+                              const target = e.target as HTMLElement;
+                              if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'BUTTON') {
+                                e.preventDefault();
+                                return;
+                              }
+                              e.dataTransfer.effectAllowed = 'move';
+                              setDraggedWhyChooseIdx(idx);
+                            }}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              e.dataTransfer.dropEffect = 'move';
+                            }}
+                            onDragEnter={(e) => {
+                              e.preventDefault();
+                              setDragOverWhyChooseIdx(idx);
+                            }}
+                            onDragEnd={() => {
+                              setDraggedWhyChooseIdx(null);
+                              setDragOverWhyChooseIdx(null);
+                            }}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              if (draggedWhyChooseIdx !== null && draggedWhyChooseIdx !== idx) {
+                                moveWhyChooseUs(draggedWhyChooseIdx, idx);
+                              }
+                              setDraggedWhyChooseIdx(null);
+                              setDragOverWhyChooseIdx(null);
+                            }}
+                            className={`flex gap-3 items-start p-3.5 rounded-lg border transition-all ${
+                              isDragging
+                                ? 'opacity-40 border-dashed border-2 border-[#32589c] bg-blue-50/50'
+                                : isDragOver
+                                ? 'border-2 border-[#32589c] ring-2 ring-blue-100 bg-blue-50/70 scale-[1.01]'
+                                : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            {/* Drag Handle & Order Controls */}
+                            <div className="flex flex-col items-center gap-1 shrink-0 pt-1 select-none">
+                              <div 
+                                className="cursor-grab active:cursor-grabbing p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-200/70 rounded transition-colors"
+                                title="Drag to reorder"
+                              >
+                                <GripVertical size={18} />
+                              </div>
+                              <span className="text-[11px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.5 rounded">
+                                #{idx + 1}
+                              </span>
+                              <div className="flex flex-col gap-0.5 mt-0.5">
+                                <button
+                                  type="button"
+                                  disabled={isFirst}
+                                  onClick={() => moveWhyChooseUs(idx, idx - 1)}
+                                  className={`p-0.5 rounded transition-colors ${isFirst ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'}`}
+                                  title="Move Up"
+                                >
+                                  <ArrowUp size={12} strokeWidth={2.5} />
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={isLast}
+                                  onClick={() => moveWhyChooseUs(idx, idx + 1)}
+                                  className={`p-0.5 rounded transition-colors ${isLast ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'}`}
+                                  title="Move Down"
+                                >
+                                  <ArrowDown size={12} strokeWidth={2.5} />
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 space-y-2">
+                              <input 
+                                type="text" 
+                                placeholder="Title (e.g., Multiple Capacities)" 
+                                value={item.title} 
+                                onChange={e => handleWhyChooseUsChange(idx, 'title', e.target.value)} 
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 bg-white outline-none focus:border-[#32589c] focus:ring-1 focus:ring-[#32589c]" 
+                              />
+                              <textarea 
+                                placeholder="Description" 
+                                value={item.description} 
+                                onChange={e => handleWhyChooseUsChange(idx, 'description', e.target.value)} 
+                                rows={2} 
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 bg-white outline-none focus:border-[#32589c] focus:ring-1 focus:ring-[#32589c]" 
+                              />
+                            </div>
+
+                            {/* Remove button */}
+                            <button 
+                              type="button" 
+                              onClick={() => handleRemoveWhyChooseUs(idx)} 
+                              className="text-gray-400 hover:text-red-600 p-1.5 rounded-md hover:bg-red-50 transition-colors shrink-0 mt-1 cursor-pointer"
+                              title="Remove Item"
+                            >
+                              <X size={18} />
+                            </button>
                           </div>
-                          <button type="button" onClick={() => handleRemoveWhyChooseUs(idx)} className="text-red-400 hover:text-red-600 mt-2">
-                            <X size={20} />
-                          </button>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -1169,27 +1508,129 @@ export default function ProductsDashboard() {
                 {/* Industries Served */}
                 <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm space-y-4">
                   <div className="flex items-center justify-between border-b pb-2">
-                    <h3 className="font-semibold text-lg text-gray-800">Industries Served</h3>
-                    <button type="button" onClick={handleAddIndustries} className="text-sm text-[#32589c] font-medium hover:underline flex items-center gap-1">
+                    <div>
+                      <h3 className="font-semibold text-lg text-gray-800">Industries Served</h3>
+                      <p className="text-xs text-gray-500">Drag pointers by the grip handle to change their sequence, or edit text directly.</p>
+                    </div>
+                    <button type="button" onClick={handleAddIndustries} className="text-sm text-[#32589c] font-medium hover:underline flex items-center gap-1 cursor-pointer">
                       <Plus size={14} /> Add Industry
                     </button>
                   </div>
                   
                   {industriesServed.length === 0 ? (
-                    <p className="text-sm text-gray-500 italic">No industries added. Click 'Add Industry' to start.</p>
+                    <p className="text-sm text-gray-500 italic">No industries added. Click &apos;Add Industry&apos; to start.</p>
                   ) : (
-                    <div className="space-y-4">
-                      {industriesServed.map((item, idx) => (
-                        <div key={idx} className="flex gap-4 items-start bg-gray-50 p-4 rounded-md border border-gray-100 relative group">
-                          <div className="flex-1 space-y-3">
-                            <input type="text" placeholder="Industry Name (e.g., Healthcare)" value={item.title} onChange={e => handleIndustriesChange(idx, 'title', e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
-                            <textarea placeholder="Description" value={item.description} onChange={e => handleIndustriesChange(idx, 'description', e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
+                    <div className="space-y-3">
+                      {industriesServed.map((item, idx) => {
+                        const isDragging = draggedIndustryIdx === idx;
+                        const isDragOver = dragOverIndustryIdx === idx && draggedIndustryIdx !== idx;
+                        const isFirst = idx === 0;
+                        const isLast = idx === industriesServed.length - 1;
+
+                        return (
+                          <div
+                            key={idx}
+                            draggable
+                            onDragStart={(e) => {
+                              const target = e.target as HTMLElement;
+                              if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'BUTTON') {
+                                e.preventDefault();
+                                return;
+                              }
+                              e.dataTransfer.effectAllowed = 'move';
+                              setDraggedIndustryIdx(idx);
+                            }}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              e.dataTransfer.dropEffect = 'move';
+                            }}
+                            onDragEnter={(e) => {
+                              e.preventDefault();
+                              setDragOverIndustryIdx(idx);
+                            }}
+                            onDragEnd={() => {
+                              setDraggedIndustryIdx(null);
+                              setDragOverIndustryIdx(null);
+                            }}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              if (draggedIndustryIdx !== null && draggedIndustryIdx !== idx) {
+                                moveIndustriesServed(draggedIndustryIdx, idx);
+                              }
+                              setDraggedIndustryIdx(null);
+                              setDragOverIndustryIdx(null);
+                            }}
+                            className={`flex gap-3 items-start p-3.5 rounded-lg border transition-all ${
+                              isDragging
+                                ? 'opacity-40 border-dashed border-2 border-[#32589c] bg-blue-50/50'
+                                : isDragOver
+                                ? 'border-2 border-[#32589c] ring-2 ring-blue-100 bg-blue-50/70 scale-[1.01]'
+                                : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            {/* Drag Handle & Order Controls */}
+                            <div className="flex flex-col items-center gap-1 shrink-0 pt-1 select-none">
+                              <div 
+                                className="cursor-grab active:cursor-grabbing p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-200/70 rounded transition-colors"
+                                title="Drag to reorder"
+                              >
+                                <GripVertical size={18} />
+                              </div>
+                              <span className="text-[11px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.5 rounded">
+                                #{idx + 1}
+                              </span>
+                              <div className="flex flex-col gap-0.5 mt-0.5">
+                                <button
+                                  type="button"
+                                  disabled={isFirst}
+                                  onClick={() => moveIndustriesServed(idx, idx - 1)}
+                                  className={`p-0.5 rounded transition-colors ${isFirst ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'}`}
+                                  title="Move Up"
+                                >
+                                  <ArrowUp size={12} strokeWidth={2.5} />
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={isLast}
+                                  onClick={() => moveIndustriesServed(idx, idx + 1)}
+                                  className={`p-0.5 rounded transition-colors ${isLast ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'}`}
+                                  title="Move Down"
+                                >
+                                  <ArrowDown size={12} strokeWidth={2.5} />
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 space-y-2">
+                              <input 
+                                type="text" 
+                                placeholder="Industry Name (e.g., Healthcare)" 
+                                value={item.title} 
+                                onChange={e => handleIndustriesChange(idx, 'title', e.target.value)} 
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 bg-white outline-none focus:border-[#32589c] focus:ring-1 focus:ring-[#32589c]" 
+                              />
+                              <textarea 
+                                placeholder="Description" 
+                                value={item.description} 
+                                onChange={e => handleIndustriesChange(idx, 'description', e.target.value)} 
+                                rows={2} 
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 bg-white outline-none focus:border-[#32589c] focus:ring-1 focus:ring-[#32589c]" 
+                              />
+                            </div>
+
+                            {/* Remove button */}
+                            <button 
+                              type="button" 
+                              onClick={() => handleRemoveIndustries(idx)} 
+                              className="text-gray-400 hover:text-red-600 p-1.5 rounded-md hover:bg-red-50 transition-colors shrink-0 mt-1 cursor-pointer"
+                              title="Remove Industry"
+                            >
+                              <X size={18} />
+                            </button>
                           </div>
-                          <button type="button" onClick={() => handleRemoveIndustries(idx)} className="text-red-400 hover:text-red-600 mt-2">
-                            <X size={20} />
-                          </button>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -1197,27 +1638,129 @@ export default function ProductsDashboard() {
                 {/* Features */}
                 <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm space-y-4">
                   <div className="flex items-center justify-between border-b pb-2">
-                    <h3 className="font-semibold text-lg text-gray-800">Key Features</h3>
-                    <button type="button" onClick={handleAddFeature} className="text-sm text-[#32589c] font-medium hover:underline flex items-center gap-1">
+                    <div>
+                      <h3 className="font-semibold text-lg text-gray-800">Key Features</h3>
+                      <p className="text-xs text-gray-500">Drag pointers by the grip handle to change their sequence, or edit text directly.</p>
+                    </div>
+                    <button type="button" onClick={handleAddFeature} className="text-sm text-[#32589c] font-medium hover:underline flex items-center gap-1 cursor-pointer">
                       <Plus size={14} /> Add Feature
                     </button>
                   </div>
                   
                   {features.length === 0 ? (
-                    <p className="text-sm text-gray-500 italic">No features added. Click 'Add Feature' to start.</p>
+                    <p className="text-sm text-gray-500 italic">No features added. Click &apos;Add Feature&apos; to start.</p>
                   ) : (
-                    <div className="space-y-4">
-                      {features.map((feature, idx) => (
-                        <div key={idx} className="flex gap-4 items-start bg-gray-50 p-4 rounded-md border border-gray-100 relative group">
-                          <div className="flex-1 space-y-3">
-                            <input type="text" placeholder="Feature Title (e.g., High-Capacity)" value={feature.title} onChange={e => handleFeatureChange(idx, 'title', e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
-                            <textarea placeholder="Feature Description" value={feature.description} onChange={e => handleFeatureChange(idx, 'description', e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
+                    <div className="space-y-3">
+                      {features.map((feature, idx) => {
+                        const isDragging = draggedFeatureIdx === idx;
+                        const isDragOver = dragOverFeatureIdx === idx && draggedFeatureIdx !== idx;
+                        const isFirst = idx === 0;
+                        const isLast = idx === features.length - 1;
+
+                        return (
+                          <div
+                            key={idx}
+                            draggable
+                            onDragStart={(e) => {
+                              const target = e.target as HTMLElement;
+                              if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'BUTTON') {
+                                e.preventDefault();
+                                return;
+                              }
+                              e.dataTransfer.effectAllowed = 'move';
+                              setDraggedFeatureIdx(idx);
+                            }}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              e.dataTransfer.dropEffect = 'move';
+                            }}
+                            onDragEnter={(e) => {
+                              e.preventDefault();
+                              setDragOverFeatureIdx(idx);
+                            }}
+                            onDragEnd={() => {
+                              setDraggedFeatureIdx(null);
+                              setDragOverFeatureIdx(null);
+                            }}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              if (draggedFeatureIdx !== null && draggedFeatureIdx !== idx) {
+                                moveFeature(draggedFeatureIdx, idx);
+                              }
+                              setDraggedFeatureIdx(null);
+                              setDragOverFeatureIdx(null);
+                            }}
+                            className={`flex gap-3 items-start p-3.5 rounded-lg border transition-all ${
+                              isDragging
+                                ? 'opacity-40 border-dashed border-2 border-[#32589c] bg-blue-50/50'
+                                : isDragOver
+                                ? 'border-2 border-[#32589c] ring-2 ring-blue-100 bg-blue-50/70 scale-[1.01]'
+                                : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            {/* Drag Handle & Order Controls */}
+                            <div className="flex flex-col items-center gap-1 shrink-0 pt-1 select-none">
+                              <div 
+                                className="cursor-grab active:cursor-grabbing p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-200/70 rounded transition-colors"
+                                title="Drag to reorder"
+                              >
+                                <GripVertical size={18} />
+                              </div>
+                              <span className="text-[11px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.5 rounded">
+                                #{idx + 1}
+                              </span>
+                              <div className="flex flex-col gap-0.5 mt-0.5">
+                                <button
+                                  type="button"
+                                  disabled={isFirst}
+                                  onClick={() => moveFeature(idx, idx - 1)}
+                                  className={`p-0.5 rounded transition-colors ${isFirst ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'}`}
+                                  title="Move Up"
+                                >
+                                  <ArrowUp size={12} strokeWidth={2.5} />
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={isLast}
+                                  onClick={() => moveFeature(idx, idx + 1)}
+                                  className={`p-0.5 rounded transition-colors ${isLast ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'}`}
+                                  title="Move Down"
+                                >
+                                  <ArrowDown size={12} strokeWidth={2.5} />
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 space-y-2">
+                              <input 
+                                type="text" 
+                                placeholder="Feature Title (e.g., High-Capacity)" 
+                                value={feature.title} 
+                                onChange={e => handleFeatureChange(idx, 'title', e.target.value)} 
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 bg-white outline-none focus:border-[#32589c] focus:ring-1 focus:ring-[#32589c]" 
+                              />
+                              <textarea 
+                                placeholder="Feature Description" 
+                                value={feature.description} 
+                                onChange={e => handleFeatureChange(idx, 'description', e.target.value)} 
+                                rows={2} 
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 bg-white outline-none focus:border-[#32589c] focus:ring-1 focus:ring-[#32589c]" 
+                              />
+                            </div>
+
+                            {/* Remove button */}
+                            <button 
+                              type="button" 
+                              onClick={() => handleRemoveFeature(idx)} 
+                              className="text-gray-400 hover:text-red-600 p-1.5 rounded-md hover:bg-red-50 transition-colors shrink-0 mt-1 cursor-pointer"
+                              title="Remove Feature"
+                            >
+                              <X size={18} />
+                            </button>
                           </div>
-                          <button type="button" onClick={() => handleRemoveFeature(idx)} className="text-red-400 hover:text-red-600 mt-2">
-                            <X size={20} />
-                          </button>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
@@ -1225,27 +1768,129 @@ export default function ProductsDashboard() {
                 {/* FAQs */}
                 <div className="bg-white p-6 rounded-lg border border-gray-100 shadow-sm space-y-4">
                   <div className="flex items-center justify-between border-b pb-2">
-                    <h3 className="font-semibold text-lg text-gray-800">FAQs</h3>
-                    <button type="button" onClick={handleAddFaq} className="text-sm text-[#32589c] font-medium hover:underline flex items-center gap-1">
+                    <div>
+                      <h3 className="font-semibold text-lg text-gray-800">FAQs</h3>
+                      <p className="text-xs text-gray-500">Drag FAQs by the grip handle to change their sequence, or edit text directly.</p>
+                    </div>
+                    <button type="button" onClick={handleAddFaq} className="text-sm text-[#32589c] font-medium hover:underline flex items-center gap-1 cursor-pointer">
                       <Plus size={14} /> Add FAQ
                     </button>
                   </div>
                   
                   {faqs.length === 0 ? (
-                    <p className="text-sm text-gray-500 italic">No FAQs added. Click 'Add FAQ' to start.</p>
+                    <p className="text-sm text-gray-500 italic">No FAQs added. Click &apos;Add FAQ&apos; to start.</p>
                   ) : (
-                    <div className="space-y-4">
-                      {faqs.map((faq, idx) => (
-                        <div key={idx} className="flex gap-4 items-start bg-gray-50 p-4 rounded-md border border-gray-100 relative group">
-                          <div className="flex-1 space-y-3">
-                            <input type="text" placeholder="Question" value={faq.question} onChange={e => handleFaqChange(idx, 'question', e.target.value)} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
-                            <textarea placeholder="Answer" value={faq.answer} onChange={e => handleFaqChange(idx, 'answer', e.target.value)} rows={2} className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 outline-none focus:border-[#32589c]" />
+                    <div className="space-y-3">
+                      {faqs.map((faq, idx) => {
+                        const isDragging = draggedFaqIdx === idx;
+                        const isDragOver = dragOverFaqIdx === idx && draggedFaqIdx !== idx;
+                        const isFirst = idx === 0;
+                        const isLast = idx === faqs.length - 1;
+
+                        return (
+                          <div
+                            key={idx}
+                            draggable
+                            onDragStart={(e) => {
+                              const target = e.target as HTMLElement;
+                              if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'BUTTON') {
+                                e.preventDefault();
+                                return;
+                              }
+                              e.dataTransfer.effectAllowed = 'move';
+                              setDraggedFaqIdx(idx);
+                            }}
+                            onDragOver={(e) => {
+                              e.preventDefault();
+                              e.dataTransfer.dropEffect = 'move';
+                            }}
+                            onDragEnter={(e) => {
+                              e.preventDefault();
+                              setDragOverFaqIdx(idx);
+                            }}
+                            onDragEnd={() => {
+                              setDraggedFaqIdx(null);
+                              setDragOverFaqIdx(null);
+                            }}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              if (draggedFaqIdx !== null && draggedFaqIdx !== idx) {
+                                moveFaq(draggedFaqIdx, idx);
+                              }
+                              setDraggedFaqIdx(null);
+                              setDragOverFaqIdx(null);
+                            }}
+                            className={`flex gap-3 items-start p-3.5 rounded-lg border transition-all ${
+                              isDragging
+                                ? 'opacity-40 border-dashed border-2 border-[#32589c] bg-blue-50/50'
+                                : isDragOver
+                                ? 'border-2 border-[#32589c] ring-2 ring-blue-100 bg-blue-50/70 scale-[1.01]'
+                                : 'bg-gray-50 border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            {/* Drag Handle & Order Controls */}
+                            <div className="flex flex-col items-center gap-1 shrink-0 pt-1 select-none">
+                              <div 
+                                className="cursor-grab active:cursor-grabbing p-1 text-gray-400 hover:text-gray-700 hover:bg-gray-200/70 rounded transition-colors"
+                                title="Drag to reorder"
+                              >
+                                <GripVertical size={18} />
+                              </div>
+                              <span className="text-[11px] font-bold text-gray-500 bg-white border border-gray-200 px-1.5 py-0.5 rounded">
+                                #{idx + 1}
+                              </span>
+                              <div className="flex flex-col gap-0.5 mt-0.5">
+                                <button
+                                  type="button"
+                                  disabled={isFirst}
+                                  onClick={() => moveFaq(idx, idx - 1)}
+                                  className={`p-0.5 rounded transition-colors ${isFirst ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'}`}
+                                  title="Move Up"
+                                >
+                                  <ArrowUp size={12} strokeWidth={2.5} />
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={isLast}
+                                  onClick={() => moveFaq(idx, idx + 1)}
+                                  className={`p-0.5 rounded transition-colors ${isLast ? 'text-gray-300 cursor-not-allowed' : 'text-gray-500 hover:text-[#0a2766] hover:bg-blue-100 cursor-pointer'}`}
+                                  title="Move Down"
+                                >
+                                  <ArrowDown size={12} strokeWidth={2.5} />
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="flex-1 space-y-2">
+                              <input 
+                                type="text" 
+                                placeholder="Question" 
+                                value={faq.question} 
+                                onChange={e => handleFaqChange(idx, 'question', e.target.value)} 
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 bg-white outline-none focus:border-[#32589c] focus:ring-1 focus:ring-[#32589c]" 
+                              />
+                              <textarea 
+                                placeholder="Answer" 
+                                value={faq.answer} 
+                                onChange={e => handleFaqChange(idx, 'answer', e.target.value)} 
+                                rows={2} 
+                                className="w-full border border-gray-300 rounded-md p-2 text-sm text-gray-900 bg-white outline-none focus:border-[#32589c] focus:ring-1 focus:ring-[#32589c]" 
+                              />
+                            </div>
+
+                            {/* Remove button */}
+                            <button 
+                              type="button" 
+                              onClick={() => handleRemoveFaq(idx)} 
+                              className="text-gray-400 hover:text-red-600 p-1.5 rounded-md hover:bg-red-50 transition-colors shrink-0 mt-1 cursor-pointer"
+                              title="Remove FAQ"
+                            >
+                              <X size={18} />
+                            </button>
                           </div>
-                          <button type="button" onClick={() => handleRemoveFaq(idx)} className="text-red-400 hover:text-red-600 mt-2">
-                            <X size={20} />
-                          </button>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>

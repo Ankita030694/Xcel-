@@ -171,7 +171,7 @@ export default function ProductsPage() {
   const scrollTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const scrollToCategoryHeader = (behavior: ScrollBehavior = 'smooth') => {
-    const element = document.getElementById('category-header');
+    const element = document.getElementById('category-header') || document.getElementById('products-section');
     if (element) {
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
       const headerOffset = isMobile ? 155 : 165;
@@ -204,7 +204,12 @@ export default function ProductsPage() {
   };
 
   useEffect(() => {
-    const syncCategoryFromUrlOrStorage = (shouldScroll: boolean = false) => {
+    // 1. Ensure page starts at top so hero banner is visible first
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    }
+
+    const syncCategoryFromUrlOrStorage = () => {
       const hash = window.location.hash ? window.location.hash.substring(1) : '';
       const urlParams = new URLSearchParams(window.location.search);
       const categoryParam = urlParams.get('category') || '';
@@ -214,12 +219,6 @@ export default function ProductsPage() {
         try {
           sessionStorage.setItem('xcel_active_category', targetId);
         } catch (e) {}
-        if (shouldScroll) {
-          if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
-          scrollTimerRef.current = setTimeout(() => {
-            scrollToCategoryHeader('smooth');
-          }, 150);
-        }
       } else {
         const saved = typeof window !== 'undefined' ? sessionStorage.getItem('xcel_active_category') : null;
         if (saved && categories.some(c => c.id === saved)) {
@@ -234,17 +233,24 @@ export default function ProductsPage() {
       }
     };
 
-    const hasInitialTarget = typeof window !== 'undefined' && Boolean(
-      (window.location.hash && window.location.hash.length > 1) || 
-      new URLSearchParams(window.location.search).get('category')
-    );
-    syncCategoryFromUrlOrStorage(hasInitialTarget);
+    syncCategoryFromUrlOrStorage();
 
-    const onPopOrHash = () => syncCategoryFromUrlOrStorage(false);
+    // 2. After 1.5 seconds, auto-scroll to the product cards section on desktop responsive only
+    const desktopAutoScrollTimer = setTimeout(() => {
+      if (typeof window !== 'undefined') {
+        const isDesktop = window.innerWidth >= 1024;
+        if (isDesktop && window.scrollY < 250) {
+          scrollToCategoryHeader('smooth');
+        }
+      }
+    }, 1500);
+
+    const onPopOrHash = () => syncCategoryFromUrlOrStorage();
     window.addEventListener('hashchange', onPopOrHash);
     window.addEventListener('popstate', onPopOrHash);
     window.addEventListener('select-product-category', handleCustomCategoryEvent);
     return () => {
+      clearTimeout(desktopAutoScrollTimer);
       if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
       window.removeEventListener('hashchange', onPopOrHash);
       window.removeEventListener('popstate', onPopOrHash);

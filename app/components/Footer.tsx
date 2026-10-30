@@ -186,7 +186,7 @@ export const Footer = () => {
             <div className="w-full bg-[#3b5e94] py-3 flex justify-center items-center gap-6">
               {/* Facebook Icon */}
               <a 
-                href="https://www.facebook.com/profile.php?id=100068674694991&mibextid=LQQJ4d" 
+                href="https://www.facebook.com/profile.php?id=100068674694991" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 aria-label="Facebook"
