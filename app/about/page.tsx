@@ -21,6 +21,7 @@ export default function AboutPage() {
           style={{ aspectRatio: '1600/600' }}
           loading="eager"
           fetchPriority="high"
+          decoding="async"
         />
       </section>
 
@@ -124,7 +125,7 @@ export default function AboutPage() {
                    {/* Image */}
                    <div className="w-full sm:w-[75%] md:w-[55%] lg:w-[45%] overflow-hidden rounded-2xl">
                       <div className="bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
-                         <img src="/Deepak New .webp" alt="Deepak Chawla" className="w-full h-auto block" />
+                         <img src="/Deepak New .webp" alt="Deepak Chawla" loading="lazy" decoding="async" className="w-full h-auto block" />
                       </div>
                    </div>
                    
@@ -158,7 +159,7 @@ export default function AboutPage() {
                    {/* Image */}
                    <div className="w-full sm:w-[75%] md:w-[55%] lg:w-[45%] overflow-hidden rounded-2xl">
                       <div className="bg-[#e0e4eb] relative overflow-hidden rounded-2xl shadow-inner group-hover:scale-[1.02] transition-transform duration-700 ease-out">
-                         <img src="/Mehul New.webp" alt="Mehul Chawla" className="w-full h-auto block" />
+                         <img src="/Mehul New.webp" alt="Mehul Chawla" loading="lazy" decoding="async" className="w-full h-auto block" />
                       </div>
                    </div>
                    

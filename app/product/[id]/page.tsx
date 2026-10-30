@@ -672,6 +672,9 @@ export default function ProductDetailPage() {
               <img 
                 src={productImages[activeImageIndex] || '/placeholder.png'} 
                 alt={product.name} 
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
                 className="w-full h-full object-contain"
               />
             </div>
@@ -711,6 +714,8 @@ export default function ProductDetailPage() {
                       <img 
                         src={img} 
                         alt={`Thumbnail ${idx + 1}`} 
+                        loading="lazy"
+                        decoding="async"
                         className="absolute inset-0 w-full h-full object-contain p-2" 
                       />
                     </button>
@@ -980,6 +985,7 @@ export default function ProductDetailPage() {
                         alt={relProd.name}
                         className="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-300"
                         loading="lazy"
+                        decoding="async"
                       />
                     </div>
 

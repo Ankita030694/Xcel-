@@ -205,6 +205,7 @@ const HeroCarousel = () => {
                 className="w-full h-full object-cover" 
                 loading={idx === 0 ? "eager" : "lazy"}
                 fetchPriority={idx === 0 ? "high" : "auto"}
+                decoding="async"
               />
             </div>
           ))}
@@ -243,6 +244,7 @@ const HeroCarousel = () => {
                   draggable="false"
                   loading={idx === 0 ? "eager" : "lazy"}
                   fetchPriority={idx === 0 ? "high" : "auto"}
+                  decoding="async"
                 />
               </div>
             ))}
@@ -294,6 +296,8 @@ const AboutUs = () => {
               <img 
                 src="/converted_1080x1080%201.webp" 
                 alt="Precision Laser Cutting Manufacturing" 
+                loading="lazy"
+                decoding="async"
                 className="absolute inset-0 w-full h-full object-cover transform transition duration-700 ease-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0a2766]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -335,7 +339,7 @@ const AboutUs = () => {
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
-                  <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.webp" alt="Manufacturing" className="w-full h-full object-contain" />
+                  <img src="/Icons%20About/BeforeAfter-About-Us-Layout-9-scaled-e1781799894517_2.webp" alt="Manufacturing" loading="lazy" decoding="async" className="w-full h-full object-contain" />
                 </div>
                 <p className="font-medium text-[13px] sm:text-sm md:text-[13px] xl:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 group-hover:text-gray-900">
                   Proudly aligned with the Make in India vision, we grew, we strengthened our in-house manufacturing, R&D and a 20,000 sq ft facility to build complete laundry solutions under one roof. Our equipment is designed, manufactured and tested in India to meet international benchmarks.
@@ -349,7 +353,7 @@ const AboutUs = () => {
                 onTouchStart={() => {}}
               >
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 flex items-center justify-center shrink-0 transform transition duration-500 ease-out shadow-sm scale-110 -rotate-3 md:shadow-sm md:scale-100 md:rotate-0 group-hover:scale-110 group-hover:-rotate-3 group-hover:shadow-md rounded-full bg-transparent overflow-hidden">
-                  <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.webp" alt="Partnership" className="w-full h-full object-contain" />
+                  <img src="/Icons%20About/BeforeAfter-About-Us-Layout-10-scaled-e1781799961570_2.webp" alt="Partnership" loading="lazy" decoding="async" className="w-full h-full object-contain" />
                 </div>
                 <p className="font-medium text-[13px] sm:text-sm md:text-[13px] xl:text-sm leading-relaxed mt-0 transition-colors duration-300 text-gray-900 group-hover:text-gray-900">
                   Beyond manufacturing, we remain committed to our customers through comprehensive installation support, readily available spare parts and a responsive PAN India service network. Our customers return not just for performance but for trust, reliability and long-term partnership.
@@ -518,6 +522,8 @@ const WhyChooseUs = () => {
                         <img 
                           src={item.beforeIcon} 
                           alt="" 
+                          loading="lazy"
+                          decoding="async"
                           className={`${item.title === "Wide Range" ? "max-h-[56px] lg:max-h-[70px]" : "max-h-[42px] lg:max-h-[50px]"} w-auto object-contain mx-auto`} 
                         />
                       </div>
@@ -533,6 +539,8 @@ const WhyChooseUs = () => {
                         <img 
                           src={item.afterIcon} 
                           alt="" 
+                          loading="lazy"
+                          decoding="async"
                           className={`${item.title === "Wide Range" ? "max-h-[46px] lg:max-h-[56px]" : "max-h-[38px] lg:max-h-[46px]"} w-auto object-contain mx-auto`} 
                         />
                       </div>
@@ -806,6 +814,8 @@ const ProductsHoverGallery = () => {
                         src={card.src} 
                         alt={card.alt} 
                         draggable="false" 
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover block pointer-events-none" 
                       />
                     </Link>
@@ -910,6 +920,7 @@ const ProjectsGallery = () => {
                   src={project.img} 
                   alt={project.title} 
                   fill
+                  loading="lazy"
                   sizes="(min-width: 1024px) 850px"
                   className="object-cover" 
                 />
@@ -954,6 +965,7 @@ const ProjectsGallery = () => {
               src={project.img} 
               alt={project.title} 
               fill
+              loading="lazy"
               sizes="(max-width: 640px) 85vw, 400px"
               className="object-cover" 
             />
@@ -1056,28 +1068,28 @@ const PartsToPower = () => {
       title: "Premium Components",
       desc: "From bearings and valves to heating elements and stainless-steel 304 baskets, every component plays a critical role that modern laundries depend on.",
       icon: (
-        <img src="/Icon home/premium-components.webp" alt="Premium Components" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
+        <img src="/Icon home/premium-components.webp" alt="Premium Components" loading="lazy" decoding="async" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     },
     {
       title: "Engineered as One System",
       desc: "With every carefully sourced component, the finished product becomes more than just a machine, it becomes a dependable partner.",
       icon: (
-        <img src="/Icon home/engineered-as-one-system.webp" alt="Engineered as One System" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
+        <img src="/Icon home/engineered-as-one-system.webp" alt="Engineered as One System" loading="lazy" decoding="async" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     },
     {
       title: "Precision Manufacturing",
       desc: "Through advanced manufacturing, we transform high-quality components into industrial laundry equipment built for continuous operation.",
       icon: (
-        <img src="/Icon home/precision-manufacturing.webp" alt="Precision Manufacturing" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
+        <img src="/Icon home/precision-manufacturing.webp" alt="Precision Manufacturing" loading="lazy" decoding="async" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     },
     {
       title: "Rigorous Testing",
       desc: "Every machine undergoes rigorous testing to ensure dependable performance in demanding commercial and industrial laundries.",
       icon: (
-        <img src="/Icon home/rigorous-testing.webp" alt="Rigorous Testing" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
+        <img src="/Icon home/rigorous-testing.webp" alt="Rigorous Testing" loading="lazy" decoding="async" className="w-[14px] h-[14px] lg:w-[24px] lg:h-[24px] xl:w-[28px] xl:h-[28px] object-contain" />
       )
     }
   ];
@@ -1106,7 +1118,8 @@ const PartsToPower = () => {
                 src="/After.webp" 
                 alt="Machine After"
                 fill
-                priority={false}
+                loading="lazy"
+                sizes="(min-width: 1280px) 50vw, (min-width: 768px) 60vw, 100vw"
                 className="object-cover pointer-events-none"
               />
               
@@ -1120,6 +1133,7 @@ const PartsToPower = () => {
                   src="/NEW 1.webp" 
                   alt="Machine Before"
                   loading="lazy"
+                  decoding="async"
                   className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
@@ -1443,6 +1457,7 @@ const ProductCategories = () => {
                     src={cat.img} 
                     alt={cat.title} 
                     fill
+                    loading="lazy"
                     draggable={false}
                     sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                     className="object-contain scale-[1.20] pointer-events-none select-none" 

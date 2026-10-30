@@ -18,6 +18,7 @@ export default function ContactPage() {
           style={{ aspectRatio: '1800/600' }}
           loading="eager"
           fetchPriority="high"
+          decoding="async"
         />
       </section>
 
@@ -150,7 +151,7 @@ export default function ContactPage() {
             {/* Left: India Map Graphic */}
             <div className="w-full lg:w-[45%] flex items-start justify-center pt-4 overflow-visible">
               <div className="relative w-full max-w-[600px] transition-all duration-500 ease-in-out group cursor-default">
-                <img src="/india-map.svg" alt="India Map" className="w-full h-auto drop-shadow-sm opacity-80 group-hover:opacity-100 group-hover:drop-shadow-lg transition-all duration-500" />
+                <img src="/india-map.svg" alt="India Map" loading="lazy" decoding="async" className="w-full h-auto drop-shadow-sm opacity-80 group-hover:opacity-100 group-hover:drop-shadow-lg transition-all duration-500" />
                 
                 {/* Faridabad Pin (Haryana) */}
                 <div className="absolute top-[32%] left-[34%] flex flex-col items-center -translate-x-1/2 -translate-y-full group cursor-pointer z-10">
