@@ -92,6 +92,22 @@ export const Header = () => {
               <div className="group flex flex-col justify-center h-[90px]">
                 <Link 
                   href="/products" 
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      try {
+                        sessionStorage.removeItem('xcel_active_category');
+                      } catch (e) {}
+                      if (window.location.pathname === '/products' || window.location.pathname === '/products/') {
+                        try {
+                          window.history.replaceState(window.history.state, '', '/products');
+                        } catch (e) {}
+                        window.dispatchEvent(new CustomEvent('select-product-category', { 
+                          detail: { categoryId: 'washing', shouldScroll: false } 
+                        }));
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }
+                    }
+                  }}
                   className={`relative flex items-center cursor-pointer pb-1 border-b-[2.5px] transition-all ${
                     isActive('/products') ? 'border-[#3b5b95]' : 'border-transparent group-hover:border-[#3b5b95]'
                   }`}
@@ -189,7 +205,23 @@ export const Header = () => {
           </Link>
           <Link 
             href="/products" 
-            onClick={() => setIsMobileMenuOpen(false)} 
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              if (typeof window !== 'undefined') {
+                try {
+                  sessionStorage.removeItem('xcel_active_category');
+                } catch (e) {}
+                if (window.location.pathname === '/products' || window.location.pathname === '/products/') {
+                  try {
+                    window.history.replaceState(window.history.state, '', '/products');
+                  } catch (e) {}
+                  window.dispatchEvent(new CustomEvent('select-product-category', { 
+                    detail: { categoryId: 'washing', shouldScroll: false } 
+                  }));
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }
+            }}
             className={`flex flex-col items-center pb-1 border-b-[2.5px] transition-all ${
               isActive('/products') ? 'border-[#3b5b95]' : 'border-transparent'
             }`}

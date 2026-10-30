@@ -106,6 +106,12 @@ export default function BlogsClient({ initialArticles }: { initialArticles: Blog
   const [articles, setArticles] = useState<BlogArticle[]>(initialArticles);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  }, []);
+
+  useEffect(() => {
     const loadDynamicBlogs = async () => {
       try {
         const blogsRef = collection(db, "blogs");

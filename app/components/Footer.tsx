@@ -81,6 +81,70 @@ export const Footer = () => {
     }
   };
 
+  const handleProductCategoryClick = (categoryId: string, e: React.MouseEvent) => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      sessionStorage.setItem('xcel_active_category', categoryId);
+    } catch (err) {}
+
+    const isProductsPage = window.location.pathname === '/products' || window.location.pathname === '/products/';
+    if (isProductsPage) {
+      e.preventDefault();
+
+      try {
+        const newUrl = `/products?category=${categoryId}#${categoryId}`;
+        window.history.replaceState(window.history.state, '', newUrl);
+      } catch (err) {}
+
+      window.dispatchEvent(new CustomEvent('select-product-category', { 
+        detail: { categoryId, shouldScroll: true } 
+      }));
+
+      const element = document.getElementById('category-header') || document.getElementById('products-section');
+      if (element) {
+        const isMobile = window.innerWidth < 1024;
+        const headerOffset = isMobile ? 155 : 165;
+        const elementY = element.getBoundingClientRect().top + window.scrollY;
+        const targetY = Math.max(0, elementY - headerOffset);
+        window.scrollTo({
+          top: targetY,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
+  const handleProductsHeadingClick = (e: React.MouseEvent) => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      sessionStorage.removeItem('xcel_active_category');
+    } catch (err) {}
+
+    const isProductsPage = window.location.pathname === '/products' || window.location.pathname === '/products/';
+    if (isProductsPage) {
+      e.preventDefault();
+      try {
+        window.history.replaceState(window.history.state, '', '/products');
+      } catch (err) {}
+      window.dispatchEvent(new CustomEvent('select-product-category', { 
+        detail: { categoryId: 'washing', shouldScroll: true } 
+      }));
+      const element = document.getElementById('category-header') || document.getElementById('products-section');
+      if (element) {
+        const isMobile = window.innerWidth < 1024;
+        const headerOffset = isMobile ? 155 : 165;
+        const elementY = element.getBoundingClientRect().top + window.scrollY;
+        const targetY = Math.max(0, elementY - headerOffset);
+        window.scrollTo({
+          top: targetY,
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
   return (
     <footer id="footer-contact" className="w-full bg-[#f3f5f8] pt-4 lg:pt-6 pb-0 px-4 sm:px-8 lg:px-12 flex justify-center font-sans scroll-mt-[140px]">
       {/* Outer Wrapper for the white grid lines */}
@@ -246,34 +310,35 @@ export const Footer = () => {
               </div>
               <div className="flex-1">
                 <h5 className="font-semibold text-[14px] mb-3">
-                  <a href="/products" className="hover:text-white/80 transition-colors">PRODUCTS</a>
+                  <a 
+                    href="/products" 
+                    onClick={handleProductsHeadingClick}
+                    className="hover:text-white/80 transition-colors"
+                  >
+                    PRODUCTS
+                  </a>
                 </h5>
                 <ul className="flex flex-col gap-2 text-white/80 text-[11px]">
-                  <li><a href="/products#washing" className="hover:text-white transition-colors">WASHING</a></li>
-                  <li><a href="/products#drying" className="hover:text-white transition-colors">DRYING</a></li>
-                  <li><a href="/products#apparel-processing" className="hover:text-white transition-colors">APPAREL PROCESSING</a></li>
-                  <li><a href="/products#dry-cleaning" className="hover:text-white transition-colors">DRY-CLEANING</a></li>
-                  <li><a href="/products#flat-work" className="hover:text-white transition-colors">FLAT-WORK</a></li>
-                  <li><a href="/products#steam-finishing" className="hover:text-white transition-colors">STEAM-FINISHING</a></li>
-                  <li><a href="/products#water-heater" className="hover:text-white transition-colors">WATER HEATER</a></li>
-                  <li><a href="/products#fabric-checking" className="hover:text-white transition-colors">FABRIC CHECKING</a></li>
-                  <li><a href="/products#other-equipment" className="hover:text-white transition-colors">OTHER EQUIPMENT</a></li>
-                  <li><a href="/products#complete-range" className="hover:text-white transition-colors">COMPLETE RANGE</a></li>
+                  <li><a href="/products?category=washing#washing" onClick={(e) => handleProductCategoryClick('washing', e)} className="hover:text-white transition-colors">WASHING</a></li>
+                  <li><a href="/products?category=drying#drying" onClick={(e) => handleProductCategoryClick('drying', e)} className="hover:text-white transition-colors">DRYING</a></li>
+                  <li><a href="/products?category=apparel-processing#apparel-processing" onClick={(e) => handleProductCategoryClick('apparel-processing', e)} className="hover:text-white transition-colors">APPAREL PROCESSING</a></li>
+                  <li><a href="/products?category=dry-cleaning#dry-cleaning" onClick={(e) => handleProductCategoryClick('dry-cleaning', e)} className="hover:text-white transition-colors">DRY-CLEANING</a></li>
+                  <li><a href="/products?category=flat-work#flat-work" onClick={(e) => handleProductCategoryClick('flat-work', e)} className="hover:text-white transition-colors">FLAT-WORK</a></li>
+                  <li><a href="/products?category=steam-finishing#steam-finishing" onClick={(e) => handleProductCategoryClick('steam-finishing', e)} className="hover:text-white transition-colors">STEAM-FINISHING</a></li>
+                  <li><a href="/products?category=water-heater#water-heater" onClick={(e) => handleProductCategoryClick('water-heater', e)} className="hover:text-white transition-colors">WATER HEATER</a></li>
+                  <li><a href="/products?category=fabric-checking#fabric-checking" onClick={(e) => handleProductCategoryClick('fabric-checking', e)} className="hover:text-white transition-colors">FABRIC CHECKING</a></li>
+                  <li><a href="/products?category=other-equipment#other-equipment" onClick={(e) => handleProductCategoryClick('other-equipment', e)} className="hover:text-white transition-colors">OTHER EQUIPMENT</a></li>
+                  <li><a href="/products?category=complete-range#complete-range" onClick={(e) => handleProductCategoryClick('complete-range', e)} className="hover:text-white transition-colors">COMPLETE RANGE</a></li>
                 </ul>
               </div>
               <div className="flex-[1.5]">
                 <h5 className="font-semibold text-[14px] mb-3">
-                  <Link 
+                  <a 
                     href="/blogs" 
-                    onClick={() => {
-                      if (typeof window !== 'undefined') {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
-                      }
-                    }}
                     className="hover:text-white/80 transition-colors"
                   >
                     INDUSTRY INSIGHTS
-                  </Link>
+                  </a>
                 </h5>
                 <ul className="flex flex-col gap-2.5 text-white/80 text-[11px]">
                   {BLOG_ARTICLES.slice(0, 4).map((article) => {
@@ -285,13 +350,13 @@ export const Footer = () => {
 
                     return (
                       <li key={article.id}>
-                        <Link 
+                        <a 
                           href={`/blogs/${article.slug}`} 
                           title={article.title}
                           className="hover:text-white transition-colors block leading-snug"
                         >
                           {hook}
-                        </Link>
+                        </a>
                       </li>
                     );
                   })}

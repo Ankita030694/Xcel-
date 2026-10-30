@@ -728,17 +728,6 @@ const ProductsHoverGallery = () => {
   const activeBanner = ((currentIndex % 3) + 3) % 3;
   const thumbLeftPercent = (activeBanner / 2) * 65;
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hash === '#engineering-excellence') {
-      setTimeout(() => {
-        const el = document.getElementById('engineering-excellence');
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }, 150);
-    }
-  }, []);
-
   return (
     <section id="engineering-excellence" className="bg-[#f8fafc] w-full pt-10 lg:pt-14 pb-10 lg:pb-16 overflow-hidden border-t border-gray-100 relative scroll-mt-20">
       {/* Section Title */}
@@ -802,9 +791,6 @@ const ProductsHoverGallery = () => {
                         try {
                           if (card.category) {
                             sessionStorage.setItem('xcel_active_category', card.category);
-                          }
-                          if (typeof window !== 'undefined') {
-                            window.history.replaceState(window.history.state, '', '/#engineering-excellence');
                           }
                         } catch (err) {}
                       }}
@@ -1537,6 +1523,19 @@ const ProductCategories = () => {
 };
 
 export default function Home() {
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (window.location.hash === '#engineering-excellence') {
+        try {
+          window.history.replaceState(null, '', window.location.pathname);
+        } catch (e) {}
+      }
+      if (!window.location.hash) {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      }
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-white font-sans overflow-x-clip">
       <Header />

@@ -163,8 +163,8 @@ export default function ProductDetailPage() {
   const params = useParams();
   const id = (params?.id as string) || '';
 
-  const [product, setProduct] = useState<any>(() => getProductFromCache(id));
-  const [loading, setLoading] = useState<boolean>(() => !getProductFromCache(id));
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   
   const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
   const [loadingRelated, setLoadingRelated] = useState<boolean>(true);
@@ -348,7 +348,21 @@ export default function ProductDetailPage() {
           return false;
         };
 
-        // Filter products in the same category
+        // Check total products in this category (database or fallback)
+        const categoryProdsInDb = allProds.filter((p: any) => p.categoryId === product.categoryId);
+        const totalCategoryCount = categoryProdsInDb.length > 0 
+          ? categoryProdsInDb.length 
+          : (FALLBACK_PRODUCTS[product.categoryId]?.length || 0);
+
+        // If this category only has a single product, remove the related products section entirely
+        if (totalCategoryCount <= 1) {
+          if (isMounted) {
+            setRelatedProducts([]);
+          }
+          return;
+        }
+
+        // For all other categories, keep behavior as it was
         let sameCat = allProds.filter((p: any) => p.categoryId === product.categoryId && !isCurrent(p));
 
         // If none found in Firestore/session, check FALLBACK_PRODUCTS for this category
@@ -642,24 +656,6 @@ export default function ProductDetailPage() {
               {product.name}
             </span>
           </div>
-
-          <button
-            type="button"
-            onClick={() => {
-              if (typeof window !== 'undefined') {
-                if (window.history.length > 1) {
-                  window.history.back();
-                } else {
-                  window.location.href = `/products?category=${product.categoryId}#${product.categoryId}`;
-                }
-              }
-            }}
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0a2766] hover:text-[#32589c] bg-[#f4f7fb] hover:bg-[#eaf0ff] px-3 py-1.5 rounded-lg transition-colors cursor-pointer shrink-0 border border-gray-200/60"
-            title="Go back to products"
-          >
-            <ArrowLeft size={13} strokeWidth={2.2} />
-            <span>Back to Products</span>
-          </button>
         </div>
 
         {/* Top Section */}

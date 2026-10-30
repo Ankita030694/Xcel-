@@ -64,10 +64,6 @@ export default function ProductsPage() {
       if (targetId && categories.some(c => c.id === targetId)) {
         return targetId;
       }
-      const saved = sessionStorage.getItem('xcel_active_category');
-      if (saved && categories.some(c => c.id === saved)) {
-        return saved;
-      }
     }
     return 'washing';
   });
@@ -220,16 +216,20 @@ export default function ProductsPage() {
           sessionStorage.setItem('xcel_active_category', targetId);
         } catch (e) {}
       } else {
-        const saved = typeof window !== 'undefined' ? sessionStorage.getItem('xcel_active_category') : null;
-        if (saved && categories.some(c => c.id === saved)) {
-          setActiveTab(saved);
-        }
+        setActiveTab('washing');
+        try {
+          sessionStorage.removeItem('xcel_active_category');
+        } catch (e) {}
       }
     };
 
     const handleCustomCategoryEvent = (e: any) => {
       if (e?.detail) {
-        handleCategorySelect(e.detail, false);
+        const categoryId = typeof e.detail === 'string' ? e.detail : e.detail.categoryId;
+        const shouldScroll = typeof e.detail === 'object' && e.detail.shouldScroll !== undefined ? e.detail.shouldScroll : true;
+        if (categoryId) {
+          handleCategorySelect(categoryId, shouldScroll);
+        }
       }
     };
 
@@ -245,7 +245,13 @@ export default function ProductsPage() {
       }
     }, 1500);
 
-    const onPopOrHash = () => syncCategoryFromUrlOrStorage();
+    const onPopOrHash = () => {
+      syncCategoryFromUrlOrStorage();
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+      scrollTimerRef.current = setTimeout(() => {
+        scrollToCategoryHeader('smooth');
+      }, 80);
+    };
     window.addEventListener('hashchange', onPopOrHash);
     window.addEventListener('popstate', onPopOrHash);
     window.addEventListener('select-product-category', handleCustomCategoryEvent);

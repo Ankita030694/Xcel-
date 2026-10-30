@@ -35,6 +35,12 @@ export default function BlogDetailClient({
   const [relatedArticles, setRelatedArticles] = useState<BlogArticle[]>(initialRelated);
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  }, [slug]);
+
+  useEffect(() => {
     const fetchArticleFromFirestore = async () => {
       try {
         const blogsRef = collection(db, "blogs");
