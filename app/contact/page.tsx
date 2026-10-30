@@ -1,10 +1,147 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import { Phone, Mail, Clock, ExternalLink, CornerUpRight } from 'lucide-react';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
+import { db } from '../../lib/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+
+const indianStatesAndUTs = [
+  "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", 
+  "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa", 
+  "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", 
+  "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", 
+  "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", 
+  "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
+];
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    contact: '',
+    email: '',
+    state: '',
+    message: '',
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Allow control and navigation keys
+    if (
+      e.key === 'Backspace' ||
+      e.key === 'Tab' ||
+      e.key === 'Enter' ||
+      e.key === 'Escape' ||
+      e.key === 'Delete' ||
+      e.key === 'ArrowLeft' ||
+      e.key === 'ArrowRight' ||
+      e.key === 'ArrowUp' ||
+      e.key === 'ArrowDown' ||
+      e.ctrlKey ||
+      e.metaKey
+    ) {
+      return;
+    }
+    // Only characters (letters) and spaces
+    if (!/^[a-zA-Z\s]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
+    setFormData((prev) => ({ ...prev, name: value }));
+  };
+
+  const handleContactKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Allow control and navigation keys
+    if (
+      e.key === 'Backspace' ||
+      e.key === 'Tab' ||
+      e.key === 'Enter' ||
+      e.key === 'Escape' ||
+      e.key === 'Delete' ||
+      e.key === 'ArrowLeft' ||
+      e.key === 'ArrowRight' ||
+      e.key === 'ArrowUp' ||
+      e.key === 'ArrowDown' ||
+      e.ctrlKey ||
+      e.metaKey
+    ) {
+      return;
+    }
+    // Only numbers
+    if (!/^\d$/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
+
+  const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setFormData((prev) => ({ ...prev, contact: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!formData.name.trim()) {
+      alert("Please enter your name");
+      return;
+    }
+    if (!/^[a-zA-Z\s]+$/.test(formData.name.trim())) {
+      alert("Name can contain only characters and spaces");
+      return;
+    }
+    if (!formData.contact.trim()) {
+      alert("Please enter your contact number");
+      return;
+    }
+    if (formData.contact.length !== 10) {
+      alert("Please enter exactly 10 digits for the phone number");
+      return;
+    }
+    if (!formData.email.trim()) {
+      alert("Please enter your email address");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      alert("Please enter a valid email address");
+      return;
+    }
+    if (!formData.state) {
+      alert("Please select your State/UT");
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      await addDoc(collection(db, "contactForms"), {
+        name: formData.name.trim(),
+        contact: formData.contact.trim(),
+        email: formData.email.trim(),
+        state: formData.state,
+        message: formData.message.trim(),
+        interest: "General Enquiry",
+        source: "Contact Page",
+        submittedAt: serverTimestamp(),
+      });
+      alert("Form submitted successfully! We will get back to you shortly.");
+      setFormData({
+        name: '',
+        contact: '',
+        email: '',
+        state: '',
+        message: '',
+      });
+    } catch (error) {
+      console.error("Error submitting contact form: ", error);
+      alert("Failed to submit form. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-white font-sans text-gray-800">
       <Header />
@@ -44,59 +181,58 @@ export default function ContactPage() {
                 </p>
               </div>
 
-              <form className="flex flex-col" onSubmit={(e) => e.preventDefault()}>
+              <form className="flex flex-col" onSubmit={handleSubmit}>
                 
                 <div className="border border-gray-200 border-b-0 px-4 py-3.5">
-                  <input type="text" placeholder="Name*" className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" required />
+                  <input 
+                    type="text" 
+                    placeholder="Name*" 
+                    value={formData.name}
+                    onChange={handleNameChange}
+                    onKeyDown={handleNameKeyDown}
+                    className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" 
+                    required 
+                  />
                 </div>
                 
                 <div className="border border-gray-200 border-b-0 px-4 py-3.5">
-                  <input type="text" placeholder="Contact No.*" className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" required />
+                  <input 
+                    type="tel" 
+                    inputMode="numeric"
+                    maxLength={10}
+                    placeholder="Contact No.*" 
+                    value={formData.contact}
+                    onChange={handleContactChange}
+                    onKeyDown={handleContactKeyDown}
+                    className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" 
+                    required 
+                  />
                 </div>
 
                 <div className="border border-gray-200 border-b-0 px-4 py-3.5">
-                  <input type="email" placeholder="Email Address*" className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" required />
+                  <input 
+                    type="email" 
+                    placeholder="Email Address*" 
+                    value={formData.email}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
+                    className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" 
+                    required 
+                  />
                 </div>
 
                 <div className="border border-gray-200 border-b-0 px-4 py-3.5 relative">
-                  <select className="w-full bg-transparent text-[14px] text-[#0a2766] font-medium focus:outline-none appearance-none cursor-pointer" required defaultValue="">
-                    <option value="" disabled>Select State/UT*</option>
-                    <option value="ap">Andhra Pradesh</option>
-                    <option value="ar">Arunachal Pradesh</option>
-                    <option value="as">Assam</option>
-                    <option value="br">Bihar</option>
-                    <option value="cg">Chhattisgarh</option>
-                    <option value="ga">Goa</option>
-                    <option value="gj">Gujarat</option>
-                    <option value="hr">Haryana</option>
-                    <option value="hp">Himachal Pradesh</option>
-                    <option value="jh">Jharkhand</option>
-                    <option value="ka">Karnataka</option>
-                    <option value="kl">Kerala</option>
-                    <option value="mp">Madhya Pradesh</option>
-                    <option value="mh">Maharashtra</option>
-                    <option value="mn">Manipur</option>
-                    <option value="ml">Meghalaya</option>
-                    <option value="mz">Mizoram</option>
-                    <option value="nl">Nagaland</option>
-                    <option value="or">Odisha</option>
-                    <option value="pb">Punjab</option>
-                    <option value="rj">Rajasthan</option>
-                    <option value="sk">Sikkim</option>
-                    <option value="tn">Tamil Nadu</option>
-                    <option value="tg">Telangana</option>
-                    <option value="tr">Tripura</option>
-                    <option value="up">Uttar Pradesh</option>
-                    <option value="ut">Uttarakhand</option>
-                    <option value="wb">West Bengal</option>
-                    <option value="an">Andaman and Nicobar Islands</option>
-                    <option value="ch">Chandigarh</option>
-                    <option value="dn">Dadra and Nagar Haveli and Daman and Diu</option>
-                    <option value="dl">Delhi</option>
-                    <option value="jk">Jammu and Kashmir</option>
-                    <option value="la">Ladakh</option>
-                    <option value="ld">Lakshadweep</option>
-                    <option value="py">Puducherry</option>
+                  <select 
+                    value={formData.state} 
+                    onChange={(e) => setFormData((prev) => ({ ...prev, state: e.target.value }))}
+                    className={`w-full bg-transparent text-[14px] font-medium focus:outline-none appearance-none cursor-pointer ${formData.state === '' ? 'text-gray-400' : 'text-[#0a2766]'}`} 
+                    required
+                  >
+                    <option value="" disabled className="text-gray-400">Select State/UT*</option>
+                    {indianStatesAndUTs.map((state) => (
+                      <option key={state} value={state} className="text-gray-800">
+                        {state}
+                      </option>
+                    ))}
                   </select>
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
                     <svg className="w-4 h-4 text-[#0a2766]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -104,11 +240,21 @@ export default function ContactPage() {
                 </div>
 
                 <div className="border border-gray-200 px-4 py-3.5">
-                  <textarea placeholder="Message" rows={3} className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none resize-none"></textarea>
+                  <textarea 
+                    placeholder="Message" 
+                    rows={3} 
+                    value={formData.message}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
+                    className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none resize-none"
+                  ></textarea>
                 </div>
 
-                <button type="submit" className="self-start mt-8 bg-[#0a2766] hover:bg-[#001f54] text-white font-medium text-[12px] tracking-wider uppercase py-3.5 px-16 rounded transition-colors shadow-lg shadow-[#0a2766]/20">
-                  SUBMIT
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="self-start mt-8 bg-[#0a2766] hover:bg-[#001f54] text-white font-medium text-[12px] tracking-wider uppercase py-3.5 px-16 rounded transition-colors shadow-lg shadow-[#0a2766]/20 disabled:opacity-60 cursor-pointer disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? "SUBMITTING..." : "SUBMIT"}
                 </button>
               </form>
             </div>

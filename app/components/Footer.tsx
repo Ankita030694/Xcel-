@@ -27,29 +27,91 @@ export const Footer = () => {
     "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
   ];
 
+  const handleNameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Allow control and navigation keys
+    if (
+      e.key === 'Backspace' ||
+      e.key === 'Tab' ||
+      e.key === 'Enter' ||
+      e.key === 'Escape' ||
+      e.key === 'Delete' ||
+      e.key === 'ArrowLeft' ||
+      e.key === 'ArrowRight' ||
+      e.key === 'ArrowUp' ||
+      e.key === 'ArrowDown' ||
+      e.ctrlKey ||
+      e.metaKey
+    ) {
+      return;
+    }
+    // Only characters (letters) and spaces
+    if (!/^[a-zA-Z\s]$/.test(e.key)) {
+      e.preventDefault();
+    }
+  };
+
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^a-zA-Z\s]/g, '');
-    setFormData({ ...formData, name: value });
+    setFormData((prev) => ({ ...prev, name: value }));
+  };
+
+  const handleContactKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Allow control and navigation keys
+    if (
+      e.key === 'Backspace' ||
+      e.key === 'Tab' ||
+      e.key === 'Enter' ||
+      e.key === 'Escape' ||
+      e.key === 'Delete' ||
+      e.key === 'ArrowLeft' ||
+      e.key === 'ArrowRight' ||
+      e.key === 'ArrowUp' ||
+      e.key === 'ArrowDown' ||
+      e.ctrlKey ||
+      e.metaKey
+    ) {
+      return;
+    }
+    // Only numbers
+    if (!/^\d$/.test(e.key)) {
+      e.preventDefault();
+    }
   };
 
   const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 10);
-    setFormData({ ...formData, contact: value });
+    setFormData((prev) => ({ ...prev, contact: value }));
   };
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.contact || !formData.email || !formData.state) {
-      alert("Please fill all required fields");
+    if (!formData.name.trim()) {
+      alert("Please enter your name");
+      return;
+    }
+    if (!/^[a-zA-Z\s]+$/.test(formData.name.trim())) {
+      alert("Name can contain only characters and spaces");
+      return;
+    }
+    if (!formData.contact.trim()) {
+      alert("Please enter your contact number");
       return;
     }
     if (formData.contact.length !== 10) {
       alert("Please enter exactly 10 digits for the phone number");
       return;
     }
+    if (!formData.email.trim()) {
+      alert("Please enter your email address");
+      return;
+    }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
+    if (!emailRegex.test(formData.email.trim())) {
       alert("Please enter a valid email address");
+      return;
+    }
+    if (!formData.state) {
+      alert("Please select your State/UT");
       return;
     }
     if (!formData.acceptedPolicy) {
@@ -60,10 +122,16 @@ export const Footer = () => {
     try {
       setIsSubmitting(true);
       await addDoc(collection(db, "contactForms"), {
-        ...formData,
+        name: formData.name.trim(),
+        contact: formData.contact.trim(),
+        email: formData.email.trim(),
+        state: formData.state,
+        message: formData.message.trim(),
+        interest: formData.interest || 'General Enquiry',
+        source: 'Footer',
         submittedAt: serverTimestamp(),
       });
-      alert("Form submitted successfully!");
+      alert("Form submitted successfully! We will get back to you shortly.");
       setFormData({
         name: '',
         contact: '',
@@ -154,7 +222,7 @@ export const Footer = () => {
         <div className="flex flex-col lg:flex-row gap-[2px] w-full">
           
           {/* Left Column - Contact Form */}
-          <div className="w-full lg:w-[35%] bg-[#d3dce8] p-6 lg:p-8 flex flex-col text-[#0a2766]">
+          <form onSubmit={handleSubmit} className="w-full lg:w-[35%] bg-[#d3dce8] p-6 lg:p-8 flex flex-col text-[#0a2766]">
             <h3 className="text-[24px] lg:text-[28px] font-bold mb-1">Get in Touch with us</h3>
             <p className="text-[#0a2766]/80 text-[14px] mb-5 leading-snug">
               An Xcel Professional will contact you at the earliest.
@@ -162,14 +230,40 @@ export const Footer = () => {
             
             {/* Flush Inputs */}
             <div className="flex flex-col bg-white border-none w-full mb-4">
-              <input type="text" placeholder="Name*" value={formData.name} onChange={handleNameChange} className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" />
-              <input type="text" placeholder="Contact No.*" value={formData.contact} onChange={handleContactChange} className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" />
-              <input type="email" placeholder="Email Address*" value={formData.email} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" />
+              <input 
+                type="text" 
+                placeholder="Name*" 
+                value={formData.name} 
+                onChange={handleNameChange} 
+                onKeyDown={handleNameKeyDown}
+                className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" 
+                required
+              />
+              <input 
+                type="tel" 
+                inputMode="numeric"
+                maxLength={10}
+                placeholder="Contact No.*" 
+                value={formData.contact} 
+                onChange={handleContactChange} 
+                onKeyDown={handleContactKeyDown}
+                className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" 
+                required
+              />
+              <input 
+                type="email" 
+                placeholder="Email Address*" 
+                value={formData.email} 
+                onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))} 
+                className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" 
+                required
+              />
               <div className="relative w-full">
                 <select 
                   value={formData.state} 
-                  onChange={(e) => setFormData({ ...formData, state: e.target.value })} 
+                  onChange={(e) => setFormData((prev) => ({ ...prev, state: e.target.value }))} 
                   className={`w-full bg-transparent border-b border-gray-200 px-4 py-2.5 focus:outline-none focus:bg-gray-50 transition-colors text-[13px] appearance-none cursor-pointer ${formData.state === '' ? 'text-[#8a9bb0]' : 'text-[#0a2766]'}`}
+                  required
                 >
                   <option value="" disabled className="text-[#8a9bb0]">Select State/UT*</option>
                   {indianStatesAndUTs.map((state) => (
@@ -182,7 +276,13 @@ export const Footer = () => {
                   </svg>
                 </div>
               </div>
-              <textarea rows={2} placeholder="Message" value={formData.message} onChange={(e) => setFormData({ ...formData, message: e.target.value })} className="w-full bg-transparent px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors resize-none text-[13px]"></textarea>
+              <textarea 
+                rows={2} 
+                placeholder="Message" 
+                value={formData.message} 
+                onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))} 
+                className="w-full bg-transparent px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors resize-none text-[13px]"
+              ></textarea>
             </div>
             
             {/* Checkboxes */}
@@ -190,26 +290,29 @@ export const Footer = () => {
               <p className="text-[#0a2766] mb-2 text-[13px]">Area of Interest</p>
               <div className="flex flex-wrap gap-5 mb-4">
                 <label className="flex items-center gap-1.5 cursor-pointer">
-                  <input type="radio" name="interest" value="Sales" checked={formData.interest === 'Sales'} onChange={(e) => setFormData({ ...formData, interest: e.target.value })} className="w-3.5 h-3.5 accent-[#002d73] cursor-pointer" />
+                  <input type="radio" name="interest" value="Sales" checked={formData.interest === 'Sales'} onChange={(e) => setFormData((prev) => ({ ...prev, interest: e.target.value }))} className="w-3.5 h-3.5 accent-[#002d73] cursor-pointer" />
                   <span className="text-[#0a2766] text-[13px] font-medium">Sales</span>
                 </label>
                 <label className="flex items-center gap-1.5 cursor-pointer">
-                  <input type="radio" name="interest" value="Services" checked={formData.interest === 'Services'} onChange={(e) => setFormData({ ...formData, interest: e.target.value })} className="w-3.5 h-3.5 accent-[#002d73] cursor-pointer" />
+                  <input type="radio" name="interest" value="Services" checked={formData.interest === 'Services'} onChange={(e) => setFormData((prev) => ({ ...prev, interest: e.target.value }))} className="w-3.5 h-3.5 accent-[#002d73] cursor-pointer" />
                   <span className="text-[#0a2766] text-[13px] font-medium">Services</span>
                 </label>
-
               </div>
               
               <label className="flex items-start gap-2 cursor-pointer">
-                <input type="checkbox" checked={formData.acceptedPolicy} onChange={(e) => setFormData({ ...formData, acceptedPolicy: e.target.checked })} className="w-3.5 h-3.5 mt-0.5 accent-[#002d73] cursor-pointer shrink-0" />
+                <input type="checkbox" checked={formData.acceptedPolicy} onChange={(e) => setFormData((prev) => ({ ...prev, acceptedPolicy: e.target.checked }))} className="w-3.5 h-3.5 mt-0.5 accent-[#002d73] cursor-pointer shrink-0" required />
                 <span className="text-[#0a2766] text-[13px] leading-tight">By checking this box I accept the <a href="/privacy" target="_blank" rel="noopener noreferrer" className="underline font-bold hover:text-[#001f54]">Privacy Policy</a></span>
               </label>
             </div>
 
-            <button type="button" onClick={handleSubmit} disabled={isSubmitting} className="w-1/2 mx-auto bg-[#002d73] hover:bg-[#001f54] text-white font-medium text-[14px] py-2.5 transition-colors disabled:opacity-50">
+            <button 
+              type="submit" 
+              disabled={isSubmitting} 
+              className="w-1/2 mx-auto bg-[#002d73] hover:bg-[#001f54] text-white font-medium text-[14px] py-2.5 transition-colors disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+            >
               {isSubmitting ? "SUBMITTING..." : "SUBMIT"}
             </button>
-          </div>
+          </form>
 
           {/* Right Column - Info & Links (Grid of white gaps) */}
           <div className="w-full lg:w-[65%] flex flex-col gap-[2px] bg-white">
