@@ -235,7 +235,7 @@ export default function ProductsPage() {
 
     syncCategoryFromUrlOrStorage();
 
-    // 2. After 1.5 seconds, auto-scroll to the product cards section on desktop responsive only
+    // 2. After 1 second, auto-scroll to the product cards section on desktop responsive only
     const desktopAutoScrollTimer = setTimeout(() => {
       if (typeof window !== 'undefined') {
         const isDesktop = window.innerWidth >= 1024;
@@ -243,7 +243,7 @@ export default function ProductsPage() {
           scrollToCategoryHeader('smooth');
         }
       }
-    }, 1500);
+    }, 1000);
 
     const onPopOrHash = () => {
       syncCategoryFromUrlOrStorage();
