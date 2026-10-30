@@ -21,6 +21,7 @@ export function MissionVisionSection() {
               alt="Our Vision" 
               className="w-full h-full object-contain block"
               loading="lazy"
+              decoding="async"
             />
           </div>
 
@@ -37,6 +38,7 @@ export function MissionVisionSection() {
               alt="Our Mission" 
               className="w-full h-full object-contain block"
               loading="lazy"
+              decoding="async"
             />
           </div>
 

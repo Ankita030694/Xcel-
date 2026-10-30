@@ -326,6 +326,7 @@ export default function ProductsPage() {
            style={{ aspectRatio: '1600/600' }}
            loading="eager"
            fetchPriority="high"
+           decoding="async"
          />
       </section>
 
@@ -432,6 +433,8 @@ export default function ProductsPage() {
                   <img 
                     src={product.imageUrl || '/placeholder.png'} 
                     alt={product.name} 
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-contain mix-blend-multiply xl:mix-blend-normal" 
                   />
                 </div>
