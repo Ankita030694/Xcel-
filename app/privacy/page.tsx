@@ -1,22 +1,22 @@
 import React from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { 
-  ArrowLeft, 
-  ShieldCheck, 
-  Lock, 
-  FileText, 
-  Eye, 
-  Share2, 
-  UserCheck, 
-  ExternalLink, 
-  RefreshCw, 
-  Mail, 
-  Building2, 
-  PhoneCall, 
+import {
+  ArrowLeft,
+  ShieldCheck,
+  Lock,
+  FileText,
+  Eye,
+  Share2,
+  UserCheck,
+  ExternalLink,
+  RefreshCw,
+  Mail,
+  Building2,
+  PhoneCall,
   ArrowUpRight,
   CheckCircle2
-} from "lucide-react";
+} from "@/app/components/icons";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 
@@ -66,7 +66,7 @@ export default function PrivacyPolicyPage() {
       <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 pt-4 pb-8 sm:pb-12">
         <div className="bg-[#f8f9fa] border border-gray-200 rounded-[2rem] p-8 sm:p-12 lg:p-14 relative overflow-hidden">
           <div className="absolute right-0 top-0 -mr-16 -mt-16 w-80 h-80 bg-[#3b5b95]/5 rounded-full blur-3xl pointer-events-none" />
-          
+
           <div className="relative z-10 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#3b5b95]/10 border border-[#3b5b95]/20 text-[#3b5b95] text-xs font-bold tracking-wider uppercase mb-5">
               <ShieldCheck className="w-3.5 h-3.5" />
@@ -95,10 +95,10 @@ export default function PrivacyPolicyPage() {
       {/* Main Content Area - Two Column Editorial Layout */}
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-          
+
           {/* LEFT COLUMN: Sidebar (Sticky on Desktop) */}
           <aside className="lg:col-span-4 lg:sticky lg:top-28 space-y-8 order-2 lg:order-1">
-            
+
             {/* The Short Version Summary */}
             <div className="bg-[#f8f9fa] border border-gray-200 rounded-2xl p-6 sm:p-7 shadow-xs">
               <h2 className="text-[13px] font-bold tracking-wider text-[#0a2766] uppercase mb-4 flex items-center gap-2">
@@ -164,7 +164,7 @@ export default function PrivacyPolicyPage() {
 
           {/* RIGHT COLUMN: Full Policy Content */}
           <article className="lg:col-span-8 order-1 lg:order-2 space-y-12">
-            
+
             {/* 1. Information We Collect */}
             <section id="info-we-collect" className="scroll-mt-32 space-y-4 pt-2">
               <div className="flex items-center gap-3">

@@ -123,7 +123,7 @@ export default function ProductsDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       if (user) {
         setAuthChecking(false);
         fetchProducts();
@@ -158,7 +158,7 @@ export default function ProductsDashboard() {
     try {
       const querySnapshot = await getDocs(collection(db, "products"));
       const fetchedProducts: Product[] = [];
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach((doc: any) => {
         fetchedProducts.push({ id: doc.id, ...doc.data() } as Product);
       });
       // Sort by order ascending, then by creation date descending
@@ -561,6 +561,9 @@ export default function ProductsDashboard() {
           <div className="flex items-center gap-6">
             <Link href="/admin/leads" className="text-[#32589c] hover:text-[#0a2766] font-semibold transition-colors">
               &larr; Back to Leads
+            </Link>
+            <Link href="/admin/blogs" className="text-[#32589c] hover:text-[#0a2766] font-semibold transition-colors">
+              Manage Blogs &rarr;
             </Link>
             <button 
               onClick={handleLogout}

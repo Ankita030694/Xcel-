@@ -325,7 +325,7 @@ export default function ProductDetailPage() {
         if (!allProds || allProds.length === 0) {
           try {
             const querySnapshot = await getDocs(collection(db, "products"));
-            querySnapshot.forEach((d) => {
+            querySnapshot.forEach((d: any) => {
               allProds.push({ id: d.id, ...d.data() });
             });
             if (typeof window !== 'undefined' && allProds.length > 0) {

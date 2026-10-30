@@ -19,7 +19,7 @@ import {
   ExternalLink,
   ChevronRight,
   CheckCircle2
-} from "lucide-react";
+} from "@/app/components/icons";
 import { Header } from "@/app/components/Header";
 import { Footer } from "@/app/components/Footer";
 import { BLOG_ARTICLES } from "@/data/blogs";

@@ -28,19 +28,24 @@ export interface BlogArticle {
   title: string;
   lead: string;
   imageSrc: string; // 1:1 image for cards and mobile
-  bannerSrc: string; // 8:3 banner image for desktop hero
+  bannerSrc?: string; // 8:3 banner image for desktop hero (optional, falls back to imageSrc)
   category: string;
   readTime: string;
   date: string;
   author: string;
   authorRole: string;
-  metaDescription: string;
-  focusKeyword: string;
-  secondaryKeywords: string[];
-  shortVersion: string[];
-  sections: BlogSection[];
-  actionSteps: string[];
-  disclaimer: string;
+  metaDescription?: string;
+  metaTitle?: string;
+  focusKeyword?: string;
+  secondaryKeywords?: string[];
+  shortVersion?: string[];
+  sections?: BlogSection[];
+  description?: string; // Rich HTML content from TipTap editor
+  actionSteps?: string[];
+  disclaimer?: string;
+  status?: "published" | "draft";
+  createdAt?: any;
+  updatedAt?: any;
 }
 
 export const BLOG_ARTICLES: BlogArticle[] = [
@@ -599,6 +604,391 @@ export const BLOG_ARTICLES: BlogArticle[] = [
       "Request a free, no-obligation project assessment and ROI model from Xcel Stiro."
     ],
     disclaimer: "Evaluation guidelines based on operational data from 7000+ machine installations across India. — Xcel Stiro since 1994 | Industrial Laundry. Done Right. —"
+  },
+  {
+    id: "5",
+    slug: "hotel-laundry-setup-cost-equipment-planning-india",
+    aliases: ["hotel-laundry-setup-guide", "hospitality-laundry-planning-india", "hotel-opl-vs-outsourcing"],
+    title: "Hotel Laundry Setup & Equipment Planning in India (50 to 500 Rooms) — Complete Guide",
+    lead: "Planning an on-premise hotel laundry (OPL) in India? From calculating linen kg per room to choosing high G-force washer extractors and flatwork ironers, here is the complete engineering roadmap for 3-star to 5-star properties.",
+    imageSrc: "/category/complete-range.webp",
+    bannerSrc: "/banners/product-overview-banner.webp",
+    category: "Hospitality Operations",
+    readTime: "~4 mins",
+    date: "25th May 2026",
+    author: "Xcel Stiro Hospitality Advisory",
+    authorRole: "Hotel & Resort Laundry Workflow Engineering",
+    metaDescription: "Complete hotel laundry setup guide for India. Learn machine sizing for 50-500 rooms, in-house OPL vs outsourcing costs, linen turnover, and laundry floorplan planning.",
+    focusKeyword: "hotel laundry setup India",
+    secondaryKeywords: ["hotel laundry equipment", "commercial laundry for hotels India", "hotel on premise laundry OPL", "hotel bedsheet washing machine"],
+    shortVersion: [
+      "Daily linen load formula: 3.5 kg to 5.5 kg per occupied room (bedsheets, duvets, bath towels, and F&B linen).",
+      "On-premise laundry (OPL) cuts guest turnaround from 24 hours to 3 hours while saving 30–40% over vendor charges.",
+      "High spin extraction (350G+) removes 50% more moisture mechanically, cutting tumbler gas and power bills by 35%.",
+      "A 100-room hotel achieves full machine capital break-even within 14 to 18 months of commissioning."
+    ],
+    sections: [
+      {
+        heading: "Calculating Daily Linen Volume: The Bed-Count Formula",
+        paragraphs: [
+          "In the hospitality industry, clean linen is a core guest satisfaction index. Running out of fresh bedsheets or waiting on third-party laundry delays checkout cycles and damages review scores on TripAdvisor and Google.",
+          "To calculate your hotel's daily laundry volume, hospitality engineering standardizes linen load weights based on room category and food & beverage operations:"
+        ],
+        bullets: [
+          {
+            title: "Room Linen Weight",
+            description: "2.8 kg to 3.5 kg per room for king/queen beds (bedsheet, pillow covers, duvet cover, and mattress protector)."
+          },
+          {
+            title: "Bath Linen Weight",
+            description: "1.2 kg to 1.8 kg per room (bath sheet, hand towel, face towel, and bath mat)."
+          },
+          {
+            title: "F&B Linen Weight",
+            description: "0.4 kg to 0.8 kg per cover (tablecloths, napkins, and kitchen aprons)."
+          },
+          {
+            title: "Peak Sizing Buffer",
+            description: "Always add a 25% safety buffer for banquet events, pool towels, and weekend peak occupancy."
+          }
+        ],
+        calloutQuote: "Never size hotel washers to average weekday occupancy. Sizing to peak turnover prevents guest check-in delays during peak travel seasons."
+      },
+      {
+        heading: "Machine Capacity & Equipment Sizing by Hotel Room Count",
+        paragraphs: [
+          "Operating hours dictate plant size: most hotels run laundry operations over one 8-hour shift or two 7-hour shifts. Below is the tested equipment capacity roadmap:"
+        ],
+        table: {
+          headers: ["Hotel Scale", "Daily Load", "Washer Extractor", "Drying Tumbler", "Flatwork Ironer"],
+          rows: [
+            ["50 Rooms (3-Star)", "180–220 kg/day", "1x 30 KG High Spin", "1x 30 KG Reversing Gas/Steam", "Single Roll 1.6m Roller"],
+            ["100 Rooms (4-Star)", "380–480 kg/day", "1x 50 KG + 1x 30 KG", "2x 30 KG Tumbler", "Single Roll 2.5m Roller"],
+            ["200 Rooms (5-Star)", "750–950 kg/day", "2x 60 KG High Spin", "2x 60 KG Gas/Steam", "Double Roll 3.0m High Speed"],
+            ["350+ Rooms / Resort", "1,400–1,800 kg/day", "2x 100 KG Tilting Washer", "3x 60 KG Gas Tumblers", "Multi-Roll Chest Calendar + Folder"]
+          ],
+          note: "Calculations assume an 8-hour shift with 45-minute wash cycles and 35-minute drying cycles."
+        }
+      },
+      {
+        heading: "In-House Hotel Laundry (OPL) vs Commercial Outsourcing",
+        paragraphs: [
+          "While outsourcing appears simple initially, hotel managers face severe hidden costs: 8% to 15% annual linen attrition (lost or torn sheets), fabric yellowing from harsh vendor bleach, and ₹28 to ₹35 per kg processing costs.",
+          "Setting up an in-house XCEL laundry facility reduces per-kg operational costs to ₹14–₹18, triples linen lifespan through gentle computer-controlled wash chemistry, and enables lucrative same-day guest valet laundry services."
+        ],
+        calloutQuote: "Properties with in-house XCEL setups typically save over ₹12 Lakhs annually on linen replacement and vendor processing bills."
+      }
+    ],
+    actionSteps: [
+      "Audit your property's room inventory, banquet covers, and average daily linen weight.",
+      "Request a customized CAD laundry floor layout with clean and soiled linen physical separation.",
+      "Schedule an on-site consultation with Xcel Stiro hospitality engineers for utility load audits."
+    ],
+    disclaimer: "Operational benchmarks compiled from 300+ hotel, resort, and banquet laundry installations across India. — Xcel Stiro since 1994 | Industrial Laundry. Done Right. —"
+  },
+  {
+    id: "6",
+    slug: "industrial-tumble-dryer-selection-electric-vs-steam-vs-gas",
+    aliases: ["commercial-dryer-heating-guide", "tumble-dryer-electric-steam-gas", "industrial-dryer-energy-savings"],
+    title: "Industrial Tumble Dryer Selection: Electric vs Steam vs Gas Heating in India (2026 Analysis)",
+    lead: "Drying accounts for up to 60% of an industrial laundry's energy consumption. Compare operational fuel costs, drying cycle durations, and safety features across Electric, Steam Boiler, and LPG/PNG Gas heated tumblers.",
+    imageSrc: "/category/drying.webp",
+    bannerSrc: "/banners/excellence-banner-1.webp",
+    category: "Energy Efficiency",
+    readTime: "~4 mins",
+    date: "28th May 2026",
+    author: "Xcel Stiro Thermal Systems Advisory",
+    authorRole: "Energy Benchmarking & Laundry Utility Engineering",
+    metaDescription: "Compare Electric vs Steam vs Gas industrial tumble dryers in India. Operational cost analysis, cycle times, safety sensors, and energy-saving calculations.",
+    focusKeyword: "industrial tumble dryer electric vs steam vs gas",
+    secondaryKeywords: ["commercial tumble dryer India", "industrial dryer heating options", "steam heated laundry dryer", "gas tumble dryer commercial India"],
+    shortVersion: [
+      "Thermal drying is 5x more energy intensive than centrifugal water extraction — always pair dryers with 300G+ washers.",
+      "PNG / LPG gas drying cuts per-kg thermal costs by up to 50% compared to electric elements in high-tariff states.",
+      "Steam heating is optimal for plants with existing boilers, providing gentle fabric handling and zero element burnouts.",
+      "Automatic moisture control sensors prevent over-drying, preserving textile fiber strength and saving 15–20% fuel per cycle."
+    ],
+    sections: [
+      {
+        heading: "The Energy Challenge: Why Dryer Heating Choice Defines Plant Profitability",
+        paragraphs: [
+          "In any commercial laundry, hotel OPL, or garment factory, the drying section is the single largest consumer of utility spend. Evaporating water from wet cotton requires substantial thermal energy.",
+          "Choosing the wrong heating medium can lead to crippling electricity bills or unreliable steam supplies. Understanding the trade-offs between Electric, Steam, and Gas heating is the first step to running an energy-efficient plant."
+        ],
+        bullets: [
+          {
+            title: "Centrifugal Extraction First",
+            description: "Every liter of water extracted mechanically in a high-speed washer saves 0.7 kWh of thermal evaporation energy in the dryer."
+          },
+          {
+            title: "Airflow Efficiency (CFM)",
+            description: "Heat without massive airflow simply bakes clothes. Balanced axial-radial airflow ensures swift moisture evacuation."
+          },
+          {
+            title: "Target Moisture Level",
+            description: "Cotton should never be dried to bone dry (0%). Over-drying weakens fibers and creates static electricity."
+          }
+        ],
+        calloutQuote: "Over-drying linen by just 5 minutes damages cotton tensile strength and adds up to 18% to your monthly utility bills."
+      },
+      {
+        heading: "Electric vs Steam vs Gas Heating: Technical & Cost Breakdown",
+        paragraphs: [
+          "Here is how the three heating sources compare across Indian operating conditions and utility pricing:"
+        ],
+        table: {
+          headers: ["Parameter", "Electric Heating", "Steam Boiler Heating", "PNG / LPG Gas Heating"],
+          rows: [
+            ["Initial Capital Cost", "Lowest initial cost", "Medium (requires boiler)", "Medium (requires gas line)"],
+            ["Operating Cost/kg", "Highest (₹9–₹14/unit power)", "Lowest (with biomass/pellet boiler)", "Economical (clean PNG grid)"],
+            ["Heat-up Speed", "Fast (5–8 minutes)", "Moderate (8–12 minutes)", "Very Fast (3–5 minutes)"],
+            ["Maintenance Needs", "Periodic element replacement", "Steam trap & valve checks", "Burner nozzle cleaning"],
+            ["Best Suited For", "Small setups & remote sites", "Hotels & hospitals with boiler", "Commercial laundries & factories"]
+          ],
+          note: "Cost calculations based on 2026 industrial tariff averages across major Indian commercial hubs."
+        }
+      },
+      {
+        heading: "Advanced Engineering Features in XCEL Drying Tumblers",
+        paragraphs: [
+          "XCEL industrial tumble dryers incorporate continuous reversing drums to prevent large bedsheets from balling into a damp knot, dual lint screens for uninterrupted air flow, and automated cool-down cycles that prevent post-cycle heat wrinkling."
+        ],
+        calloutQuote: "Reversing drum rotation and wide-diameter loading doors cut overall unload and load downtime by up to 25% per shift."
+      }
+    ],
+    actionSteps: [
+      "Calculate your facility's local industrial power tariff against piped natural gas (PNG) availability.",
+      "Inspect whether your current dryers feature dual-direction reversing rotation to eliminate towel balling.",
+      "Schedule an energy audit with XCEL thermal engineers to calculate your exact monthly fuel savings."
+    ],
+    disclaimer: "Tariff benchmarks based on 2026 industrial electricity and gas rates in Maharashtra, Gujarat, Karnataka, and NCR. — Xcel Stiro since 1994 | Industrial Laundry. Done Right. —"
+  },
+  {
+    id: "7",
+    slug: "flatwork-ironer-guide-hotels-hospitals-india",
+    aliases: ["flatwork-ironer-selection-guide", "commercial-bedsheet-ironing-machine", "calendar-machine-guide"],
+    title: "Flatwork Ironer Buying Guide: Single Roll vs Multi Roll for Hotels & Hospitals in India",
+    lead: "Struggling with linen ironing bottlenecks? Discover how flatwork ironers (calendars) streamline bedsheet and tablecloth finishing, comparing roller diameters, chest vs cylinder heating, and automated folding lines.",
+    imageSrc: "/category/flat-work.webp",
+    bannerSrc: "/banners/hero-desktop-1.webp",
+    category: "Finishing & Ironing",
+    readTime: "~3 mins",
+    date: "02nd Jun 2026",
+    author: "Xcel Stiro Finishing Engineering",
+    authorRole: "Linen Finishing & Automation Specialists",
+    metaDescription: "Flatwork ironer selection guide for Indian hospitals and hotels. Learn roller diameter selection, feeding speeds, moisture evaporation rates, and single vs multi-roll setups.",
+    focusKeyword: "flatwork ironer India",
+    secondaryKeywords: ["commercial flatwork ironer", "bedsheet ironing machine India", "hospital linen calendar machine", "hotel laundry ironer"],
+    shortVersion: [
+      "A single flatwork ironer replaces 4 to 6 manual pressing operators while delivering crisp five-star presentation.",
+      "Linen can be fed damp (20–25% moisture straight from high-speed extractors), bypassing tumble drying completely.",
+      "Roller diameter (350mm to 800mm) and usable width (1.6m to 3.2m) dictate hourly meter throughput.",
+      "Multi-roll configurations allow continuous 15–20 meters per minute feeding for 300+ room properties and hospitals."
+    ],
+    sections: [
+      {
+        heading: "Why Manual Pressing Kills Hotel & Hospital Efficiency",
+        paragraphs: [
+          "Manual ironing of large bedsheets, duvets, and OT surgical drapes is slow, labor-intensive, and inconsistent. Operators tire quickly, leading to wrinkles, accidental scorch marks, and high fabric rejection rates.",
+          "A commercial Flatwork Ironer (also known as a calendar machine) automates this process: damp bedsheets are fed through heated rotating rollers, simultaneously drying, ironing, and delivering silky smooth hotel-grade finishes in seconds."
+        ],
+        bullets: [
+          {
+            title: "Throughput Multiplier",
+            description: "One operator team on a calendar ironer processes 60 to 180 king-size bedsheets per hour, replacing up to 6 manual tables."
+          },
+          {
+            title: "Damp-to-Dry Efficiency",
+            description: "By feeding linen directly with 20–25% moisture, you skip tumble drying entirely, saving massive gas and electricity costs."
+          },
+          {
+            title: "Superior Linen Gloss",
+            description: "High mechanical contact pressure flattens fibers uniformly, creating that signature luxury hotel luster."
+          }
+        ],
+        calloutQuote: "Feeding high-speed extracted bedsheets directly into a flatwork ironer bypasses tumble drying and saves 40 minutes per batch."
+      },
+      {
+        heading: "Roller Sizing & Throughput Selection Guide",
+        paragraphs: [
+          "Choosing the right ironer requires matching usable roll width to your largest linen dimension, and roller diameter to required output speed:"
+        ],
+        table: {
+          headers: ["Ironer Model", "Roll Diameter & Width", "Output Speed", "Heating Options", "Ideal Facility"],
+          rows: [
+            ["Single Roller Compact", "350mm Dia x 1.6m Width", "3–5 meters/min", "Electric / Gas", "Small Boutique Hotel / Clinic"],
+            ["Single Roller Mid-Size", "500mm Dia x 2.5m Width", "6–9 meters/min", "Electric / Steam / Gas", "100-Room Hotel / 150-Bed Hospital"],
+            ["Double Roller Heavy-Duty", "600mm Dia x 3.0m Width", "10–14 meters/min", "Steam / Gas", "250-Room Hotel / Central Laundry"],
+            ["Multi-Roll Chest System", "800mm Dia x 3.2m Width", "18–25 meters/min", "High Pressure Steam", "500-Bed Medical College / Export Linen"]
+          ],
+          note: "King size beds typically require a minimum usable width of 2.8m to 3.0m for single-pass lengthwise feeding."
+        }
+      },
+      {
+        heading: "Operator Safety and Maintenance Best Practices",
+        paragraphs: [
+          "XCEL flatwork ironers are engineered with sensitive emergency finger-guard touchbars, automatic reverse safety modes, and Nomex high-temperature ironing padding designed for 2,000+ hours of continuous operational life."
+        ]
+      }
+    ],
+    actionSteps: [
+      "Measure the widest flat linen in your inventory (standard King size is 2.8m to 3.0m) to specify roller width.",
+      "Ensure high-speed washers achieve 350G extraction so sheets retain optimal 20–25% moisture for ironing.",
+      "Contact XCEL engineering specialists to see live demonstration videos and floorplan requirements."
+    ],
+    disclaimer: "Throughput figures based on 100% cotton and poly-cotton percale bedsheets under factory test conditions. — Xcel Stiro since 1994 | Industrial Laundry. Done Right. —"
+  },
+  {
+    id: "8",
+    slug: "industrial-laundry-maintenance-preventing-downtime",
+    aliases: ["laundry-machine-maintenance-checklist", "preventive-maintenance-industrial-washers", "prevent-laundry-bearing-failure"],
+    title: "Industrial Laundry Maintenance Checklist: Preventing Breakdown & Bearing Failure",
+    lead: "Unexpected washer breakdowns in commercial laundries cost ₹15,000 to ₹40,000 per hour in idle labor and contract penalties. Master the 90-day preventive maintenance routine that extends machine lifespan to 15+ years.",
+    imageSrc: "/category/washing.webp",
+    bannerSrc: "/banners/excellence-banner-2.webp",
+    category: "Maintenance & Safety",
+    readTime: "~4 mins",
+    date: "05th Jun 2026",
+    author: "Xcel Stiro Technical Support Team",
+    authorRole: "Plant Lifecycle & Field Maintenance Engineering",
+    metaDescription: "Preventive maintenance checklist for commercial laundry machines. Bearing lubrication, vibration monitoring, belt tension, water seals, and daily inspection routines.",
+    focusKeyword: "industrial laundry maintenance checklist",
+    secondaryKeywords: ["commercial washing machine maintenance", "prevent washer bearing failure", "industrial laundry preventive maintenance", "laundry equipment maintenance schedule"],
+    shortVersion: [
+      "Main drive bearings fail due to chemical water seal leakage — inspect seal weep holes weekly.",
+      "Vibration sensor triggers and loose foundation bolts account for 45% of premature motor shaft wear.",
+      "Grease high-speed bearings every 90 days with high-temperature lithium-complex grease, never general grease.",
+      "Daily operator 5-minute pre-wash inspection logs catch 80% of faults before catastrophic failure occurs."
+    ],
+    sections: [
+      {
+        heading: "The True Cost of Unplanned Laundry Downtime",
+        paragraphs: [
+          "When an industrial washer extractor fails during a morning shift, the consequences cascade: laundry staff sit idle, hospital linen deliveries miss accreditation audit deadlines, and commercial contract clients demand penalties.",
+          "Most catastrophic machine failures — including seized drum bearings, burned motor inverters, and cracked frames — do not happen suddenly. They provide subtle warning signs weeks in advance that are caught by structured preventive maintenance."
+        ],
+        bullets: [
+          {
+            title: "Bearing Housing Seizure",
+            description: "The #1 costliest repair in industrial washers. Almost always caused by a slow chemical leak past worn rubber water seals."
+          },
+          {
+            title: "Unbalanced Vibration Stress",
+            description: "Operating with worn suspension shock absorbers transfers massive g-force shock loads into the floor and chassis."
+          },
+          {
+            title: "Hard Water Scale Accumulation",
+            description: "Calcium scaling on heating elements reduces thermal efficiency by 30% and causes premature element burnout."
+          }
+        ],
+        calloutQuote: "A ₹2,500 water seal replacement ignored for two weeks will cause a ₹75,000 main bearing housing and drum rebuild."
+      },
+      {
+        heading: "The 4-Tier Preventative Maintenance Schedule",
+        paragraphs: [
+          "Follow this time-tested maintenance schedule implemented across thousands of XCEL customer plants:"
+        ],
+        table: {
+          headers: ["Frequency", "Target Area", "Required Maintenance Action", "Critical Checkpoint"],
+          rows: [
+            ["Daily (Operator)", "Door Seal & Drain Valve", "Clean lint from gasket and check drain sealing", "Check for drain water bypass during wash"],
+            ["Weekly (Technician)", "Drive Belts & Pulleys", "Inspect V-belt tension and alignment", "Check for belt fraying and pulley wobble"],
+            ["Monthly (Supervisor)", "Suspension & Inlets", "Inspect air springs, shock dampers & inlet strainers", "Clean water inlet filters of sand and silt"],
+            ["Quarterly (Engineer)", "Main Bearings & Electrics", "Re-lubricate with NLGI-2 grease & tighten lugs", "Inspect electrical panels for heat signatures"]
+          ],
+          note: "Always log maintenance signatures and dates in the official plant equipment ledger."
+        }
+      },
+      {
+        heading: "Lubrication Rules: What Every Plant Technician Must Know",
+        paragraphs: [
+          "Never use standard multi-purpose chassis grease on high-speed industrial washer extractors. Centrifugal spinning generates high frictional heat that thins cheap grease, leaving bearings dry.",
+          "Always use OEM-specified high-temperature lithium-complex synthetic grease. Pump grease slowly until clean grease emerges from the relief port, taking care not to over-pressurize the lip seal."
+        ]
+      }
+    ],
+    actionSteps: [
+      "Implement daily 5-minute operator startup checklists on every washing machine and drying tumbler.",
+      "Equip your plant maintenance workshop with proper bearing pullers and certified high-temp lithium grease.",
+      "Inquire about an XCEL Nationwide Annual Maintenance Contract (AMC) for certified factory technician support."
+    ],
+    disclaimer: "Maintenance guidelines adhere to OEM specifications across 7000+ operational XCEL machines in India. — Xcel Stiro since 1994 | Industrial Laundry. Done Right. —"
+  },
+  {
+    id: "9",
+    slug: "apparel-garment-washing-unit-setup-india",
+    aliases: ["garment-washing-setup-guide", "denim-washing-machine-setup", "apparel-processing-unit-india"],
+    title: "How to Set Up an Apparel & Garment Washing Unit in India (Denim & Export Fabrics)",
+    lead: "Export apparel houses and denim processors require specialized washing machines with heavy liquor ratio control, indirect steam injection, and corrosion-resistant Grade 316 stainless steel. Here is how to plan your unit.",
+    imageSrc: "/category/apparel-washing.webp",
+    bannerSrc: "/banners/excellence-banner-3.webp",
+    category: "Garment Manufacturing",
+    readTime: "~4 mins",
+    date: "10th Jun 2026",
+    author: "Xcel Stiro Textile Advisory",
+    authorRole: "Export Garment Processing & Dyeing Specialists",
+    metaDescription: "Complete setup guide for garment and denim washing units in India. Learn machine capacity planning, enzyme washing, stone washing, liquor ratio, and ETP effluent guidelines.",
+    focusKeyword: "apparel washing unit setup India",
+    secondaryKeywords: ["garment washing machine India", "denim washing equipment setup", "industrial garment dyeing machine", "textile washing plant machinery"],
+    shortVersion: [
+      "Garment processing demands Grade 316 stainless steel to withstand harsh enzymes, pumice stones, and bleaching agents.",
+      "Precise liquor ratio control (1:5 to 1:10) cuts chemical, enzyme, and water consumption by 25–30%.",
+      "Low-speed tumbling with automated reversing prevents fabric twisting, seam abrasion, and creasing streaks.",
+      "Proper Effluent Treatment Plant (ETP) capacity planning is mandatory for PCB environmental compliance."
+    ],
+    sections: [
+      {
+        heading: "Garment Washing vs Standard Laundry: The Technical Difference",
+        paragraphs: [
+          "Unlike commercial or hospital laundries where the goal is simply soil removal, garment washing in apparel manufacturing is a transformative finishing process. It alters the texture, drape, shade, and dimensions of newly sewn garments.",
+          "Denim washes (stone wash, enzyme bleach, whiskers), reactive garment dyeing, and silicone softening subject equipment to extreme mechanical impacts and aggressive chemical conditions."
+        ],
+        bullets: [
+          {
+            title: "Grade 316 Stainless Steel",
+            description: "Standard Grade 304 steel pits and corrodes under acid washing and chlorine bleaching. Grade 316 is non-negotiable."
+          },
+          {
+            title: "Heavy-Duty Perforated Drum",
+            description: "Thick drum plate with deburred perforations ensures pumice stones and metal zipper sliders do not snag delicate weaves."
+          },
+          {
+            title: "Variable Frequency Inverter (VFD)",
+            description: "Precise RPM speed control allows slow rock-tumbling for heavy denim or gentle swishing for fine knitwear."
+          }
+        ],
+        calloutQuote: "Using standard commercial laundry washers for enzyme or acid wash corrodes drums within 18 months. Heavy-gauge Grade 316 is essential."
+      },
+      {
+        heading: "Machinery Blueprint for a 2,500 to 5,000 Pcs/Day Garment Facility",
+        paragraphs: [
+          "A balanced garment wet-processing unit requires matching washing capacity to hydro extraction and specialized drying:"
+        ],
+        table: {
+          headers: ["Process Stage", "Machine Type", "Recommended Model", "Core Processing Role"],
+          rows: [
+            ["Desize & Enzyme Wash", "Front/Side Loading Washer", "XCEL 120 KG Grade 316 Drum", "Heavy stone/enzyme wash with chemical dosing"],
+            ["Softening & Dyeing", "Apparel Processing Unit", "XCEL 60 KG Variable Speed", "Color matching, resin finish, and softeners"],
+            ["Hydro Extraction", "Centrifugal Hydro Extractor", "XCEL 50 KG Direct Drive", "High speed water removal without crease marks"],
+            ["Tumbler Drying", "Industrial Reversing Dryer", "XCEL 100 KG High Airflow Gas/Steam", "Fluffing cotton fibers and heat setting soft finish"],
+            ["Quality Inspection", "Fabric Checking Machine", "XCEL 72-Inch Dual Light Counter", "Inspection of shade variation, tears & shrinkage"]
+          ],
+          note: "Liquor ratio controllers help maintain standard 1:6 to 1:8 wash ratios, saving tens of thousands of liters of water daily."
+        }
+      },
+      {
+        heading: "Environmental Compliance & Effluent Treatment (ETP)",
+        paragraphs: [
+          "Apparel units must comply with State Pollution Control Board (SPCB) guidelines for BOD, COD, and TDS discharge levels. Modern XCEL apparel machines feature water recovery valves that route rinse water back to initial desize tanks, cutting fresh water intake by up to 35%."
+        ]
+      }
+    ],
+    actionSteps: [
+      "Define your unit's target daily piece capacity (e.g. 3,000 denim jeans or 5,000 knitted t-shirts).",
+      "Audit your plant boiler capacity: garment washing requires reliable 4–6 bar dry saturated steam.",
+      "Consult XCEL textile engineering specialists for turn-key machinery selection and floorplan schematics."
+    ],
+    disclaimer: "Process specifications developed with export garment washing clusters across Tirupur, Surat, Ludhiana, and Bengaluru. — Xcel Stiro since 1994 | Industrial Laundry. Done Right. —"
   }
 ];
 

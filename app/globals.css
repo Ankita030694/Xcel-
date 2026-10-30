@@ -104,3 +104,205 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+
+/* =========================================================================
+   XCEL EDITORIAL BLOG PROSE STYLES
+   Ensures TipTap WYSIWYG generated HTML renders pixel-perfect to
+   Xcel's editorial brand guidelines and manual components.
+   ========================================================================= */
+.xcel-prose h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #0a2766;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.xcel-prose h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+  color: #0a2766;
+  margin-top: 2.25rem;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .xcel-prose h2 {
+    font-size: 1.85rem;
+  }
+}
+
+.xcel-prose h3 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #0a2766;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.35;
+}
+
+.xcel-prose p {
+  font-size: 16.5px;
+  line-height: 1.8;
+  color: #374151;
+  margin-top: 1.15rem;
+  margin-bottom: 1.15rem;
+  font-weight: 400;
+}
+
+@media (min-width: 640px) {
+  .xcel-prose p {
+    font-size: 17px;
+  }
+}
+
+.xcel-prose strong {
+  font-weight: 700;
+  color: #0a2766;
+}
+
+.xcel-prose a {
+  color: #3b5b95;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: rgba(59, 91, 149, 0.4);
+  font-weight: 600;
+  transition: color 0.15s ease;
+}
+
+.xcel-prose a:hover {
+  color: #0a2766;
+  text-decoration-color: #0a2766;
+}
+
+.xcel-prose blockquote {
+  margin: 1.75rem 0;
+  padding: 1.5rem 1.75rem;
+  border-radius: 0.75rem;
+  background-color: rgba(59, 91, 149, 0.05);
+  border-left: 4px solid #3b5b95;
+  color: #0a2766;
+  font-size: 16.5px;
+  font-style: italic;
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+@media (min-width: 640px) {
+  .xcel-prose blockquote {
+    font-size: 17.5px;
+  }
+}
+
+.xcel-prose ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.xcel-prose ul li {
+  position: relative;
+  padding-left: 1.75rem;
+  font-size: 15.5px;
+  line-height: 1.75;
+  color: #374151;
+}
+
+.xcel-prose ul li::before {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 0.65rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background-color: #3b5b95;
+}
+
+.xcel-prose ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+  color: #374151;
+}
+
+.xcel-prose ol li {
+  padding-left: 0.5rem;
+  font-size: 16px;
+  line-height: 1.75;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+
+.xcel-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background-color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.xcel-prose th {
+  background-color: #0a2766;
+  color: #ffffff;
+  padding: 0.875rem 1.25rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: left;
+  border: 1px solid #0d3282;
+}
+
+.xcel-prose td {
+  padding: 0.875rem 1.25rem;
+  border: 1px solid #e5e7eb;
+  color: #374151;
+  font-size: 0.925rem;
+}
+
+.xcel-prose tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.xcel-prose tr td:first-child {
+  font-weight: 700;
+  color: #0a2766;
+}
+
+.xcel-prose img {
+  border-radius: 1.25rem;
+  margin: 2rem auto;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.xcel-prose hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 2.5rem 0;
+}
+
+
+/* Vertical Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}

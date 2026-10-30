@@ -25,7 +25,7 @@ export default function LeadsDashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       if (user) {
         setAuthChecking(false);
         fetchLeads();
@@ -43,7 +43,7 @@ export default function LeadsDashboard() {
       const querySnapshot = await getDocs(q);
       const fetchedLeads: Lead[] = [];
       
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach((doc: any) => {
         fetchedLeads.push({ id: doc.id, ...doc.data() } as Lead);
       });
       
@@ -79,6 +79,9 @@ export default function LeadsDashboard() {
           <div className="flex items-center gap-6">
             <Link href="/admin/products" className="text-[#32589c] hover:text-[#0a2766] font-semibold transition-colors">
               Manage Products &rarr;
+            </Link>
+            <Link href="/admin/blogs" className="text-[#32589c] hover:text-[#0a2766] font-semibold transition-colors">
+              Manage Blogs &rarr;
             </Link>
             <button 
               onClick={handleLogout}

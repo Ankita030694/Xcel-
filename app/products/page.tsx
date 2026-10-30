@@ -111,7 +111,7 @@ export default function ProductsPage() {
       try {
         const querySnapshot = await getDocs(collection(db, "products"));
         const fetchedProducts: any[] = [];
-        querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((doc: any) => {
           fetchedProducts.push({ id: doc.id, ...doc.data() });
         });
         
