@@ -223,7 +223,7 @@ export default function BlogsClient({ initialArticles }: { initialArticles: Blog
   }, [initialArticles]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#172228] font-sans overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-white text-[#172228] font-sans">
       <Header />
 
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 pt-10 sm:pt-14 lg:pt-16 pb-20">

@@ -9,7 +9,7 @@ import Image from 'next/image';
 
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-white font-sans flex flex-col overflow-x-hidden">
+    <main className="min-h-screen bg-white font-sans flex flex-col">
       <Header />
 
       {/* About Us Hero Section (Image Banner) */}

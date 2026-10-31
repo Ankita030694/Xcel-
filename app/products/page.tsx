@@ -261,16 +261,23 @@ export default function ProductsPage() {
 
     syncCategoryFromUrlOrStorage();
 
-    // Auto-scroll past banner & breadcrumbs ONLY when user clicked the PRODUCTS button from navbar or footer
-    let productsNavTimer: NodeJS.Timeout | null = null;
+    // Auto-scroll on initial visit / navigation:
+    let autoScrollTimer: NodeJS.Timeout | null = null;
     const shouldScrollToProducts = typeof window !== 'undefined' && sessionStorage.getItem('xcel_scroll_to_products') === 'true';
     if (shouldScrollToProducts) {
       try {
         sessionStorage.removeItem('xcel_scroll_to_products');
       } catch (e) {}
-      productsNavTimer = setTimeout(() => {
+      autoScrollTimer = setTimeout(() => {
         scrollToProductsHeading('smooth');
       }, 150);
+    } else {
+      // Auto-scroll to the category header and products on initial load, category card click, or engineering excellence
+      autoScrollTimer = setTimeout(() => {
+        if (typeof window !== 'undefined') {
+          scrollToCategoryHeader('smooth');
+        }
+      }, 450);
     }
 
     const handleScrollToProductsHeading = () => {
@@ -297,7 +304,7 @@ export default function ProductsPage() {
     window.addEventListener('select-product-category', handleCustomCategoryEvent);
     window.addEventListener('scroll-to-products-heading', handleScrollToProductsHeading);
     return () => {
-      if (productsNavTimer) clearTimeout(productsNavTimer);
+      if (autoScrollTimer) clearTimeout(autoScrollTimer);
       if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
       if (unlockTimerRef.current) clearTimeout(unlockTimerRef.current);
       window.removeEventListener('hashchange', onPopOrHash);
@@ -315,6 +322,10 @@ export default function ProductsPage() {
     const targetId = hash || categoryParam;
     if (targetId && categories.some(c => c.id === targetId)) {
       setActiveTab(targetId);
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+      scrollTimerRef.current = setTimeout(() => {
+        scrollToCategoryHeader('smooth');
+      }, 100);
     } else {
       setActiveTab('washing');
       try {
@@ -365,7 +376,7 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white font-sans flex flex-col overflow-x-hidden">
+    <div className="min-h-screen bg-white font-sans flex flex-col">
       <Header />
 
       {/* Hero Banner Section */}

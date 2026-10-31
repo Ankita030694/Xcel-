@@ -40,7 +40,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://firebasestorage.googleapis.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://firebasestorage.googleapis.com" />
       </head>
-      <body suppressHydrationWarning className="min-h-full flex flex-col font-sans overflow-x-hidden">
+      <body suppressHydrationWarning className="min-h-full flex flex-col font-sans">
         {children}
       </body>
     </html>

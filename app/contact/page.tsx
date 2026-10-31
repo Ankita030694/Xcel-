@@ -168,7 +168,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white font-sans text-gray-800 flex flex-col overflow-x-hidden">
+    <main className="min-h-screen bg-white font-sans text-gray-800 flex flex-col">
       <Header />
 
       {/* Contact Us Hero Section (Image Banner) */}

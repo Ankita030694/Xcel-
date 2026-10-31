@@ -316,3 +316,10 @@ body {
   }
 }
 
+/* Prevent horizontal page spill while strictly preserving position: sticky */
+html,
+body {
+  overflow-x: clip;
+}
+
+
