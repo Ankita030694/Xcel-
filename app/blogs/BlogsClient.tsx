@@ -6,7 +6,8 @@ import Link from "next/link";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { ArrowUpRight, HelpCircle, PhoneCall, ChevronRight } from "../components/icons";
-import { BlogArticle } from "@/data/blogs";
+import { BlogArticle, getActiveBlogCategories } from "@/data/blogs";
+import { mergeWithDefaultBlogs } from "@/lib/blogs";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
@@ -116,33 +117,13 @@ export default function BlogsClient({ initialArticles }: { initialArticles: Blog
 
   // Only categories that currently have at least one active blog are shown
   const availableCategories = React.useMemo(() => {
-    const catsMap = new Map<string, string>();
-    articles.forEach((a) => {
-      const c = a.category?.trim();
-      if (c) {
-        const key = c.toLowerCase();
-        if (!catsMap.has(key)) {
-          catsMap.set(key, c);
-        }
-      }
-    });
-
-    const activeList: string[] = [];
-    catsMap.forEach((displayName, key) => {
-      const hasArticles = articles.some(
-        (a) => a.category?.trim().toLowerCase() === key
-      );
-      if (hasArticles) {
-        activeList.push(displayName);
-      }
-    });
-
-    return activeList;
+    return getActiveBlogCategories(articles);
   }, [articles]);
 
   const filteredArticles = React.useMemo(() => {
-    if (selectedCategory === "all") return articles;
-    return articles.filter(
+    const published = articles.filter((a) => a.status !== "draft");
+    if (selectedCategory === "all") return published;
+    return published.filter(
       (a) => a.category?.trim().toLowerCase() === selectedCategory.toLowerCase()
     );
   }, [articles, selectedCategory]);
@@ -195,33 +176,47 @@ export default function BlogsClient({ initialArticles }: { initialArticles: Blog
   useEffect(() => {
     const loadDynamicBlogs = async () => {
       try {
-        const blogsRef = collection(db, "blogs");
-        const snap = await getDocs(blogsRef);
+        const [snap, deletedSnap] = await Promise.all([
+          getDocs(collection(db, "blogs")),
+          getDocs(collection(db, "deleted_blogs")).catch(() => null),
+        ]);
+
+        const deletedSlugs = new Set<string>();
+        if (deletedSnap && !deletedSnap.empty) {
+          deletedSnap.forEach((d: any) => {
+            const data = d.data();
+            if (data.slug) deletedSlugs.add(data.slug.toLowerCase().trim());
+            if (data.id) deletedSlugs.add(data.id.toLowerCase().trim());
+            deletedSlugs.add(d.id.toLowerCase().trim());
+          });
+        }
 
         const dynamicList: any[] = [];
         if (!snap.empty) {
           snap.forEach((docSnap: any) => {
-            const data = docSnap.data();
-            if (data.status !== "draft") {
-              dynamicList.push({ id: docSnap.id, ...data });
-            }
+            dynamicList.push({ id: docSnap.id, ...docSnap.data() });
           });
         }
 
-        // Merge with initialArticles so that the 4 default articles are NEVER missing
-        const existingSlugs = new Set(dynamicList.map((a: any) => a.slug?.toLowerCase().trim()));
-        const missingDefaults = initialArticles.filter(
-          (initArt) => !existingSlugs.has(initArt.slug?.toLowerCase().trim())
-        );
+        // Merge dynamic Firestore articles with all default articles (excluding deleted ones)
+        const merged = mergeWithDefaultBlogs(dynamicList, deletedSlugs);
+        // Exclude drafts from the public blogs page
+        const finalArticles = merged.filter((a) => a.status !== "draft");
 
-        const merged = [...dynamicList, ...missingDefaults];
-        merged.sort((a, b) => {
+        finalArticles.sort((a, b) => {
           const tA = a.createdAt?.toMillis ? a.createdAt.toMillis() : (a.createdAt?.seconds ? a.createdAt.seconds * 1000 : 0);
           const tB = b.createdAt?.toMillis ? b.createdAt.toMillis() : (b.createdAt?.seconds ? b.createdAt.seconds * 1000 : 0);
           return tB - tA;
         });
 
-        setArticles(merged);
+        setArticles(finalArticles);
+
+        // Notify Footer and other components with updated articles
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(
+            new CustomEvent("xcel-blogs-updated", { detail: finalArticles })
+          );
+        }
       } catch (err) {
         console.error("Error fetching dynamic blogs from Firestore, retaining initial articles:", err);
       }
@@ -259,7 +254,8 @@ export default function BlogsClient({ initialArticles }: { initialArticles: Blog
         {/* =========================================================================
             CATEGORY FILTER TABS: Matching Products Overview Style
             ========================================================================= */}
-        <div className="w-full mb-8 lg:mb-12">
+        {availableCategories.length > 0 && (
+          <div className="w-full mb-8 lg:mb-12">
           <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 px-0 sm:px-2 pb-4">
             {/* "ALL" Tab */}
             <div className="flex items-center">
@@ -296,18 +292,25 @@ export default function BlogsClient({ initialArticles }: { initialArticles: Blog
           </div>
         </div>
 
+        )}
         {/* =========================================================================
             CARDS GRID: 3-column layout matching reference structure
             ========================================================================= */}
         {filteredArticles.length === 0 ? (
           <div className="w-full text-center py-16 px-4 bg-gray-50 rounded-2xl border border-gray-200 my-8">
-            <p className="text-gray-600 text-base mb-4 font-medium">No articles found in this category.</p>
-            <button
-              onClick={() => setSelectedCategory("all")}
-              className="px-5 py-2.5 bg-[#0a2766] text-white text-sm font-bold rounded-xl hover:bg-[#071b4a] transition-all cursor-pointer shadow-sm"
-            >
-              View All Articles
-            </button>
+            <p className="text-gray-600 text-base mb-4 font-medium">
+              {articles.length === 0
+                ? "No articles published yet."
+                : "No articles found in this category."}
+            </p>
+            {articles.length > 0 && selectedCategory !== "all" && (
+              <button
+                onClick={() => setSelectedCategory("all")}
+                className="px-5 py-2.5 bg-[#0a2766] text-white text-sm font-bold rounded-xl hover:bg-[#071b4a] transition-all cursor-pointer shadow-sm"
+              >
+                View All Articles
+              </button>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">

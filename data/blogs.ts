@@ -43,6 +43,9 @@ export interface BlogArticle {
   description?: string; // Rich HTML content from TipTap editor
   actionSteps?: string[];
   disclaimer?: string;
+  ctaTagline?: string;
+  ctaHeading?: string;
+  ctaDescription?: string;
   status?: "published" | "draft";
   createdAt?: any;
   updatedAt?: any;
@@ -1003,4 +1006,30 @@ export function getArticleBySlug(slug: string): BlogArticle | undefined {
 
 export function getRelatedArticles(currentSlug: string, count = 3): BlogArticle[] {
   return BLOG_ARTICLES.filter((a) => a.slug !== currentSlug).slice(0, count);
+}
+
+/**
+ * Returns only categories that have at least 1 active (published) blog article.
+ * Deduplicates case-insensitively and preserves display casing.
+ */
+export function getActiveBlogCategories(articles: BlogArticle[] = BLOG_ARTICLES): string[] {
+  const categoryMap = new Map<string, { name: string; count: number }>();
+
+  for (const article of articles) {
+    if (article.status === "draft") continue;
+    const cat = article.category?.trim();
+    if (!cat) continue;
+
+    const key = cat.toLowerCase();
+    const existing = categoryMap.get(key);
+    if (existing) {
+      existing.count += 1;
+    } else {
+      categoryMap.set(key, { name: cat, count: 1 });
+    }
+  }
+
+  return Array.from(categoryMap.values())
+    .filter((entry) => entry.count > 0)
+    .map((entry) => entry.name);
 }

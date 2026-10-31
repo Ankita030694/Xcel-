@@ -13,9 +13,10 @@ import {
 } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { db, storage } from "./firebase";
-import { BLOG_ARTICLES, BlogArticle, BlogSection, BlogBullet, BlogTable, getArticleBySlug } from "@/data/blogs";
+import { BLOG_ARTICLES, BlogArticle, BlogSection, BlogBullet, BlogTable, getArticleBySlug, getActiveBlogCategories } from "@/data/blogs";
 
 export type { BlogArticle, BlogSection, BlogBullet, BlogTable };
+export { getActiveBlogCategories };
 
 export interface AdminBlogArticle extends BlogArticle {
   status?: "published" | "draft";
@@ -24,15 +25,51 @@ export interface AdminBlogArticle extends BlogArticle {
 }
 
 /**
- * Merge Firestore blogs with the 4 default system blogs so that
- * the core industry insights blogs are never lost.
+ * Retrieve all permanently deleted blog slugs and IDs from Firestore.
  */
-export function mergeWithDefaultBlogs(firestoreBlogs: AdminBlogArticle[]): AdminBlogArticle[] {
-  const existingSlugs = new Set(firestoreBlogs.map((b) => b.slug?.toLowerCase().trim()));
+export async function getDeletedBlogSlugs(): Promise<Set<string>> {
+  try {
+    const deletedColl = collection(db, "deleted_blogs");
+    const snap = await getDocs(deletedColl);
+    const set = new Set<string>();
+    if (!snap.empty) {
+      snap.forEach((docSnap: any) => {
+        const data = docSnap.data();
+        if (data.slug) set.add(data.slug.toLowerCase().trim());
+        if (data.id) set.add(data.id.toLowerCase().trim());
+        set.add(docSnap.id.toLowerCase().trim());
+      });
+    }
+    return set;
+  } catch (err) {
+    console.warn("Could not query deleted_blogs:", err);
+    return new Set<string>();
+  }
+}
+
+/**
+ * Merge Firestore blogs with default system blogs, strictly excluding
+ * any blogs that were permanently deleted by the user.
+ */
+export function mergeWithDefaultBlogs(
+  firestoreBlogs: AdminBlogArticle[],
+  deletedSlugs: Set<string> = new Set()
+): AdminBlogArticle[] {
+  const existingSlugs = new Set(
+    firestoreBlogs.map((b) => b.slug?.toLowerCase().trim()).filter(Boolean)
+  );
   const missingDefaults: AdminBlogArticle[] = [];
 
   for (const defaultArt of BLOG_ARTICLES) {
-    if (!existingSlugs.has(defaultArt.slug.toLowerCase().trim())) {
+    const slug = defaultArt.slug.toLowerCase().trim();
+    const defaultId = `default-${defaultArt.id}`.toLowerCase();
+
+    // Never restore a default blog if it was explicitly deleted
+    if (deletedSlugs.has(slug) || deletedSlugs.has(defaultId) || deletedSlugs.has(defaultArt.id.toLowerCase())) {
+      continue;
+    }
+
+    if (!existingSlugs.has(slug)) {
       missingDefaults.push({
         ...defaultArt,
         id: `default-${defaultArt.id}`,
@@ -41,16 +78,24 @@ export function mergeWithDefaultBlogs(firestoreBlogs: AdminBlogArticle[]): Admin
     }
   }
 
-  return [...firestoreBlogs, ...missingDefaults];
+  const filteredFirestore = firestoreBlogs.filter((b) => {
+    const slug = (b.slug || "").toLowerCase().trim();
+    const id = (b.id || "").toLowerCase().trim();
+    return !deletedSlugs.has(slug) && !deletedSlugs.has(id);
+  });
+
+  return [...filteredFirestore, ...missingDefaults];
 }
 
 /**
- * Fetch all blogs from Firestore merged with default blogs.
+ * Fetch all blogs from Firestore merged with default blogs (respecting permanent deletions).
  */
 export async function getBlogs(): Promise<AdminBlogArticle[]> {
   try {
-    const blogsCollection = collection(db, "blogs");
-    const querySnapshot = await getDocs(blogsCollection);
+    const [querySnapshot, deletedSlugs] = await Promise.all([
+      getDocs(collection(db, "blogs")),
+      getDeletedBlogSlugs(),
+    ]);
 
     const firestoreBlogs: AdminBlogArticle[] = [];
     if (!querySnapshot.empty) {
@@ -62,7 +107,6 @@ export async function getBlogs(): Promise<AdminBlogArticle[]> {
         } as AdminBlogArticle);
       });
 
-      // Sort by createdAt descending if available
       firestoreBlogs.sort((a, b) => {
         const timeA = a.createdAt?.toMillis ? a.createdAt.toMillis() : (a.createdAt?.seconds ? a.createdAt.seconds * 1000 : 0);
         const timeB = b.createdAt?.toMillis ? b.createdAt.toMillis() : (b.createdAt?.seconds ? b.createdAt.seconds * 1000 : 0);
@@ -70,7 +114,7 @@ export async function getBlogs(): Promise<AdminBlogArticle[]> {
       });
     }
 
-    return mergeWithDefaultBlogs(firestoreBlogs);
+    return mergeWithDefaultBlogs(firestoreBlogs, deletedSlugs);
   } catch (error) {
     console.error("Error fetching blogs from Firestore, using static defaults:", error);
     return BLOG_ARTICLES.map((art) => ({
@@ -89,6 +133,12 @@ export async function getBlogBySlugFromDb(slug: string): Promise<AdminBlogArticl
   const normalized = slug.toLowerCase().trim();
 
   try {
+    // Check if permanently deleted
+    const delDoc = await getDoc(doc(db, "deleted_blogs", normalized));
+    if (delDoc.exists()) {
+      return null;
+    }
+
     const blogsRef = collection(db, "blogs");
     const q = query(blogsRef, where("slug", "==", normalized));
     const querySnapshot = await getDocs(q);
@@ -141,12 +191,38 @@ export async function getRelatedArticles(currentSlug: string, count = 3): Promis
  * Delete a blog article and clean up any associated Firebase Storage images
  */
 export async function deleteBlog(blog: AdminBlogArticle): Promise<void> {
-  if (!blog.id) return;
+  if (!blog.id && !blog.slug) return;
 
-  // 1. Delete Firestore document
-  await deleteDoc(doc(db, "blogs", blog.id));
+  const docId = blog.id;
+  const slug = (blog.slug || "").toLowerCase().trim();
 
-  // 2. Clean up storage files if stored in Firebase Storage
+  // 1. Delete document from "blogs" collection if it exists
+  if (docId) {
+    try {
+      await deleteDoc(doc(db, "blogs", docId));
+    } catch (err) {
+      console.warn("Could not delete document from blogs collection:", err);
+    }
+  }
+
+  // 2. Permanently record deletion in Firestore "deleted_blogs" collection
+  // This guarantees that neither default blogs nor re-synced blogs ever reappear
+  const recordKey = slug || docId;
+  if (recordKey) {
+    try {
+      await setDoc(doc(db, "deleted_blogs", recordKey), {
+        id: docId || "",
+        slug: slug,
+        title: blog.title || "",
+        category: blog.category || "",
+        deletedAt: serverTimestamp(),
+      });
+    } catch (err) {
+      console.error("Could not write to deleted_blogs in Firestore:", err);
+    }
+  }
+
+  // 3. Clean up storage files if stored in Firebase Storage
   const rawUrls = [blog.imageSrc, blog.bannerSrc].filter((u): u is string => Boolean(u));
   const urlsToDelete = rawUrls.filter(
     (url) => url.includes("firebasestorage.googleapis.com") || url.includes("xcell-ae678")
@@ -168,8 +244,8 @@ export async function deleteBlog(blog: AdminBlogArticle): Promise<void> {
 }
 
 /**
- * Restores all 4 default blogs into Firestore with fixed deterministic IDs
- * (default-1, default-2, default-3, default-4) so they are permanently restored.
+ * Restores all default blogs into Firestore with fixed deterministic IDs,
+ * and removes any deletion tombstones from deleted_blogs.
  */
 export async function restoreDefaultBlogs(): Promise<{ restored: number }> {
   let restored = 0;
@@ -184,6 +260,12 @@ export async function restoreDefaultBlogs(): Promise<{ restored: number }> {
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
       });
+
+      // Clear tombstone from deleted_blogs so restored article is visible
+      const slugKey = article.slug.toLowerCase().trim();
+      await deleteDoc(doc(db, "deleted_blogs", slugKey)).catch(() => {});
+      await deleteDoc(doc(db, "deleted_blogs", `default-${article.id}`)).catch(() => {});
+
       restored++;
     } catch (err) {
       console.error(`Failed to restore default article "${article.slug}":`, err);

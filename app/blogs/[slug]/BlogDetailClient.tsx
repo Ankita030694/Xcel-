@@ -359,13 +359,13 @@ export default function BlogDetailClient({
             {/* In-Article High-Conversion Consultation Box */}
             <div className="bg-gradient-to-r from-[#0a2766] to-[#1a3d82] text-white rounded-2xl p-7 sm:p-9 my-12 shadow-md">
               <span className="text-blue-200 text-xs font-bold tracking-widest uppercase block mb-2">
-                Expert Facility Sizing & Consultation
+                {article.ctaTagline || "EXPERT FACILITY SIZING & CONSULTATION"}
               </span>
               <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">
-                Want a Free Project Assessment for Your Facility?
+                {article.ctaHeading || "Want a Free Project Assessment for Your Facility?"}
               </h3>
               <p className="text-blue-100 text-[15px] leading-relaxed mb-6 max-w-2xl">
-                Xcel Stiro offers no-obligation project assessments across India — we calculate your exact load volume, recommend the right machine, and show you the ROI calculation before you spend a rupee.
+                {article.ctaDescription || "Xcel Stiro offers no-obligation project assessments across India — we calculate your exact load volume, recommend the right machine, and show you the ROI calculation before you spend a rupee."}
               </p>
               <Link
                 href="/contact"

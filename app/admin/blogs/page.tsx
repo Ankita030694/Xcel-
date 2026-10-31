@@ -20,6 +20,7 @@ import {
   deleteBlog,
   mergeWithDefaultBlogs,
   restoreDefaultBlogs,
+  getDeletedBlogSlugs,
 } from "@/lib/blogs";
 import { BLOG_ARTICLES } from "@/data/blogs";
 import TipTapEditor from "../components/blogs/TipTapEditor";
@@ -40,6 +41,7 @@ import {
   ArrowDown,
   ExternalLink,
   ChevronDown,
+  ChevronRight,
   RotateCw,
   Loader2,
   Save,
@@ -89,6 +91,11 @@ const DEFAULT_ACTION_STEPS = [
 
 const DEFAULT_DISCLAIMER =
   "Operational guidelines based on technical engineering data from 7000+ machine installations across India. — Xcel Stiro since 1994 | Industrial Laundry. Done Right. —";
+
+const DEFAULT_CTA_TAGLINE = "EXPERT FACILITY SIZING & CONSULTATION";
+const DEFAULT_CTA_HEADING = "Want a Free Project Assessment for Your Facility?";
+const DEFAULT_CTA_DESCRIPTION =
+  "Xcel Stiro offers no-obligation project assessments across India — we calculate your exact load volume, recommend the right machine, and show you the ROI calculation before you spend a rupee.";
 
 /**
  * Converts legacy structured sections to HTML for TipTap editor
@@ -194,6 +201,9 @@ export default function AdminBlogsPage() {
   const [shortVersionPoints, setShortVersionPoints] = useState<string[]>([]);
   const [actionSteps, setActionSteps] = useState<string[]>(DEFAULT_ACTION_STEPS);
   const [disclaimer, setDisclaimer] = useState(DEFAULT_DISCLAIMER);
+  const [ctaTagline, setCtaTagline] = useState(DEFAULT_CTA_TAGLINE);
+  const [ctaHeading, setCtaHeading] = useState(DEFAULT_CTA_HEADING);
+  const [ctaDescription, setCtaDescription] = useState(DEFAULT_CTA_DESCRIPTION);
   const [metaTitle, setMetaTitle] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
   const [status, setStatus] = useState<"published" | "draft">("published");
@@ -232,12 +242,15 @@ export default function AdminBlogsPage() {
     router.push("/adminloginn");
   };
 
-  // 2. Fetch blogs from Firestore merged with defaults
+  // 2. Fetch blogs from Firestore merged with defaults (respecting permanent deletions)
   const fetchBlogs = useCallback(async () => {
     try {
       setLoading(true);
       const blogsColl = collection(db, "blogs");
-      const snap = await getDocs(blogsColl);
+      const [snap, deletedSlugs] = await Promise.all([
+        getDocs(blogsColl),
+        getDeletedBlogSlugs(),
+      ]);
 
       const list: AdminBlogArticle[] = [];
       if (!snap.empty) {
@@ -246,7 +259,7 @@ export default function AdminBlogsPage() {
         });
       }
 
-      const merged = mergeWithDefaultBlogs(list);
+      const merged = mergeWithDefaultBlogs(list, deletedSlugs);
       setBlogs(merged);
     } catch (err) {
       console.error("Error fetching blogs:", err);
@@ -309,6 +322,9 @@ export default function AdminBlogsPage() {
     ]);
     setActionSteps(DEFAULT_ACTION_STEPS);
     setDisclaimer(DEFAULT_DISCLAIMER);
+    setCtaTagline(DEFAULT_CTA_TAGLINE);
+    setCtaHeading(DEFAULT_CTA_HEADING);
+    setCtaDescription(DEFAULT_CTA_DESCRIPTION);
     setMetaTitle("");
     setMetaDescription("");
     setStatus("published");
@@ -342,6 +358,9 @@ export default function AdminBlogsPage() {
     setShortVersionPoints(blog.shortVersion && blog.shortVersion.length > 0 ? blog.shortVersion : []);
     setActionSteps(blog.actionSteps && blog.actionSteps.length > 0 ? blog.actionSteps : DEFAULT_ACTION_STEPS);
     setDisclaimer(blog.disclaimer || DEFAULT_DISCLAIMER);
+    setCtaTagline(blog.ctaTagline || DEFAULT_CTA_TAGLINE);
+    setCtaHeading(blog.ctaHeading || DEFAULT_CTA_HEADING);
+    setCtaDescription(blog.ctaDescription || DEFAULT_CTA_DESCRIPTION);
     setMetaTitle(blog.metaTitle || "");
     setMetaDescription(blog.metaDescription || "");
     setStatus(blog.status || "published");
@@ -385,6 +404,9 @@ export default function AdminBlogsPage() {
           description,
           shortVersionPoints,
           actionSteps,
+          ctaTagline,
+          ctaHeading,
+          ctaDescription,
           metaTitle,
           metaDescription,
           status,
@@ -415,6 +437,9 @@ export default function AdminBlogsPage() {
     description,
     shortVersionPoints,
     actionSteps,
+    ctaTagline,
+    ctaHeading,
+    ctaDescription,
     metaTitle,
     metaDescription,
     status,
@@ -448,6 +473,9 @@ export default function AdminBlogsPage() {
         if (p.description !== undefined) setDescription(p.description);
         if (p.shortVersionPoints !== undefined) setShortVersionPoints(p.shortVersionPoints);
         if (p.actionSteps !== undefined) setActionSteps(p.actionSteps);
+        if (p.ctaTagline !== undefined) setCtaTagline(p.ctaTagline);
+        if (p.ctaHeading !== undefined) setCtaHeading(p.ctaHeading);
+        if (p.ctaDescription !== undefined) setCtaDescription(p.ctaDescription);
         if (p.metaTitle !== undefined) setMetaTitle(p.metaTitle);
         if (p.metaDescription !== undefined) setMetaDescription(p.metaDescription);
         if (p.status !== undefined) setStatus(p.status);
@@ -559,6 +587,9 @@ export default function AdminBlogsPage() {
         shortVersion: shortVersionPoints.filter((p) => p.trim()),
         actionSteps: actionSteps.filter((s) => s.trim()),
         disclaimer: disclaimer.trim() || DEFAULT_DISCLAIMER,
+        ctaTagline: ctaTagline.trim() || DEFAULT_CTA_TAGLINE,
+        ctaHeading: ctaHeading.trim() || DEFAULT_CTA_HEADING,
+        ctaDescription: ctaDescription.trim() || DEFAULT_CTA_DESCRIPTION,
         metaTitle: finalMetaTitle,
         metaDescription: finalMetaDesc,
         status: saveStatus,
@@ -843,6 +874,86 @@ export default function AdminBlogsPage() {
                 </div>
 
                 <TipTapEditor content={description} onChange={setDescription} />
+              </div>
+
+              {/* In-Article Consultation CTA Banner Settings */}
+              <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm space-y-4">
+                <div className="border-b border-gray-100 pb-3">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-bold text-[#0a2766] uppercase tracking-wide">
+                      In-Article Call to Action (CTA) Banner
+                    </h3>
+                    <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 px-2.5 py-0.5 rounded border border-blue-200">
+                      Editable Section
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Edit the text content of the high-conversion consultation banner that appears in this article. The button automatically routes visitors to the Contact page.
+                  </p>
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      CTA Tagline / Subtitle (Eyebrow)
+                    </label>
+                    <input
+                      type="text"
+                      value={ctaTagline}
+                      onChange={(e) => setCtaTagline(e.target.value)}
+                      placeholder="e.g. EXPERT FACILITY SIZING & CONSULTATION"
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-800 uppercase tracking-wider focus:outline-none focus:border-[#32589c]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      CTA Heading
+                    </label>
+                    <input
+                      type="text"
+                      value={ctaHeading}
+                      onChange={(e) => setCtaHeading(e.target.value)}
+                      placeholder="e.g. Want a Free Project Assessment for Your Facility?"
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm font-semibold text-gray-800 focus:outline-none focus:border-[#32589c]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      CTA Description
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={ctaDescription}
+                      onChange={(e) => setCtaDescription(e.target.value)}
+                      placeholder="e.g. Xcel Stiro offers no-obligation project assessments across India..."
+                      className="w-full border border-gray-300 rounded px-3 py-2 text-sm text-gray-800 focus:outline-none focus:border-[#32589c] resize-y"
+                    />
+                  </div>
+
+                  {/* Live Card Preview */}
+                  <div className="pt-2">
+                    <span className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-2">
+                      Live CTA Banner Preview
+                    </span>
+                    <div className="bg-gradient-to-r from-[#0a2766] to-[#1a3d82] text-white rounded-xl p-6 sm:p-7 shadow-sm">
+                      <span className="text-blue-200 text-xs font-bold tracking-widest uppercase block mb-2">
+                        {ctaTagline || DEFAULT_CTA_TAGLINE}
+                      </span>
+                      <h4 className="text-xl sm:text-2xl font-extrabold text-white mb-3">
+                        {ctaHeading || DEFAULT_CTA_HEADING}
+                      </h4>
+                      <p className="text-blue-100 text-sm leading-relaxed mb-5 max-w-2xl">
+                        {ctaDescription || DEFAULT_CTA_DESCRIPTION}
+                      </p>
+                      <div className="inline-flex items-center gap-2 bg-white text-[#0a2766] font-bold text-sm px-5 py-3 rounded-xl shadow-sm cursor-default">
+                        <span>Contact Us for Free Assessment</span>
+                        <ChevronRight className="w-4 h-4 text-[#3b5b95]" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 

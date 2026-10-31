@@ -1,10 +1,11 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { db } from '../../lib/firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { BLOG_ARTICLES } from '@/data/blogs';
+import { collection, addDoc, getDocs, serverTimestamp } from 'firebase/firestore';
+import { BLOG_ARTICLES, getActiveBlogCategories } from '@/data/blogs';
+import { mergeWithDefaultBlogs } from '@/lib/blogs';
 
 export const Footer = () => {
   const [formData, setFormData] = useState({
@@ -215,13 +216,65 @@ export const Footer = () => {
     }
   };
 
-  const blogCategories = React.useMemo(() => {
-    const set = new Set<string>();
-    BLOG_ARTICLES.forEach((b) => {
-      const c = b.category?.trim();
-      if (c) set.add(c);
-    });
-    return Array.from(set);
+  const [blogCategories, setBlogCategories] = useState<string[]>(() =>
+    getActiveBlogCategories(BLOG_ARTICLES)
+  );
+
+  useEffect(() => {
+    let isMounted = true;
+
+    // Listen for real-time blog updates dispatched by BlogsClient
+    const handleBlogsUpdated = (e: any) => {
+      if (Array.isArray(e?.detail)) {
+        setBlogCategories(getActiveBlogCategories(e.detail));
+      }
+    };
+    window.addEventListener('xcel-blogs-updated', handleBlogsUpdated);
+
+    // Fetch from Firestore on mount so footer has live categories across all pages
+    const fetchLiveCategories = async () => {
+      try {
+        const [snap, deletedSnap] = await Promise.all([
+          getDocs(collection(db, "blogs")),
+          getDocs(collection(db, "deleted_blogs")).catch(() => null),
+        ]);
+        if (!isMounted) return;
+
+        const deletedSlugs = new Set<string>();
+        if (deletedSnap && !deletedSnap.empty) {
+          deletedSnap.forEach((d: any) => {
+            const data = d.data();
+            if (data.slug) deletedSlugs.add(data.slug.toLowerCase().trim());
+            if (data.id) deletedSlugs.add(data.id.toLowerCase().trim());
+            deletedSlugs.add(d.id.toLowerCase().trim());
+          });
+        }
+
+        const dynamicArticles: any[] = [];
+        if (!snap.empty) {
+          snap.forEach((docSnap: any) => {
+            dynamicArticles.push({ id: docSnap.id, ...docSnap.data() });
+          });
+        }
+
+        // Merge dynamic Firestore articles with all default articles (excluding deleted ones)
+        const merged = mergeWithDefaultBlogs(dynamicArticles, deletedSlugs);
+        // Exclude drafts from footer category calculations
+        const validArticles = merged.filter((a) => a.status !== "draft");
+        setBlogCategories(getActiveBlogCategories(validArticles));
+      } catch {
+        if (isMounted) {
+          setBlogCategories(getActiveBlogCategories(BLOG_ARTICLES));
+        }
+      }
+    };
+
+    fetchLiveCategories();
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener('xcel-blogs-updated', handleBlogsUpdated);
+    };
   }, []);
 
   const handleBlogCategoryClick = (categoryName: string, e: React.MouseEvent) => {
@@ -471,7 +524,7 @@ export const Footer = () => {
                   <li><a href="/products?category=complete-range#complete-range" onClick={(e) => handleProductCategoryClick('complete-range', e)} className="hover:text-white transition-colors">COMPLETE RANGE</a></li>
                 </ul>
               </div>
-              <div className="flex-[1.5]">
+              <div className={blogCategories.length > 0 ? "flex-[1.5]" : "flex-1"}>
                 <h5 className="font-semibold text-[14px] mb-3">
                   <a 
                     href="/blogs" 
@@ -480,19 +533,21 @@ export const Footer = () => {
                     INDUSTRY INSIGHTS
                   </a>
                 </h5>
-                <ul className="flex flex-col gap-2 text-white/80 text-[11px]">
-                  {blogCategories.map((cat) => (
-                    <li key={cat}>
-                      <a 
-                        href={`/blogs?category=${encodeURIComponent(cat)}`} 
-                        onClick={(e) => handleBlogCategoryClick(cat, e)}
-                        className="hover:text-white transition-colors block uppercase leading-snug"
-                      >
-                        {cat}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                {blogCategories.length > 0 && (
+                  <ul className="flex flex-col gap-2 text-white/80 text-[11px]">
+                    {blogCategories.map((cat) => (
+                      <li key={cat}>
+                        <a 
+                          href={`/blogs?category=${encodeURIComponent(cat)}`} 
+                          onClick={(e) => handleBlogCategoryClick(cat, e)}
+                          className="hover:text-white transition-colors block uppercase leading-snug"
+                        >
+                          {cat}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div className="flex-1">
                 <h5 className="font-semibold text-[14px] mb-3">
