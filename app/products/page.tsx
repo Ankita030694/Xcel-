@@ -235,15 +235,14 @@ export default function ProductsPage() {
 
     syncCategoryFromUrlOrStorage();
 
-    // 2. After 1 second, auto-scroll to the product cards section on desktop responsive only
-    const desktopAutoScrollTimer = setTimeout(() => {
+    // 2. After 500ms, auto-scroll to the product cards section on both desktop and mobile
+    const autoScrollTimer = setTimeout(() => {
       if (typeof window !== 'undefined') {
-        const isDesktop = window.innerWidth >= 1024;
-        if (isDesktop && window.scrollY < 250) {
+        if (window.scrollY < 250) {
           scrollToCategoryHeader('smooth');
         }
       }
-    }, 1000);
+    }, 500);
 
     const onPopOrHash = () => {
       syncCategoryFromUrlOrStorage();
@@ -256,7 +255,7 @@ export default function ProductsPage() {
     window.addEventListener('popstate', onPopOrHash);
     window.addEventListener('select-product-category', handleCustomCategoryEvent);
     return () => {
-      clearTimeout(desktopAutoScrollTimer);
+      clearTimeout(autoScrollTimer);
       if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
       window.removeEventListener('hashchange', onPopOrHash);
       window.removeEventListener('popstate', onPopOrHash);
