@@ -205,7 +205,15 @@ export default function ProductDetailPage() {
   }, []);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    const scrollToTop = () => {
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      }
+    };
+    scrollToTop();
+    const rId = requestAnimationFrame(scrollToTop);
+    const t1 = setTimeout(scrollToTop, 50);
+
     setActiveImageIndex(0);
     if (carouselRef.current) {
       carouselRef.current.scrollTo({ left: 0, behavior: 'instant' as ScrollBehavior });
@@ -215,6 +223,11 @@ export default function ProductDetailPage() {
       setProduct(cached);
       setLoading(false);
     }
+
+    return () => {
+      cancelAnimationFrame(rId);
+      clearTimeout(t1);
+    };
   }, [id]);
 
   useEffect(() => {
@@ -416,8 +429,17 @@ export default function ProductDetailPage() {
   }, [relatedProducts]);
 
   useEffect(() => {
-    if (!loading && product) {
-      window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+    if (!loading && product && typeof window !== 'undefined') {
+      const scrollToTop = () => {
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      };
+      scrollToTop();
+      const rId = requestAnimationFrame(scrollToTop);
+      const t1 = setTimeout(scrollToTop, 50);
+      return () => {
+        cancelAnimationFrame(rId);
+        clearTimeout(t1);
+      };
     }
   }, [loading, product]);
 
@@ -501,7 +523,7 @@ export default function ProductDetailPage() {
         <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10 animate-pulse min-h-[85vh]">
           <div className="h-4 w-60 bg-gray-200 rounded-md mb-8"></div>
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 mb-12">
-            <div className="w-full sm:w-[80%] md:w-[65%] lg:w-[45%] xl:w-[40%] aspect-square bg-gray-100 rounded-[32px]"></div>
+            <div className="w-full sm:w-[80%] md:w-[65%] lg:w-[45%] xl:w-[40%] aspect-square bg-gray-100 rounded-2xl sm:rounded-3xl lg:rounded-[32px]"></div>
             <div className="flex-1 flex flex-col space-y-4 pt-2">
               <div className="h-6 w-24 bg-gray-200 rounded-full"></div>
               <div className="h-10 w-3/4 bg-gray-200 rounded-lg"></div>
@@ -620,17 +642,17 @@ export default function ProductDetailPage() {
     <div className="min-h-screen bg-white font-sans flex flex-col">
       <Header />
 
-      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-10 min-h-[80vh]">
+      <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-5 sm:pt-7 lg:pt-8 pb-10 min-h-[80vh]">
         
-        {/* Breadcrumbs & Back Navigation */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-4 sm:mb-6 lg:mb-10">
-          <div className="flex flex-row items-center gap-2 sm:gap-3 text-[12px] sm:text-[13px] text-[#363636] overflow-x-auto scrollbar-hide whitespace-nowrap pb-1.5 sm:pb-0">
-            <Link href="/" className="text-[#363636] hover:text-[#0a2766] transition-colors flex items-center shrink-0" title="Home">
-               <Home size={13} className="sm:w-[14px] sm:h-[14px]" strokeWidth={1.5} />
-            </Link>
-            <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
-            <Link href="/" className="hover:text-[#0a2766] transition-colors shrink-0">
-              Home
+        {/* Breadcrumbs Navigation */}
+        <div className="w-full mb-4 sm:mb-6 lg:mb-8">
+          <nav 
+            aria-label="Breadcrumb"
+            className="flex flex-row items-center gap-1.5 sm:gap-2.5 text-[12px] sm:text-[13px] md:text-[14px] text-[#363636] overflow-x-auto scrollbar-hide whitespace-nowrap py-1"
+          >
+            <Link href="/" className="hover:text-[#0a2766] transition-colors flex items-center gap-1.5 shrink-0" title="Home">
+              <Home size={14} strokeWidth={1.75} className="text-[#3b5b95]" />
+              <span className="font-medium">Home</span>
             </Link>
             <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
             <Link 
@@ -640,7 +662,7 @@ export default function ProductDetailPage() {
                   sessionStorage.removeItem('xcel_active_category');
                 } catch (e) {}
               }}
-              className="hover:text-[#0a2766] transition-colors shrink-0"
+              className="hover:text-[#0a2766] font-medium transition-colors shrink-0"
             >
               Products
             </Link>
@@ -652,18 +674,18 @@ export default function ProductDetailPage() {
                   sessionStorage.setItem('xcel_active_category', product.categoryId);
                 } catch (e) {}
               }}
-              className="hover:text-[#0a2766] transition-colors shrink-0"
+              className="hover:text-[#0a2766] font-medium transition-colors shrink-0"
             >
               {CATEGORY_NAMES[product.categoryId] || product.categoryId}
             </Link>
             <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
             <span 
-              className="text-[#0a2766] font-semibold shrink-0 truncate max-w-[180px] sm:max-w-none"
+              className="text-[#0a2766] font-bold shrink-0 max-w-[200px] sm:max-w-[320px] md:max-w-none truncate"
               title={product.name}
             >
               {product.name}
             </span>
-          </div>
+          </nav>
         </div>
 
         {/* Top Section */}
@@ -672,14 +694,14 @@ export default function ProductDetailPage() {
           {/* Left: Image Gallery */}
           <div className="w-full sm:w-[80%] md:w-[65%] lg:w-[45%] xl:w-[40%] mx-auto lg:mx-0 flex flex-col shrink-0">
             {/* Main Image */}
-            <div className="relative w-full aspect-square bg-[#f4f5f9] rounded-[32px] flex items-center justify-center mb-6 overflow-hidden">
+            <div className="relative w-full aspect-square bg-[#f4f5f9] rounded-2xl sm:rounded-3xl lg:rounded-[32px] flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-10 mb-6 overflow-hidden border border-gray-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
               <img 
                 src={productImages[activeImageIndex] || '/placeholder.png'} 
                 alt={product.name} 
                 loading="eager"
                 fetchPriority="high"
                 decoding="async"
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain select-none"
               />
             </div>
             
