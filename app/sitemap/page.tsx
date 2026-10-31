@@ -30,16 +30,16 @@ export const metadata: Metadata = {
 };
 
 const PRODUCT_CATEGORIES = [
-  { name: "Washing Equipment", href: "/products#washing", desc: "Heavy-duty washer extractors and commercial washing systems." },
-  { name: "Drying Solutions", href: "/products#drying", desc: "Energy-efficient industrial tumble dryers with moisture controls." },
-  { name: "Apparel Processing", href: "/products#apparel-processing", desc: "Garment finishing, washing, and softening machinery for factories." },
-  { name: "Dry-Cleaning Machinery", href: "/products#dry-cleaning", desc: "Eco-efficient PERC and multi-solvent dry cleaning units." },
-  { name: "Flat-Work Ironers", href: "/products#flat-work", desc: "High-speed bedsheet and linen chest and cylinder flatwork ironers." },
-  { name: "Steam-Finishing Systems", href: "/products#steam-finishing", desc: "Utility presses, form finishers, and vacuum ironing tables." },
-  { name: "Industrial Water Heaters", href: "/products#water-heater", desc: "Continuous hot water heating modules for commercial wash halls." },
-  { name: "Fabric Checking Machinery", href: "/products#fabric-checking", desc: "Inspection and measuring tables for textile QA and mills." },
-  { name: "Other Ancillary Equipment", href: "/products#other-equipment", desc: "Hydro-extractors, stain spotting units, and laundry carts." },
-  { name: "Complete Equipment Range", href: "/products#complete-range", desc: "Comprehensive view of the entire 30,000+ machine portfolio." },
+  { name: "Washing Equipment", href: "/products?category=washing#washing", desc: "Industrial washer extractors and commercial washing machines for laundries." },
+  { name: "Drying Solutions", href: "/products?category=drying#drying", desc: "High-performance drying tumbler and hydro extractor machines for laundries." },
+  { name: "Apparel Processing", href: "/products?category=apparel-processing#apparel-processing", desc: "Specialised garment processing machines for washing, softening and drying operations." },
+  { name: "Dry-Cleaning Machinery", href: "/products?category=dry-cleaning#dry-cleaning", desc: "Advanced dry-cleaning machines with integrated distillation and solvent recovery modules." },
+  { name: "Flat-Work Ironers", href: "/products?category=flat-work#flat-work", desc: "High Speed flatwork ironers for professional flat linen ironing applications." },
+  { name: "Steam-Finishing Systems", href: "/products?category=steam-finishing#steam-finishing", desc: "Professional garment ironing equipment, including utility presses, form finishers and vacuum tables." },
+  { name: "Industrial Water Heaters", href: "/products?category=water-heater#water-heater", desc: "Continuous hot water heating systems for commercial washing, ironing machines and large-scale laundry operations." },
+  { name: "Fabric Checking Machine", href: "/products?category=fabric-checking#fabric-checking", desc: "Fabric inspection and measuring machines for quality control in garment and apparel manufacturing units." },
+  { name: "Other Ancillary Equipment", href: "/products?category=other-equipment#other-equipment", desc: "Essential laundry support equipment, including stain removal machines, SS trolleys and thread sucking machine." },
+  { name: "Complete Equipment Range", href: "/products?category=complete-range#complete-range", desc: "Explore the complete XCEL portfolio of industrial and commercial laundry machines." },
 ];
 
 export default function SitemapPage() {
