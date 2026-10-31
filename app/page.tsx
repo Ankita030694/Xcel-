@@ -789,7 +789,6 @@ const ProductsHoverGallery = () => {
                           return;
                         }
                         try {
-                          sessionStorage.removeItem('xcel_from_mobile_nav');
                           if (card.category) {
                             sessionStorage.setItem('xcel_active_category', card.category);
                           }
@@ -1425,7 +1424,6 @@ const ProductCategories = () => {
                     return;
                   }
                   try {
-                    sessionStorage.removeItem('xcel_from_mobile_nav');
                     sessionStorage.setItem('xcel_active_category', cat.id);
                   } catch (err) {}
                 }}
