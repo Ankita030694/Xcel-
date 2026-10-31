@@ -90,6 +90,14 @@ const LaundryCTA = () => {
             </Link>
             <Link
               href="/products"
+              onClick={() => {
+                if (typeof window !== 'undefined') {
+                  try {
+                    sessionStorage.removeItem('xcel_active_category');
+                  } catch (e) {}
+                  sessionStorage.setItem('xcel_scroll_to_products', 'true');
+                }
+              }}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/30 text-white hover:bg-white/10 font-semibold text-base px-8 py-4 rounded-xl transition-all duration-200"
             >
               <span>Explore Machine Catalog</span>
