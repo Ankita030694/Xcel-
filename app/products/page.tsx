@@ -1,6 +1,7 @@
 "use client";
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, startTransition } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
 import { Home, ChevronRight } from 'lucide-react';
@@ -55,54 +56,41 @@ const FALLBACK_PRODUCTS: Record<string, any[]> = {
 };
 
 export default function ProductsPage() {
-  const [activeTab, setActiveTab] = useState<string>(() => {
-    if (typeof window !== 'undefined') {
-      const hash = window.location.hash ? window.location.hash.substring(1) : '';
-      const urlParams = new URLSearchParams(window.location.search);
-      const catParam = urlParams.get('category') || '';
-      const targetId = hash || catParam;
-      if (targetId && categories.some(c => c.id === targetId)) {
-        return targetId;
-      }
-    }
-    return 'washing';
-  });
-  const [activeDotIndex, setActiveDotIndex] = useState(0);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const [activeTab, setActiveTab] = useState<string>('washing');
+  const [lockedMinHeight, setLockedMinHeight] = useState<number | null>(null);
+  const productsSectionRef = useRef<HTMLElement | null>(null);
+  const unlockTimerRef = useRef<NodeJS.Timeout | null>(null);
   
-  const [products, setProducts] = useState<any[]>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const stored = sessionStorage.getItem('xcel_all_products');
-        if (stored) return JSON.parse(stored);
-      } catch (e) {}
-    }
-    return [];
-  });
+  const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Category sequence for Complete Range (configurable by Admin)
-  const [categoryOrder, setCategoryOrder] = useState<string[]>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const stored = sessionStorage.getItem('xcel_category_order');
-        if (stored) return JSON.parse(stored);
-      } catch (e) {}
-    }
-    return [
-      'washing',
-      'drying',
-      'apparel-processing',
-      'dry-cleaning',
-      'flat-work',
-      'steam-finishing',
-      'water-heater',
-      'fabric-checking',
-      'other-equipment'
-    ];
-  });
+  const [categoryOrder, setCategoryOrder] = useState<string[]>([
+    'washing',
+    'drying',
+    'apparel-processing',
+    'dry-cleaning',
+    'flat-work',
+    'steam-finishing',
+    'water-heater',
+    'fabric-checking',
+    'other-equipment'
+  ]);
 
   useEffect(() => {
+    // Restore cached data post-hydration
+    try {
+      const stored = sessionStorage.getItem('xcel_all_products');
+      if (stored) {
+        setProducts(JSON.parse(stored));
+      }
+      const storedOrder = sessionStorage.getItem('xcel_category_order');
+      if (storedOrder) {
+        setCategoryOrder(JSON.parse(storedOrder));
+      }
+    } catch (e) {}
+
     const fetchProducts = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "products"));
@@ -171,8 +159,28 @@ export default function ProductsPage() {
     if (element) {
       const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
       const headerOffset = isMobile ? 155 : 165;
-      const elementY = element.getBoundingClientRect().top + window.scrollY;
-      const targetY = Math.max(0, elementY - headerOffset);
+      const rect = element.getBoundingClientRect();
+      const currentScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      const elementY = rect.top + currentScrollY;
+      const targetY = Math.max(0, Math.round(elementY - headerOffset));
+
+      window.scrollTo({
+        top: targetY,
+        behavior
+      });
+    }
+  };
+
+  const scrollToProductsHeading = (behavior: ScrollBehavior = 'smooth') => {
+    const element = document.getElementById('products-heading') || document.getElementById('products-section');
+    if (element) {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+      const headerOffset = isMobile ? 130 : 140;
+      const rect = element.getBoundingClientRect();
+      const currentScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+      const elementY = rect.top + currentScrollY;
+      const targetY = Math.max(0, Math.round(elementY - headerOffset));
+
       window.scrollTo({
         top: targetY,
         behavior
@@ -182,19 +190,37 @@ export default function ProductsPage() {
 
   const handleCategorySelect = (targetId: string, shouldScroll: boolean = true) => {
     if (targetId && categories.some(c => c.id === targetId)) {
-      setActiveTab(targetId);
       if (typeof window !== 'undefined') {
-        sessionStorage.setItem('xcel_active_category', targetId);
         try {
+          sessionStorage.setItem('xcel_active_category', targetId);
           const newUrl = `/products?category=${targetId}#${targetId}`;
           window.history.replaceState(window.history.state, '', newUrl);
         } catch (e) {}
+
+        const currentScrollY = window.scrollY || window.pageYOffset || 0;
+        // If user is scrolled down towards footer, lock section height temporarily
+        // so switching categories does not collapse DOM height and clamp scroll position
+        if (currentScrollY > 600 && productsSectionRef.current) {
+          const currentHeight = productsSectionRef.current.offsetHeight;
+          if (currentHeight > 0) {
+            setLockedMinHeight(currentHeight);
+            if (unlockTimerRef.current) clearTimeout(unlockTimerRef.current);
+            unlockTimerRef.current = setTimeout(() => {
+              setLockedMinHeight(null);
+            }, 900);
+          }
+        }
       }
+
+      startTransition(() => {
+        setActiveTab(targetId);
+      });
+
       if (shouldScroll) {
         if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
         scrollTimerRef.current = setTimeout(() => {
           scrollToCategoryHeader('smooth');
-        }, 120);
+        }, 10);
       }
     }
   };
@@ -235,14 +261,28 @@ export default function ProductsPage() {
 
     syncCategoryFromUrlOrStorage();
 
-    // 2. After 500ms, auto-scroll to the product cards section on both desktop and mobile
-    const autoScrollTimer = setTimeout(() => {
-      if (typeof window !== 'undefined') {
-        if (window.scrollY < 250) {
-          scrollToCategoryHeader('smooth');
-        }
-      }
-    }, 500);
+    // Auto-scroll past banner & breadcrumbs ONLY when user clicked the PRODUCTS button from navbar or footer
+    let productsNavTimer: NodeJS.Timeout | null = null;
+    const shouldScrollToProducts = typeof window !== 'undefined' && sessionStorage.getItem('xcel_scroll_to_products') === 'true';
+    if (shouldScrollToProducts) {
+      try {
+        sessionStorage.removeItem('xcel_scroll_to_products');
+      } catch (e) {}
+      productsNavTimer = setTimeout(() => {
+        scrollToProductsHeading('smooth');
+      }, 150);
+    }
+
+    const handleScrollToProductsHeading = () => {
+      setActiveTab('washing');
+      try {
+        sessionStorage.removeItem('xcel_active_category');
+      } catch (e) {}
+      if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+      scrollTimerRef.current = setTimeout(() => {
+        scrollToProductsHeading('smooth');
+      }, 10);
+    };
 
     const onPopOrHash = () => {
       syncCategoryFromUrlOrStorage();
@@ -253,23 +293,35 @@ export default function ProductsPage() {
     };
     window.addEventListener('hashchange', onPopOrHash);
     window.addEventListener('popstate', onPopOrHash);
+    window.addEventListener('pageshow', onPopOrHash);
     window.addEventListener('select-product-category', handleCustomCategoryEvent);
+    window.addEventListener('scroll-to-products-heading', handleScrollToProductsHeading);
     return () => {
-      clearTimeout(autoScrollTimer);
+      if (productsNavTimer) clearTimeout(productsNavTimer);
       if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+      if (unlockTimerRef.current) clearTimeout(unlockTimerRef.current);
       window.removeEventListener('hashchange', onPopOrHash);
       window.removeEventListener('popstate', onPopOrHash);
+      window.removeEventListener('pageshow', onPopOrHash);
       window.removeEventListener('select-product-category', handleCustomCategoryEvent);
+      window.removeEventListener('scroll-to-products-heading', handleScrollToProductsHeading);
     };
   }, []);
 
-  // Reset scroll and dot index when category changes
   useEffect(() => {
-    setActiveDotIndex(0);
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    const hash = typeof window !== 'undefined' && window.location.hash ? window.location.hash.substring(1) : '';
+    const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
+    const categoryParam = urlParams.get('category') || '';
+    const targetId = hash || categoryParam;
+    if (targetId && categories.some(c => c.id === targetId)) {
+      setActiveTab(targetId);
+    } else {
+      setActiveTab('washing');
+      try {
+        sessionStorage.removeItem('xcel_active_category');
+      } catch (e) {}
     }
-  }, [activeTab]);
+  }, [pathname]);
 
   const isCompleteRange = activeTab === 'complete-range';
   const activeCategory = categories.find(c => c.id === activeTab) || categories[0];
@@ -312,20 +364,8 @@ export default function ProductsPage() {
     }
   }
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const container = e.currentTarget;
-    const scrollLeft = container.scrollLeft;
-    if (activeCategoryProducts.length > 0) {
-      const itemWidth = container.scrollWidth / activeCategoryProducts.length;
-      const newIndex = Math.round(scrollLeft / itemWidth);
-      if (newIndex !== activeDotIndex && newIndex >= 0 && newIndex < activeCategoryProducts.length) {
-        setActiveDotIndex(newIndex);
-      }
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-white font-sans flex flex-col">
+    <div className="min-h-screen bg-white font-sans flex flex-col overflow-x-hidden">
       <Header />
 
       {/* Hero Banner Section */}
@@ -342,7 +382,12 @@ export default function ProductsPage() {
       </section>
 
       {/* Products Content */}
-      <section id="products-section" className="min-h-[75vh] max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-12 lg:pt-8 lg:pb-24 flex flex-col items-center scroll-mt-[100px]">
+      <section 
+        id="products-section" 
+        ref={productsSectionRef}
+        style={{ minHeight: lockedMinHeight ? `${lockedMinHeight}px` : undefined }}
+        className="flex-1 min-h-[75vh] max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-12 lg:pt-8 lg:pb-24 flex flex-col items-center scroll-mt-[100px]"
+      >
         
         {/* Breadcrumb Navigation */}
         <div className="w-full flex flex-row items-center gap-2 sm:gap-3 text-[12px] sm:text-[13px] text-[#363636] mb-6 sm:mb-8 overflow-x-auto scrollbar-hide whitespace-nowrap self-start">
@@ -360,7 +405,7 @@ export default function ProductsPage() {
         </div>
 
         {/* Header Texts */}
-        <div className="flex flex-col items-center text-center mb-10 w-full">
+        <div id="products-heading" className="flex flex-col items-center text-center mb-10 w-full scroll-mt-[130px] lg:scroll-mt-[140px]">
           <h4 className="flex items-center justify-center gap-2 text-[#3b5b95] font-bold text-[11px] md:text-[10px] lg:text-sm tracking-[0.2em] uppercase mb-4">
             <span className="animate-pulse">{"//"}</span> OUR PRODUCT CATEGORIES
           </h4>
@@ -425,7 +470,6 @@ export default function ProductsPage() {
                       if (product.slug) {
                         sessionStorage.setItem(`xcel_prod_${product.slug}`, JSON.stringify(product));
                       }
-                      sessionStorage.setItem('xcel_active_category', activeTab);
                     } catch (e) {}
                   }}
                   onMouseEnter={() => {

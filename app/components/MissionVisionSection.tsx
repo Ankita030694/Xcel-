@@ -10,7 +10,7 @@ export function MissionVisionSection() {
           
           {/* Vision Card */}
           <div 
-            className="w-full rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-50 transition-all duration-500 flex items-center justify-center bg-white aspect-square max-w-[min(480px,calc(100vh-180px))] lg:max-w-[min(528px,calc(100vh-150px))]"
+            className="w-full rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 flex items-center justify-center bg-white aspect-square max-w-[min(480px,calc(100vh-180px))] lg:max-w-[min(528px,calc(100vh-150px))]"
           >
             <img 
               src="/banners/our-vision.webp" 
@@ -23,7 +23,7 @@ export function MissionVisionSection() {
 
           {/* Mission Card */}
           <div 
-            className="w-full rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] border border-gray-50 transition-all duration-500 flex items-center justify-center bg-white aspect-square max-w-[min(480px,calc(100vh-180px))] lg:max-w-[min(528px,calc(100vh-150px))]"
+            className="w-full rounded-[10px] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:shadow-[0_12px_30px_rgba(0,0,0,0.12)] hover:-translate-y-2 border border-gray-50 transition-all duration-500 flex items-center justify-center bg-white aspect-square max-w-[min(480px,calc(100vh-180px))] lg:max-w-[min(528px,calc(100vh-150px))]"
           >
             <img 
               src="/banners/our-mission.webp" 

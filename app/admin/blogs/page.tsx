@@ -51,13 +51,15 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
-const CATEGORIES = [
-  "Healthcare Operations",
+const DEFAULT_CATEGORIES = [
   "Buyer's Guide",
+  "Healthcare Operations",
   "Business Setup",
   "Hospitality & Hotels",
   "Energy Efficiency",
+  "Finishing & Ironing",
   "Maintenance & Safety",
+  "Garment Manufacturing",
 ];
 
 const AUTHOR_PROFILES = [
@@ -144,6 +146,18 @@ export default function AdminBlogsPage() {
   const [blogs, setBlogs] = useState<AdminBlogArticle[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Dynamic unique category list (merging defaults with any custom categories in Firestore blogs)
+  const allCategories = useMemo(() => {
+    const list = [...DEFAULT_CATEGORIES];
+    blogs.forEach((b) => {
+      const cat = b.category?.trim();
+      if (cat && !list.includes(cat)) {
+        list.push(cat);
+      }
+    });
+    return list;
+  }, [blogs]);
+
   // Filters & Search
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("all");
@@ -167,7 +181,9 @@ export default function AdminBlogsPage() {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
   const [isSlugManual, setIsSlugManual] = useState(false);
-  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [category, setCategory] = useState(DEFAULT_CATEGORIES[0]);
+  const [isCustomCategory, setIsCustomCategory] = useState(false);
+  const [customCategory, setCustomCategory] = useState("");
   const [selectedAuthor, setSelectedAuthor] = useState(AUTHOR_PROFILES[0].name);
   const [authorRole, setAuthorRole] = useState(AUTHOR_PROFILES[0].role);
   const [publishDate, setPublishDate] = useState("");
@@ -276,7 +292,9 @@ export default function AdminBlogsPage() {
     setTitle("");
     setSlug("");
     setIsSlugManual(false);
-    setCategory(CATEGORIES[0]);
+    setCategory(DEFAULT_CATEGORIES[0]);
+    setIsCustomCategory(false);
+    setCustomCategory("");
     setSelectedAuthor(AUTHOR_PROFILES[0].name);
     setAuthorRole(AUTHOR_PROFILES[0].role);
     setPublishDate(new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }));
@@ -304,7 +322,16 @@ export default function AdminBlogsPage() {
     setTitle(blog.title || "");
     setSlug(blog.slug || "");
     setIsSlugManual(true);
-    setCategory(blog.category || CATEGORIES[0]);
+    const blogCat = blog.category?.trim() || DEFAULT_CATEGORIES[0];
+    if (allCategories.includes(blogCat) || DEFAULT_CATEGORIES.includes(blogCat)) {
+      setCategory(blogCat);
+      setIsCustomCategory(false);
+      setCustomCategory("");
+    } else {
+      setCategory(blogCat);
+      setIsCustomCategory(true);
+      setCustomCategory(blogCat);
+    }
     setSelectedAuthor(blog.author || AUTHOR_PROFILES[0].name);
     setAuthorRole(blog.authorRole || AUTHOR_PROFILES[0].role);
     setPublishDate(blog.date || "");
@@ -347,6 +374,8 @@ export default function AdminBlogsPage() {
           title,
           slug,
           category,
+          isCustomCategory,
+          customCategory,
           selectedAuthor,
           authorRole,
           publishDate,
@@ -375,6 +404,8 @@ export default function AdminBlogsPage() {
     title,
     slug,
     category,
+    isCustomCategory,
+    customCategory,
     selectedAuthor,
     authorRole,
     publishDate,
@@ -398,7 +429,16 @@ export default function AdminBlogsPage() {
         const p = JSON.parse(saved);
         if (p.title !== undefined) setTitle(p.title);
         if (p.slug !== undefined) setSlug(p.slug);
-        if (p.category !== undefined) setCategory(p.category);
+        if (p.category !== undefined) {
+          setCategory(p.category);
+          if (p.isCustomCategory || (!DEFAULT_CATEGORIES.includes(p.category) && !allCategories.includes(p.category))) {
+            setIsCustomCategory(true);
+            setCustomCategory(p.customCategory || p.category);
+          } else {
+            setIsCustomCategory(false);
+            setCustomCategory("");
+          }
+        }
         if (p.selectedAuthor !== undefined) setSelectedAuthor(p.selectedAuthor);
         if (p.authorRole !== undefined) setAuthorRole(p.authorRole);
         if (p.publishDate !== undefined) setPublishDate(p.publishDate);
@@ -488,6 +528,12 @@ export default function AdminBlogsPage() {
       return;
     }
 
+    const finalCategory = isCustomCategory ? customCategory.trim() : category.trim();
+    if (isCustomCategory && !finalCategory) {
+      setFormError("Please enter a name for your custom category.");
+      return;
+    }
+
     try {
       setIsSaving(true);
 
@@ -501,7 +547,7 @@ export default function AdminBlogsPage() {
       const payload: Partial<BlogArticle> = {
         title: title.trim(),
         slug: cleanSlug,
-        category,
+        category: finalCategory || DEFAULT_CATEGORIES[0],
         author: selectedAuthor,
         authorRole,
         date: publishDate || new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }),
@@ -874,18 +920,84 @@ export default function AdminBlogsPage() {
                 </h4>
 
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">Category</label>
-                  <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm bg-white text-gray-800 font-medium focus:outline-none focus:border-[#32589c]"
-                  >
-                    {CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-semibold text-gray-700">Category</label>
+                    {!isCustomCategory ? (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsCustomCategory(true);
+                          setCustomCategory("");
+                        }}
+                        className="text-[11px] font-bold text-[#32589c] hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        <Plus className="w-3 h-3" />
+                        <span>Add Custom Category</span>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsCustomCategory(false);
+                          setCustomCategory("");
+                          setCategory(allCategories[0] || DEFAULT_CATEGORIES[0]);
+                        }}
+                        className="text-[11px] font-bold text-gray-500 hover:text-gray-700 hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        <span>Choose from list</span>
+                      </button>
+                    )}
+                  </div>
+
+                  {!isCustomCategory ? (
+                    <select
+                      value={category}
+                      onChange={(e) => {
+                        if (e.target.value === "__add_custom__") {
+                          setIsCustomCategory(true);
+                          setCustomCategory("");
+                        } else {
+                          setCategory(e.target.value);
+                        }
+                      }}
+                      className="w-full border border-gray-300 rounded px-3 py-1.5 text-sm bg-white text-gray-800 font-medium focus:outline-none focus:border-[#32589c]"
+                    >
+                      {allCategories.map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                      <option value="__add_custom__" className="font-bold text-[#0a2766]">
+                        + Add Custom Category...
                       </option>
-                    ))}
-                  </select>
+                    </select>
+                  ) : (
+                    <div className="space-y-1.5">
+                      <div className="relative flex items-center">
+                        <input
+                          type="text"
+                          value={customCategory}
+                          onChange={(e) => setCustomCategory(e.target.value)}
+                          placeholder="Type custom category name..."
+                          className="w-full border-2 border-[#32589c] bg-blue-50/20 rounded px-3 py-1.5 text-sm text-gray-800 font-medium focus:outline-none focus:ring-1 focus:ring-[#32589c]"
+                          autoFocus
+                        />
+                        {customCategory && (
+                          <button
+                            type="button"
+                            onClick={() => setCustomCategory("")}
+                            className="absolute right-2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                            title="Clear"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-gray-500">
+                        This category will be saved with the article and added to the category filter pills.
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div>
@@ -1117,9 +1229,9 @@ export default function AdminBlogsPage() {
                 className="border border-gray-300 rounded px-3 py-1.5 text-sm bg-white text-gray-800 font-medium focus:outline-none focus:border-[#32589c]"
               >
                 <option value="all">All Categories ({blogs.length})</option>
-                {CATEGORIES.map((cat) => (
+                {allCategories.map((cat) => (
                   <option key={cat} value={cat}>
-                    {cat} ({blogs.filter((b) => b.category === cat).length})
+                    {cat} ({blogs.filter((b) => b.category?.toLowerCase() === cat.toLowerCase()).length})
                   </option>
                 ))}
               </select>

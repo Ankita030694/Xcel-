@@ -14,20 +14,20 @@ import { db } from "@/lib/firebase";
 const LaundryFAQ = () => {
   const faqs = [
     {
-      q: "How do I calculate the right laundry machine capacity for my hotel or hospital?",
-      a: "Capacity is determined by multiplying total daily linen load (e.g., 2.5 kg to 4.5 kg per occupied bed/room) by daily occupancy, then dividing by operational wash shift hours (typically 8 to 10 hours) and turnaround cycle duration (45-50 minutes). XCEL provides free CAD layouts and capacity planning audits.",
+      q: "How do I calculate the required capacity for commercial laundry machines?",
+      a: "Laundry capacity is calculated by multiplying occupied rooms or beds by the average daily linen requirement (typically 2.5–4.5 kg per room or bed). The total load is assessed against operational shift hours (typically 8 to 10 hours), machine loading ratio (approx. 65%) and wash cycle duration (45–50 minutes) to determine equipment requirements. XCEL provides complimentary laundry layouts planning and capacity planning audits.",
     },
     {
-      q: "What is the typical lifespan and maintenance frequency of XCEL machines?",
-      a: "With heavy-duty Grade 304/316 stainless steel construction and Japanese-engineered drive bearings, XCEL machines are designed for a 15-20 year service life. Preventive maintenance schedules are recommended every 90 days, supported by our nationwide service technicians.",
+      q: "What equipment are required to set up a commercial laundry?",
+      a: "A typical commercial laundry setup includes washer extractors, tumble dryers, hydro extractors and finishing equipment such as flat-work ironers or vacuum ironing tables. The exact combination depends on your laundry volume, garment types, processing requirements and available space. XCEL determines the right capacity and equipment configuration for your setup.",
     },
     {
-      q: "Does XCEL provide nationwide installation and on-site operator training?",
-      a: "Yes. XCEL maintains a pan-India technical network covering all states and union territories. Every installation includes full mechanical commissioning, electrical safety checks, and comprehensive hands-on training for your plant operators.",
+      q: "How do I choose the right industrial laundry equipment for my business?",
+      a: "Consider machine capacity, construction materials, energy and water consumption, heating options, automation, ease of maintenance and after-sales support. It is equally important to evaluate the machine's suitability for your specific application and expected operating requirements.",
     },
     {
-      q: "How does high G-force extraction reduce facility energy bills?",
-      a: "Machines generating 300G to 350G spin extraction remove up to 50% more residual water mechanically before linen enters the drying tumblers. Because thermal evaporation is up to 5x more energy-intensive than centrifugal spinning, high extract washers cut drying fuel/power by 30-40%.",
+      q: "Does XCEL provide nationwide installation, commissioning and servicing for industrial laundry machines?",
+      a: "Yes. XCEL offers end-to-end technical assistance, from machine selection to installation and commissioning to operator training, maintenance and troubleshooting. Backed by a PAN India service network, authorised technicians and a massive spares parts inventory, we help customers maintain equipment performance and minimise operational disruptions throughout the machine's service life.",
     },
   ];
 
@@ -40,7 +40,7 @@ const LaundryFAQ = () => {
             <span>Frequently Asked Questions</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0a2766] tracking-tight">
-            Commercial Laundry Equipment & Planning
+            From Equipment Selection to Laundry Setup
           </h2>
         </div>
 
@@ -71,13 +71,13 @@ const LaundryCTA = () => {
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="max-w-3xl mx-auto">
           <span className="inline-block text-blue-200 text-xs sm:text-sm font-bold tracking-widest uppercase mb-4">
-            Custom Plant Engineering & Free Assessment
+            Laundry Planning and Project Consultation
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mb-6">
-            Ready to Upgrade or Set Up Your Commercial Laundry Facility?
+            Planning a New Laundry Setup or Expanding an Existing One?
           </h2>
           <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed mb-10 max-w-2xl mx-auto">
-            Speak directly with our senior application engineers for machine selection, CAD floorplans, utility calculations, and competitive project quotations.
+            Speak with our expert team for technical recommendations on capacity planning, machinery selection, plant layout and competitive project quotations.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -86,7 +86,7 @@ const LaundryCTA = () => {
               className="w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-white text-[#0a2766] hover:bg-blue-50 font-bold text-base px-8 py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200"
             >
               <PhoneCall className="w-5 h-5 text-[#3b5b95]" />
-              <span>Request Free Plant Consultation</span>
+              <span>Request Free Laundry Consultation</span>
             </Link>
             <Link
               href="/products"
@@ -104,11 +104,84 @@ const LaundryCTA = () => {
 
 export default function BlogsClient({ initialArticles }: { initialArticles: BlogArticle[] }) {
   const [articles, setArticles] = useState<BlogArticle[]>(initialArticles);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+
+  // Only categories that currently have at least one active blog are shown
+  const availableCategories = React.useMemo(() => {
+    const catsMap = new Map<string, string>();
+    articles.forEach((a) => {
+      const c = a.category?.trim();
+      if (c) {
+        const key = c.toLowerCase();
+        if (!catsMap.has(key)) {
+          catsMap.set(key, c);
+        }
+      }
+    });
+
+    const activeList: string[] = [];
+    catsMap.forEach((displayName, key) => {
+      const hasArticles = articles.some(
+        (a) => a.category?.trim().toLowerCase() === key
+      );
+      if (hasArticles) {
+        activeList.push(displayName);
+      }
+    });
+
+    return activeList;
+  }, [articles]);
+
+  const filteredArticles = React.useMemo(() => {
+    if (selectedCategory === "all") return articles;
+    return articles.filter(
+      (a) => a.category?.trim().toLowerCase() === selectedCategory.toLowerCase()
+    );
+  }, [articles, selectedCategory]);
+
+  useEffect(() => {
+    if (selectedCategory !== "all") {
+      const exists = availableCategories.some(
+        (cat) => cat.toLowerCase() === selectedCategory.toLowerCase()
+      );
+      if (!exists) {
+        setSelectedCategory("all");
+      }
+    }
+  }, [availableCategories, selectedCategory]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
     }
+
+    const syncCategoryFromUrl = () => {
+      if (typeof window === 'undefined') return;
+      const urlParams = new URLSearchParams(window.location.search);
+      const catParam = urlParams.get('category');
+      if (catParam) {
+        setSelectedCategory(catParam);
+      }
+    };
+
+    syncCategoryFromUrl();
+
+    const handleCustomCategoryEvent = (e: any) => {
+      if (e?.detail) {
+        const cat = typeof e.detail === 'string' ? e.detail : e.detail.category;
+        if (cat) {
+          setSelectedCategory(cat);
+        }
+      }
+    };
+
+    window.addEventListener('select-blog-category', handleCustomCategoryEvent);
+    window.addEventListener('popstate', syncCategoryFromUrl);
+
+    return () => {
+      window.removeEventListener('select-blog-category', handleCustomCategoryEvent);
+      window.removeEventListener('popstate', syncCategoryFromUrl);
+    };
   }, []);
 
   useEffect(() => {
@@ -150,7 +223,7 @@ export default function BlogsClient({ initialArticles }: { initialArticles: Blog
   }, [initialArticles]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-[#172228] font-sans">
+    <div className="min-h-screen flex flex-col bg-white text-[#172228] font-sans overflow-x-hidden">
       <Header />
 
       <main className="flex-1 w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 pt-10 sm:pt-14 lg:pt-16 pb-20">
@@ -165,21 +238,72 @@ export default function BlogsClient({ initialArticles }: { initialArticles: Blog
           </div>
 
           {/* Main Heading in Centre */}
-          <h1 className="text-[2rem] sm:text-[2.5rem] lg:text-[3.25rem] font-extrabold leading-[1.15] tracking-tight text-[#0a2766] mb-4 sm:mb-5">
-            Engineering Insights for Modern Laundry Facilities
+          <h1 className="text-[1.5rem] sm:text-[2.5rem] lg:text-[3rem] font-bold leading-[1.15] tracking-tight text-[#0a2766] mb-4 sm:mb-5">
+            Industrial & Commercial Laundry: Guidance, Technology & Expertise
           </h1>
 
           {/* Subheading in Centre */}
           <p className="text-[1.05rem] sm:text-[1.15rem] leading-[1.65] text-[#4b5563] font-normal max-w-2xl mx-auto">
-            Practical guidance on <span className="font-bold text-[#0a2766]">industrial washer selection, energy-efficient drying, hospital hygiene compliance, and plant workflow engineering</span> from India&apos;s trusted laundry machine manufacturer.
+            Discover <span className="font-bold text-[#0A2766]">practical resources, emerging trends and industry developments</span> that shape the <span className="font-bold text-[#0A2766]">future of laundry operations</span>, from India's trusted laundry machine manufacturer.
           </p>
+        </div>
+
+        {/* =========================================================================
+            CATEGORY FILTER TABS: Matching Products Overview Style
+            ========================================================================= */}
+        <div className="w-full mb-8 lg:mb-12">
+          <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3 px-0 sm:px-2 pb-4">
+            {/* "ALL" Tab */}
+            <div className="flex items-center">
+              <button
+                onClick={() => setSelectedCategory("all")}
+                className={`px-3 sm:px-4 lg:px-5 xl:px-6 py-2 sm:py-2.5 lg:py-3 text-[12px] sm:text-[14px] lg:text-[15px] xl:text-[16px] font-bold uppercase tracking-normal lg:tracking-wider transition-all rounded-md cursor-pointer ${
+                  selectedCategory === "all"
+                    ? "text-white bg-[#0a2766]"
+                    : "text-[#363636] hover:text-gray-800 border border-gray-200 shadow-sm bg-white"
+                }`}
+              >
+                ALL
+              </button>
+            </div>
+
+            {/* Category Tabs */}
+            {availableCategories.map((cat) => {
+              const isActive = selectedCategory.toLowerCase() === cat.toLowerCase();
+              return (
+                <div key={cat} className="flex items-center">
+                  <button
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-3 sm:px-4 lg:px-5 xl:px-6 py-2 sm:py-2.5 lg:py-3 text-[12px] sm:text-[14px] lg:text-[15px] xl:text-[16px] font-bold uppercase tracking-normal lg:tracking-wider transition-all rounded-md cursor-pointer ${
+                      isActive
+                        ? "text-white bg-[#0a2766]"
+                        : "text-[#363636] hover:text-gray-800 border border-gray-200 shadow-sm bg-white"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* =========================================================================
             CARDS GRID: 3-column layout matching reference structure
             ========================================================================= */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
-          {articles.map((article) => (
+        {filteredArticles.length === 0 ? (
+          <div className="w-full text-center py-16 px-4 bg-gray-50 rounded-2xl border border-gray-200 my-8">
+            <p className="text-gray-600 text-base mb-4 font-medium">No articles found in this category.</p>
+            <button
+              onClick={() => setSelectedCategory("all")}
+              className="px-5 py-2.5 bg-[#0a2766] text-white text-sm font-bold rounded-xl hover:bg-[#071b4a] transition-all cursor-pointer shadow-sm"
+            >
+              View All Articles
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
+            {filteredArticles.map((article) => (
             <article
               key={article.id || article.slug}
               className="flex flex-col justify-between group cursor-pointer bg-white rounded-2xl p-4 sm:p-5 border border-gray-150 hover:border-[#3b5b95]/40 hover:shadow-xl transition-all duration-300"
@@ -234,6 +358,7 @@ export default function BlogsClient({ initialArticles }: { initialArticles: Blog
             </article>
           ))}
         </div>
+        )}
       </main>
 
       {/* FAQ Section */}

@@ -143,7 +143,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white font-sans text-gray-800">
+    <main className="min-h-screen bg-white font-sans text-gray-800 flex flex-col overflow-x-hidden">
       <Header />
 
       {/* Contact Us Hero Section (Image Banner) */}
@@ -190,7 +190,7 @@ export default function ContactPage() {
                     value={formData.name}
                     onChange={handleNameChange}
                     onKeyDown={handleNameKeyDown}
-                    className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" 
+                    className="w-full bg-transparent text-[16px] sm:text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" 
                     required 
                   />
                 </div>
@@ -204,7 +204,7 @@ export default function ContactPage() {
                     value={formData.contact}
                     onChange={handleContactChange}
                     onKeyDown={handleContactKeyDown}
-                    className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" 
+                    className="w-full bg-transparent text-[16px] sm:text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" 
                     required 
                   />
                 </div>
@@ -215,7 +215,7 @@ export default function ContactPage() {
                     placeholder="Email Address*" 
                     value={formData.email}
                     onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))}
-                    className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" 
+                    className="w-full bg-transparent text-[16px] sm:text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none" 
                     required 
                   />
                 </div>
@@ -224,7 +224,7 @@ export default function ContactPage() {
                   <select 
                     value={formData.state} 
                     onChange={(e) => setFormData((prev) => ({ ...prev, state: e.target.value }))}
-                    className={`w-full bg-transparent text-[14px] font-medium focus:outline-none appearance-none cursor-pointer ${formData.state === '' ? 'text-gray-400' : 'text-[#0a2766]'}`} 
+                    className={`w-full bg-transparent text-[16px] sm:text-[14px] font-medium focus:outline-none appearance-none cursor-pointer ${formData.state === '' ? 'text-gray-400' : 'text-[#0a2766]'}`} 
                     required
                   >
                     <option value="" disabled className="text-gray-400">Select State/UT*</option>
@@ -245,7 +245,7 @@ export default function ContactPage() {
                     rows={3} 
                     value={formData.message}
                     onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
-                    className="w-full bg-transparent text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none resize-none"
+                    className="w-full bg-transparent text-[16px] sm:text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none resize-none"
                   ></textarea>
                 </div>
 

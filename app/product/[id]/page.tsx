@@ -218,14 +218,6 @@ export default function ProductDetailPage() {
   }, [id]);
 
   useEffect(() => {
-    if (product?.categoryId && typeof window !== 'undefined') {
-      try {
-        sessionStorage.setItem('xcel_active_category', product.categoryId);
-      } catch (e) {}
-    }
-  }, [product?.categoryId]);
-
-  useEffect(() => {
     const fetchProduct = async () => {
       if (!id) return;
       
@@ -338,51 +330,67 @@ export default function ProductDetailPage() {
           }
         }
 
-        const fallbackList = Object.values(FALLBACK_PRODUCTS).flat();
-        const currentProdId = product.id;
-        const currentProdSlug = product.slug;
+        const currentProdId = String(product.id || '');
+        const currentProdSlug = String(product.slug || '');
 
         const isCurrent = (p: any) => {
-          if (p.id === currentProdId || p.slug === currentProdId) return true;
-          if (currentProdSlug && (p.id === currentProdSlug || p.slug === currentProdSlug)) return true;
+          const pId = String(p.id || '');
+          const pSlug = String(p.slug || '');
+          if (pId && (pId === currentProdId || pId === currentProdSlug)) return true;
+          if (pSlug && (pSlug === currentProdId || pSlug === currentProdSlug)) return true;
+          if (product.name && p.name && product.name.trim().toLowerCase() === p.name.trim().toLowerCase()) {
+            return true;
+          }
           return false;
         };
 
-        // Check total products in this category (database or fallback)
-        const categoryProdsInDb = allProds.filter((p: any) => p.categoryId === product.categoryId);
-        const totalCategoryCount = categoryProdsInDb.length > 0 
-          ? categoryProdsInDb.length 
-          : (FALLBACK_PRODUCTS[product.categoryId]?.length || 0);
-
-        // If this category only has a single product, remove the related products section entirely
-        if (totalCategoryCount <= 1) {
+        const targetCat = (product.categoryId || '').trim().toLowerCase();
+        if (!targetCat) {
           if (isMounted) {
             setRelatedProducts([]);
           }
           return;
         }
 
-        // For all other categories, keep behavior as it was
-        let sameCat = allProds.filter((p: any) => p.categoryId === product.categoryId && !isCurrent(p));
+        // 1. Get all products from database matching this category (case-insensitive & trimmed)
+        let categoryProds = allProds.filter((p: any) => 
+          (p.categoryId || '').trim().toLowerCase() === targetCat
+        );
 
-        // If none found in Firestore/session, check FALLBACK_PRODUCTS for this category
-        if (sameCat.length === 0 && FALLBACK_PRODUCTS[product.categoryId]) {
-          sameCat = FALLBACK_PRODUCTS[product.categoryId].filter((p: any) => !isCurrent(p));
+        // 2. If none found in Firestore/session, check FALLBACK_PRODUCTS for this category
+        if (categoryProds.length === 0) {
+          if (FALLBACK_PRODUCTS[product.categoryId]) {
+            categoryProds = FALLBACK_PRODUCTS[product.categoryId];
+          } else {
+            const matchedKey = Object.keys(FALLBACK_PRODUCTS).find(k => k.toLowerCase() === targetCat);
+            if (matchedKey && FALLBACK_PRODUCTS[matchedKey]) {
+              categoryProds = FALLBACK_PRODUCTS[matchedKey];
+            }
+          }
         }
 
-        let finalList = sameCat;
-
-        // If category has few or no other products, supplement with other equipment
-        if (finalList.length < 2) {
-          const pool = allProds.length > 0 ? allProds : fallbackList;
-          const otherProds = pool.filter((p: any) => 
-            p.categoryId !== product.categoryId && !isCurrent(p) && !finalList.some(f => f.id === p.id)
-          );
-          finalList = [...finalList, ...otherProds.slice(0, 6 - finalList.length)];
+        // If this category only has a single product overall, remove related products section entirely
+        if (categoryProds.length <= 1) {
+          if (isMounted) {
+            setRelatedProducts([]);
+          }
+          return;
         }
 
+        // Filter out the current product being viewed to get other products in the same category
+        const sameCategoryProducts = categoryProds.filter((p: any) => !isCurrent(p));
+
+        // If no other products remain in this category, remove related products section entirely
+        if (sameCategoryProducts.length === 0) {
+          if (isMounted) {
+            setRelatedProducts([]);
+          }
+          return;
+        }
+
+        // Only display products belonging strictly to this category (no random products from other categories)
         if (isMounted) {
-          setRelatedProducts(finalList);
+          setRelatedProducts(sameCategoryProducts);
         }
       } catch (err) {
         console.error("Failed to load related products:", err);
@@ -626,10 +634,10 @@ export default function ProductDetailPage() {
             </Link>
             <ChevronRight size={13} strokeWidth={1.5} className="text-gray-400 shrink-0" />
             <Link 
-              href={`/products?category=${product.categoryId}#${product.categoryId}`}
+              href="/products"
               onClick={() => {
                 try {
-                  sessionStorage.setItem('xcel_active_category', product.categoryId);
+                  sessionStorage.removeItem('xcel_active_category');
                 } catch (e) {}
               }}
               className="hover:text-[#0a2766] transition-colors shrink-0"
@@ -961,7 +969,6 @@ export default function ProductDetailPage() {
                         if (relProd.slug) {
                           sessionStorage.setItem(`xcel_prod_${relProd.slug}`, JSON.stringify(relProd));
                         }
-                        sessionStorage.setItem('xcel_active_category', relProd.categoryId);
                       } catch (e) {}
                     }}
                     onMouseEnter={() => {

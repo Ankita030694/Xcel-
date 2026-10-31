@@ -168,18 +168,6 @@ export const Footer = () => {
       window.dispatchEvent(new CustomEvent('select-product-category', { 
         detail: { categoryId, shouldScroll: true } 
       }));
-
-      const element = document.getElementById('category-header') || document.getElementById('products-section');
-      if (element) {
-        const isMobile = window.innerWidth < 1024;
-        const headerOffset = isMobile ? 155 : 165;
-        const elementY = element.getBoundingClientRect().top + window.scrollY;
-        const targetY = Math.max(0, elementY - headerOffset);
-        window.scrollTo({
-          top: targetY,
-          behavior: 'smooth'
-        });
-      }
     }
   };
 
@@ -189,6 +177,7 @@ export const Footer = () => {
     try {
       sessionStorage.removeItem('xcel_active_category');
     } catch (err) {}
+    sessionStorage.setItem('xcel_scroll_to_products', 'true');
 
     const isProductsPage = window.location.pathname === '/products' || window.location.pathname === '/products/';
     if (isProductsPage) {
@@ -196,27 +185,49 @@ export const Footer = () => {
       try {
         window.history.replaceState(window.history.state, '', '/products');
       } catch (err) {}
-      window.dispatchEvent(new CustomEvent('select-product-category', { 
-        detail: { categoryId: 'washing', shouldScroll: true } 
+      window.dispatchEvent(new CustomEvent('scroll-to-products-heading'));
+    }
+  };
+
+  const blogCategories = React.useMemo(() => {
+    const set = new Set<string>();
+    BLOG_ARTICLES.forEach((b) => {
+      const c = b.category?.trim();
+      if (c) set.add(c);
+    });
+    return Array.from(set);
+  }, []);
+
+  const handleBlogCategoryClick = (categoryName: string, e: React.MouseEvent) => {
+    if (typeof window === 'undefined') return;
+
+    const isBlogsPage = window.location.pathname === '/blogs' || window.location.pathname === '/blogs/';
+    if (isBlogsPage) {
+      e.preventDefault();
+      try {
+        const newUrl = `/blogs?category=${encodeURIComponent(categoryName)}`;
+        window.history.replaceState(window.history.state, '', newUrl);
+      } catch (err) {}
+
+      window.dispatchEvent(new CustomEvent('select-blog-category', { 
+        detail: { category: categoryName } 
       }));
-      const element = document.getElementById('category-header') || document.getElementById('products-section');
-      if (element) {
-        const isMobile = window.innerWidth < 1024;
-        const headerOffset = isMobile ? 155 : 165;
-        const elementY = element.getBoundingClientRect().top + window.scrollY;
-        const targetY = Math.max(0, elementY - headerOffset);
+
+      const mainEl = document.querySelector('main');
+      if (mainEl) {
+        const elementY = mainEl.getBoundingClientRect().top + window.scrollY;
         window.scrollTo({
-          top: targetY,
-          behavior: 'smooth'
+          top: Math.max(0, elementY - 140),
+          behavior: 'smooth',
         });
       }
     }
   };
 
   return (
-    <footer id="footer-contact" className="w-full bg-[#f3f5f8] pt-4 lg:pt-6 pb-0 px-4 sm:px-8 lg:px-12 flex justify-center font-sans scroll-mt-[140px]">
+    <footer id="footer-contact" className="w-full bg-[#f3f5f8] pt-4 lg:pt-6 pb-0 px-4 sm:px-8 lg:px-12 flex justify-center font-sans scroll-mt-[140px] mt-auto">
       {/* Outer Wrapper for the white grid lines */}
-      <div className="w-full max-w-[1500px] bg-white flex flex-col gap-[2px] shadow-sm">
+      <div className="w-full max-w-[1500px] bg-white flex flex-col gap-[2px] shadow-sm overflow-hidden">
         
         {/* Top Split Area */}
         <div className="flex flex-col lg:flex-row gap-[2px] w-full">
@@ -236,7 +247,7 @@ export const Footer = () => {
                 value={formData.name} 
                 onChange={handleNameChange} 
                 onKeyDown={handleNameKeyDown}
-                className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" 
+                className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[16px] sm:text-[13px]" 
                 required
               />
               <input 
@@ -247,7 +258,7 @@ export const Footer = () => {
                 value={formData.contact} 
                 onChange={handleContactChange} 
                 onKeyDown={handleContactKeyDown}
-                className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" 
+                className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[16px] sm:text-[13px]" 
                 required
               />
               <input 
@@ -255,14 +266,14 @@ export const Footer = () => {
                 placeholder="Email Address*" 
                 value={formData.email} 
                 onChange={(e) => setFormData((prev) => ({ ...prev, email: e.target.value }))} 
-                className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[13px]" 
+                className="w-full bg-transparent border-b border-gray-200 px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors text-[16px] sm:text-[13px]" 
                 required
               />
               <div className="relative w-full">
                 <select 
                   value={formData.state} 
                   onChange={(e) => setFormData((prev) => ({ ...prev, state: e.target.value }))} 
-                  className={`w-full bg-transparent border-b border-gray-200 px-4 py-2.5 focus:outline-none focus:bg-gray-50 transition-colors text-[13px] appearance-none cursor-pointer ${formData.state === '' ? 'text-[#8a9bb0]' : 'text-[#0a2766]'}`}
+                  className={`w-full bg-transparent border-b border-gray-200 px-4 py-2.5 focus:outline-none focus:bg-gray-50 transition-colors text-[16px] sm:text-[13px] appearance-none cursor-pointer ${formData.state === '' ? 'text-[#8a9bb0]' : 'text-[#0a2766]'}`}
                   required
                 >
                   <option value="" disabled className="text-[#8a9bb0]">Select State/UT*</option>
@@ -281,7 +292,7 @@ export const Footer = () => {
                 placeholder="Message" 
                 value={formData.message} 
                 onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))} 
-                className="w-full bg-transparent px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors resize-none text-[13px]"
+                className="w-full bg-transparent px-4 py-2.5 text-[#0a2766] placeholder-[#8a9bb0] focus:outline-none focus:bg-gray-50 transition-colors resize-none text-[16px] sm:text-[13px]"
               ></textarea>
             </div>
             
@@ -443,26 +454,18 @@ export const Footer = () => {
                     INDUSTRY INSIGHTS
                   </a>
                 </h5>
-                <ul className="flex flex-col gap-2.5 text-white/80 text-[11px]">
-                  {BLOG_ARTICLES.slice(0, 4).map((article) => {
-                    const hook = article.title
-                      .split(/ — | – | \(/)[0]
-                      .replace(/\?$/, '')
-                      .replace(' for Your Business', '')
-                      .trim();
-
-                    return (
-                      <li key={article.id}>
-                        <a 
-                          href={`/blogs/${article.slug}`} 
-                          title={article.title}
-                          className="hover:text-white transition-colors block leading-snug"
-                        >
-                          {hook}
-                        </a>
-                      </li>
-                    );
-                  })}
+                <ul className="flex flex-col gap-2 text-white/80 text-[11px]">
+                  {blogCategories.map((cat) => (
+                    <li key={cat}>
+                      <a 
+                        href={`/blogs?category=${encodeURIComponent(cat)}`} 
+                        onClick={(e) => handleBlogCategoryClick(cat, e)}
+                        className="hover:text-white transition-colors block uppercase leading-snug"
+                      >
+                        {cat}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </div>
               <div className="flex-1">
@@ -473,7 +476,7 @@ export const Footer = () => {
             </div>
 
             {/* Section 4: Certifications & Badges */}
-            <div className="w-full bg-[#002d73] pt-3 pb-12 sm:pt-4 sm:pb-16 px-6 flex justify-center items-center gap-8 sm:gap-16 flex-wrap">
+            <div className="w-full bg-[#002d73] py-6 sm:py-8 px-6 flex justify-center items-center gap-6 sm:gap-10 lg:gap-16 flex-wrap">
               <img src="/Logo/ISO_9001_2008_Certification_at_%E2%82%B9_5000_certificate_in_New_Delhi_ID_22229167830_indiamart%201.webp" alt="ISO Certification" loading="lazy" decoding="async" className="h-8 sm:h-12 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
               <img src="/Logo/How_to_get_a_CE_Certification_-_tradesnest%201.webp" alt="CE Certification" loading="lazy" decoding="async" className="h-8 sm:h-12 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
               <img src="/Logo/Make_in_India_Logo_PNG_Vector_(EPS)_Free_Download_seeklogo%201.webp" alt="Make in India" loading="lazy" decoding="async" className="h-12 sm:h-16 w-auto object-contain grayscale invert contrast-125 mix-blend-screen opacity-90 hover:opacity-100 transition-all duration-300" />
@@ -485,11 +488,11 @@ export const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="w-full bg-[#002d73] px-6 sm:px-8 py-2.5 flex flex-col sm:flex-row justify-between items-center gap-4 border-t border-white/10">
-          <div className="text-white font-semibold text-[12px] sm:text-[14px] tracking-wide">
+        <div className="w-full bg-[#002d73] px-4 sm:px-6 lg:px-8 py-3 flex flex-col lg:flex-row justify-between items-center gap-3 text-center lg:text-left border-t border-white/10">
+          <div className="text-white font-semibold text-[11px] sm:text-[13px] lg:text-[14px] tracking-wide">
             XCEL STIRO PRIVATE LIMITED. ALL RIGHTS RESERVED
           </div>
-          <div className="flex flex-wrap justify-center gap-5 sm:gap-8 text-[12px] font-semibold tracking-wide text-white">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8 text-[11px] sm:text-[12px] font-semibold tracking-wide text-white">
             <a href="/privacy" className="hover:text-white/70 transition-colors">PRIVACY POLICY</a>
             <a href="/terms" className="hover:text-white/70 transition-colors">TERMS OF SERVICE</a>
             <a href="/sitemap" className="hover:text-white/70 transition-colors">SITEMAP</a>
