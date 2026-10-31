@@ -121,7 +121,8 @@ export const Footer = () => {
 
     try {
       setIsSubmitting(true);
-      await addDoc(collection(db, "contactForms"), {
+
+      const payload = {
         name: formData.name.trim(),
         contact: formData.contact.trim(),
         email: formData.email.trim(),
@@ -129,8 +130,33 @@ export const Footer = () => {
         message: formData.message.trim(),
         interest: formData.interest || 'General Enquiry',
         source: 'Footer',
-        submittedAt: serverTimestamp(),
-      });
+        acceptedPolicy: formData.acceptedPolicy,
+      };
+
+      // 1. Submit through internal API route (same-origin, 100% reliable on iOS Safari)
+      let submitted = false;
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+        if (response.ok && result.success) {
+          submitted = true;
+        }
+      } catch (apiErr) {
+        console.warn('API submission failed, falling back to direct Firestore:', apiErr);
+      }
+
+      // 2. Fallback to direct client Firestore SDK if API route was unreachable
+      if (!submitted) {
+        await addDoc(collection(db, "contactForms"), {
+          ...payload,
+          submittedAt: serverTimestamp(),
+        });
+      }
+
       alert("Form submitted successfully! We will get back to you shortly.");
       setFormData({
         name: '',
