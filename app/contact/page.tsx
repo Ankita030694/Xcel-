@@ -7,11 +7,11 @@ import { db } from '../../lib/firebase';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const indianStatesAndUTs = [
-  "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", 
-  "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa", 
-  "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", 
-  "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", 
-  "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", 
+  "Andaman and Nicobar Islands", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar",
+  "Chandigarh", "Chhattisgarh", "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Goa",
+  "Gujarat", "Haryana", "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka",
+  "Kerala", "Ladakh", "Lakshadweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya",
+  "Mizoram", "Nagaland", "Odisha", "Puducherry", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
   "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal"
 ];
 
@@ -116,7 +116,8 @@ export default function ContactPage() {
 
     try {
       setIsSubmitting(true);
-      await addDoc(collection(db, "contactForms"), {
+
+      const payload = {
         name: formData.name.trim(),
         contact: formData.contact.trim(),
         email: formData.email.trim(),
@@ -124,8 +125,32 @@ export default function ContactPage() {
         message: formData.message.trim(),
         interest: "General Enquiry",
         source: "Contact Page",
-        submittedAt: serverTimestamp(),
-      });
+      };
+
+      // 1. Submit through internal API route (same-origin, 100% reliable on iOS Safari)
+      let submitted = false;
+      try {
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const result = await response.json();
+        if (response.ok && result.success) {
+          submitted = true;
+        }
+      } catch (apiErr) {
+        console.warn('API submission failed, falling back to direct Firestore:', apiErr);
+      }
+
+      // 2. Fallback to direct client Firestore SDK if API route was unreachable
+      if (!submitted) {
+        await addDoc(collection(db, "contactForms"), {
+          ...payload,
+          submittedAt: serverTimestamp(),
+        });
+      }
+
       alert("Form submitted successfully! We will get back to you shortly.");
       setFormData({
         name: '',
@@ -262,8 +287,8 @@ export default function ContactPage() {
             {/* Right: Map */}
             <div className="w-full lg:w-1/2 flex flex-col min-h-[400px]">
               <div className="w-full h-full relative bg-gray-50 border border-gray-100 overflow-hidden">
-                 <iframe 
-                  src="https://maps.google.com/maps?q=Xcel%20Stiro%20Private%20Limited&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                <iframe 
+                  src="https://maps.google.com/maps?q=Xcel%20Stiro%20Private%20Limited&t=&z=14&ie=UTF8&iwloc=&output=embed" 
                   width="100%" 
                   height="100%" 
                   style={{ border: 0, position: 'absolute', inset: 0 }} 
@@ -425,8 +450,8 @@ export default function ContactPage() {
               </div>
 
             </div>
-          </div>
 
+          </div>
         </div>
       </section>
 
