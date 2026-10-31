@@ -68,6 +68,7 @@ export default function ProductsPage() {
     return 'washing';
   });
   const [activeDotIndex, setActiveDotIndex] = useState(0);
+  const [hideHeroOnMobile, setHideHeroOnMobile] = useState<boolean>(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   
   const [products, setProducts] = useState<any[]>(() => {
@@ -186,7 +187,9 @@ export default function ProductsPage() {
       if (typeof window !== 'undefined') {
         sessionStorage.setItem('xcel_active_category', targetId);
         try {
-          const newUrl = `/products?category=${targetId}#${targetId}`;
+          const isFromMobileNav = sessionStorage.getItem('xcel_from_mobile_nav') === 'true';
+          const navParam = isFromMobileNav ? '&nav=mobile' : '';
+          const newUrl = `/products?category=${targetId}${navParam}#${targetId}`;
           window.history.replaceState(window.history.state, '', newUrl);
         } catch (e) {}
       }
@@ -203,6 +206,11 @@ export default function ProductsPage() {
     // 1. Ensure page starts at top so hero banner is visible first
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
+      const urlParams = new URLSearchParams(window.location.search);
+      const isFromMobileNav = urlParams.get('nav') === 'mobile' || sessionStorage.getItem('xcel_from_mobile_nav') === 'true';
+      if (isFromMobileNav) {
+        setHideHeroOnMobile(true);
+      }
     }
 
     const syncCategoryFromUrlOrStorage = () => {
@@ -233,11 +241,22 @@ export default function ProductsPage() {
       }
     };
 
+    const handleToggleMobileHero = (e: any) => {
+      if (e?.detail) {
+        setHideHeroOnMobile(!!e.detail.hide);
+      }
+    };
+
     syncCategoryFromUrlOrStorage();
 
-    // 2. After 500ms, auto-scroll to the product cards section on both desktop and mobile
+    // 2. After 500ms, auto-scroll to the product cards section on both desktop and mobile (if not mobile nav)
     const autoScrollTimer = setTimeout(() => {
       if (typeof window !== 'undefined') {
+        const isMobile = window.innerWidth < 1024;
+        const isFromMobileNav = new URLSearchParams(window.location.search).get('nav') === 'mobile' || sessionStorage.getItem('xcel_from_mobile_nav') === 'true';
+        if (isMobile && isFromMobileNav) {
+          return;
+        }
         if (window.scrollY < 250) {
           scrollToCategoryHeader('smooth');
         }
@@ -254,12 +273,14 @@ export default function ProductsPage() {
     window.addEventListener('hashchange', onPopOrHash);
     window.addEventListener('popstate', onPopOrHash);
     window.addEventListener('select-product-category', handleCustomCategoryEvent);
+    window.addEventListener('xcel-toggle-mobile-hero', handleToggleMobileHero);
     return () => {
       clearTimeout(autoScrollTimer);
       if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
       window.removeEventListener('hashchange', onPopOrHash);
       window.removeEventListener('popstate', onPopOrHash);
       window.removeEventListener('select-product-category', handleCustomCategoryEvent);
+      window.removeEventListener('xcel-toggle-mobile-hero', handleToggleMobileHero);
     };
   }, []);
 
@@ -329,7 +350,7 @@ export default function ProductsPage() {
       <Header />
 
       {/* Hero Banner Section */}
-      <section className="w-full bg-[#f3f5f8]">
+      <section className={`w-full bg-[#f3f5f8] ${hideHeroOnMobile ? 'hidden lg:block' : ''}`}>
          <img 
            src="/banners/product-overview-banner.webp" 
            alt="Product Overview - From Washing To Finishing" 
@@ -345,7 +366,7 @@ export default function ProductsPage() {
       <section id="products-section" className="min-h-[75vh] max-w-[1400px] mx-auto w-full px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-12 lg:pt-8 lg:pb-24 flex flex-col items-center scroll-mt-[100px]">
         
         {/* Breadcrumb Navigation */}
-        <div className="w-full flex flex-row items-center gap-2 sm:gap-3 text-[12px] sm:text-[13px] text-[#363636] mb-6 sm:mb-8 overflow-x-auto scrollbar-hide whitespace-nowrap self-start">
+        <div className={`w-full flex-row items-center gap-2 sm:gap-3 text-[12px] sm:text-[13px] text-[#363636] mb-6 sm:mb-8 overflow-x-auto scrollbar-hide whitespace-nowrap self-start ${hideHeroOnMobile ? 'hidden lg:flex' : 'flex'}`}>
           <Link href="/" className="text-[#363636] hover:text-[#0a2766] transition-colors flex items-center shrink-0" title="Home">
             <Home size={13} className="sm:w-[14px] sm:h-[14px]" strokeWidth={1.5} />
           </Link>

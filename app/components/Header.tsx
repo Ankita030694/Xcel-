@@ -37,6 +37,15 @@ export const Header = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const clearMobileNavFlag = () => {
+    if (typeof window !== 'undefined') {
+      try {
+        sessionStorage.removeItem('xcel_from_mobile_nav');
+      } catch (e) {}
+      window.dispatchEvent(new CustomEvent('xcel-toggle-mobile-hero', { detail: { hide: false } }));
+    }
+  };
+
   return (
     <header className="w-full sticky top-0 z-50 bg-white shadow-sm font-sans">
       {/* Top Bar Ticker */}
@@ -96,7 +105,9 @@ export const Header = () => {
                     if (typeof window !== 'undefined') {
                       try {
                         sessionStorage.removeItem('xcel_active_category');
+                        sessionStorage.removeItem('xcel_from_mobile_nav');
                       } catch (e) {}
+                      window.dispatchEvent(new CustomEvent('xcel-toggle-mobile-hero', { detail: { hide: false } }));
                       if (window.location.pathname === '/products' || window.location.pathname === '/products/') {
                         try {
                           window.history.replaceState(window.history.state, '', '/products');
@@ -187,7 +198,7 @@ export const Header = () => {
         <nav className="flex flex-col items-center py-6 px-6 space-y-6 text-center">
           <Link 
             href="/" 
-            onClick={() => setIsMobileMenuOpen(false)} 
+            onClick={() => { setIsMobileMenuOpen(false); clearMobileNavFlag(); }} 
             className={`text-[#3b5b95] font-semibold text-[15px] pb-1 border-b-[2.5px] transition-all ${
               isActive('/') ? 'border-[#3b5b95]' : 'border-transparent hover:text-[#2f497a]'
             }`}
@@ -196,7 +207,7 @@ export const Header = () => {
           </Link>
           <Link 
             href="/about" 
-            onClick={() => setIsMobileMenuOpen(false)} 
+            onClick={() => { setIsMobileMenuOpen(false); clearMobileNavFlag(); }} 
             className={`text-[#3b5b95] font-semibold text-[15px] pb-1 border-b-[2.5px] transition-all ${
               isActive('/about') ? 'border-[#3b5b95]' : 'border-transparent hover:text-[#2f497a]'
             }`}
@@ -204,21 +215,23 @@ export const Header = () => {
             ABOUT US
           </Link>
           <Link 
-            href="/products" 
+            href="/products?nav=mobile" 
             onClick={() => {
               setIsMobileMenuOpen(false);
               if (typeof window !== 'undefined') {
                 try {
+                  sessionStorage.setItem('xcel_from_mobile_nav', 'true');
                   sessionStorage.removeItem('xcel_active_category');
                 } catch (e) {}
+                window.dispatchEvent(new CustomEvent('xcel-toggle-mobile-hero', { detail: { hide: true } }));
                 if (window.location.pathname === '/products' || window.location.pathname === '/products/') {
                   try {
-                    window.history.replaceState(window.history.state, '', '/products');
+                    window.history.replaceState(window.history.state, '', '/products?nav=mobile');
                   } catch (e) {}
                   window.dispatchEvent(new CustomEvent('select-product-category', { 
                     detail: { categoryId: 'washing', shouldScroll: false } 
                   }));
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                  window.scrollTo({ top: 0, behavior: 'instant' });
                 }
               }
             }}
@@ -232,7 +245,7 @@ export const Header = () => {
           </Link>
           <Link 
             href="/blogs" 
-            onClick={() => setIsMobileMenuOpen(false)} 
+            onClick={() => { setIsMobileMenuOpen(false); clearMobileNavFlag(); }} 
             className={`text-[#3b5b95] font-semibold text-[15px] pb-1 border-b-[2.5px] transition-all ${
               isActive('/blogs') ? 'border-[#3b5b95]' : 'border-transparent hover:text-[#2f497a]'
             }`}
@@ -241,7 +254,7 @@ export const Header = () => {
           </Link>
           <Link 
             href="/contact" 
-            onClick={() => setIsMobileMenuOpen(false)} 
+            onClick={() => { setIsMobileMenuOpen(false); clearMobileNavFlag(); }} 
             className={`text-[#3b5b95] font-semibold text-[15px] pb-1 border-b-[2.5px] transition-all ${
               isActive('/contact') ? 'border-[#3b5b95]' : 'border-transparent hover:text-[#2f497a]'
             }`}

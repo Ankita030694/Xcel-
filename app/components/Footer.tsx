@@ -154,7 +154,9 @@ export const Footer = () => {
 
     try {
       sessionStorage.setItem('xcel_active_category', categoryId);
+      sessionStorage.removeItem('xcel_from_mobile_nav');
     } catch (err) {}
+    window.dispatchEvent(new CustomEvent('xcel-toggle-mobile-hero', { detail: { hide: false } }));
 
     const isProductsPage = window.location.pathname === '/products' || window.location.pathname === '/products/';
     if (isProductsPage) {
@@ -188,7 +190,9 @@ export const Footer = () => {
 
     try {
       sessionStorage.removeItem('xcel_active_category');
+      sessionStorage.removeItem('xcel_from_mobile_nav');
     } catch (err) {}
+    window.dispatchEvent(new CustomEvent('xcel-toggle-mobile-hero', { detail: { hide: false } }));
 
     const isProductsPage = window.location.pathname === '/products' || window.location.pathname === '/products/';
     if (isProductsPage) {
