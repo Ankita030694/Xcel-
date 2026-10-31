@@ -245,7 +245,7 @@ export default function ContactPage() {
                   />
                 </div>
 
-                <div className="border border-gray-200 border-b-0 px-4 py-3.5 relative">
+                <div className="border border-gray-200 bg-blue-50 border-b-0 px-4 py-3.5 relative">
                   <select 
                     value={formData.state} 
                     onChange={(e) => setFormData((prev) => ({ ...prev, state: e.target.value }))}
